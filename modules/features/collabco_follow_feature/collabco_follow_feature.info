@@ -1,0 +1,8 @@
+name = Collabco Follow Feature
+description = Collabco follow feature.
+core = 7.x
+package = Collabco
+php = 5.2.4
+version = unknown
+project = collabco_follow_feature
+dependencies[] = flag

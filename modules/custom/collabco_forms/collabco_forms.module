@@ -1,0 +1,177 @@
+<?php
+
+/**
+ * Implements hook_user_login().
+ *
+ * Override the default redirect, /user/UID, to go to the front page instead.
+ */
+function collabco_forms_user_login(&$form_state, $account) {
+  if ($account->uid != 1) {
+    $form_state['redirect'] = variable_get('site_frontpage', 'node');
+  }
+}
+
+/**
+ * Return an array of uids that commented on the supplied node.
+ *
+ * @param $nid
+ *
+ * @return array of the uids of users that commented at least once
+ */
+function collabco_forms_get_comment_uids_for_node($nid) {
+  $node = node_load($nid);
+  $comment_uids = array();
+  if ($node->comment && $cids = comment_get_thread($node, COMMENT_MODE_FLAT, 1000)) {
+    if ($comments = comment_load_multiple($cids)) {
+      foreach ($comments as $comment) {
+        $comment_uids[$comment->uid] = $comment->uid;
+      }
+    }
+  }
+  return $comment_uids;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
+
+  if (!empty($form['comment_notify_settings'])) {
+    // Normally $form_id == 'user_register_form' or 'user_profile_form'
+    $form['comment_notify_settings']['#title'] = t('Email notification settings');
+    if (!empty($form['comment_notify_settings']['node_notify'])) {
+      $node_settings = &$form['comment_notify_settings']['node_notify'];
+      $node_settings['#title'] = t('Receive emails when someone comments on content I posted');
+      $node_settings['#type'] = 'radios';
+      $node_settings['#options'] = array(
+        FALSE => t('Do not send any emails'),
+        TRUE => t('Send emails whenever anyone comments on content I posted')
+      );
+      $node_settings['#description'] = t('You cannot disable notifications for individual threads.');
+    }
+    if (!empty($form['comment_notify_settings']['comment_notify'])) {
+      $comment_settings = &$form['comment_notify_settings']['comment_notify'];
+      $comment_settings['#title'] = t('Receive emails when someone comments on content after I do');
+      $comment_settings['#type'] = 'radios';
+      $comment_settings['#options'][COMMENT_NOTIFY_DISABLED] = t('Do not send any emails');
+      if (isset($comment_settings['#options'][COMMENT_NOTIFY_NODE])) {
+        $comment_settings['#options'][COMMENT_NOTIFY_NODE] = t('Send emails whenever anyone comments on content after I do');
+      }
+      if (isset($comment_settings[COMMENT_NOTIFY_COMMENT])) {
+        $comment_settings['#options'][COMMENT_NOTIFY_COMMENT] = t('Send emails only when someone replies to my comments');
+      }
+      $comment_settings['#default_value'] = reset($form['comment_notify_settings']['comment_notify']['#default_value']);
+      $comment_settings['#description'] = t('You can disable these notiﬁcations later for individual pieces of content, by visiting the web page for that content.');
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function collabco_forms_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  $form['notify_settings']['notify']['#title'] = t('Notify me via email for...');
+  $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_NODE] = t('all new comments');
+  $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_COMMENT] = t('replies to my comment');
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function collabco_forms_form_user_admin_settings_alter(&$form, &$form_state) {
+  // Anonymous fieldset only contains one field at the moment.
+  unset($form['anonymous_settings']['anonymous']);
+  unset($form['anonymous_settings']);
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function collabco_forms_form_user_profile_form_alter(&$form, &$form_state) {
+/*
+  $title = ($form['#user_category'] == 'account') ? t('Edit Your Account') : t('Edit Your Profile');
+  $form['title'] = array(
+    '#markup' => "<h2>$title</h2>",
+    '#weight' => -10,
+  );
+ */
+  if ($form['#user_category'] == 'account') {
+    $account = $form['#user'];
+
+    // Don't want to see Username. Users are identified by email address.
+    unset($form['account']['name']);
+
+    // Tick the "Personal contact form" box by default.
+    if (isset($form['contact']['contact'])) {
+
+
+      /**
+        Auto-check the contact checkbox, if this is the first time user is visiting their profile.
+      */
+
+      // alexar: old code
+      // $form['contact']['contact']['#default_value'] = isset($account->data['contact']) ? $account->data['contact'] : TRUE;
+      
+      // alexar: new code
+      if (!isset($account->data['contact'])) {
+        $form['contact']['contact']['#default_value'] = true;
+      }
+
+
+      
+      $form['contact']['contact']['#description'] = t('Allow other users on the site to see your email address and contact you via a contact form on your profile page. Site administrators will still be able to contact you if this is disabled.');
+    }
+
+    // One-time login link and token present in URL.
+    // Taken from user.module, function user_account_form().
+    $pass_reset = isset($_SESSION['pass_reset_' . $account->uid]) && isset($_GET['pass-reset-token']) && ($_GET['pass-reset-token'] == $_SESSION['pass_reset_' . $account->uid]);
+
+    if ($pass_reset) {
+      // Remove all fields except the submit button(s) and the elements
+      // $form['account']['pass'] and $form['account']['current_pass'].
+      $elements_to_keep = array('account', 'actions', 'form_build_id', 'form_id', 'form_token');
+      foreach (element_children($form) as $element) {
+        if (!in_array($element, $elements_to_keep)) {
+          unset($form[$element]);
+        }
+      }
+      if (isset($form['account']['mail'])) {
+        $form['account']['mail']['#type'] = 'hidden';
+      }
+    }
+  }
+  $form['#submit'][] = 'collabco_forms_redirect_handler';
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function collabco_forms_form_user_register_form_alter(&$form, &$form_state) {
+  $form['account']['mail']['#description'] = t('A valid e-mail address. All e-mails from the website will be sent to this address. Members of META will be able to contact you unless you change this in your Account settings.');
+}
+
+/**
+ * Attaches the redirect to the submitted form.
+ *
+ * @param array $form
+ * @param array $form_state
+ */
+function collabco_forms_redirect_handler($form, &$form_state) {
+  global $base_url;
+  switch ($form['#user_category']) {
+    case 'account':
+      $form_state['redirect'] = $base_url;
+      break;
+    case 'profile':
+      $form_state['redirect'] = $base_url . '/user';
+      break;
+    }
+}
+
+/**
+ * Implements hook_field_extera_fields_alter().
+ */
+function collabco_forms_field_extra_fields_alter(&$extra_fields) {
+  // "User name and password"
+  $extra_fields['user']['user']['form']['account']['description'] .= ' ' . t('NOT USED ON THIS SITE');
+}

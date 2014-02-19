@@ -1,0 +1,9 @@
+name = Profile Complete Percentage
+description = Configure user fields to be tagged as required for a profile to be complete. Display the percent of profile completion to the user via a block or in Views.
+package = Profile
+version = 7.x-1.x
+core = 7.x
+configure = admin/config/people/pcp
+
+files[] = includes/pcp.rules.inc
+files[] = includes/pcp_handler_field_profile_completeness.inc

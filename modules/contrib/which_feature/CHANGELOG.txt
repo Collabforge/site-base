@@ -1,0 +1,26 @@
+Which feature? 7.x-1.x-dev, xxxx-xx-xx (development release)
+--------------------------------------------------------------------------------
+
+- Added a more generic hook_which_feature_info() based approach.
+- Added help module Which feature? display mode.
+- Added support for Display Suite Fields and View modes.
+- Added support for Drupal core Fields (Node only).
+- Added support for Drupal core Image styles.
+- Added support for Drupal core Menus.
+- Added support for Drupal core Taxonomy.
+- Added support for Drupal core Text formats.
+- Added support for Drupal core User Roles.
+- Added support for Meta tags.
+- Added support for Rules.
+- Added support for Search API.
+- Added support for Strongarm.
+- Added support for Wysiwyg.
+- Added support for Wysiwyg API template plugin
+- Improved CTools integration.
+
+
+
+Which feature? 7.x-1.0-beta1, 2013-01-09
+--------------------------------------------------------------------------------
+
+- Initial 7.x release.

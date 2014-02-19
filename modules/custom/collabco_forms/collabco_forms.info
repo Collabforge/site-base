@@ -1,0 +1,5 @@
+name = Collabco Custom forms
+description = provides a collabco custom solutions for forms
+core = 7.x
+package = Collabco
+

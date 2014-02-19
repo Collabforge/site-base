@@ -1,0 +1,4 @@
+name = Which feature?
+description = Adds information about which feature an exportable is exported to.
+dependencies[] = features
+core = 7.x

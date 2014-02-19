@@ -1,0 +1,191 @@
+<?php
+/**
+ * @file
+ * Contains core functions for the Which feature? module.
+ */
+
+/**
+ * Include additional files.
+ */
+$dirname = dirname(__FILE__);
+$includes = file_scan_directory("{$dirname}/includes", '/.inc$/');
+foreach (module_list() as $module) {
+  if (isset($includes[$file = "{$dirname}/includes/{$module}.inc"])) {
+    require_once $file;
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function which_feature_permission() {
+  $permissions = array();
+
+  $permissions['access which_feature'] = array(
+    'title' => t('Access Which feature? information'),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function which_feature_preprocess_table(&$vars) {
+  if (which_feature_access('preprocess_table')) {
+    // Load registry of Which feature? items.
+    $items = which_feature_get_items('table_preprocess');
+
+    // Check if current page is registered for use with Which feature?.
+    $menu = menu_get_item();
+    if (isset($items[$menu['path']]) && !empty($vars['header'])) {
+      $item = $items[$menu['path']];
+      $components = $item['components callback']($item);
+
+      // Inject table header column before 'Operations' column.
+      $header = array(
+        'data' => t('Module'),
+        'class' => array('which-feature'),
+        'style' => 'width: 16%',
+      );
+      $offset = is_array($item['offset']) && isset($item['offset'][1]) ? count($vars['header']) - $item['offset'][0] : count($vars['header']) - 1;
+      array_splice($vars['header'], $offset, 0, array($header));
+
+      // Calculate offset for column injection.
+      if (is_array($item['offset']) && isset($item['offset'][1])) {
+        $offset = $item['offset'][1];
+      }
+      else {
+        $offset = 1;
+        $keys = array_keys($vars['header']);
+        $last_index = end($keys);
+        if (is_array($vars['header'][$last_index]) && isset($vars['header'][$last_index]['colspan'])) {
+          $offset = $vars['header'][$last_index]['colspan'];
+        }
+      }
+
+      // Process each row of the table.
+      foreach ($vars['rows'] as $delta => &$row) {
+        if (isset($row['data'])) {
+          $row = &$row['data'];
+        }
+
+        // Tag/Sub-header row.
+        if (count($row) == 1 && count($row) < count($vars['header']) - 1) {
+          $row[0]['colspan']++;
+          continue;
+        }
+
+        // Standarize the item delta.
+        if (isset($item['delta callback'])) {
+          $item['delta callback']($delta, $row);
+        }
+
+        // Inject new column before 'Operations' column.
+        $inject = $item['row callback']($item, $components, $delta, $row);
+        $column = array(
+          'data' => $inject,
+          'class' => array('which-feature'),
+        );
+        array_splice($row, count($row) - $offset, 0, array($column));
+      }
+    }
+  }
+}
+
+/**
+ * Helper function; Is user allowed to access Which feature? information.
+ */
+function which_feature_access($type = NULL) {
+  // Check if use has the correct permission.
+  if (!user_access('access which_feature')) {
+    return FALSE;
+  }
+
+  // @TODO - Add an exclussion list.
+
+  // @TODO - Add a user based toggle.
+
+  return TRUE;
+}
+
+/**
+ * Helper function; Gets all registered Which feature? information.
+ */
+function which_feature_get_items($type) {
+  $items = &drupal_static('__FUNCTION__');
+
+  if (empty($items)) {
+    $items = module_invoke_all('which_feature_info');
+    foreach ($items as &$subitems) {
+      ksort($subitems);
+    }
+    drupal_alter('which_feature_info', $items);
+    foreach ($items as $subtype => &$subitems) {
+      $function = "which_feature_{$subtype}_defaults";
+      if (function_exists($function)) {
+        foreach ($subitems as &$item) {
+          $item += $function();
+        }
+      }
+    }
+  }
+
+  return isset($items[$type]) ? $items[$type] : array();
+}
+
+/**
+ * Defaults for the 'table_preprocess' item type.
+ */
+function which_feature_table_preprocess_defaults() {
+  return array(
+    'components callback' => 'which_feature_components_callback',
+    'row callback' => 'which_feature_row_callback',
+    'offset' => NULL,
+  );
+}
+
+/**
+ * Default Components callback.
+ */
+function which_feature_components_callback($item) {
+  $modules = &drupal_static('which_feature_modules');
+  $components = array();
+
+  $features = features_get_features();
+  foreach ($features as $feature) {
+    if (isset($feature->info['features'][$item['component']])) {
+      $feature->info['features'][$item['component']] = array_flip($feature->info['features'][$item['component']]);
+      foreach ($feature->info['features'][$item['component']] as $key => $value) {
+        $feature->info['features'][$item['component']][$key] = $feature->name;
+      }
+      $components += $feature->info['features'][$item['component']];
+      $modules[$feature->name] = $feature;
+    }
+  }
+  ksort($components);
+
+  return $components;
+}
+
+/**
+ * Default Row callback,
+ */
+function which_feature_row_callback($item, $components, &$delta, &$row) {
+  $modules = &drupal_static('which_feature_modules');
+
+  $return = ' ';
+  if (isset($components[$delta])) {
+    if (!isset($modules[$components[$delta]])) {
+      $modules[$components[$delta]] = features_get_info('module', $components[$delta]);
+    }
+    $module = $modules[$components[$delta]];
+
+    $return = $module->info['name'];
+    if (isset($module->info['features'][$item['component']]) && (in_array($delta, $module->info['features'][$item['component']]) || in_array($delta, array_keys($module->info['features'][$item['component']])))) {
+      $return = l($return, 'admin/structure/features/' . $module->name);
+    }
+  }
+
+  return $return;
+}

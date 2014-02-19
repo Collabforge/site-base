@@ -1,0 +1,17 @@
+
+.view.collabco-message-feature .panel-col-first {
+  width: 20%;
+}
+
+.view.collabco-message-feature .panel-col-last {
+  width: 80%;
+}
+
+.view.collabco-message-feature .panel-panel p {
+  margin: 0;
+}
+
+.view.collabco-message-feature .panel-col-last .views-field-message-render-2 p {
+  font-style: italic;
+  font-size: 80%;
+}

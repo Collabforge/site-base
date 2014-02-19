@@ -1,0 +1,20 @@
+name = DataTables-Responsive JS
+description = Defines the files and variants that comprise the DataTables-Responsive JS library
+core = 7.x
+
+vendor url = https://github.com/Comanche/datatables-responsive
+download url = https://github.com/Comanche/datatables-responsive.git
+
+dependencies[] = datatables
+
+version arguments[pattern] = @[Vv]ersion[:]*\s+([0-9a-zA-Z\.\-]+)@
+version arguments[lines] = 10
+
+files[css][] = files/css/datatables.responsive.css
+files[js][] = example/lib/lodash/lodash.min.js
+files[js][] = files/js/datatables.responsive.js
+
+; The bug-fixed variant replaces just the datatables.responsive.js file
+variants[bug-fixed][files][css][] = files/css/datatables.responsive.css
+variants[bug-fixed][files][js][] = example/lib/lodash/lodash.min.js
+variants[bug-fixed][integration files][table_trash][js][] = libraries/variants/js/datatables.responsive.bugfixed.js

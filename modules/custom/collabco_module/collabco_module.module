@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * Adapted from http://drupal.stackexchange.com/questions/60059/how-to-add-alt-and-title-attributes-field-for-user-picture
+ */
+
+/**
+ * Implements hook_preprocess_user_pricture().
+ */
+function collabco_module_preprocess_user_picture(&$variables) {
+  $variables['user_picture'] = '';
+  if (variable_get('user_pictures', 0)) {
+    $account = $variables['account'];
+    if (!empty($account->picture)) {
+      if (is_numeric($account->picture)) {
+        $account->picture = file_load($account->picture);
+      }
+      if (!empty($account->picture->uri)) {
+        $filepath = $account->picture->uri;
+      }
+    }
+    elseif (variable_get('user_picture_default', '')) {
+      $filepath = variable_get('user_picture_default', '');
+    }
+    if (isset($filepath) and (!empty($account->name))) {
+      $alt = $account->name;
+      $title = $account->name;
+
+      if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+        $variables['user_picture'] = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $title));
+      }
+      else {
+        $variables['user_picture'] = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $title));
+      }
+      if (!empty($account->uid) && user_access('access user profiles')) {
+        $attributes = array(
+          'attributes' => array('title' => t('View user profile.')),
+          'html' => TRUE,
+        );
+        $variables['user_picture'] = l($variables['user_picture'], "user/$account->uid", $attributes);
+      }
+    }
+  }
+}
+
+/**
+ * To make it work with views you need to create a new views handler field and extend this handler class
+ */
+
+class views_collabco_module_handler_field_user_picture extends views_handler_field_user_picture {
+
+  function render($values) {
+    if ($this->options['image_style'] && module_exists('image')) {
+      // @todo: Switch to always using theme('user_picture') when it starts
+      // supporting image styles. See http://drupal.org/node/1021564
+      if ($picture_fid = $this->get_value($values)) {
+        $picture = file_load($picture_fid);
+        $picture_filepath = $picture->uri;
+      }
+      else {
+        $picture_filepath = variable_get('user_picture_default', '');
+      }
+      if (file_valid_uri($picture_filepath)) {
+        if (!empty($values->{$this->table_alias . '_name'})) {
+          $title = $values->{$this->table_alias . '_name'};
+          $alt = $values->{$this->table_alias . '_name'};
+        }
+        else {
+          $title = 'no user';
+          $alt = 'no user';
+        }
+        $output = theme('image_style', array('style_name' => $this->options['image_style'], 'path' => $picture_filepath, 'alt' => $alt, 'title' => $title));
+        if ($this->options['link_photo_to_profile'] && user_access('access user profiles')) {
+          $uid = $this->get_value($values, 'uid');
+          $output = l($output, "user/$uid", array('html' => TRUE));
+        }
+      }
+      else {
+        $output = '';
+      }
+    }
+    else {
+      // Fake an account object.
+      $account = new stdClass();
+      if ($this->options['link_photo_to_profile']) {
+        // Prevent template_preprocess_user_picture from adding a link
+        // by not setting the uid.
+        $account->uid = $this->get_value($values, 'uid');
+      }
+      $account->name = $this->get_value($values, 'name');
+      $account->mail = $this->get_value($values, 'mail');
+      $account->picture = $this->get_value($values);
+      $output = theme('user_picture', array('account' => $account));
+    }
+
+    return $output;
+  }
+}
+
+/**
+ * hook_views_data_alter().
+ */
+function collabco_module_views_data_alter(&$data) {
+  foreach ($data as $table => $config) {
+    foreach ($config as $item => $item_config) {
+      if (isset($item_config['field']['handler']) && $item_config['field']['handler'] == 'views_handler_field_user_picture') {
+        $data[$table][$item]['field']['handler'] = 'views_collabco_module_handler_field_user_picture';
+      }
+    }
+  }
+
+  return $data;
+}
+
+/**
+ * Impliments hook_update_x()
+ */
+
+function collabco_module_update_7000() {
+  // Remove field_attachment file field
+  field_delete_field('field_attachment');
+}

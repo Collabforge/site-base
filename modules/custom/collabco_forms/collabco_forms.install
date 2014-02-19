@@ -1,0 +1,14 @@
+<?php
+/**
+ * Implements hook_install().
+ *
+ * Need to come after core Contact module.
+ */
+function collabco_forms_install() {
+
+  db_update('system')
+    ->fields(array('weight' => 1))
+    ->condition('name', 'collabco_forms')
+    ->execute();
+}
+
