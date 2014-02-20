@@ -15,6 +15,7 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 9. PROFILES
 10. MEMBER ORGANISATION PROFILES
 11. FEATURED CONTENT BLOCK
+12. TOPICS PAGE
 13. PARTNERS
 14. RECENT ACTIVITY BLOCK
 15. SEARCH BAR HACK
@@ -30,60 +31,17 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
  */
 
 body {
-  background-color: #fbfbfb;
-  background-image: none;
+  background: #fbfbfb url('/profiles/collabco/themes/collabco_theme/images/subtle_dots.png') repeat; 
   font-family: 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: normal;
   font-style: normal;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
-.divider {
-  height: 2px;
-  margin-top: -10px;
-  margin-bottom: 10px;
-}
-.views-row {
-  clear: both;
-  margin-bottom: 1em;
-  padding-bottom: 10px;
-}
-.twocolgrid {
-  float: left;
-  width: 40%;
-  height: 120px;
-  padding-bottom: 5px;
-  margin-right: 25px;
-  margin-bottom: 30px;
-  vertical-align: baseline;
-  margin-left: 10px;
-}
 .block .content {
   padding-left: 10px;
   padding-right: 10px;
-}
-
-.paddingL10 {
-	padding-left:10px;
-}
-
-.paddingL5 {
-	padding-left:5px;
-}
-
-.marginL10 {
-	margin-left:10px;
-}
-
-.marginL5 {
-	margin-left:5px;
-}
-
-.block-iin-navigation-block .content,
-.block-iin-profile-block .content,
-.paddingreset .content {
-  padding: 0;
 }
 
 .content-body p {
@@ -104,6 +62,12 @@ body {
   display: inline;
   text-align: center;
   margin-top: 25px;
+}
+
+#page-title { /*Content page headings */
+  line-height: 1;
+  text-align: left;
+  padding-left:10px;
 }
 
 /* Page Header -------------*/
@@ -204,7 +168,8 @@ h5 {
 p {
   font-family: Helvetica, Arial, sans-serif;
   font-weight: normal;
-  line-height: 1.3;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 .p {
   font-family: Helvetica, Arial, sans-serif;
@@ -216,6 +181,16 @@ p {
   font-family: Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-size: 0.875em;
+}
+
+/* Icon overrides ---------------------------*/
+[class^="icon-"], [class*=" icon-"]{ /*NB this can be removed if the fontawesome css is inherited after bootstrap*/
+  width:auto;
+  height: auto;
+  line-height: normal;
+  display:inline;
+  vertical-align: baseline;
+  background:none;
 }
 
 /**
@@ -516,10 +491,6 @@ p {
   line-height: 2.2;
 }
 
-.conversation-summary {
-
-}
-
 .conversation-summary h2 {
   text-align: center;
   width: 85%;
@@ -548,12 +519,8 @@ p {
   color:#ffffff;
   text-decoration: none;
 }
-/*.cicon {
-background-image: url(../images/conversationtitleicon.png); max-width: 100%;
-background-repeat: no-repeat;
-background-position: 0px -4px;
-height: 62px;
-}*/
+
+
 .conversationpreview {
   margin-left: -15px;
   padding: 10px 20px;
@@ -584,6 +551,14 @@ height: 62px;
 7. NAVIGATION
 ---------------------------------------------
  **/
+
+ /* Navigation tabs global -------------*/
+
+.nav-tabs{
+  padding-bottom:5px; 
+  margin-top:10px;
+}
+
 
  /* Base menu overrides -------------*/
 
@@ -681,7 +656,7 @@ ul.menu {
   color: #999;
   text-decoration: none;
   background-color:#fff;
-  border-bottom: 3px solid #EAEAEA;
+  border-bottom: 3px solid #c1c1c1;
 }
 
 .menu_primary a{
@@ -969,7 +944,7 @@ margin-left: 0px;
 }
 
 .notifications .views-field-title:before{
-  content:"\F06A";
+  content:"\F06A"; /* Exclamation icon */
   color:#0088cc; /*Blue*/
 }
 
@@ -1004,9 +979,6 @@ margin-left: 0px;
   height: 80px;
 }
 
-#page-title {
-  line-height: 1;
-}
 
 /* 8C. Dashboard --------------*/
 
@@ -1061,7 +1033,7 @@ margin-top: 10px;
   font-style: normal;
   display: inline-block;
   font-size: 1.5em;
-  content:"\F143";
+  content:"\F143"; /*RSS icon*/
 }
 
 .comment_border {
@@ -1092,11 +1064,6 @@ margin-top: 10px;
   background-color: #fff;
   padding: 10px 0;
   border: thin solid #dfdfdf;
-/*
-  box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-*/
 }
 
 #iin-profile-title {
@@ -1130,8 +1097,6 @@ margin-top: 10px;
   padding: 20px;
 }
 .iin-user-profile #user-picture {
-  /*float: left;
-  padding-top: 25px;*/
   padding-left: 15px;
 }
 .profile2-profile {
@@ -1164,6 +1129,49 @@ margin-top: 10px;
 /** 10. MEMBER ORGANISATION PROFILES
 ---------------------------------------------
  */
+
+.twocolgrid {
+  float: left;
+  width: 40%;
+  height: 120px;
+  padding-bottom: 5px;
+  margin-right: 25px;
+  margin-bottom: 30px;
+  vertical-align: baseline;
+  margin-left: 10px;
+}
+
+.orgbox {
+  border-bottom: 1px solid #f2f2f2;
+  text-align:center;
+  margin: 5% 0 0 4% !important;
+}
+
+.orgimg {
+  position: relative;
+  display:block;
+  margin:0 auto;
+  height:50px;
+}
+
+.orgimg img {
+  max-height:50px;
+  width:auto;
+}
+
+.orgtext {
+  position: relative;
+  clear:left;
+  display:inline;
+  margin:10px auto;
+}
+
+.view-member-organisations ul {
+  margin:0;
+  clear: both;
+  height:30px;
+  padding:20px 0;
+}
 
 .view-member-organisations .views-row {
   clear: both;
@@ -1230,11 +1238,6 @@ margin-top: 10px;
 .iin-feature {
   background-color: #fff;
   border: thin solid #dfdfdf;
-/*
-  box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(223, 223, 223, 0.75);
-*/
   background-color: #fff;
 }
 .iin-feature h2 {
@@ -1247,9 +1250,202 @@ margin-top: 10px;
 .iin-feature .view-organizations ul {
   list-style-type: none;
 }
-/*#block-block-11 .content {
-  padding: 0px !important;
-}*/
+
+
+/** 12. TOPICS PAGE 
+---------------------------------------------
+ */
+
+/* GENERIC HEADINGS */
+
+.header-icon i {
+  color:#666;
+  display:block;
+  padding-top:10px;
+}
+
+/* TOPICS INDEX */
+
+.topic_index {
+  margin-bottom: 20px;
+}
+
+
+.topic_item {
+  padding-left: 20px;
+}
+
+.topic_host {
+  margin-bottom: 15px;
+  margin-top: 10px;
+  text-transform: center;
+  padding: 20px 15px;
+  background-color: #FBFBFB;
+}
+
+.topic_host p, .topic_host h2{
+  text-transform: left;
+}
+
+.topic_host h2 {
+  padding-left: 0px;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+ul.recent_topicslist li.views-row-first {
+  height:0px;
+  overflow: hidden;
+}
+
+#block-system-main {
+  padding-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+/* -- list items */
+
+.index_item {
+ display: block;
+ border-bottom: 1px solid #F2F2F2;
+ padding: 15px 10px 15px 0;
+}
+
+.index_item h3{
+  font-size: 1.15em;
+  text-transform: capitalize;
+  margin:0;
+}
+
+.index_item h3 a { 
+  /*color:#999;*/
+}
+
+.index_item h3 a:hover { 
+  color:#ed6a26; /*Orange*/
+}
+
+.content-lower .quicktabs-tabs { /* Hide Topics Page quicktabs until this can be rebuilt properly */
+  display:none;
+  margin-left:0;
+  margin-bottom:0;
+}
+
+/* Style Topics search bar & quicktabs */
+
+.content-upper #block-views-exp-meta-search-topic-search form,
+.content-lower .quicktabs-tabs{
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 0;
+  border:1px solid #f2f2f2;
+}
+
+/* -- feature image box */
+
+.item-list ul li.topic-feature,
+#block-quicktabs-topics .item-list ul li { /*Overwrite default list stylings */
+  margin:0;
+}
+
+.topic-feature .recommended {
+  margin-top:20px;
+  margin-bottom:10px;
+}
+
+.topic_feature_left {
+  text-align: right;
+  position: relative;
+}
+
+.topic_feature_left img{
+  border:1px solid #444;
+}
+
+.topic_feature_title {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 80px;
+  text-transform: uppercase;
+  color: #FFF;
+  background: #333;
+  padding: 8px 20px;
+  font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
+  text-align: left;
+}
+
+.topic_feature_title:before{
+  font-family:'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  content:"\F017"; /* Clock icon*/
+  padding-right: 6px;
+}
+
+
+/* -- featured item */
+
+
+.topic_feature_right { 
+  padding-left:20px;
+}
+
+.topic_feature_right h3 { 
+  font-size: 1.5em;
+  /*text-transform: capitalize;*/
+}
+
+
+.topic_feature_body { margin-bottom: 10px; }
+
+
+.article_host p { margin-bottom: 0px; }
+.article_host {
+  margin-top: 10px;
+}
+
+.user_block .user-picture-small {
+  padding-right: 10px;
+}
+
+.user_block tbody { border: none;}
+.user_block td {
+  border: none;
+  padding: 0px;
+}
+
+.field-content { 
+  display: block;
+}
+
+.topics_header {
+ background: #F2F2F2;
+}
+
+
+.topic_create {
+  background: #F7A233;
+  border-style: none;
+  height: 30px;
+  padding-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.topic_create a {
+  color: #FFF;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.topic_create a:hover {
+  text-decoration: none;
+}
+
+
+
 
 
 /**
@@ -1267,15 +1463,16 @@ margin-top: 10px;
 .view-recent-activity .activity-details {
   margin-left: 5px;
   margin-bottom:5px;
+  color:#666;
 }
 
 .view-recent-activity .activity-details a:first-child{ /*User name label*/
   font-weight: bold;
 }
 
-.view-recent-activity .activity-details a:last-child{ /*Article label*/
-  color:#6a6767;
-  font-weight: bold;
+.view-recent-activity .activity-details a:nth-child(3){ /*Article label*/
+  color:#333;
+  font-weight: 700;
 }
 
 .view-recent-activity .activity-details > p {
@@ -1448,3 +1645,256 @@ form .field-name-field-file-ref {
  ul.quicktabs-tabs li.active {
    background-color: white;
  }
+
+/**
+14. RESPONSIVE
+------------------------------------------------------------------
+/*  -------------*/
+
+
+@media (min-width: 769px) {
+  .title_text.container div{
+    padding-left:10px;
+    padding-right: 10px; 
+  }
+}
+@media (max-width: 979px) {
+   
+  .not-front #header-content,
+  .front #main-content,
+  .not-front #main-content,
+  .not-front.node-type-news-update #main{
+    margin-top:51px;
+  }
+
+  .not-front.node-type-news-update #main-content,
+  .not-front.node-type-conversation #main-content,
+  .not-front.page-topics #main-content,
+  .not-front.page-news-update #main-content {
+     margin-top:0;
+  }
+}
+
+@media (max-width: 767px) {
+  .index_item .featured-image,
+  .index_item .span2{
+    display:none !important;
+  }
+
+  .topic-feature .topic_feature_right{
+    margin-top:10px;
+  }
+  .topic_featured .content,
+  .main-upper .content{
+    background:#f2f2f2;
+    margin-top:10px;
+    padding:10px 0;
+  }
+  .topic_feature_left img {
+    display:block;
+  }
+  .topic_feature_title {
+  }
+
+  .content-upper #block-views-exp-meta-search-topic-search .content{
+    /*float:none;
+    width:100%;
+    display:block;*/
+  }
+
+  .title_block {
+    margin-top: 20px;
+  }
+  .breadcrum h1,
+  .node-type-basic-page h1#page-title {
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 399px) {
+  .not-logged-in .container{
+    width:100%;
+  }
+    #sidebar-first, /* Sidebar on left */
+    #habla_beta_container_do_not_rely_on_div_classes_or_names{ /* Get connected box */
+    display:none; /* Hide at mobile view */
+  }
+  .views-exposed-form .views-exposed-widget .form-submit { /* No margin where button drops down */
+    margin-top:0;
+  }
+}
+
+/**
+15. MOBILE RESPONSIVE MENU
+------------------------------------------------------------------
+/*  -------------*/
+
+#tab-container, ul.etabs{
+  background:#fff;
+  height:50px;
+}
+#tab-container {
+  border-bottom:1px solid #f2f2f2;
+}
+
+#tab-container .tab_logo.tab{
+  float:left;
+  border:none;
+  padding:10px;
+}
+
+#tab-container .tab_logo.tab img{
+  max-height: 30px;
+  width: auto;
+}
+
+ul.etabs, 
+#tabs1-menu, #tabs1-menu ul, #tabs1-menu ul li, 
+#tabs1-search, #tabs1-search ul, #tabs1-search ul li, 
+#tabs1-profile, #tabs1-profile ul, #tabs1-profile ul li{
+  display:block;
+  list-style: none;
+  list-style-image: none;
+  width:100%;
+  margin:0;
+  padding:0;
+}
+
+ul.etabs li, ul.etabs li.collapsed, ul.etabs li.expanded{
+  display:block;
+  list-style: none;
+  list-style-image: none;
+  margin:0;
+  padding:0;
+  border-left:1px solid #F2F2F2;
+}
+
+ul.etabs li a{
+  color:#999;
+  width: auto;
+  padding:10px 10px 10px 14px;
+  margin:0;
+  min-height: 30px;
+  line-height: 30px;
+}
+
+#tab-container .ui-tab-content {
+  background:#999999;
+}
+
+ul.etabs li a.active{
+  background:#999999;
+  color:#fff;
+  -webkit-box-shadow:inset -2px 2px 0 1px #6b6b6b;
+  box-shadow:inset -2px 2px 0 1px #6b6b6b;
+}
+
+ul.etabs li.tab_logo.tab a{
+  padding:10px;
+}
+
+ul.etabs li a:hover, ul.etabs li a:focus, ul.etabs li a:active {
+  text-decoration: none;
+  color:#fff;
+  background:#0088cc;
+  -webkit-box-shadow:none;
+  box-shadow:none;
+}
+
+#tabs1-menu ul li a, 
+#tabs1-search ul li a,
+#tabs1-profile ul li a{ 
+  color:#ffffff;
+  text-transform: uppercase;
+  font-family: 'PT Sans Narrow';
+  font-weight: 700;
+  /*border-bottom: 1px solid #a6a6a6;*/
+  font-size: 1.4em;
+}
+
+#tabs1-menu ul li a.primary_item, 
+#tabs1-search ul li a.primary_item,
+#tabs1-profile ul li a.primary_item{ 
+  background:#8a8a8a;
+}
+
+#tabs1-menu ul li a:hover, #tabs1-menu ul li a:focus,  #tabs1-menu ul li a:active, 
+#tabs1-search ul li a:hover, #tabs1-search ul li a:focus, #tabs1-search ul li a:active, 
+#tabs1-profile ul li a:hover, #tabs1-profile ul li a:focus, #tabs1-profile ul li a:active{
+  background:#0088cc;
+}
+
+#tabs1-menu ul li a.active,
+#tabs1-search ul li a.active,  
+#tabs1-profile ul li a.active{   
+  text-decoration: underline;
+}
+
+#tabs1-menu ul li a:hover, #tabs1-menu ul li a:focus,
+#tabs1-menu ul li a.primary_item:hover, #tabs1-menu ul li a.primary_item:focus,
+#tabs1-search ul li a:hover,  #tabs1-search ul li a:focus,
+#tabs1-search ul li a.primary_item:hover,  #tabs1-search ul li a.primary_item:focus,
+#tabs1-profile ul li a:hover, #tabs1-profile ul li a:focus,
+#tabs1-profile ul li a.primary_item:hover, #tabs1-profile ul li a.primary_item:focus{
+  -webkit-box-shadow:none;
+  box-shadow: none;
+}
+
+#search-block-form--2{
+  margin:0 10px;
+  padding:10px 0;
+}
+
+ #tabs1-search .form-item-search-block-form{
+  float:left;
+}
+
+#tabs1-search input.search-query {
+  -webkit-border-radius: 15px 0 0 15px;
+  border-radius: 15px 0 0 15px;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+html.js #tabs1-search input.search-query {
+  background-image:none;
+}
+
+
+#tabs1-search input.btn-search{
+  float:left;
+  height:2.1em;
+  margin:1em 0;
+  -webkit-border-radius: 0 15px 15px 0;
+  border-radius: 0 15px 15px 0;
+}
+
+.view-display-id-list_of_topics  table.views-table {
+  width: 100%;
+}
+
+.view-display-id-topics_hosted  table.views-table {
+  width: 100%;
+}
+
+
+.topic_host .orangebutton
+  {
+    text-align: center;
+    padding: 0;
+  }
+.topic_host .orangebutton a
+  {
+    margin: auto;
+    display: block;
+    text-decoration:  none;
+    padding: 10px;
+  }
+
+
+
+
+
+
+
+
