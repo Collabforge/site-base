@@ -447,9 +447,82 @@ p {
 
 
 /**
-6. JOIN THE CONVERSATION BLOCK & conversation PAGES
+6. JOIN THE CONVERSATION
 ---------------------------------------------
  */
+
+ /* -- hide h1 and follow links */
+body.node-type-conversation h1#page-title { display: none; }
+
+.links {
+  padding:0px  !important;
+  float: right;
+  font-size: 0.8em;
+  line-height:0.8em;
+}
+
+ul .links {
+  line-height:0.8em;
+}
+
+.links li {
+  line-height:10px !important;
+}
+
+.haveyoursay {
+  position: relative;
+  display: inline;
+  float: right;
+  border: 1px solid #DFDFDF;
+  margin-top: 10px;
+  background-color: #333; /*Gre*/
+  color: #ffffff;
+  font-size: 0.9em;
+  padding: 1% 2% 1% 2%;
+  margin-right: -1%;
+}
+
+.haveyoursay a {
+  color: #ffffff;
+}
+
+.conversation-item {
+  margin-bottom:2% !important;
+}
+
+.conversation-excerpt {
+  margin-top: 2% !important;
+  line-height: 1.2em;
+}
+
+.conversationcomment {
+  margin-top:10px;
+  margin-left: 0px !important;
+}
+
+.excerpt-author {
+  font-weight: bold;
+}
+
+.commentname {
+  font-size: 0.8em;
+  line-height: 1.5em;
+}
+
+.commentquote {
+  font-size: 0.9em;
+  line-height: 1.2em;
+  margin-top: 2%;
+  float:left !important;
+}
+
+.comment-img {
+  margin-left: 1% !important;
+}
+
+.more-link {
+  margin-left:10px;
+}
 
 .page-conversations #block-system-main {
   padding-top: 0px;
@@ -727,28 +800,116 @@ ul.menu {
 /* User details small --------*/
 
 .comment .user-picture img {
-  width: 45px !important;
-  height: 45px !important;
+  width: 45px;
+  height: 45px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-border-radius: 15em !important;
-  -moz-border-radius: 15em !important;
-  border-radius: 15em !important;
+  -webkit-border-radius: 15em;
+  -moz-border-radius: 15em;
+  border-radius: 15em;
   border: 1px solid #CCC;
 }
 
 .user-picture-small img {
-  width: 36px !important;
-  height: 36px !important;
+  width: 36px;
+  height: 36px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-border-radius: 15em !important;
-  -moz-border-radius: 15em !important;
-  border-radius: 15em !important;
+  -webkit-border-radius: 15em;
+  -moz-border-radius: 15em;
+  border-radius: 15em;
   border: 1px solid #CCC;
 }
+
+/* User Profile page --------*/
+
+.user-profile {
+    margin-top:20px;
+}
+
+.user-profile .profile-page-user-picture img {
+  width: 120px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 120em;
+  -moz-border-radius: 120em;
+  border-radius: 120em;
+  border: 1px solid #CCC;
+}
+
+/*turn off tabs*/
+.page-user.page-user- .tabs{ 
+  display:none;
+}
+.node-type-conversation .nav-tabs {
+  display:none;
+}
+.logged-in .page-user .nav-tabs {
+  display:none;
+}
+.page-user-edit .form-item-field-provisional-organisation {
+  display: none;
+}
+
+.profile-page-title {
+  font-size: 1.9em;
+  line-height:1.5em;
+  text-transform: capitalize;
+}
+
+.profile-page-title p{
+  margin-bottom: 0;
+}
+
+/* Members / The Community page --------*/
+
+.view-all-users .field-content img { 
+  width: 90px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 90em;
+  -moz-border-radius: 90em;
+  border-radius: 90em;
+  border: 1px solid #CCC;
+}
+
+/* Member Organisations page --------*/
+
+.view-members-of-organisation .view-header{
+  margin:10px 0;
+}
+.view-members-of-organisation .user-picture img {
+  /*width: 90px;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 999em;
+  -moz-border-radius: 999em;
+  border-radius: 999em;
+  border: 1px solid #CCC;
+}
+
+.view-members-of-organisation .user-description{
+  padding:5px 0 0 10px;
+}
+
+.view-members-of-organisation table,
+.view-members-of-organisation td{
+  border:none;
+}
+
+.view-members-of-organisation h6{
+  margin:0;
+}
+
+.view-members-of-organisation .even-columns{
+  width:50%;
+}
+
 
 /* Button & drop-down --------*/
 
@@ -895,7 +1056,7 @@ ul.menu {
 }
 
 .dash_nav .leaf.active-trail a:hover {
-  background-color:inherit !important;
+  background-color:inherit;
 }
 
 .dash_nav a{
@@ -916,14 +1077,14 @@ margin-left: 0px;
 }
 
 .dash_profile .user-picture img {
-  width: 90px !important;
-  height: 90px !important;
+  width: 90px;
+  height: 90px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-border-radius: 30em !important;
-  -moz-border-radius: 30em !important;
-  border-radius: 30em !important;
+  -webkit-border-radius: 30em;
+  -moz-border-radius: 30em;
+  border-radius: 30em;
   border: 1px solid #CCC;
 }
 
@@ -1011,8 +1172,15 @@ margin-top: 10px;
   padding:15px 0;
 }
 
+/* 8D. News Updates --------------*/
 
-/* 8D. Activity stream --------------*/
+.title_block {
+  padding: 6px auto;
+  background-color: #f2f2f2;
+}
+
+
+/* 8E. Activity stream --------------*/
 
 .home_activity h2 {
   margin: 1em 0;
@@ -1142,21 +1310,8 @@ margin-top: 10px;
 }
 
 .orgbox {
-  border-bottom: 1px solid #f2f2f2;
   text-align:center;
-  margin: 5% 0 0 4% !important;
-}
-
-.orgimg {
-  position: relative;
-  display:block;
-  margin:0 auto;
-  height:50px;
-}
-
-.orgimg img {
-  max-height:50px;
-  width:auto;
+  margin: 20px 5% 0 5%;
 }
 
 .orgtext {
@@ -1164,6 +1319,11 @@ margin-top: 10px;
   clear:left;
   display:inline;
   margin:10px auto;
+}
+
+.field-type-text-with-summary {
+  border-bottom: 1px solid #CCC;
+  padding: 0 0 20px 0;
 }
 
 .view-member-organisations ul {
@@ -1174,8 +1334,7 @@ margin-top: 10px;
 }
 
 .view-member-organisations .views-row {
-  clear: both;
-  margin-bottom: 1em;
+  margin-top: 1em;
   padding-bottom: 10px;
   border-bottom: none;
 }
@@ -1317,14 +1476,6 @@ ul.recent_topicslist li.views-row-first {
   margin:0;
 }
 
-.index_item h3 a { 
-  /*color:#999;*/
-}
-
-.index_item h3 a:hover { 
-  color:#ed6a26; /*Orange*/
-}
-
 .content-lower .quicktabs-tabs { /* Hide Topics Page quicktabs until this can be rebuilt properly */
   display:none;
   margin-left:0;
@@ -1443,7 +1594,6 @@ ul.recent_topicslist li.views-row-first {
 .topic_create a:hover {
   text-decoration: none;
 }
-
 
 
 
@@ -1623,7 +1773,7 @@ form .field-name-field-file-ref {
 }
 
 
-** QUICK TABS
+/** QUICK TABS
 ---------------------------------------------
  */
  ul.quicktabs-tabs {
@@ -1645,6 +1795,253 @@ form .field-name-field-file-ref {
  ul.quicktabs-tabs li.active {
    background-color: white;
  }
+
+
+/* Fixes for META demo */
+
+/*remove "Picture" fieldset in sign-up form */
+#edit-picture legend {
+  height: 0px;
+  overflow: hidden;
+}
+
+.node-type-news-update #page-title {
+  display: none;
+}
+
+.breadcrum {
+  margin: 10px 0 0 0;
+}
+
+.breadcrum h1 {
+  font-size:2.5em;
+  line-height: 1.2em;
+  max-width: 700px;
+}
+
+.view-news-update-titles .views-row {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+#footer-content img {
+  height: 60px !important;
+}
+
+.edit_your_topic {
+  float: right;
+  clear: left;
+}
+
+
+.form-item-og-group-ref-und-0-default { /* Hides the group availability text */
+  display:none;
+}
+
+.more_topics {
+  margin-top: 20px;
+}
+
+.commentcount_topic {
+  clear: left;
+  border-top: 1px #f7f7f7 solid;
+  margin-top: 17px;
+  padding: 8px 6px;
+}
+
+#block-views-exp-meta-search-topic-search input, 
+#block-views-exp-meta-search-topic-search label {
+  font-size: 12px;
+}
+
+
+/* -- page formatting */
+
+ul.quicktabs-tabs li {
+  display: inline-block;
+  min-width: 100px;
+  margin: 9px 6px 40px 0;
+  padding: 8px 10px 6px 10px;
+  text-align: center;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  }
+
+ul.quicktabs-tabs li a { 
+  text-decoration: none; 
+}
+
+ul.quicktabs-tbs li.active { 
+  background-color: #F7A233;
+}
+
+.form-actions { 
+  padding: 0px; 
+}
+
+
+/* LOGIN */
+body.page-user .not-logged-in #content #content-head .tabs .nav-tabs {
+  border: none;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+
+/* -- remove whitespace -- */
+.not-logged-in.page-user #content #content-head,
+.not-logged-in.page-user-register #content #content-head,
+.not-logged-in.page-user-password #content #content-head { padding: 0px; }
+
+.not-logged-in .tabs {
+ text-align: left;
+ margin-top: 0px;
+ padding-left: 10px;
+}
+
+
+/**
+. COMMENTS
+---------------------------------------------
+ **/
+
+#comments {
+  margin-top: 20px !important;
+  padding-right: 20px;
+}
+
+#comments .comment {
+  background-color: #fff;
+  padding: 0px;
+  margin-bottom: 20px;
+}
+
+#comments .comment .content {
+  background-color: #f2f2f2;
+}
+
+.indented .comment_profile {
+  padding-left: 10px;
+}
+
+.pointer {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #f2f2f2;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: -15px;
+  top: 25px;
+}
+
+.comment_bubble {
+position: relative;
+padding: 0px;
+background-color: #f2f2f2;
+}
+
+.comment_bubble::after {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 15px 15px 0;
+border-color: transparent #f2f2f2;
+display: block;
+width: 0;
+z-index: 1;
+left: -15px;
+top: 25px;
+}
+
+.indented .comment_bubble::after {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 0 15px 15px;
+border-color: #f2f2f2 transparent;
+display: block;
+width: 0;
+z-index: 1;
+top: -15px;
+left: 41px;
+}
+
+
+#comments h2 { 
+  padding: 0 0 0 20px; 
+}
+
+.comment-wrapper { 
+  background-color: #fff; 
+  padding: 10px;
+}
+
+.form-item label {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+#edit-notify-type .form-item label {
+  display:inline;
+  padding:2px 20px 0 8px;
+}
+
+#edit-notify-type input[type="radio"], 
+.form-item input[type="checkbox"] {
+  margin-top:0;
+}
+
+li.comment-reply {
+margin: 0 -5px 5px 0;
+}
+
+/* Comment form */
+#comment-form {
+position: relative;
+padding: 15px;
+background-color: #f2f2f2;
+margin-left: 20px;
+}
+
+#comment-form::after {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 15px 15px 0;
+border-color: transparent #f2f2f2;
+display: block;
+width: 0;
+z-index: 1;
+left: -15px;
+top: 25px;
+}
+
+#comment-form .form-item,
+#comment-form .form-radios {
+  margin: 1em 2px 2px 0;
+}
+
+form .field-name-field-file-ref {
+margin-top: 0px;
+padding-top: 0px;
+border-top: none;
+}
+
+#comment-form {
+font-size: 12px;
+}
+
+#comment-form select {
+font-size: 12px;
+}
+
+#comment-form input {
+font-size: 12px;
+}
+
 
 /**
 14. RESPONSIVE
