@@ -43,6 +43,22 @@ li {
   line-height: 1.3em; 
 }
 
+/*
+ * Remove text-shadow in selection highlight: h5bp.com/i
+ * These selection rule sets have to be separate.
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+  background: #c7def9;
+  text-shadow: none;
+}
+
+::selection {
+  background: #c7def9;
+  text-shadow: none;
+}
+
 .block .content {
   padding-left: 10px;
   padding-right: 10px;
@@ -68,7 +84,7 @@ li {
   margin-top: 25px;
 }
 
-#page-title { /*Content page headings */
+#page-title { /* Generic content page headings */
   line-height: 1;
   text-align: left;
   padding-left:10px;
@@ -131,6 +147,28 @@ html.js #block-search-form input.form-autocomplete{
 
 #block-search-form .btn-search {
   top: 5px;
+}
+
+/* Search results -----------------------*/
+
+ol.search-results {
+  margin-left:0;
+  border-top:1px solid #e5e5e5; 
+}
+
+.search-results li{
+  border-bottom:1px solid #e5e5e5;
+}
+
+.search-snippet strong{
+  padding:0 2px;
+}
+
+.search-snippet strong,
+.search-form input[type='text']{ /*highlight search query string inside results*/
+  background: #c7def9;
+  color: #474545;
+  font-weight: normal;
 }
 
 
@@ -557,15 +595,6 @@ ul .links {
 }
 .view-join-the-coversation .views-field {
   padding: 0;
-}
-.conversationtitlediv {
-  width: 100%;
-  height: 60px;
-  font-size: 1.2em;
-  text-transform: uppercase;
-  text-align: left;
-  vertical-align: middle;
-  line-height: 2.2;
 }
 
 .conversation-summary h2 {
@@ -2222,14 +2251,10 @@ font-size: 12px;
   display: block;
   padding: 10px;
 }
-.ui-mobile-menu li a{
-
-}
 
 .ui-tab-content {
   background-color: gray;
 }
-
 
 #tab-container, ul.etabs{
   background:#fff;
