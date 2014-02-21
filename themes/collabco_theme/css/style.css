@@ -39,6 +39,10 @@ body {
   line-height: 1.5;
 }
 
+li { 
+  line-height: 1.3em; 
+}
+
 .block .content {
   padding-left: 10px;
   padding-right: 10px;
@@ -840,6 +844,23 @@ ul.menu {
   border: 1px solid #CCC;
 }
 
+/* Account Settings form - radio buttons */
+
+#user-profile-form .form-radios label{
+  display:inline-block;
+}
+
+#user-profile-form .form-radios input[type="radio"]{
+  margin-top:0;
+  margin-right: 2px;
+}
+
+#user-profile-form label[for="edit-node-notify"],
+#user-profile-form label[for="edit-comment-notify"]{
+  font-weight: 700;
+  margin-top:20px;
+}
+
 /*turn off tabs*/
 .page-user.page-user- .tabs{ 
   display:none;
@@ -1084,7 +1105,7 @@ margin-left: 0px;
   background-position: center center;
   -webkit-border-radius: 30em;
   -moz-border-radius: 30em;
-  border-radius: 30em;
+  border-radius: 30em;©
   border: 1px solid #CCC;
 }
 
@@ -1536,6 +1557,8 @@ ul.recent_topicslist li.views-row-first {
 }
 
 
+
+
 /* -- featured item */
 
 
@@ -1595,6 +1618,39 @@ ul.recent_topicslist li.views-row-first {
   text-decoration: none;
 }
 
+
+/* TOPIC DETAIL */
+
+
+/* -- article content */
+
+h2.title { 
+  /*padding-left: 0px !important; */
+}
+
+.contentarticle{
+  margin-bottom: 10px;
+}
+
+.contentarticle img { 
+  margin: 20px 0 20px 0; 
+}
+
+.flag-outer { 
+  padding-top: 40px; 
+}
+
+/* -- hide featured image */
+
+.contentarticle .field-name-field-featured-image,
+.contentarticle .field-name-field-featured-image { display: none; }
+
+
+/* -- feature image box */
+
+.topic_feature_left img{
+  border:1px solid #F2F2F2;
+}
 
 
 
@@ -1906,7 +1962,7 @@ body.page-user .not-logged-in #content #content-head .tabs .nav-tabs {
  **/
 
 #comments {
-  margin-top: 20px !important;
+  margin-top: 40px; /*Allows for 'utility links which sit inline' */
   padding-right: 20px;
 }
 
@@ -1995,7 +2051,29 @@ left: 41px;
 }
 
 li.comment-reply {
-margin: 0 -5px 5px 0;
+  margin: 0 -5px 5px 0;
+}
+
+ul.inline li.active{ /*Overwrites system menus*/
+  color:#0088cc;
+}
+
+ul.inline li.active a{ /*Overwrites system menus*/
+  color:#0088cc;  
+}
+
+li.comment-add {
+  font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
+}
+
+li.comment-add:before{
+  font-family:'FontAwesome';
+  padding-right:2px;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  font-size: 1.5em;
+  content:"\F086"; /*RSS icon*/
 }
 
 /* Comment form */
@@ -2125,6 +2203,33 @@ font-size: 12px;
 15. MOBILE RESPONSIVE MENU
 ------------------------------------------------------------------
 /*  -------------*/
+
+
+.ui-mobile-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.ui-mobile-menu ul {
+  list-style: none;
+}
+.ui-mobile-menu li{
+  float: right;
+}
+.ui-mobile-menu li a{
+  display: block;
+  padding: 10px;
+}
+.ui-mobile-menu li a{
+
+}
+
+.ui-tab-content {
+  background-color: gray;
+}
+
 
 #tab-container, ul.etabs{
   background:#fff;
@@ -2274,19 +2379,6 @@ html.js #tabs1-search input.search-query {
   width: 100%;
 }
 
-
-.topic_host .orangebutton
-  {
-    text-align: center;
-    padding: 0;
-  }
-.topic_host .orangebutton a
-  {
-    margin: auto;
-    display: block;
-    text-decoration:  none;
-    padding: 10px;
-  }
 
 
 
