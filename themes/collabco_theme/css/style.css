@@ -30,23 +30,23 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 ---------------------------------------------
  */
 
+
 body {
   background: #fbfbfb url('/profiles/collabco/themes/collabco_theme/images/subtle_dots.png') repeat; 
   font-family: 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: normal;
   font-style: normal;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 li { 
-  line-height: 1.3em; 
+  line-height: 1.4em; 
 }
 
-/*
- * Remove text-shadow in selection highlight: h5bp.com/i
+/* Text highlight ------------- */
+/* Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
- * Customize the background color to match your design.
  */
 
 ::-moz-selection {
@@ -59,6 +59,17 @@ li {
   text-shadow: none;
 }
 
+/* Global content styles -------------*/
+
+#main-content {
+  padding-top: 20px;
+}
+
+.content-head {
+  text-align:center;
+  margin:0; 
+}
+
 .block .content {
   padding-left: 10px;
   padding-right: 10px;
@@ -66,15 +77,6 @@ li {
 
 .content-body p {
   padding:2%;
-}
-
-.content-head {
-  text-align:center;
-  margin:0px !important;
-}
-
-#main-content {
-  padding-top: 10px;
 }
 
 .sidebar_follow {
@@ -88,6 +90,19 @@ li {
   line-height: 1;
   text-align: left;
   padding-left:10px;
+}
+
+/* System alerts -------------*/
+
+.alert {
+  margin-bottom: 0;
+}
+
+
+
+td,
+tbody {
+  border: none;
 }
 
 /* Page Header -------------*/
@@ -151,6 +166,12 @@ html.js #block-search-form input.form-autocomplete{
 
 /* Search results -----------------------*/
 
+
+.search-form {
+  margin-bottom:20px;
+}
+
+
 ol.search-results {
   margin-left:0;
   border-top:1px solid #e5e5e5; 
@@ -185,32 +206,28 @@ h1 {
 h2 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1.45em;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 h3 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1.2em;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 h4 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1.4em;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 h5 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1em;
   line-height: 1.0;
 }
-.h5 {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.9em;
-  line-height: 1.0;
-}
+
 p {
   font-family: Helvetica, Arial, sans-serif;
   font-weight: normal;
-  line-height: 1.5;
+  line-height: 1.4;
   margin-bottom: 20px;
 }
 .p {
@@ -511,23 +528,6 @@ ul .links {
   line-height:10px !important;
 }
 
-.haveyoursay {
-  position: relative;
-  display: inline;
-  float: right;
-  border: 1px solid #DFDFDF;
-  margin-top: 10px;
-  background-color: #333; /*Gre*/
-  color: #ffffff;
-  font-size: 0.9em;
-  padding: 1% 2% 1% 2%;
-  margin-right: -1%;
-}
-
-.haveyoursay a {
-  color: #ffffff;
-}
-
 .conversation-item {
   margin-bottom:2% !important;
 }
@@ -784,7 +784,6 @@ ul.menu {
 /* Sidebar - secondary nav -------------*/
 
 #sidebar-first {
-  margin-top: 10px;
   background-color: #fff;
   outline:1px solid #EAEAEA;
   padding-top: 20px;
@@ -1146,7 +1145,8 @@ margin-left: 0px;
 
 .notifications {
   background-color: #d2ecf7; /*Light blue*/
-  padding: 30px 20px 10px 20px;
+  padding: 30px 20px 0px 20px;
+  width:auto; /*needed to override width:100% from open_framework.css;*/
 }
 
 .notifications div,
@@ -1192,6 +1192,8 @@ margin-left: 0px;
 
 
 /* 8C. Dashboard --------------*/
+
+.dashboard_head {}
 
 .block-meta-welcome-block {
 background-color: #f2f2f2;
@@ -1396,12 +1398,6 @@ margin-top: 10px;
   margin-bottom: 15px;
   height: 80px;
 }
-.iin-feature .views-field-field-organisation-image {
-  float: left;
-}
-.iin-feature .view-organizations .views-field-title {
-  padding: 30px;
-}
 .marginleft20 {
   margin-left: 20px;
 }
@@ -1438,28 +1434,6 @@ margin-top: 10px;
   padding-bottom: 20px;
   margin-bottom: 20px;
 }
-
-
-/** 11. FEATURED CONTENT BLOCK
----------------------------------------------
- */
-
-.iin-feature {
-  background-color: #fff;
-  border: thin solid #dfdfdf;
-  background-color: #fff;
-}
-.iin-feature h2 {
-  margin: 0px;
-  font-size: 1.3em;
-  padding: 5px 10px;
-  font-weight: normal;
-  margin-bottom: 15px;
-}
-.iin-feature .view-organizations ul {
-  list-style-type: none;
-}
-
 
 /** 12. TOPICS PAGE 
 ---------------------------------------------
@@ -1665,9 +1639,6 @@ h2.title {
   margin: 20px 0 20px 0; 
 }
 
-.flag-outer { 
-  padding-top: 40px; 
-}
 
 /* -- hide featured image */
 
