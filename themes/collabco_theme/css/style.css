@@ -62,7 +62,7 @@ li {
 /* Global content styles -------------*/
 
 #main-content {
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .content-head {
@@ -95,7 +95,7 @@ li {
 /* System alerts -------------*/
 
 .alert {
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 
@@ -1177,6 +1177,10 @@ margin-left: 0px;
   margin-bottom: 10px;
 }
 
+.content-lower ul.quicktabs-tabs li {
+  margin:10px 6px 10px 0;
+}
+
 #block-views-slideshow-block .content {
   padding: 0px;
 }
@@ -1190,16 +1194,22 @@ margin-left: 0px;
   height: 80px;
 }
 
+.view-news-update .item-list ul li {
+  margin-left: 0px;
+}
+
+.pcp-wrapper { /* Progress bar */
+  margin-bottom: 10px;
+}
 
 /* 8C. Dashboard --------------*/
 
 .dashboard_head {}
 
 .block-meta-welcome-block {
-background-color: #f2f2f2;
-border: 1px solid #cccccc;
-padding-bottom: 10px;
-margin-top: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #cccccc;
+  padding-bottom: 10px;
 }
 
 .dashboard, .dashboard h4, .dashboard p{
@@ -1229,6 +1239,20 @@ margin-top: 10px;
 .title_block {
   padding: 6px auto;
   background-color: #f2f2f2;
+}
+
+.node-type-news-update #page-title {
+  display: none;
+}
+
+.submitted-content-posted{ /*Post date*/
+  color:#999; 
+  font-size:0.875em;
+}
+
+.view-news-update-titles .views-row {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 
@@ -1453,7 +1477,6 @@ margin-top: 10px;
   margin-bottom: 20px;
 }
 
-
 .topic_item {
   padding-left: 20px;
 }
@@ -1560,10 +1583,7 @@ ul.recent_topicslist li.views-row-first {
 }
 
 
-
-
 /* -- featured item */
-
 
 .topic_feature_right { 
   padding-left:20px;
@@ -1652,7 +1672,22 @@ h2.title {
   border:1px solid #F2F2F2;
 }
 
+/* -- following topics */
 
+.topic-comment-blob { border-bottom: 1px solid #6A6767; }
+.topic_reply { float: right; }
+
+
+/* -- topics list */
+
+.view-display-id-list_of_topics th { vertical-align: top; }
+.view-display-id-list_of_topics td {
+  background: none;
+  border: none;
+}
+
+.view-display-id-list_of_topics table.views-table tr { border-bottom: 1px solid #DFDFDF; }
+.view-display-id-list_of_topics table.views-table { font-size: 11px; }
 
 /**
 13. PARTNERS
@@ -1662,14 +1697,39 @@ h2.title {
   margin-bottom: 10px;
 }
 
+/** 14. FORMS
+---------------------------------------------
+ */
+
+#user-profile-form {
+  padding: 0 10px;
+}
+
+#user-pass {
+  padding: 0 10px;
+}
+
+.password-parent {
+  width: 460px;
+}
+
+.password-strength {
+  width: 200px;
+}
+
+input[type="file"] {
+  line-height: normal !important;
+}
+
 /**
 14. RECENT ACTIVITY BLOCK
 ---------------------------------------------
  */
+
 .view-recent-activity .activity-details {
   margin-left: 5px;
   margin-bottom:5px;
-  color:#666;
+  color:#888;
 }
 
 .view-recent-activity .activity-details a:first-child{ /*User name label*/
@@ -1758,6 +1818,7 @@ h2.title {
 /** 13. IE8 Fixes
 ---------------------------------------------
  */
+
 .ie8 .sidebar #block-search-form.contextual-links-region {
   position: inherit;
 }
@@ -1861,10 +1922,6 @@ form .field-name-field-file-ref {
   overflow: hidden;
 }
 
-.node-type-news-update #page-title {
-  display: none;
-}
-
 .breadcrum {
   margin: 10px 0 0 0;
 }
@@ -1873,11 +1930,6 @@ form .field-name-field-file-ref {
   font-size:2.5em;
   line-height: 1.2em;
   max-width: 700px;
-}
-
-.view-news-update-titles .views-row {
-  margin-bottom: 0px;
-  padding-bottom: 0px;
 }
 
 #footer-content img {
@@ -2167,14 +2219,6 @@ font-size: 12px;
   }
   .topic_feature_left img {
     display:block;
-  }
-  .topic_feature_title {
-  }
-
-  .content-upper #block-views-exp-meta-search-topic-search .content{
-    /*float:none;
-    width:100%;
-    display:block;*/
   }
 
   .title_block {
