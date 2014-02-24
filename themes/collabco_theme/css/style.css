@@ -156,7 +156,7 @@ tbody {
   color: ##6a6767;
 }
 
-html.js #block-search-form input.form-autocomplete{
+html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework */
   background-image:none;
 }
 
