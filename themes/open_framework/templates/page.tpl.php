@@ -20,7 +20,7 @@
     <div class="row">
       <div class="<?php if ($page['search_box']): print 'span8'; else: print 'span12'; endif; ?>">
         <?php if ($logo): ?>
-        <div id="logo" class="site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> <img src="<?php print $logo; ?>" alt="<?php print $site_name; ?>" role="presentation" /> </a></div>
+        <div id="logo" class="site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> &nbsp; </a></div>
         <?php endif; ?>
         <!-- /#logo -->
         <?php if ($site_name || $site_slogan): ?>

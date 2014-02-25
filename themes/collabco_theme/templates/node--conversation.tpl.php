@@ -99,7 +99,7 @@
     <?php
       $may_edit = user_access('edit any conversation content') || (user_access('edit own conversation content') && $uid == $user->uid);
       if ($may_edit) {
-        print "<div class='edit_your_topic'> <img src='/sites/all/themes/custom_theme/images/edit_button.png'> <a href='/node/$nid/edit'>Edit this topic</a></div><br><br>";
+        print "<div class='edit_your_topic'>  <a href='/node/$nid/edit'><i class='icon-edit'></i> Edit this topic</a></div><br><br>";
       }
     ?>
     <div class="contentarticle"<?php print $content_attributes; ?>>

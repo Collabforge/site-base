@@ -20,7 +20,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			<a href="/user/<?php print $account->uid; ?>/edit/profile"><img src="/sites/all/themes/custom_theme/images/edit_button.png"> Edit your profile</a>
+			<a href="/user/<?php print $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
 			<?php } ?>
 		</div>
 	</div>

@@ -21,7 +21,7 @@
     <div class="container" id="header_container">
       <div class="row-fluid" id="header_top" >
         <?php if ($logo): ?>
-        <div id="logo" class="span4 site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> <img src="<?php print $logo; ?>" alt="<?php print $site_name; ?>" role="presentation" /> </a>
+        <div id="logo" class="span4 site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> &nbsp; </a>
         </div>
         <?php endif; ?>
         <?php if ($page['header_top_middle']): ?>

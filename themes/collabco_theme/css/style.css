@@ -257,6 +257,14 @@ p {
 ---------------------------------------------
  **/
 
+#logo {}
+
+#logo a{
+  background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
+  display:block;
+  height:54px;
+}
+
 
 /**
 4. THREADED COMMENTS
