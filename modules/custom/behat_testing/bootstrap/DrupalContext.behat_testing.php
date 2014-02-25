@@ -49,7 +49,7 @@ class DrupalContext extends MinkContext {
   public function __construct(array $parameters) {
 
     $this->parameters = $parameters;
-    $this->base_url = "http://localhost:81";
+    $this->base_url = "http://meta.local";
     // Bootstrap drupal.
     $_SERVER['PHP_SELF'] = basename(__FILE__);
     $_SERVER['REMOTE_ADDR'] = $parameters['site'];
