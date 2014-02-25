@@ -327,8 +327,10 @@ function behat_testing_copy_table($from, $to) {
   if (behat_testing_table_exists($to)) {
     behat_testing_drop_table($to);
   }
-  db_query("CREATE TABLE $to LIKE $from");
-  return db_query("INSERT INTO $to SELECT * FROM $from");
+  //we need to truncate the table name to 64 chars before creating it
+  $tbname = substr($to,0,64);
+  db_query("CREATE TABLE $tbname LIKE $from");
+  return db_query("INSERT INTO $tbname SELECT * FROM $from");
 }
 
 /**
