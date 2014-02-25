@@ -257,12 +257,23 @@ p {
 ---------------------------------------------
  **/
 
-#logo {}
+/* Desktop logo */
 
 #logo a{
   background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
   display:block;
   height:54px;
+  width:200px;
+}
+
+/* Mobile logo */
+
+#tab-container .tab_logo.tab a{
+  background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
+  display:block;
+  background-size:111px 30px;
+  height:30px;
+  width:111px;
 }
 
 
@@ -2293,9 +2304,10 @@ font-size: 12px;
   padding:10px;
 }
 
-#tab-container .tab_logo.tab img{
-  max-height: 30px;
-  width: auto;
+#tab-container .tab_logo.tab a:hover,
+#tab-container .tab_logo.tab a:active{
+  text-decoration: none;
+  opacity: 0.75;
 }
 
 ul.etabs, 
