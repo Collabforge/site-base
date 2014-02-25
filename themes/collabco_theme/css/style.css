@@ -259,11 +259,21 @@ p {
 
 /* Desktop logo */
 
-#logo a{
+#logo a,               /*generic pages*/
+.ui-footer .ui-logo a{ /*login page*/
   background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
   display:block;
   height:54px;
   width:200px;
+}
+
+.ui-footer .ui-logo a{
+  margin:0 auto;
+}
+
+#logo a:hover, #logo a:active,               
+.ui-footer .ui-logo a:hover, .ui-footer .ui-logo a:active { 
+  text-decoration: none;
 }
 
 /* Mobile logo */
