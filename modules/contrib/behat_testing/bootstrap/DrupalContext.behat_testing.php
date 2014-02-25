@@ -98,7 +98,7 @@ class DrupalContext extends MinkContext {
       // of the database for use with behat.
       // Since it hooks into Simpletest it must use
       // simpletests naming convention.
-      $ua = drupal_generate_test_ua('_st99');
+      $ua = drupal_generate_test_ua('simpletest101');
       $session->setRequestHeader('User-Agent', $ua);
     }
 
@@ -140,7 +140,7 @@ class DrupalContext extends MinkContext {
 
         // Reset the db to be the same as the existing site.
         print 'Resetting DB...';
-        behat_testing_copy_database('_st99');
+        behat_testing_copy_database('simpletest101');
         behat_testing_setup_paths();
         print '... DB reset complete';
       }
