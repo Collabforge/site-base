@@ -1373,6 +1373,18 @@ ul .links {
   border: 1px solid #CCC;
 }
 
+
+
+
+/** X. ADMIN LOGIN - HOME PAGE
+---------------------------------------------
+ */
+ 
+.front.admin-menu #block-system-main {
+  display: none;
+}
+
+
 /** 10. MEMBER ORGANISATION PROFILES
 ---------------------------------------------
  */
