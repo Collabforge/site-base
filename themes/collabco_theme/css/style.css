@@ -856,7 +856,7 @@ X. LOGIN PAGES
 body.node-type-conversation h1#page-title { display: none; }
 
 .links {
-  padding:0px  !important;
+  padding:0px;
   float: right;
   font-size: 0.8em;
   line-height:0.8em;
@@ -867,21 +867,21 @@ ul .links {
 }
 
 .links li {
-  line-height:10px !important;
+  line-height:10px;
 }
 
 .conversation-item {
-  margin-bottom:2% !important;
+  margin-bottom:2%;
 }
 
 .conversation-excerpt {
-  margin-top: 2% !important;
+  margin-top: 2%;
   line-height: 1.2em;
 }
 
 .conversationcomment {
   margin-top:10px;
-  margin-left: 0px !important;
+  margin-left: 0px;
 }
 
 .excerpt-author {
@@ -897,11 +897,11 @@ ul .links {
   font-size: 0.9em;
   line-height: 1.2em;
   margin-top: 2%;
-  float:left !important;
+  float:left;
 }
 
 .comment-img {
-  margin-left: 1% !important;
+  margin-left: 1%;
 }
 
 .more-link {
@@ -948,16 +948,6 @@ ul .links {
   padding-bottom: 5px;
 }
 
-/* GET RID OF THIS IIN SHIT */
-.iin-join-conversation-block h2 {
-  text-align: center;
-  width: 85%;
-  margin: auto;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  padding-bottom: 5px;
-}
-
 #first-time {
   color: #fff;
   height:0px;
@@ -969,7 +959,6 @@ ul .links {
   text-decoration: none;
 }
 
-
 .conversationpreview {
   margin-left: -15px;
   padding: 10px 20px;
@@ -979,18 +968,7 @@ ul .links {
 .node-type-conversation .submitted .submitted-content-posted {
   font-style: italic;
 }
-/* GET RID OF THIS IIN SHIT */
-.iin-sc-conversation {
-  background-color: #fff;
-}
-.iin-sc-conversation p {
-  padding: 1em;
-}
-.iin-sc-conversation h2 {
-  margin: 0px;
-  text-align: center;
-  font-size: 20px;
-}
+
 .view-join-the-coversation .views-field {
   background-color: #fff;
   padding: 0 20px 20px;
@@ -1191,12 +1169,6 @@ ul .links {
 #block-block-8 .content {
   padding: 0px;
   margin-top: -8px;
-}
-
-/* GET RID OF THIS IIN SHIT */
-.iin-slideshow .views-field-nothing {
-  padding: 0 10px;
-  height: 80px;
 }
 
 .view-news-update .item-list ul li {
@@ -1409,7 +1381,7 @@ ul .links {
   margin-left: 20px;
 }
 .fieldset-title {
-  font-size: 0.7em !important;
+  font-size: 0.7em;
 }
 .field-collection-view {
   margin-bottom: 20px;
@@ -1632,7 +1604,7 @@ ul.recent_topicslist li.views-row-first {
 /* -- article content */
 
 h2.title { 
-  /*padding-left: 0px !important; */
+  /*padding-left: 0px; */
 }
 
 .contentarticle{
@@ -1757,7 +1729,7 @@ input[type="file"] {
   margin-top: 20px;
 }
 .commentbubble {
-  background: url(../images/bubbletop.png) no-repeat top !important;
+  background: url(../images/bubbletop.png) no-repeat top;
 }
 .bubble_border {
   border-radius: 10px;
@@ -1803,7 +1775,7 @@ form .field-name-field-file-ref div.entityconnect-add input {
   background-image: -moz-linear-gradient(top,#fff 0%,#e6e6e6 100%);
   background-image: -o-linear-gradient(top,#fff 0%,#e6e6e6 100%);
   background-image: webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#e6e6e6));
-  background-image: linear-gradient(to bottom,#fff 0%,#e6e6e6 100%) !important;
+  background-image: linear-gradient(to bottom,#fff 0%,#e6e6e6 100%);
   margin: 0;
   padding: 0;
   text-indent: 0;
@@ -1894,7 +1866,7 @@ form .field-name-field-file-ref {
 }
 
 #footer-content img {
-  height: 60px !important;
+  height: 60px;
 }
 
 .edit_your_topic {
@@ -2146,7 +2118,7 @@ form .field-name-field-file-ref {
 @media (max-width: 767px) {
   .index_item .featured-image,
   .index_item .span2{
-    display:none !important;
+    display:none;
   }
 
   .topic-feature .topic_feature_right{
