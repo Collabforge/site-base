@@ -1373,28 +1373,6 @@ ul .links {
   border: 1px solid #CCC;
 }
 
-
-/* GET RID OF THIS IIN SHIT */
-
-
-#block-system-main {
-  padding-top: 20px;
-}
-/*grids*/
-.custom-grid li {
-  margin: 0 !important;
-  height: 250px !important;
-  overflow: none;
-}
-.page-node-207 #block-system-main,
-.front #block-system-main {
-  display: none;
-}
-#block-views-all-users-block {
-  padding-top: 15px;
-}
-
-
 /** 10. MEMBER ORGANISATION PROFILES
 ---------------------------------------------
  */
@@ -1526,11 +1504,6 @@ ul .links {
 ul.recent_topicslist li.views-row-first {
   height:0px;
   overflow: hidden;
-}
-
-#block-system-main {
-  padding-top: 0px !important;
-  margin-bottom: 0px !important;
 }
 
 /* -- list items */
@@ -1682,11 +1655,12 @@ h2.title {
 }
 
 .contentarticle{
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .contentarticle img { 
-  margin: 20px 0 20px 0; 
+  margin: 20px 0; 
 }
 
 
