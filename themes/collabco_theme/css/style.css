@@ -652,36 +652,7 @@ ul.menu {
   margin: 1px 0 0;
 }
 
-/* GET RID OF THIS IIN SHIT */
-
-.iin-nav ul.nav {
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-}
-.iin-nav ul.nav li {
-  background-repeat: no-repeat;
-  background-position: 0 .4em;
-  padding-left: 2.6em;
-  font-size: 1.2em;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top-style: dotted;
-  border-width: 1px;
-}
-.iin-nav ul.about {
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-}
-.iin-nav ul.about li {
-  background-repeat: no-repeat;
-  background-position: 0 1em;
-  padding-left: 2.6em;
-  border-style: none;
-}
-
-/* User details in-nav block --------*/
+/* User details in sidebar --------*/
 
 .dash_nav {
   font-size: 12px;
@@ -740,13 +711,11 @@ ul.menu {
 margin-left: 0px;
 }
 
-/* GET RID OF THIS IIN SHIT */
-.dash_profile #iin-profile-content {
+.dash_profile .content div {
   text-align: center;
   margin: 0px;
   font-size: 1.1em;
   font-weight: bold;
-  padding-bottom: 10px;
 }
 
 .dash_profile .user-picture img {
@@ -1379,7 +1348,7 @@ ul .links {
 /** X. ADMIN LOGIN - HOME PAGE
 ---------------------------------------------
  */
- 
+
 .front.admin-menu #block-system-main {
   display: none;
 }
@@ -1881,6 +1850,7 @@ form .field-name-field-file-ref {
 /** QUICK TABS
 ---------------------------------------------
  */
+
  ul.quicktabs-tabs {
    margin-left: 12px;
  }
