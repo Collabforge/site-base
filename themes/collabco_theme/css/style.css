@@ -4,13 +4,23 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 
 
 1. BODY & BACKGROUND
-2. FONTS & HEADERS
-3. LOGO, ICONS
+2. HEADER
+3. SEARCH
+4. FONTS & HEADERS
+5. LOGO, ICONS
+6. NAVIGATION & MENUS
+
+X. LOGIN PAGES
+
+14. RESPONSIVE - CONTENT-SPECIFIC
+15. MOBILE RESPONSIVE MENU
+
+
+
+
 4. THREADED COMMENTS
 4a. Fixes for THREADED COMMENTS
-5. LOGIN PAGE
 6. JOIN THE CONVERSATION BLOCK & conversation PAGES
-7. NAVIGATION
 8. WELCOME PAGE
 9. PROFILES
 10. MEMBER ORGANISATION PROFILES
@@ -18,7 +28,6 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 12. TOPICS PAGE
 13. PARTNERS
 14. RECENT ACTIVITY BLOCK
-15. SEARCH BAR HACK
 
 ---------------------------------------------
 
@@ -75,18 +84,28 @@ li {
   padding-right: 10px;
 }
 
+.main .block {
+  margin-bottom: 10px;
+}
+
 .content-body p {
   padding:2%;
 }
 
-.sidebar_follow {
-  padding: 20px 0px;
-  display: inline;
-  text-align: center;
-  margin-top: 25px;
+.caret {
+  border-bottom-color: #999; 
+  border-top-color: #999;
 }
 
-#page-title { /* Generic content page headings */
+.form-actions {
+  background-color: transparent;
+  border-top: 0;
+}
+
+
+/* Generic content page headings -------------*/
+
+#page-title { 
   line-height: 1;
   text-align: left;
   padding-left:10px;
@@ -98,46 +117,36 @@ li {
   margin-bottom: 10px;
 }
 
-
-
-td,
-tbody {
-  border: none;
-}
-
-/* Page Header -------------*/
-
+/**
+2. HEADER
+---------------------------------------------
+ */
 
 #header {
   background: #FFF;
   border-bottom: 1px solid #F2F2F2;
   margin-top: 0px;
-
+  margin-bottom: 0px;
 }
 
 #header_top {
-  margin: 20px 0 0 0;
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid #F2F2F2;
   padding-bottom: 20px;
+  margin: 20px 0 0 0;
 }
 
 #header_top_middle {
   padding-top:20px;
-  padding-left: 0px;
-}
-
-
-#header_bottom {
-  margin-top: 0px;
-  padding: 1px 0 0;
-  height: 100%;
 }
 
 #header_bottom_right{
-  padding-top: 6px;
+  padding-top: 2px;
 }
 
-/* Search box -----------------------*/
+/**
+3. SEARCH
+---------------------------------------------
+ */
 
 #search-box {
   font-size: 0.85em;
@@ -152,11 +161,11 @@ tbody {
 #block-search-form .search-query {
   font-size: 0.9em;
   height: 15px;
-  width: 80px !important;
+  width: 80px;
   color: ##6a6767;
 }
 
-html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework */
+html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework icon double-up */
   background-image:none;
 }
 
@@ -164,13 +173,11 @@ html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework
   top: 5px;
 }
 
-/* Search results -----------------------*/
-
+/* Search results page -----------------------*/
 
 .search-form {
   margin-bottom:20px;
 }
-
 
 ol.search-results {
   margin-left:0;
@@ -194,7 +201,7 @@ ol.search-results {
 
 
 /**
-2. FONTS & HEADERS
+4. FONTS & HEADERS
 ---------------------------------------------
  */
 
@@ -224,6 +231,12 @@ h5 {
   line-height: 1.0;
 }
 
+h6 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.875em;
+  line-height: 1.0;
+}
+
 p {
   font-family: Helvetica, Arial, sans-serif;
   font-weight: normal;
@@ -243,6 +256,7 @@ p {
 }
 
 /* Icon overrides ---------------------------*/
+
 [class^="icon-"], [class*=" icon-"]{ /*NB this can be removed if the fontawesome css is inherited after bootstrap*/
   width:auto;
   height: auto;
@@ -253,7 +267,7 @@ p {
 }
 
 /**
-3.  LOGO, ICONS
+5.  LOGO, ICONS
 ---------------------------------------------
  **/
 
@@ -281,162 +295,491 @@ p {
 #tab-container .tab_logo.tab a{
   background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
   display:block;
-  background-size:111px 30px;
+  background-size:111px 30px; /* scale down bg image size */
   height:30px;
   width:111px;
 }
 
 
 /**
-4. THREADED COMMENTS
+6. NAVIGATION & MENUS
 ---------------------------------------------
- */
+ **/
 
-.comment-bubble {
-  position: relative;
-  width: 220px;
-  min-height: 50px;
-  padding: 10px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
+ /* Navigation tabs global -------------*/
+
+.nav-tabs{
+  padding-bottom:5px; 
+  margin-top:10px;
 }
-.comment-bubble:before {
-  content: "";
-  position: absolute;
-  top: -30px;
-  left: 16px;
-  border-style: solid;
-  border-width: 0 7px 29px;
-  display: block;
-  width: 0;
-  z-index: 0;
+
+ /* Base menu overrides -------------*/
+
+ul.menu  a:hover {
+  background-color: #fff;
 }
-.comment-bubble:after {
-  content: "";
-  position: absolute;
-  top: -28px;
-  left: 16px;
-  border-style: solid;
-  border-width: 0 7px 29px;
-  display: block;
-  width: 0;
-  z-index: 1;
+
+ul.menu li {
+  margin: 0; 
 }
-.conversationcomment {
-  background-color: #ffffff;
-  margin-left: -5px;
-  padding: 10px 10px 10px 10px;
-  width: 85%;
-  margin-top: 10px;
-  margin-bottom:5px;
+
+.nav>li>a {
+  display: inline;
 }
-.commentquote {
-  margin-left: -5px;
+
+ul.menu {
+  display: inline-block;
 }
-.commentname {
-  padding-right: 5px;
-  margin-right: -5px;
+
+
+/* All menus -----------------------*/
+
+.menu_secondary li, 
+.menu_primary li {
+  display: inline;
 }
-.comment span.new {
+
+/* Top/Secondary menu --------------*/
+
+.menu_secondary {
+  text-align: right;
+}
+
+.menu_secondary a {
+  color: #999999;
+  margin: 0 0 0 5px;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  background: none;
+}
+
+.menu_secondary a:hover,
+.menu_secondary a:focus {
+  text-decoration: none;
+  background-color: #fff; /* Overwrites bootstrap.css */
+  color:#444;
+}
+
+.menu_secondary li a.active,
+.menu_secondary li a.hover {
+  color: #999999;
+  text-decoration: none;
+  background-color:#fff;
+  padding-bottom: 2px;
+  border-bottom: 3px solid #F2F2F2;
+}
+
+
+/* Bottom/Primary menu -------------*/
+
+.menu_primary {
+  font-size: 16px;
+}
+
+.menu_primary .content, 
+#menu_primary .content{
+  line-height: 1em;
+}
+
+.menu_primary ul, 
+#menu_primary ul{ 
+  margin: 0; 
+}
+
+.menu_primary ul.menu li a { 
+  display:inline;
+  margin: 0 20px 0 0;
+  float:left;
+  padding: 14px 0 10px 0; 
+  border-bottom: 3px solid #FFF;
+}
+
+.menu_primary ul.menu li a.active {
+  color: #999;
+  text-decoration: none;
+  background-color:#fff;
+  border-bottom: 3px solid #c1c1c1;
+}
+
+.menu_primary a{
+  color: #999;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 700;
+}
+
+.menu_primary a:hover {
+  text-decoration: none;
+  color:#444;
+  background-color:none;
+}
+
+/* User drop-down menu --------*/
+
+#header_bottom_right #user_details .navigation-profile-picture {
+  display: inline-block;
+  zoom:1; /*IE7 fix*/
+  *display:inline; /*IE7 fix*/
+  width: 30px;
+  padding-top:6px;
+}
+
+#header_bottom_right #user_details .navigation-profile-picture img {
+  width: 30px;
+  height:30px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 30em;
+  -moz-border-radius: 30em;
+  border-radius: 30em;
+  border: 1px solid #CCC;
+}
+
+#header_bottom_right #user_details .btn.dropdown-toggle{
+  padding:4px 6px;
+}
+
+#header_bottom_right #user_details .btn .caret{
+  margin-top:4px;
+}
+
+#header_bottom_right .account-menu {
+  float: right;
+  display: inline-block;
+  zoom:1; /*IE7 fix*/
+  *display:inline; /*IE7 fix*/
+}
+
+
+/* Sidebar - secondary nav -------------*/
+
+#sidebar-first {
+  background-color: #fff;
+  outline:1px solid #EAEAEA;
+  padding-top: 20px;
+}
+
+#sidebar-first .user-picture {
+  margin:0 0px 10px 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* REORGANISE THESE */
+
+
+
+
+
+
+
+
+/* Account Settings form - radio buttons */
+
+#user-profile-form .form-radios label{
+  display:inline-block;
+}
+
+#user-profile-form .form-radios input[type="radio"]{
+  margin-top:0;
+  margin-right: 2px;
+}
+
+#user-profile-form label[for="edit-node-notify"],
+#user-profile-form label[for="edit-comment-notify"]{
+  font-weight: 700;
+  margin-top:20px;
+}
+
+/*turn off tabs*/
+.page-user.page-user- .tabs{ 
+  display:none;
+}
+.node-type-conversation .nav-tabs {
+  display:none;
+}
+.logged-in .page-user .nav-tabs {
+  display:none;
+}
+.page-user-edit .form-item-field-provisional-organisation {
   display: none;
 }
-#comments .user-picture {
-  float: left;
-  width: 55px;
-  height: 55px;
-  padding: 10px 0 0 10px;
+
+.profile-page-title {
+  font-size: 1.9em;
+  line-height:1.5em;
+  text-transform: capitalize;
 }
-#comments .comment {
-  background: #F3F3F3;
-  margin: 0 0px 15px 0px;
-  padding: 12px;
+
+.profile-page-title p{
+  margin-bottom: 0;
 }
-#comments .comment .field-name-comment-body {
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #767676;
+
+/* Members / The Community page --------*/
+
+.view-all-users .field-content img { 
+  width: 90px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 90em;
+  -moz-border-radius: 90em;
+  border-radius: 90em;
+  border: 1px solid #CCC;
 }
-#comments h3 {
-  font-size: 1.2em;
-  line-height: 1.5;
-  display: block;
-  padding-bottom: 6px;
-  padding-left: 74px;
-  background: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 4px;
+
+/* Member Organisations page --------*/
+
+.view-members-of-organisation .view-header{
+  margin:10px 0;
 }
-#comments .submitted {
-  font-size: 0.875em;
-  line-height: 1.5;
-  padding-left: 74px;
-  background: white;
-  margin-bottom: 0px;
-  padding-right: 28px;
+.view-members-of-organisation .user-picture img {
+  /*width: 90px;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 999em;
+  -moz-border-radius: 999em;
+  border-radius: 999em;
+  border: 1px solid #CCC;
 }
-#comments .content {
-  background: white;
+
+.view-members-of-organisation .user-description{
+  padding:5px 0 0 10px;
+}
+
+.view-members-of-organisation .user-description h6{
+  font-size:18px;
+  margin-bottom:4px;
+}
+
+.view-members-of-organisation table,
+.view-members-of-organisation td{
+  border:none;
+}
+
+.view-members-of-organisation h6{
+  margin:0;
+}
+
+.view-members-of-organisation .even-columns{
+  width:50%;
+}
+
+
+/* Button & drop-down --------*/
+
+.btn {
+  background-image: none;
+  background-color: white;
+  line-height: 15px;
+  border:none;
+  box-shadow: none;
+  border-image: none;
+  color: #999999;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  background-color: #fff;
+  *background-color: #fff;
+}
+
+.btn-group > .btn + .dropdown-toggle {
+  box-shadow: none;
+}
+
+.btn-group > .btn,
+.btn-group > .dropdown-menu,
+.btn-group > .popover {
+  font-size: 13px;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
+.dropdown-toggle:active,
+.dropdown-toggle.active,
+.dropdown-toggle.disabled,
+.dropdown-toggle[disabled] {
+  color: #333333;
+  background-color: #e6e6e6;
+  *background-color: #d9d9d9;
+  box-shadow: none;
+  border-image: none;
+}
+
+.btn-group > .btn:first-child {
+  margin-left: 2px;
+  -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.btn-group > .dropdown-toggle {
+  -webkit-border-top-right-radius: 0px;
+  -moz-border-radius-topright: 0px;
+  border-top-right-radius: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.dropdown-menu {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  margin: 1px 0 0;
+}
+
+/* GET RID OF THIS IIN SHIT */
+
+.iin-nav ul.nav {
+  list-style-type: none;
+  padding: 0px;
   margin: 0px;
-  padding: 12px;
 }
-#comments .field-name-comment-body {
-  margin-bottom: 0px;
+.iin-nav ul.nav li {
+  background-repeat: no-repeat;
+  background-position: 0 .4em;
+  padding-left: 2.6em;
+  font-size: 1.2em;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top-style: dotted;
+  border-width: 1px;
 }
-#comments .links {
-  margin: 10px 10px 0px 0px;
-  display: block;
+.iin-nav ul.about {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+.iin-nav ul.about li {
+  background-repeat: no-repeat;
+  background-position: 0 1em;
+  padding-left: 2.6em;
+  border-style: none;
 }
 
+/* User details in-nav block --------*/
 
-/**
-4a. Fixes for THREADED COMMENTS
- */
+.dash_nav {
+  font-size: 12px;
+  padding-top: 4px;
+  background-color: #fff;
 
-#comments .comment a.permalink {
-  display: none;
 }
-#comments .comment .content {
-  clear: both;
+
+.dash_nav .content, .dash_nav .content {
+  padding: 0px;
+  margin: 0px;
 }
-#comments .comment .field-name-comment-body {
-  padding-left: 0px;
-}
-#comments .comment .submitted {
-  height: 55px;
-}
-#comments .comment .submitted span a {
-  display: block;
-}
-.conversationcomment .commentquote {
-  float: none;
+
+.dash_nav ul {
+  margin: 0px;
+  list-style-type: none;
   width: 100%;
-  clear: both;
-  padding-top: 5px;
 }
 
+.dash_nav li.leaf { 
+  display: block;
+  list-style-image: none;
+  list-style-type: none;
+  width: 100%;
+  padding: 0px;
+}
+
+.dash_nav li a { 
+  list-style-image: none;
+  padding-left: 15px;
+}
+
+.dash_nav li a:hover { 
+  text-decoration: underline;
+}
+
+.dash_nav li a.active {
+  color: #fff;
+  text-decoration: none;
+}
+
+.dash_nav .leaf.active-trail {
+  background-color:#0088cc;
+}
+
+.dash_nav .leaf.active-trail a:hover {
+  background-color:inherit;
+}
+
+.dash_nav a{
+  font-size: 1.2em;
+  line-height: 2.1em;
+}
+
+.sidebar .dash_nav .nav {
+margin-left: 0px;
+}
+
+/* GET RID OF THIS IIN SHIT */
+.dash_profile #iin-profile-content {
+  text-align: center;
+  margin: 0px;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.dash_profile .user-picture img {
+  width: 90px;
+  height: 90px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 30em;
+  -moz-border-radius: 30em;
+  border-radius: 30em;©
+  border: 1px solid #CCC;
+}
 
 /**
-5. LOGIN PAGE
+X. LOGIN PAGES
 ---------------------------------------------
  **/
 
 .not-logged-in .container{
-  width:400px;
+  width: 400px;
   text-align: center;
 }
 
 .not-logged-in .form-item, .not-logged-in .form-actions {
-  margin-top:2em;
+  margin-top: 2em;
   margin-bottom: 2em;
 }
 
 .not-logged-in .container input[type="text"],
 .not-logged-in .container input[type="password"] {
-  width:96%;
-  padding:10px 2%;
+  width: 96%;
+  padding: 10px 2%;
 }
 
 .not-logged-in .container label {
@@ -532,6 +875,7 @@ p {
   padding:10px 15px;
   background:#ffefdb;
 }
+
 
 
 /**
@@ -635,6 +979,7 @@ ul .links {
   padding-bottom: 5px;
 }
 
+/* GET RID OF THIS IIN SHIT */
 .iin-join-conversation-block h2 {
   text-align: center;
   width: 85%;
@@ -665,6 +1010,7 @@ ul .links {
 .node-type-conversation .submitted .submitted-content-posted {
   font-style: italic;
 }
+/* GET RID OF THIS IIN SHIT */
 .iin-sc-conversation {
   background-color: #fff;
 }
@@ -683,184 +1029,70 @@ ul .links {
 }
 
 /**
-7. NAVIGATION
+6. THREADED COMMENTS
 ---------------------------------------------
- **/
+ */
 
- /* Navigation tabs global -------------*/
-
-.nav-tabs{
-  padding-bottom:5px; 
-  margin-top:10px;
+.comment-bubble {
+  position: relative;
+  width: 220px;
+  min-height: 50px;
+  padding: 10px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+.comment-bubble:before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 16px;
+  border-style: solid;
+  border-width: 0 7px 29px;
+  display: block;
+  width: 0;
+  z-index: 0;
+}
+.comment-bubble:after {
+  content: "";
+  position: absolute;
+  top: -28px;
+  left: 16px;
+  border-style: solid;
+  border-width: 0 7px 29px;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+.conversationcomment {
+  background-color: #ffffff;
+  margin-left: -5px;
+  padding: 10px 10px 10px 10px;
+  width: 85%;
+  margin-top: 10px;
+  margin-bottom:5px;
+}
+.commentquote {
+  margin-left: -5px;
+}
+.commentname {
+  padding-right: 5px;
+  margin-right: -5px;
+}
+.comment span.new {
+  display: none;
 }
 
+/* User picture --------*/
 
- /* Base menu overrides -------------*/
-
-ul.menu  a:hover {
-  background-color: #fff;
+#comments .user-picture {
+  float: left;
+  width: 55px;
+  height: 55px;
+  padding: 10px 0 0 10px;
 }
 
-ul.menu li {
-  margin:  0 0 0 0; 
-}
-
-.nav>li>a {
-  display: inline;
-}
-
-ul.menu_primary
-ul.quicktabs-tabs li { 
-  padding: 8px 10px 6px 10px; 
-}
-
-ul.menu {
-  display: inline-block;
-}
-
-.header {
-  margin-bottom: 0px;
-}
-
-.header .site-logo img{
-  max-height: 54px;
-}
-
-/* All menus -----------------------*/
-
-.menu_secondary li, .menu_primary li {
-  display: inline;
-  text-decoration: none;
-}
-
-
-/* Top/Secondary menu --------------*/
-
-.menu_secondary {
-  text-align: right;
-}
-
-.menu_secondary a {
-  color: #999999;
-  margin: 0 0px 0 5px;
-  font-size: 1.1em;
-  text-transform: uppercase;
-  background: none;
-}
-
-.menu_secondary a:hover {
-  text-decoration: none;
-  background-color: #fff !important;
-  color:#444;
-}
-
-.menu_secondary li a.active {
-  color: #999999;
-  text-decoration: none;
-  background-color:#fff;
-  padding-bottom: 2px;
-  border-bottom: 3px solid #F2F2F2;
-}
-
-
-/* Bottom/Primary menu -------------*/
-
-.menu_primary {
-  font-size: 16px;
-}
-
-.menu_primary .content, 
-#menu_primary .content{
-  line-height: 1em;
-}
-
-.menu_primary ul, 
-#menu_primary ul  { 
-  margin: 0px !important; 
-}
-
-.menu_primary ul.menu li a { 
-  display:inline-block;
-  margin: 0 20px 0 0;
-  float:left;
-  padding: 14px 0 10px 0; 
-  border-bottom: 3px solid #FFF;
-}
-
-.menu_primary ul.menu li a.active {
-  color: #999;
-  text-decoration: none;
-  background-color:#fff;
-  border-bottom: 3px solid #c1c1c1;
-}
-
-.menu_primary a{
-  color: #999;
-  margin: 0;
-  text-transform: uppercase;
-  font-size: 1em;
-  line-height: 1em;
-  font-weight: 700;
-}
-
-.menu_primary a:hover {
-  text-decoration: none;
-  color:#444;
-  background-color:none;
-}
-
-
-/* Sidebar - secondary nav -------------*/
-
-#sidebar-first {
-  background-color: #fff;
-  outline:1px solid #EAEAEA;
-  padding-top: 20px;
-}
-
-#sidebar-first .user-picture {
-  margin:0 0px 10px 5px;
-}
-
-/* User details in-nav block --------*/
-
-#navigation-profile-details {
-  padding-top: 4px;
-}
-
-#header_bottom_right .block-iin-profile-block .navigation-profile-picture img {
-  width: 30px;
-  height:30px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 30em !important;
-  -moz-border-radius: 30em !important;
-  border-radius: 30em !important;
-  border: 1px solid #CCC;
-}
-
-.navigation-profile-picture {
-  display: inline-block !important;
-  max-width: 32px;
-}
-
-.caret {
-  border-bottom-color: #999; 
-  border-top-color: #999;
-}
-
-.account-menu {
-  float: right;
-  display: inline-block;
-  min-width: 126px;
-}
-
-
-
-/* User details small --------*/
-
-.comment .user-picture img {
+#comments .user-picture img {
   width: 45px;
   height: 45px;
   background-size: cover;
@@ -872,298 +1104,75 @@ ul.menu {
   border: 1px solid #CCC;
 }
 
-.user-picture-small img {
-  width: 36px;
-  height: 36px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 15em;
-  -moz-border-radius: 15em;
-  border-radius: 15em;
-  border: 1px solid #CCC;
+#comments .comment {
+  background: #F3F3F3;
+  margin: 0 0px 15px 0px;
+  padding: 12px;
 }
 
-/* User Profile page --------*/
-
-.user-profile {
-    margin-top:20px;
+#comments .comment .field-name-comment-body {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #767676;
+}
+#comments h3 {
+  font-size: 1.2em;
+  line-height: 1.5;
+  display: block;
+  padding-bottom: 6px;
+  padding-left: 74px;
+  background: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 4px;
+}
+#comments .submitted {
+  font-size: 0.875em;
+  line-height: 1.5;
+  padding-left: 74px;
+  background: white;
+  margin-bottom: 0px;
+  padding-right: 28px;
+}
+#comments .content {
+  background: white;
+  margin: 0px;
+  padding: 12px;
+}
+#comments .field-name-comment-body {
+  margin-bottom: 0px;
+}
+#comments .links {
+  margin: 10px 10px 0px 0px;
+  display: block;
 }
 
-.user-profile .profile-page-user-picture img {
-  width: 120px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 120em;
-  -moz-border-radius: 120em;
-  border-radius: 120em;
-  border: 1px solid #CCC;
-}
 
-/* Account Settings form - radio buttons */
+/**
+4a. Fixes for THREADED COMMENTS
+ */
 
-#user-profile-form .form-radios label{
-  display:inline-block;
-}
-
-#user-profile-form .form-radios input[type="radio"]{
-  margin-top:0;
-  margin-right: 2px;
-}
-
-#user-profile-form label[for="edit-node-notify"],
-#user-profile-form label[for="edit-comment-notify"]{
-  font-weight: 700;
-  margin-top:20px;
-}
-
-/*turn off tabs*/
-.page-user.page-user- .tabs{ 
-  display:none;
-}
-.node-type-conversation .nav-tabs {
-  display:none;
-}
-.logged-in .page-user .nav-tabs {
-  display:none;
-}
-.page-user-edit .form-item-field-provisional-organisation {
+#comments .comment a.permalink {
   display: none;
 }
-
-.profile-page-title {
-  font-size: 1.9em;
-  line-height:1.5em;
-  text-transform: capitalize;
+#comments .comment .content {
+  clear: both;
 }
-
-.profile-page-title p{
-  margin-bottom: 0;
+#comments .comment .field-name-comment-body {
+  padding-left: 0px;
 }
-
-/* Members / The Community page --------*/
-
-.view-all-users .field-content img { 
-  width: 90px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 90em;
-  -moz-border-radius: 90em;
-  border-radius: 90em;
-  border: 1px solid #CCC;
+#comments .comment .submitted {
+  height: 55px;
 }
-
-/* Member Organisations page --------*/
-
-.view-members-of-organisation .view-header{
-  margin:10px 0;
-}
-.view-members-of-organisation .user-picture img {
-  /*width: 90px;*/
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 999em;
-  -moz-border-radius: 999em;
-  border-radius: 999em;
-  border: 1px solid #CCC;
-}
-
-.view-members-of-organisation .user-description{
-  padding:5px 0 0 10px;
-}
-
-.view-members-of-organisation table,
-.view-members-of-organisation td{
-  border:none;
-}
-
-.view-members-of-organisation h6{
-  margin:0;
-}
-
-.view-members-of-organisation .even-columns{
-  width:50%;
-}
-
-
-/* Button & drop-down --------*/
-
-.btn {
-  background-image: none;
-  background-color: white;
-  line-height: 15px;
-  border:none;
-  box-shadow: none;
-  border-image: none;
-  color: #999999;
-}
-
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active,
-.btn.disabled,
-.btn[disabled] {
-  background-color: #fff;
-  *background-color: #fff;
-}
-
-.btn-group > .btn + .dropdown-toggle {
-  box-shadow: none;
-}
-
-.btn-group > .btn,
-.btn-group > .dropdown-menu,
-.btn-group > .popover {
-  font-size: 13px;
-}
-
-.dropdown-toggle:hover,
-.dropdown-toggle:focus,
-.dropdown-toggle:active,
-.dropdown-toggle.active,
-.dropdown-toggle.disabled,
-.dropdown-toggle[disabled] {
-  color: #333333;
-  background-color: #e6e6e6;
-  *background-color: #d9d9d9;
-  box-shadow: none;
-  border-image: none;
-}
-
-.btn-group > .btn:first-child {
-  margin-left: 2px;
-  -webkit-border-top-left-radius: 0px;
-  -moz-border-radius-topleft: 0px;
-  border-top-left-radius: 0px;
-  -webkit-border-bottom-left-radius: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  border-bottom-left-radius: 0px;
-}
-
-.btn-group > .dropdown-toggle {
-  -webkit-border-top-right-radius: 0px;
-  -moz-border-radius-topright: 0px;
-  border-top-right-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -moz-border-radius-bottomright: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.dropdown-menu {
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  border-radius: 0px;
-  margin: 1px 0 0;
-}
-
-.iin-nav ul.nav {
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-}
-.iin-nav ul.nav li {
-  background-repeat: no-repeat;
-  background-position: 0 .4em;
-  padding-left: 2.6em;
-  font-size: 1.2em;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top-style: dotted;
-  border-width: 1px;
-}
-.iin-nav ul.about {
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-}
-.iin-nav ul.about li {
-  background-repeat: no-repeat;
-  background-position: 0 1em;
-  padding-left: 2.6em;
-  border-style: none;
-}
-
-/* User details in-nav block --------*/
-
-.dash_nav {
-  font-size: 12px;
-  padding-top: 4px;
-  background-color: #fff;
-
-}
-
-.dash_nav .content, .dash_nav .content {
-  padding: 0px;
-  margin: 0px;
-}
-
-.dash_nav ul {
-  margin: 0px;
-  list-style-type: none;
-  width: 100%;
-}
-
-.dash_nav li.leaf { 
+#comments .comment .submitted span a {
   display: block;
-  list-style-image: none;
-  list-style-type: none;
+}
+.conversationcomment .commentquote {
+  float: none;
   width: 100%;
-  padding: 0px;
-}
-
-.dash_nav li a { 
-  list-style-image: none;
-  padding-left: 15px;
-}
-
-.dash_nav li a:hover { 
-  text-decoration: underline;
-}
-
-.dash_nav li a.active {
-  color: #fff;
-  text-decoration: none;
-}
-
-.dash_nav .leaf.active-trail {
-  background-color:#0088cc;
-}
-
-.dash_nav .leaf.active-trail a:hover {
-  background-color:inherit;
-}
-
-.dash_nav a{
-  font-size: 1.2em;
-  line-height: 2.1em;
-}
-
-.sidebar .dash_nav .nav {
-margin-left: 0px;
-}
-
-.dash_profile #iin-profile-content {
-  text-align: center;
-  margin: 0px;
-  font-size: 1.1em;
-  font-weight: bold;
-  padding-bottom: 10px;
-}
-
-.dash_profile .user-picture img {
-  width: 90px;
-  height: 90px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 30em;
-  -moz-border-radius: 30em;
-  border-radius: 30em;©
-  border: 1px solid #CCC;
+  clear: both;
+  padding-top: 5px;
 }
 
 
@@ -1202,10 +1211,6 @@ margin-left: 0px;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
 }
 
-.main .block {
-  margin-bottom: 10px;
-}
-
 .content-lower ul.quicktabs-tabs li {
   margin:10px 6px 10px 0;
 }
@@ -1218,6 +1223,8 @@ margin-left: 0px;
   padding: 0px;
   margin-top: -8px;
 }
+
+/* GET RID OF THIS IIN SHIT */
 .iin-slideshow .views-field-nothing {
   padding: 0 10px;
   height: 80px;
@@ -1328,59 +1335,48 @@ margin-left: 0px;
   padding-bottom: 0px;
 }
 
+/* User picture --------*/
+
+.user-picture-small img {
+  width: 36px;
+  height: 36px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 15em;
+  -moz-border-radius: 15em;
+  border-radius: 15em;
+  border: 1px solid #CCC;
+}
+
+
 
 /** 9. PROFILES
 ---------------------------------------------
  */
 
-.iin-profile-block {
-  background-color: #fff;
-  padding: 10px 0;
-  border: thin solid #dfdfdf;
+
+/* User Profile page --------*/
+
+.user-profile {
+    margin-top:20px;
 }
 
-#iin-profile-title {
-  font-size: 1.3em;
-  font-weight: normal;
-  margin: -10px -10px 15px;
-  padding: 5px 10px;
+.user-profile .profile-page-user-picture img {
+  width: 120px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 120em;
+  -moz-border-radius: 120em;
+  border-radius: 120em;
+  border: 1px solid #CCC;
 }
-#iin-profile-welcome {
-  display: inline;
-  font-style: italic;
-}
-#iin-profile-name {
-  display: inline;
-}
-#iin-profile-links {
-  float: right;
-}
-#iin-profile-links ul.profile-block {
-  list-style-type: none;
-}
-#iin-profile-picture {
-  padding: 0px;
-}
-.node-type-conversation .userpicture {
-  float: left;
-  margin: 0px 10px 10px 0px;
-}
-.iin-user-profile {
-  background-color: #fff;
-  padding: 20px;
-}
-.iin-user-profile #user-picture {
-  padding-left: 15px;
-}
-.profile2-profile {
-  /* padding-left: 130px; */
-}
-.profile2-profile .field {
-  padding: 10px;
-}
-#profile h3 {
-  display: none;
-}
+
+
+/* GET RID OF THIS IIN SHIT */
+
+
 #block-system-main {
   padding-top: 20px;
 }
@@ -1428,7 +1424,6 @@ margin-left: 0px;
 
 .field-type-text-with-summary {
   border-bottom: 1px solid #CCC;
-  padding: 0 0 20px 0;
 }
 
 .view-member-organisations ul {
@@ -1674,6 +1669,12 @@ ul.recent_topicslist li.views-row-first {
 /* TOPIC DETAIL */
 
 
+/* -- Sidebar with follow button */
+.sidebar_follow {
+  text-align: center;
+  margin-top:10px;
+}
+
 /* -- article content */
 
 h2.title { 
@@ -1705,6 +1706,9 @@ h2.title {
 
 .topic-comment-blob { border-bottom: 1px solid #6A6767; }
 .topic_reply { float: right; }
+
+
+
 
 
 /* -- topics list */
@@ -1747,7 +1751,7 @@ h2.title {
 }
 
 input[type="file"] {
-  line-height: normal !important;
+  line-height: normal;
 }
 
 /**
@@ -1812,37 +1816,6 @@ input[type="file"] {
   margin:0px;
 }
 
-
-/**
-15. SEARCH BAR HACK
----------------------------------------------
- */
-
-.form-actions {
-  background-color: transparent;
-  border-top: 0;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  padding: 19px 20px 20px;
-}
-#block-search-form .block {
-  border: 0 !important;
-  box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
-#block-search-form {
-  height: 34px;
-}
-.nobordershadow {
-  border: 0 !important;
-  box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-}
-.nobackground {
-  background: none !important;
-}
 
 /** 13. IE8 Fixes
 ---------------------------------------------
@@ -1925,6 +1898,7 @@ form .field-name-field-file-ref {
  ul.quicktabs-tabs {
    margin-left: 12px;
  }
+
  ul.quicktabs-tabs li {
    display: inline-block;
    background-color: #f2f2f2;
@@ -1935,9 +1909,11 @@ form .field-name-field-file-ref {
    min-width: 100px;
    text-align: center;
  }
+
  ul.quicktabs-tabs li a {
    color: #ed6a26;
  }
+
  ul.quicktabs-tabs li.active {
    background-color: white;
  }
@@ -2017,26 +1993,6 @@ ul.quicktabs-tbs li.active {
 }
 
 
-/* LOGIN */
-body.page-user .not-logged-in #content #content-head .tabs .nav-tabs {
-  border: none;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-
-/* -- remove whitespace -- */
-.not-logged-in.page-user #content #content-head,
-.not-logged-in.page-user-register #content #content-head,
-.not-logged-in.page-user-password #content #content-head { padding: 0px; }
-
-.not-logged-in .tabs {
- text-align: left;
- margin-top: 0px;
- padding-left: 10px;
-}
-
-
 /**
 . COMMENTS
 ---------------------------------------------
@@ -2075,35 +2031,35 @@ body.page-user .not-logged-in #content #content-head .tabs .nav-tabs {
 }
 
 .comment_bubble {
-position: relative;
-padding: 0px;
-background-color: #f2f2f2;
+  position: relative;
+  padding: 0px;
+  background-color: #f2f2f2;
 }
 
 .comment_bubble::after {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 15px 15px 15px 0;
-border-color: transparent #f2f2f2;
-display: block;
-width: 0;
-z-index: 1;
-left: -15px;
-top: 25px;
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #f2f2f2;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: -15px;
+  top: 25px;
 }
 
 .indented .comment_bubble::after {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 0 15px 15px;
-border-color: #f2f2f2 transparent;
-display: block;
-width: 0;
-z-index: 1;
-top: -15px;
-left: 41px;
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 0 15px 15px;
+  border-color: #f2f2f2 transparent;
+  display: block;
+  width: 0;
+  z-index: 1;
+  top: -15px;
+  left: 41px;
 }
 
 
@@ -2159,23 +2115,23 @@ li.comment-add:before{
 
 /* Comment form */
 #comment-form {
-position: relative;
-padding: 15px;
-background-color: #f2f2f2;
-margin-left: 20px;
+  position: relative;
+  padding: 15px;
+  background-color: #f2f2f2;
+  margin-left: 20px;
 }
 
 #comment-form::after {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 15px 15px 15px 0;
-border-color: transparent #f2f2f2;
-display: block;
-width: 0;
-z-index: 1;
-left: -15px;
-top: 25px;
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #f2f2f2;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: -15px;
+  top: 25px;
 }
 
 #comment-form .form-item,
@@ -2184,26 +2140,26 @@ top: 25px;
 }
 
 form .field-name-field-file-ref {
-margin-top: 0px;
-padding-top: 0px;
-border-top: none;
+  margin-top: 0px;
+  padding-top: 0px;
+  border-top: none;
 }
 
 #comment-form {
-font-size: 12px;
+  font-size: 12px;
 }
 
 #comment-form select {
-font-size: 12px;
+  font-size: 12px;
 }
 
 #comment-form input {
-font-size: 12px;
+  font-size: 12px;
 }
 
 
 /**
-14. RESPONSIVE
+14. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
 /*  -------------*/
 
