@@ -11,28 +11,33 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 6. NAVIGATION & MENUS
 7. BUTTONS & DROPDOWNS
 8. QUICKTABS
+9. FORMS
+10. FOOTER
 
-X. LOGIN PAGES
-X. LOGGED IN HOME / DASHBOARD PAGE
-XX. TOPICS PAGE
-XX. TOPICS COMMENTS
-XX. TOPIC DETAIL - ARTICLE & COMMENTS
+~ page-specific  / templates ~
 
-14. RESPONSIVE - CONTENT-SPECIFIC
-15. MOBILE RESPONSIVE MENU
+11. LOG-IN / REGISTER PAGES
+12. LOGGED-IN HOME / DASHBOARD PAGE
+13. TOPICS PAGE
+14. TOPIC COMMENTS
+15. TOPIC DETAIL - ARTICLE & COMMENTS
+16. THREADED COMMENTS
+17. USER PROFILE
+18. MEMBER ORGANISATIONS
+19. MEMBER ORGANISATION PROFILES
+20. MEMBERS / THE COMMUNITY
+21. NEWS
+22. ADMIN LOGIN - HOME / DASHBOARD PAGE
+23. KNOWLEDGE FEATURE [UNUSED?]
+24. IE Fixes
 
+~ responsive ~
 
+25. RESPONSIVE - CONTENT-SPECIFIC
+25. MOBILE RESPONSIVE MENU
 
-
-4. THREADED COMMENTS
-4a. Fixes for THREADED COMMENTS
-9. PROFILES
-10. MEMBER ORGANISATION PROFILES
-11. FEATURED CONTENT BLOCK
-13. PARTNERS
 
 ---------------------------------------------
-
  */
 
 
@@ -102,12 +107,26 @@ li {
 .form-actions {
   background-color: transparent;
   border-top: 0;
+  padding: 0px; 
 }
 
 table thead th {
   text-transform: uppercase;
 }
 
+.breadcrum {
+  margin: 10px 0 0 0;
+}
+
+.breadcrum h1 {
+  font-size:2.5em;
+  line-height: 1.2em;
+  max-width: 700px;
+}
+
+.title_block { /* Topics and News background */
+  background-color: #f2f2f2;
+}
 
 /* Generic content page headings -------------*/
 
@@ -319,6 +338,21 @@ p {
   margin-top:10px;
 }
 
+ /* Turn off tabs on certain pages -------------*/
+
+.page-user.page-user- .tabs{ 
+  display:none;
+}
+.node-type-conversation .nav-tabs {
+  display:none;
+}
+.logged-in .page-user .nav-tabs {
+  display:none;
+}
+.page-user-edit .form-item-field-provisional-organisation {
+  display: none;
+}
+
  /* Base menu overrides -------------*/
 
 ul.menu  a:hover {
@@ -473,7 +507,6 @@ ul.menu {
 }
 
 
-
 /**
 7. BUTTONS & DROPDOWNS
 ---------------------------------------------
@@ -548,6 +581,7 @@ ul.menu {
   margin: 1px 0 0;
 }
 
+
 /**
 8. QUICKTABS
 ---------------------------------------------
@@ -562,39 +596,29 @@ ul.menu {
    background-color: #f2f2f2;
    border: 1px solid #ccc;
    border-radius: 5px;
-   margin: 9px 6px 0 0;
-   padding: 1px 7px 0 7px;
+   margin: 9px 6px 40px 0;
+   padding: 8px 10px 6px 10px;
    min-width: 100px;
    text-align: center;
- }
-
- ul.quicktabs-tabs li a {
-   color: #ed6a26;
+   border: 1px solid #CCC;
+   border-radius: 5px;
  }
 
  ul.quicktabs-tabs li.active {
    background-color: white;
  }
 
+ ul.quicktabs-tabs li a {
+   color: #ed6a26;
+   text-decoration: none;
+ }
 
 
 
-
-
-
-
-
-
-
-
-/* REORGANISE THESE */
-
-
-
-
-
-
-
+/**
+9. FORMS
+---------------------------------------------
+ */
 
 /* Account Settings form - radio buttons */
 
@@ -613,88 +637,41 @@ ul.menu {
   margin-top:20px;
 }
 
-/*turn off tabs*/
-.page-user.page-user- .tabs{ 
-  display:none;
-}
-.node-type-conversation .nav-tabs {
-  display:none;
-}
-.logged-in .page-user .nav-tabs {
-  display:none;
-}
-.page-user-edit .form-item-field-provisional-organisation {
-  display: none;
+/* */
+
+#user-profile-form {
+  padding: 0 10px;
 }
 
-.profile-page-title {
-  font-size: 1.9em;
-  line-height:1.5em;
-  text-transform: capitalize;
+#user-pass {
+  padding: 0 10px;
 }
 
-.profile-page-title p{
-  margin-bottom: 0;
+.password-parent {
+  width: 460px;
 }
 
-/* Members / The Community page --------*/
-
-.view-all-users .field-content img { 
-  width: 90px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 90em;
-  -moz-border-radius: 90em;
-  border-radius: 90em;
-  border: 1px solid #CCC;
+.password-strength {
+  width: 200px;
 }
 
-/* Member Organisations page --------*/
-
-.view-members-of-organisation .view-header{
-  margin:10px 0;
-}
-.view-members-of-organisation .user-picture img {
-  /*width: 90px;*/
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 999em;
-  -moz-border-radius: 999em;
-  border-radius: 999em;
-  border: 1px solid #CCC;
+input[type="file"] {
+  line-height: normal;
 }
 
-.view-members-of-organisation .user-description{
-  padding:5px 0 0 10px;
+/**
+10. FOOTER
+---------------------------------------------
+ */
+
+#footer-content img {
+  height: 60px;
 }
-
-.view-members-of-organisation .user-description h6{
-  font-size:18px;
-  margin-bottom:4px;
-}
-
-.view-members-of-organisation table,
-.view-members-of-organisation td{
-  border:none;
-}
-
-.view-members-of-organisation h6{
-  margin:0;
-}
-
-.view-members-of-organisation .even-columns{
-  width:50%;
-}
-
-
-
 
 
 
 /**
-X. LOGIN PAGES
+11. LOG-IN / REGISTER PAGES
 ---------------------------------------------
  **/
 
@@ -810,279 +787,7 @@ X. LOGIN PAGES
 
 
 /**
-XX. MEMBERS / THE COMMUNITY
----------------------------------------------
- */
-
- .custom-grid ul li{
-  margin:0 0 10px 0;
-  margin-left:0 !important; /*Why is bootstrap.css loading after custom styles??  */
-  height:200px;
- }
-
-
-
-/**
-XX. TOPIC DETAIL - ARTICLE & COMMENTS
----------------------------------------------
- */
-
- /* -- hide h1 and follow links */
-body.node-type-conversation h1#page-title { 
-  display: none;
-}
-
-.links {
-  padding:0px;
-  float: right;
-  font-size: 0.8em;
-  line-height:0.8em;
-}
-
-.conversation-item {
-  margin-bottom:2%;
-}
-
-.conversation-excerpt {
-  margin-top: 2%;
-  line-height: 1.2em;
-}
-
-.conversationcomment {
-  margin-top:10px;
-  margin-left: 0px;
-}
-
-.excerpt-author {
-  font-weight: bold;
-}
-
-.commentname {
-  font-size: 0.8em;
-  line-height: 1.5em;
-}
-
-.commentquote {
-  font-size: 0.9em;
-  line-height: 1.2em;
-  margin-top: 2%;
-  float:left;
-}
-
-.comment-img {
-  margin-left: 1%;
-}
-
-.more-link {
-  margin-left:10px;
-}
-
-.view-conversation-titles .views-row {
-  margin-bottom: 0;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.view-join-the-coversation #content-top .content p {
-  margin: 8px 0;
-}
-
-.view-join-the-coversation .current-conversation-title {}
-
-.view-join-the-coversation .conversationpreview .conversationcomment div {
-  min-height: 0px;
-}
-
-.view-join-the-coversation .views-field {
-  padding: 0;
-}
-
-.conversation-summary h2 {
-  text-align: center;
-  width: 85%;
-  margin: auto;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  padding-bottom: 5px;
-}
-
-#first-time {
-  color: #fff;
-  height:0px;
-  overflow:hidden;
-}
-
-#first-time a {
-  color:#ffffff;
-  text-decoration: none;
-}
-
-.conversationpreview {
-  margin-left: -15px;
-  padding: 10px 20px;
-  width: 92%;
-  background-color: #f3f3f3;
-}
-.node-type-conversation .submitted .submitted-content-posted {
-  font-style: italic;
-}
-
-.view-join-the-coversation .views-field {
-  background-color: #fff;
-  padding: 0 20px 20px;
-  margin-bottom: 20px;
-}
-
-/**
-6. THREADED COMMENTS
----------------------------------------------
- */
-
-.comment-bubble {
-  position: relative;
-  width: 220px;
-  min-height: 50px;
-  padding: 10px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-}
-.comment-bubble:before {
-  content: "";
-  position: absolute;
-  top: -30px;
-  left: 16px;
-  border-style: solid;
-  border-width: 0 7px 29px;
-  display: block;
-  width: 0;
-  z-index: 0;
-}
-.comment-bubble:after {
-  content: "";
-  position: absolute;
-  top: -28px;
-  left: 16px;
-  border-style: solid;
-  border-width: 0 7px 29px;
-  display: block;
-  width: 0;
-  z-index: 1;
-}
-.conversationcomment {
-  background-color: #ffffff;
-  margin-left: -5px;
-  padding: 10px 10px 10px 10px;
-  width: 85%;
-  margin-top: 10px;
-  margin-bottom:5px;
-}
-.commentquote {
-  margin-left: -5px;
-}
-.commentname {
-  padding-right: 5px;
-  margin-right: -5px;
-}
-.comment span.new {
-  display: none;
-}
-
-/* User picture --------*/
-
-#comments .user-picture {
-  float: left;
-  width: 55px;
-  height: 55px;
-  padding: 10px 0 0 10px;
-}
-
-#comments .user-picture img {
-  width: 45px;
-  height: 45px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 15em;
-  -moz-border-radius: 15em;
-  border-radius: 15em;
-  border: 1px solid #CCC;
-}
-
-#comments .comment {
-  background: #F3F3F3;
-  margin: 0 0px 15px 0px;
-  padding: 12px;
-}
-
-#comments .comment .field-name-comment-body {
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #767676;
-}
-#comments h3 {
-  font-size: 1.2em;
-  line-height: 1.5;
-  display: block;
-  padding-bottom: 6px;
-  padding-left: 74px;
-  background: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 4px;
-}
-#comments .submitted {
-  font-size: 0.875em;
-  line-height: 1.5;
-  padding-left: 74px;
-  background: white;
-  margin-bottom: 0px;
-  padding-right: 28px;
-}
-#comments .content {
-  background: white;
-  margin: 0px;
-  padding: 12px;
-}
-#comments .field-name-comment-body {
-  margin-bottom: 0px;
-}
-#comments .links {
-  margin: 10px 10px 0px 0px;
-  display: block;
-}
-
-
-/**
-4a. Fixes for THREADED COMMENTS
- */
-
-#comments .comment a.permalink {
-  display: none;
-}
-#comments .comment .content {
-  clear: both;
-}
-#comments .comment .field-name-comment-body {
-  padding-left: 0px;
-}
-#comments .comment .submitted {
-  height: 55px;
-}
-#comments .comment .submitted span a {
-  display: block;
-}
-.conversationcomment .commentquote {
-  float: none;
-  width: 100%;
-  clear: both;
-  padding-top: 5px;
-}
-
-
-/**
-X. LOGGED IN HOME / DASHBOARD PAGE
+12. LOGGED-IN HOME / DASHBOARD PAGE
 ---------------------------------------------
  **/
 
@@ -1216,7 +921,7 @@ margin-left: 0px;
   margin-bottom: 10px;
 }
 
-/* 8C. Dashboard --------------*/
+/* Dashboard --------------*/
 
 .dashboard_head {}
 
@@ -1323,131 +1028,11 @@ margin-left: 0px;
 
 
 
-/** 9. PROFILES
+/** 13. TOPICS PAGE 
 ---------------------------------------------
  */
 
-
-/* User Profile page --------*/
-
-.user-profile {
-    margin-top:20px;
-}
-
-.user-profile .profile-page-user-picture img {
-  width: 120px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  -webkit-border-radius: 120em;
-  -moz-border-radius: 120em;
-  border-radius: 120em;
-  border: 1px solid #CCC;
-}
-
-
-
-
-/** X. ADMIN LOGIN - HOME PAGE
----------------------------------------------
- */
-
-.front.admin-menu #block-system-main {
-  display: none;
-}
-
-
-/** XX. MEMBER ORGANISATION PROFILES
----------------------------------------------
- */
-
-.twocolgrid {
-  float: left;
-  width: 40%;
-  height: 120px;
-  padding-bottom: 5px;
-  margin-right: 25px;
-  margin-bottom: 30px;
-  vertical-align: baseline;
-  margin-left: 10px;
-}
-
-.orgbox {
-  text-align:center;
-  margin: 20px 5% 0 5%;
-}
-
-.orgtext {
-  position: relative;
-  clear:left;
-  display:inline;
-  margin:10px auto;
-}
-
-.field-type-text-with-summary {
-  border-bottom: 1px solid #CCC;
-}
-
-.view-member-organisations ul {
-  margin:0;
-  clear: both;
-  height:30px;
-  padding:20px 0;
-}
-
-.view-member-organisations .views-row {
-  margin-top: 1em;
-  padding-bottom: 10px;
-  border-bottom: none;
-}
-.view-member-organisations ul li {
-  display: inline;
-}
-.view-member-organisations ul {
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  height: 80px;
-}
-.marginleft20 {
-  margin-left: 20px;
-}
-.fieldset-title {
-  font-size: 0.7em;
-}
-.field-collection-view {
-  margin-bottom: 20px;
-}
-#quicktabs-services .ui-widget-header {
-  padding: 0px;
-}
-#quicktabs-services .ui-state-default {}
-
-#quicktabs-services li {}
-
-.ui-tabs-nav li {
-  width: 24%;
-  margin-bottom: 5px;
-  height: 70px;
-  white-space: normal;
-}
-.ui-tabs-nav li a {
-  float: left;
-  padding: .5em 1em;
-  text-decoration: none;
-  white-space: normal;
-}
-
-#quicktabs-services {
-  margin-top: 20px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-/** XX. TOPICS PAGE 
----------------------------------------------
- */
-
-/* GENERIC HEADINGS */
+/* Generic headings */
 
 .header-icon i {
   color:#666;
@@ -1455,7 +1040,7 @@ margin-left: 0px;
   padding-top:10px;
 }
 
-/* TOPICS INDEX */
+/* Topics index */
 
 .topic_index {
   margin-bottom: 20px;
@@ -1515,6 +1100,11 @@ ul.recent_topicslist li.views-row-first {
   padding-right: 10px;
   margin-bottom: 0;
   border:1px solid #f2f2f2;
+}
+
+.content-upper #block-views-exp-meta-search-topic-search input, 
+.content-upper #block-views-exp-meta-search-topic-search label {
+  font-size: 0.875em;
 }
 
 /* -- feature image box */
@@ -1602,10 +1192,6 @@ ul.recent_topicslist li.views-row-first {
   display: block;
 }
 
-.topics_header {
- background: #F2F2F2;
-}
-
 .topic_create {
   background: #F7A233;
   border-style: none;
@@ -1669,9 +1255,6 @@ h2.title {
 .topic_reply { float: right; }
 
 
-
-
-
 /* -- Table styling : topics you're following & hosting */
 
 .view-display-id-list_of_topics table.views-table,
@@ -1697,186 +1280,8 @@ h2.title {
 
 
 
-
-/** 14. FORMS
----------------------------------------------
- */
-
-#user-profile-form {
-  padding: 0 10px;
-}
-
-#user-pass {
-  padding: 0 10px;
-}
-
-.password-parent {
-  width: 460px;
-}
-
-.password-strength {
-  width: 200px;
-}
-
-input[type="file"] {
-  line-height: normal;
-}
-
-
-/** 13. IE8 Fixes
----------------------------------------------
- */
-
-.ie8 .sidebar #block-search-form.contextual-links-region {
-  position: inherit;
-}
-
-
-/** KNOWLEDGE FEATURE
----------------------------------------------
- */
-
-form .field-name-field-file-ref div.entityconnect-add {
-  height: 2.5em;
-  float: left;
-  padding: 5px 0;
-}
-
-form .field-name-field-file-ref div.entityconnect-add input {
-  height: 2.5em;
-  width: 100%;
-  border: 1px solid #d5d5d5;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-image: -webkit-linear-gradient(top,#fff 0%,#e6e6e6 100%);
-  background-image: -ms-linear-gradient(top,#fff 0%,#e6e6e6 100%);
-  background-image: -moz-linear-gradient(top,#fff 0%,#e6e6e6 100%);
-  background-image: -o-linear-gradient(top,#fff 0%,#e6e6e6 100%);
-  background-image: webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#e6e6e6));
-  background-image: linear-gradient(to bottom,#fff 0%,#e6e6e6 100%);
-  margin: 0;
-  padding: 0;
-  text-indent: 0;
-}
-form .field-name-field-file-ref select,
-form .field-name-field-file-ref div {
-  clear: both;
-  width: 100%;
-  margin: auto;
-}
-form .field-name-field-file-ref span {
-  display: block;
-  text-align: center;
-}
-form .field-name-field-ko-file .tabledrag-toggle-weight-wrapper {
-  display: none;
-}
-.field-type-entityreference .form-type-textfield input[type=text] {
-  width: 100%;
-}
-.view-recent-files .views-row {
-  padding-bottom: 10px;
-}
-form .field-name-field-file-ref {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #ccc;
-}
-
-/** FIELD COLLECTIONS of services page
-  ---------------------------------------------
-  */
- .page-node-9 fieldset.collapsed + .field-collection-view-links {
-   display: none;
- }
- html.js fieldset.collapsed {
-  height: 2.0em;
-}
-.page-node-9 legend {
- line-height: 20px;
-}
-
-
-
-
-
-/* Fixes for META demo */
-
-/*remove "Picture" fieldset in sign-up form */
-#edit-picture legend {
-  height: 0px;
-  overflow: hidden;
-}
-
-.breadcrum {
-  margin: 10px 0 0 0;
-}
-
-.breadcrum h1 {
-  font-size:2.5em;
-  line-height: 1.2em;
-  max-width: 700px;
-}
-
-#footer-content img {
-  height: 60px;
-}
-
-.edit_your_topic {
-  float: right;
-  clear: left;
-}
-
-
-.form-item-og-group-ref-und-0-default { /* Hides the group availability text */
-  display:none;
-}
-
-.more_topics {
-  margin-top: 20px;
-}
-
-.commentcount_topic {
-  clear: left;
-  border-top: 1px #f7f7f7 solid;
-  margin-top: 17px;
-  padding: 8px 6px;
-}
-
-#block-views-exp-meta-search-topic-search input, 
-#block-views-exp-meta-search-topic-search label {
-  font-size: 12px;
-}
-
-
-/* -- page formatting */
-
-ul.quicktabs-tabs li {
-  display: inline-block;
-  min-width: 100px;
-  margin: 9px 6px 40px 0;
-  padding: 8px 10px 6px 10px;
-  text-align: center;
-  border: 1px solid #CCC;
-  border-radius: 5px;
-  }
-
-ul.quicktabs-tabs li a { 
-  text-decoration: none; 
-}
-
-ul.quicktabs-tbs li.active { 
-  background-color: #F7A233;
-}
-
-.form-actions { 
-  padding: 0px; 
-}
-
-
 /**
-XX. TOPICS COMMENTS
+14. TOPIC COMMENTS
 ---------------------------------------------
  **/
 
@@ -2041,17 +1446,564 @@ form .field-name-field-file-ref {
 
 
 
+/**
+15. TOPIC DETAIL - ARTICLE & COMMENTS
+---------------------------------------------
+ */
+
+ /* -- hide h1 and follow links */
+body.node-type-conversation h1#page-title { 
+  display: none;
+}
+
+ /* -- edit link for topic owner */
+.edit_your_topic {
+  float: right;
+  clear: left;
+}
+
+.links {
+  padding:0px;
+  float: right;
+  font-size: 0.8em;
+  line-height:0.8em;
+}
+
+.conversation-item {
+  margin-bottom:2%;
+}
+
+.conversation-excerpt {
+  margin-top: 2%;
+  line-height: 1.2em;
+}
+
+.conversationcomment {
+  margin-top:10px;
+  margin-left: 0px;
+}
+
+.excerpt-author {
+  font-weight: bold;
+}
+
+.commentname {
+  font-size: 0.8em;
+  line-height: 1.5em;
+}
+
+.commentquote {
+  font-size: 0.9em;
+  line-height: 1.2em;
+  margin-top: 2%;
+  float:left;
+}
+
+.comment-img {
+  margin-left: 1%;
+}
+
+.more-link {
+  margin-left:10px;
+}
+
+.view-conversation-titles .views-row {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.view-join-the-coversation #content-top .content p {
+  margin: 8px 0;
+}
+
+.view-join-the-coversation .current-conversation-title {}
+
+.view-join-the-coversation .conversationpreview .conversationcomment div {
+  min-height: 0px;
+}
+
+.view-join-the-coversation .views-field {
+  padding: 0;
+}
+
+.conversation-summary h2 {
+  text-align: center;
+  width: 85%;
+  margin: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+}
+
+#first-time {
+  color: #fff;
+  height:0px;
+  overflow:hidden;
+}
+
+#first-time a {
+  color:#ffffff;
+  text-decoration: none;
+}
+
+.conversationpreview {
+  margin-left: -15px;
+  padding: 10px 20px;
+  width: 92%;
+  background-color: #f3f3f3;
+}
+.node-type-conversation .submitted .submitted-content-posted {
+  font-style: italic;
+}
+
+.view-join-the-coversation .views-field {
+  background-color: #fff;
+  padding: 0 20px 20px;
+  margin-bottom: 20px;
+}
 
 
 
+/**
+16. THREADED COMMENTS
+---------------------------------------------
+ */
+
+.comment-bubble {
+  position: relative;
+  width: 220px;
+  min-height: 50px;
+  padding: 10px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.comment-bubble:before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 16px;
+  border-style: solid;
+  border-width: 0 7px 29px;
+  display: block;
+  width: 0;
+  z-index: 0;
+}
+
+.comment-bubble:after {
+  content: "";
+  position: absolute;
+  top: -28px;
+  left: 16px;
+  border-style: solid;
+  border-width: 0 7px 29px;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+
+.conversationcomment {
+  background-color: #ffffff;
+  margin-left: -5px;
+  padding: 10px 10px 10px 10px;
+  width: 85%;
+  margin-top: 10px;
+  margin-bottom:5px;
+}
+
+.commentquote {
+  margin-left: -5px;
+}
+
+.commentname {
+  padding-right: 5px;
+  margin-right: -5px;
+}
+
+.comment span.new {
+  display: none;
+}
+
+/* User picture --------*/
+
+#comments .user-picture {
+  float: left;
+  width: 55px;
+  height: 55px;
+  padding: 10px 0 0 10px;
+}
+
+#comments .user-picture img {
+  width: 45px;
+  height: 45px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 15em;
+  -moz-border-radius: 15em;
+  border-radius: 15em;
+  border: 1px solid #CCC;
+}
+
+#comments .comment {
+  margin: 0 0px 15px 0px;
+  padding: 12px;
+}
+
+#comments .comment .field-name-comment-body {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #767676;
+}
+
+#comments h3 {
+  font-size: 1.2em;
+  line-height: 1.5;
+  display: block;
+  padding-bottom: 6px;
+  padding-left: 74px;
+  background: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 4px;
+}
+
+#comments .submitted {
+  font-size: 0.875em;
+  line-height: 1.5;
+  padding-left: 74px;
+  background: white;
+  margin-bottom: 0px;
+  padding-right: 28px;
+}
+
+#comments .content {
+  background: white;
+  margin: 0px;
+  padding: 12px;
+}
+
+#comments .field-name-comment-body {
+  margin-bottom: 0px;
+}
+#comments .links {
+  margin: 10px 10px 0px 0px;
+  display: block;
+}
+
+#comments .comment a.permalink { /* Turns off permalink to comment */
+  display: none;
+}
+
+#comments .comment .content {
+  clear: both;
+}
+#comments .comment .field-name-comment-body {
+  padding-left: 0px;
+}
+#comments .comment .submitted {
+  height: 55px;
+}
+#comments .comment .submitted span a {
+  display: block;
+}
+.conversationcomment .commentquote {
+  float: none;
+  width: 100%;
+  clear: both;
+  padding-top: 5px;
+}
 
 
+/** 17. USER PROFILE
+---------------------------------------------
+ */
+
+
+/* User Profile page --------*/
+
+.user-profile {
+    margin-top:20px;
+}
+
+.user-profile .profile-page-user-picture img {
+  width: 120px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 120em;
+  -moz-border-radius: 120em;
+  border-radius: 120em;
+  border: 1px solid #CCC;
+}
+
+.profile-page-title {
+  font-size: 1.9em;
+  line-height:1.5em;
+  text-transform: capitalize;
+}
+
+.profile-page-title p{
+  margin-bottom: 0;
+}
+
+/**
+18. MEMBER ORGANISATIONS
+---------------------------------------------
+ */
+
+.view-members-of-organisation .view-header{
+  margin:10px 0;
+}
+.view-members-of-organisation .user-picture img {
+  /*width: 90px;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 999em;
+  -moz-border-radius: 999em;
+  border-radius: 999em;
+  border: 1px solid #CCC;
+}
+
+.view-members-of-organisation .user-description{
+  padding:5px 0 0 10px;
+}
+
+.view-members-of-organisation .user-description h6{
+  font-size:18px;
+  margin-bottom:4px;
+}
+
+.view-members-of-organisation table,
+.view-members-of-organisation td{
+  border:none;
+}
+
+.view-members-of-organisation h6{
+  margin:0;
+}
+
+.view-members-of-organisation .even-columns{
+  width:50%;
+}
+
+/** 19. MEMBER ORGANISATION PROFILES
+---------------------------------------------
+ */
+
+.twocolgrid {
+  float: left;
+  width: 40%;
+  height: 120px;
+  padding-bottom: 5px;
+  margin-right: 25px;
+  margin-bottom: 30px;
+  vertical-align: baseline;
+  margin-left: 10px;
+}
+
+.orgbox {
+  text-align:center;
+  margin: 20px 5% 0 5%;
+}
+
+.orgtext {
+  position: relative;
+  clear:left;
+  display:inline;
+  margin:10px auto;
+}
+
+.field-type-text-with-summary {
+  border-bottom: 1px solid #CCC;
+}
+
+.view-member-organisations ul {
+  margin:0;
+  clear: both;
+  height:30px;
+  padding:20px 0;
+}
+
+.view-member-organisations .views-row {
+  margin-top: 1em;
+  padding-bottom: 10px;
+  border-bottom: none;
+}
+.view-member-organisations ul li {
+  display: inline;
+}
+.view-member-organisations ul {
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  height: 80px;
+}
+.marginleft20 {
+  margin-left: 20px;
+}
+.fieldset-title {
+  font-size: 0.7em;
+}
+.field-collection-view {
+  margin-bottom: 20px;
+}
+#quicktabs-services .ui-widget-header {
+  padding: 0px;
+}
+#quicktabs-services .ui-state-default {}
+
+#quicktabs-services li {}
+
+.ui-tabs-nav li {
+  width: 24%;
+  margin-bottom: 5px;
+  height: 70px;
+  white-space: normal;
+}
+.ui-tabs-nav li a {
+  float: left;
+  padding: .5em 1em;
+  text-decoration: none;
+  white-space: normal;
+}
+
+#quicktabs-services {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+
+/**
+20. MEMBERS / THE COMMUNITY
+---------------------------------------------
+ */
+
+ .custom-grid ul li{
+  margin:0 0 10px 0;
+  margin-left:0 !important; /*Why is bootstrap.css loading after custom styles??  */
+  height:200px;
+ }
+
+ .view-all-users .field-content img { 
+  width: 90px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 90em;
+  -moz-border-radius: 90em;
+  border-radius: 90em;
+  border: 1px solid #CCC;
+}
+
+/**
+21. NEWS
+---------------------------------------------
+ */
+.node-type-news-update #main-content{
+  padding-top:0;
+}
+.node-type-news-update #main-content #page-title { /* Hide double-up H1*/
+  display:none;
+}
+
+/**
+22. ADMIN LOGIN - HOME / DASHBOARD PAGE
+---------------------------------------------
+ */
+
+.front.admin-menu #block-system-main {
+  display: none;
+}
+
+
+ /**
+23. KNOWLEDGE FEATURE [UNUSED?]
+---------------------------------------------
+ */
+
+
+form .field-name-field-file-ref div.entityconnect-add {
+  height: 2.5em;
+  float: left;
+  padding: 5px 0;
+}
+
+form .field-name-field-file-ref div.entityconnect-add input {
+  height: 2.5em;
+  width: 100%;
+  border: 1px solid #d5d5d5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-image: -webkit-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image: -ms-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image: -moz-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image: -o-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image: webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#e6e6e6));
+  background-image: linear-gradient(to bottom,#fff 0%,#e6e6e6 100%);
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+}
+form .field-name-field-file-ref select,
+form .field-name-field-file-ref div {
+  clear: both;
+  width: 100%;
+  margin: auto;
+}
+form .field-name-field-file-ref span {
+  display: block;
+  text-align: center;
+}
+form .field-name-field-ko-file .tabledrag-toggle-weight-wrapper {
+  display: none;
+}
+.field-type-entityreference .form-type-textfield input[type=text] {
+  width: 100%;
+}
+.view-recent-files .views-row {
+  padding-bottom: 10px;
+}
+form .field-name-field-file-ref {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+/** FIELD COLLECTIONS of services page
+  ---------------------------------------------
+  */
+ .page-node-9 fieldset.collapsed + .field-collection-view-links {
+   display: none;
+ }
+ html.js fieldset.collapsed {
+  height: 2.0em;
+}
+.page-node-9 legend {
+ line-height: 20px;
+}
+
+
+
+ /**
+24. IE Fixes
+---------------------------------------------
+ */
+
+.ie8 .sidebar #block-search-form.contextual-links-region {
+  position: inherit;
+}
 
 
 
 
 /**
-14. RESPONSIVE - CONTENT-SPECIFIC
+25. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
 /*  -------------*/
 
@@ -2101,6 +2053,7 @@ form .field-name-field-file-ref {
   .title_block {
     margin-top: 20px;
   }
+
   .breadcrum h1,
   .node-type-basic-page h1#page-title {
     max-width: 500px;
@@ -2121,7 +2074,7 @@ form .field-name-field-file-ref {
 }
 
 /**
-15. MOBILE RESPONSIVE MENU
+26. MOBILE RESPONSIVE MENU
 ------------------------------------------------------------------
 /*  -------------*/
 
@@ -2287,4 +2240,9 @@ html.js #tabs1-search input.search-query {
   -webkit-border-radius: 0 15px 15px 0;
   border-radius: 0 15px 15px 0;
 }
+
+
+
+
+
 
