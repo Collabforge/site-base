@@ -14,6 +14,9 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 
 X. LOGIN PAGES
 X. LOGGED IN HOME / DASHBOARD PAGE
+XX. TOPICS PAGE
+XX. TOPICS COMMENTS
+XX. TOPIC DETAIL - ARTICLE & COMMENTS
 
 14. RESPONSIVE - CONTENT-SPECIFIC
 15. MOBILE RESPONSIVE MENU
@@ -23,13 +26,10 @@ X. LOGGED IN HOME / DASHBOARD PAGE
 
 4. THREADED COMMENTS
 4a. Fixes for THREADED COMMENTS
-6. JOIN THE CONVERSATION BLOCK & conversation PAGES
 9. PROFILES
 10. MEMBER ORGANISATION PROFILES
 11. FEATURED CONTENT BLOCK
-12. TOPICS PAGE
 13. PARTNERS
-14. RECENT ACTIVITY BLOCK
 
 ---------------------------------------------
 
@@ -823,26 +823,20 @@ XX. MEMBERS / THE COMMUNITY
 
 
 /**
-6. JOIN THE CONVERSATION
+XX. TOPIC DETAIL - ARTICLE & COMMENTS
 ---------------------------------------------
  */
 
  /* -- hide h1 and follow links */
-body.node-type-conversation h1#page-title { display: none; }
+body.node-type-conversation h1#page-title { 
+  display: none;
+}
 
 .links {
   padding:0px;
   float: right;
   font-size: 0.8em;
   line-height:0.8em;
-}
-
-ul .links {
-  line-height:0.8em;
-}
-
-.links li {
-  line-height:10px;
 }
 
 .conversation-item {
@@ -886,30 +880,36 @@ ul .links {
 .page-conversations #block-system-main {
   padding-top: 0px;
 }
+
 .page-conversations .conversationcomment {
   margin-bottom: 10px;
 }
+
 .page-conversations #block-block-10 {
   padding: 8px 0;
   margin: 0;
 }
+
 .page-conversations #block-block-10 p {
   margin: 0px;
 }
+
 .view-conversation-titles .views-row {
   margin-bottom: 0;
   border-bottom: none;
   padding-bottom: 0;
 }
+
 .view-join-the-coversation #content-top .content p {
   margin: 8px 0;
 }
-.view-join-the-coversation .current-conversation-title {
 
-}
+.view-join-the-coversation .current-conversation-title {}
+
 .view-join-the-coversation .conversationpreview .conversationcomment div {
   min-height: 0px;
 }
+
 .view-join-the-coversation .views-field {
   padding: 0;
 }
@@ -1374,7 +1374,7 @@ margin-left: 0px;
 }
 
 
-/** 10. MEMBER ORGANISATION PROFILES
+/** XX. MEMBER ORGANISATION PROFILES
 ---------------------------------------------
  */
 
@@ -1437,12 +1437,10 @@ margin-left: 0px;
 #quicktabs-services .ui-widget-header {
   padding: 0px;
 }
-#quicktabs-services .ui-state-default {
+#quicktabs-services .ui-state-default {}
 
-}
-#quicktabs-services li {
-  /*width: 24%; */
-}
+#quicktabs-services li {}
+
 .ui-tabs-nav li {
   width: 24%;
   margin-bottom: 5px;
@@ -1462,7 +1460,7 @@ margin-left: 0px;
   margin-bottom: 20px;
 }
 
-/** 12. TOPICS PAGE 
+/** XX. TOPICS PAGE 
 ---------------------------------------------
  */
 
@@ -1591,10 +1589,15 @@ ul.recent_topicslist li.views-row-first {
 }
 
 
-.topic_feature_body { margin-bottom: 10px; }
+.topic_feature_body { 
+  margin-bottom: 10px; 
+}
 
 
-.article_host p { margin-bottom: 0px; }
+.article_host p { 
+  margin-bottom: 0px; 
+}
+
 .article_host {
   margin-top: 10px;
 }
@@ -1603,7 +1606,10 @@ ul.recent_topicslist li.views-row-first {
   padding-right: 10px;
 }
 
-.user_block tbody { border: none;}
+.user_block tbody { 
+  border: none;
+}
+
 .user_block td {
   border: none;
   padding: 0px;
@@ -1616,7 +1622,6 @@ ul.recent_topicslist li.views-row-first {
 .topics_header {
  background: #F2F2F2;
 }
-
 
 .topic_create {
   background: #F7A233;
@@ -1888,7 +1893,7 @@ ul.quicktabs-tbs li.active {
 
 
 /**
-. COMMENTS
+XX. TOPICS COMMENTS
 ---------------------------------------------
  **/
 
@@ -1956,7 +1961,6 @@ ul.quicktabs-tbs li.active {
   left: 41px;
 }
 
-
 #comments h2 { 
   padding: 0 0 0 20px; 
 }
@@ -2008,6 +2012,7 @@ li.comment-add:before{
 }
 
 /* Comment form */
+
 #comment-form {
   position: relative;
   padding: 15px;
