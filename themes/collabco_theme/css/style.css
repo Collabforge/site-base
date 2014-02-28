@@ -877,23 +877,6 @@ body.node-type-conversation h1#page-title {
   margin-left:10px;
 }
 
-.page-conversations #block-system-main {
-  padding-top: 0px;
-}
-
-.page-conversations .conversationcomment {
-  margin-bottom: 10px;
-}
-
-.page-conversations #block-block-10 {
-  padding: 8px 0;
-  margin: 0;
-}
-
-.page-conversations #block-block-10 p {
-  margin: 0px;
-}
-
 .view-conversation-titles .views-row {
   margin-bottom: 0;
   border-bottom: none;
