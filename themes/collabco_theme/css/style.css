@@ -1265,29 +1265,8 @@ margin-left: 0px;
   padding:15px 0;
 }
 
-/* 8D. News Updates --------------*/
 
-.title_block {
-  padding: 6px auto;
-  background-color: #f2f2f2;
-}
-
-.node-type-news-update #page-title {
-  display: none;
-}
-
-.submitted-content-posted{ /*Post date*/
-  color:#999; 
-  font-size:0.875em;
-}
-
-.view-news-update-titles .views-row {
-  margin-bottom: 0px;
-  padding-bottom: 0px;
-}
-
-
-/* XX. YOUR FEED --------------*/
+/* Your feed - from content you're following --------------*/
 
 .home_activity h2 {
   margin: 1em 0;
@@ -1337,13 +1316,6 @@ margin-left: 0px;
 .view-recent-activity .activity-details a:nth-child(3){ /*Article label*/
   color:#333;
   font-weight: 700;
-}
-
-.view-recent-activity .activity-details > p {
-  margin-bottom: 0px;
-}
-.view-recent-activity .activity-details > em {
-  font-size: 12px;
 }
 
 .activity-item {
