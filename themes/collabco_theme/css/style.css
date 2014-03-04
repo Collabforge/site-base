@@ -962,6 +962,15 @@ margin-left: 0px;
   font-size: 1.15em;
   font-weight: normal;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
+  border-top: 1px solid #DFDFDF;
+  border-left: 1px solid #DFDFDF;
+  border-right: 1px solid #DFDFDF;
+  background:#fff;
+  padding:10px;
+  margin:0;
+  -webkit-border-radius: 10px 10px 0 0;
+  -moz-border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 0 0;
 }
 
 .home_activity h2 strong {
