@@ -1007,7 +1007,7 @@ margin-left: 0px;
 .view-recent-activity li.views-row:hover,
 .view-recent-activity li.views-row:focus,
 .view-recent-activity li.views-row:active {
-  background:#fffaf5;
+  /*background:#fffaf5;*/
 }
 
 .view-recent-activity .activity-details a:first-child{ /*User name label*/
