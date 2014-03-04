@@ -2020,7 +2020,14 @@ form .field-name-field-file-ref {
   display:inline;
 }
 
+.hub-header{
+  background:#F2F2F2;
+  padding:10px;
+}
 
+.hub-header .article_text{
+  font-style: oblique;
+}
 
 
 /**
