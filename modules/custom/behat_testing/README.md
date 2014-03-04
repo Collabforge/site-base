@@ -1,5 +1,9 @@
 This another module for running behat tests on Drupal.
 
+## Setup instructions
+
+This requires at least version 5 of Drush.
+
 To use, copy behat.yml out of the folder and into your sites directory (sites/mysite.example.com)
 
 Make a directory at sites/all/tests which will house your behat feature files
@@ -29,7 +33,7 @@ Make a file called example.feature at sites/all/tests and enter the following co
    #features/example.feature
     Feature: Search
       Search is the most important part of a site!
-    
+
     @search
     Scenario: Search with no test content produces no results
       Given I am on "search/node"

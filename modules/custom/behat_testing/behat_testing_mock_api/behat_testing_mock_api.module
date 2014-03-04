@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * @file
+ * Module file for behat_testing module
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function behat_testing_mock_api_menu() {
+
+  // We don't want this enabled on live sites so allow
+  // a sites config setting that prevents anything from
+  // actually working.
+  if (variable_get('behat_testing_disabled', FALSE)) {
+    return array();
+  }
+
+  $items = array();
+
+  $items['behat-testing-api-endpoint'] = array(
+    'title' => 'API test endpoint',
+    'page callback' => 'behat_testing_mock_api_callback',
+    'access callback' => 'behat_testing_mock_api_callback_access',
+    'file' => 'behat_testing_mock_api.pages.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Access callback for test endpoint.
+ *
+ * @return bool
+ *   TRUE if behat_testing is not disabled
+ */
+function behat_testing_mock_api_callback_access() {
+  return !variable_get('behat_testing_disabled', FALSE);
+}
+
+/**
+ * Set the return value of an expected call to the API
+ *
+ * @param object $request
+ *   A request object which describes what should have been sent to the API
+ *     ->headers array, an array of headers key is the type.
+ *       e.g. array('Content-Type' => 'application/json')
+ *     ->method string 'GET' or 'POST'
+ *     ->args array a list of arguments sent to the URL
+ *     ->body string Body content of request
+ * @param object $response
+ *   A response object containing parameters
+ *     ->headers array, an array of headers key is the type.
+ *       e.g. array('Content-Type' => 'application/json')
+ *     ->status int The status code, this sets the status response header
+ *       so don't include that in headers above.
+ *     ->body string Body content of response
+ */
+function behat_testing_mock_api_set_test_api_response($request, $response) {
+  $path = implode('/', $request->args);
+  $expectations = _behat_testing_mock_api_get_expectations();
+  $expectations['expected'][$path][] = $response;
+  _behat_testing_mock_api_set_expectations($expectations);
+}
+
+/**
+ * Get the expected return of an API call.
+ *
+ * @param array $args
+ *   An array of API arguments
+ *
+ * @return mixed
+ *   The expected return
+ *
+ * @throws Exception
+ *   If this call to the API was not expected
+ */
+function behat_testing_mock_api_get_test_api_response($args) {
+  $path = implode('/', $args);
+
+  $expectations = _behat_testing_mock_api_get_expectations();
+
+  if (empty($expectations['expected'][$path])) {
+    $expectations['unexpected'][$path][] = $args;
+    _behat_testing_mock_api_set_expectations($expectations);
+    throw new Exception('Unexpected API call - ' . $path);
+  }
+
+  $return = array_shift($expectations['expected'][$path]);
+  if (empty($expectations['expected'][$path])) {
+    unset($expectations['expected'][$path]);
+  }
+
+  _behat_testing_mock_api_set_expectations($expectations);
+
+  return $return;
+}
+
+/**
+ * Get all currently set expectations
+ *
+ * @return array
+ *   An array of expectations currently set
+ */
+function _behat_testing_mock_api_get_expectations() {
+  $filename = _behat_testing_mock_api_get_api_filename();
+  $contents = trim(file_get_contents($filename));
+  return empty($contents) ? array() : unserialize($contents);
+}
+
+/**
+ * Set all the expectations
+ *
+ * @param array $expectations
+ *   All the expectations.
+ */
+function _behat_testing_mock_api_set_expectations(array $expectations) {
+  $filename = _behat_testing_mock_api_get_api_filename();
+  file_put_contents($filename, serialize($expectations));
+}
+
+/**
+ * Clear all test expectations.
+ */
+function behat_testing_mock_api_clear_all_api_responses() {
+  _behat_testing_mock_api_set_expectations(array(
+    'expected' => array(),
+    'unexpected' => array(),
+  ));
+}
+
+/**
+ * Get the endpoint URL for a mock API.
+ */
+function behat_testing_mock_api_endpoint_url() {
+  return url('behat-testing-api-endpoint', array('absolute' => TRUE));
+}
+
+/**
+ * Get the name of the API file.
+ *
+ * @return string
+ *   Filename to store the expected API calls in.
+ */
+function _behat_testing_mock_api_get_api_filename() {
+  $filename = variable_get('behat_testing_mock_api_expectation_file', '/tmp/behatapi.txt');
+
+  if (!file_exists($filename)) {
+    file_put_contents($filename, '');
+  }
+
+  return $filename;
+}

@@ -1,7 +1,9 @@
-name = Behat Testing
-description = Behat Testing integration module
+name = Behat Testing Mock API
+description = Behat Testing extension for testing external API integrations
 core = 7.x
 package = Development
+
+dependencies[] = behat_testing
 
 ; Information added by Drupal.org packaging script on 2014-02-11
 version = "7.x-1.0-beta5+11-dev"

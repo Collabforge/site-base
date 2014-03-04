@@ -207,7 +207,7 @@ function behat_testing_admin_editor_submit($form, &$form_state) {
 function behat_testing_setup() {
   $connection_info = Database::getConnectionInfo('default');
   foreach ($connection_info as $target => $value) {
-    $fullprefix = $value['prefix']['default'] . '_st99';
+    $fullprefix = $value['prefix']['default'] . 'simpletest101';
     $connection_info[$target]['prefix'] = array(
       'default' => $fullprefix,
     );
@@ -522,11 +522,11 @@ function behat_testing_reinstall($profile = 'standard', array $additional_form_o
  * over from crashed tests.
  */
 function behat_testing_clean_database() {
-  $tables = db_find_tables('_st99%');
+  $tables = db_find_tables('simpletest101%');
   foreach ($tables as $table) {
-    // Strip the prefix and skip tables without digits following "_st",
-    // e.g. {_st_test_id}.
-    if (preg_match('/_st\d+(.*)/', $table, $matches)) {
+    // Strip the prefix and skip tables without digits following "simpletest",
+    // e.g. {simpletest_test_id}.
+    if (preg_match('/simpletest\d+(.*)/', $table, $matches)) {
       db_drop_table($matches[1]);
     }
   }

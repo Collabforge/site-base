@@ -42,7 +42,7 @@ function behat_testing_drush_command() {
   );
 
   $items['behat-test-clean'] = array(
-    'description' => 'Cleanup testing tables in the db - these are allprefixed with _st99',
+    'description' => 'Cleanup testing tables in the db - these are allprefixed with simpletest101',
     'bootstrap' => DRUSH_BOOTSTRAP_MAX,
     'aliases' => array('btc'),
     'examples' => array(
@@ -57,7 +57,7 @@ function behat_testing_drush_command() {
  * Cleanup behat dbs.
  */
 function drush_behat_testing_behat_test_clean() {
-  $tables = db_find_tables('_st99%');
+  $tables = db_find_tables('simpletest101%');
 
   if (empty($tables)) {
     drush_print('No test tables to drop');

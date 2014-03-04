@@ -32,6 +32,7 @@ class DrupalContext extends MinkContext {
   public $behatTestId = NULL;
   public $current_user = NULL;
   public $base_url = "";
+
   /**
    * Get the currently logged in user.
    */
@@ -98,7 +99,7 @@ class DrupalContext extends MinkContext {
       // of the database for use with behat.
       // Since it hooks into Simpletest it must use
       // simpletests naming convention.
-      $ua = drupal_generate_test_ua('_st99');
+      $ua = drupal_generate_test_ua('simpletest101');
       $session->setRequestHeader('User-Agent', $ua);
     }
 
@@ -140,7 +141,7 @@ class DrupalContext extends MinkContext {
 
         // Reset the db to be the same as the existing site.
         print 'Resetting DB...';
-        behat_testing_copy_database('_st99');
+        behat_testing_copy_database('simpletest101');
         behat_testing_setup_paths();
         print '... DB reset complete';
       }
@@ -383,12 +384,7 @@ class DrupalContext extends MinkContext {
   public function logout() {
     $session = $this->getSession();
     $this->current_user = FALSE;
-    try {
-      $session->visit('user/logout');
-    }
-    catch (Exception $e) {
-      $session->reset();
-    }
+    $session->reset();
   }
 
   /**
@@ -414,10 +410,7 @@ class DrupalContext extends MinkContext {
     }
 
     $session = $this->getSession();
-    $link = $this->generateOneTimeLogin($user);
     $session->visit($link);
-    $button = $this->fixStepArgument('Log in');
-    $this->getSession()->getPage()->pressButton($button);
     $this->current_user = $user;
   }
 
@@ -432,7 +425,7 @@ class DrupalContext extends MinkContext {
    */
   public function generateOneTimeLogin($account) {
     $timestamp = time();
-    return url("/user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login), array('absolute' => TRUE, 'base_url' => $this->base_url));
+    return url("user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login) . '/login', array('absolute' => TRUE, 'base_url' => $this->base_url));
   }
 
   /**
