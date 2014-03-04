@@ -992,9 +992,22 @@ margin-left: 0px;
 }
 
 .view-recent-activity li.views-row {
-  margin-bottom: 0px;
-  margin-top: 10px;
-  padding-bottom: 0px;
+  margin:0 -10px;
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  border-left: 1px solid #DFDFDF;
+  border-right: 1px solid #DFDFDF;
+  background:#fff;
+}
+
+.view-recent-activity li.views-row:last-child{
+  border-bottom: 1px solid #DFDFDF;
+}
+
+.view-recent-activity li.views-row:hover,
+.view-recent-activity li.views-row:focus,
+.view-recent-activity li.views-row:active {
+  background:#fffaf5;
 }
 
 .view-recent-activity .activity-details a:first-child{ /*User name label*/
@@ -1006,11 +1019,6 @@ margin-left: 0px;
   font-weight: 700;
 }
 
-.activity-item {
-  border-bottom: 1px solid #DFDFDF;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
 
 /* User picture --------*/
 
