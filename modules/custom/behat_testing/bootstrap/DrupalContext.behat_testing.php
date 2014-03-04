@@ -408,7 +408,7 @@ class DrupalContext extends MinkContext {
       }
       $this->logout();
     }
-
+    $link = $this->generateOneTimeLogin($user);
     $session = $this->getSession();
     $session->visit($link);
     $this->current_user = $user;
