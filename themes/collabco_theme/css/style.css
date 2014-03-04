@@ -30,11 +30,12 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 22. ADMIN LOGIN - HOME / DASHBOARD PAGE
 23. KNOWLEDGE FEATURE [UNUSED?]
 24. IE Fixes
+25. HUBS
 
 ~ responsive ~
 
-25. RESPONSIVE - CONTENT-SPECIFIC
-25. MOBILE RESPONSIVE MENU
+26. RESPONSIVE - CONTENT-SPECIFIC
+27. MOBILE RESPONSIVE MENU
 
 
 ---------------------------------------------
@@ -2008,10 +2009,21 @@ form .field-name-field-file-ref {
 }
 
 
+ /**
+25. HUBS
+---------------------------------------------
+ */
+
+.article_host_name,
+.article_host_name span{
+  display:inline;
+}
+
+
 
 
 /**
-25. RESPONSIVE - CONTENT-SPECIFIC
+26. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
 /*  -------------*/
 
@@ -2082,7 +2094,7 @@ form .field-name-field-file-ref {
 }
 
 /**
-26. MOBILE RESPONSIVE MENU
+27. MOBILE RESPONSIVE MENU
 ------------------------------------------------------------------
 /*  -------------*/
 
