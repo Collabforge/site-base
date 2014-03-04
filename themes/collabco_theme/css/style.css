@@ -2014,8 +2014,9 @@ form .field-name-field-file-ref {
 ---------------------------------------------
  */
 
-.article_host_name,
-.article_host_name span{
+.ui-inline,
+.ui-inline span,
+.ui-inline div{
   display:inline;
 }
 
