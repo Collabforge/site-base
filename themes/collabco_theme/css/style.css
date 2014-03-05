@@ -2050,9 +2050,10 @@ form .field-name-field-file-ref {
   margin-top:20px;
 }
 
-.hub-header span.label.ui-published-label{
+.hub-header span.label.ui-inline-label{
   float:none;
   margin-top:0;
+  display:inline;
 }
 
 .hub-header .ui-hubs-organisation-thumbnail {
