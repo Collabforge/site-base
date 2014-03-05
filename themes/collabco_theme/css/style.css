@@ -2055,14 +2055,15 @@ form .field-name-field-file-ref {
   margin-top:0;
 }
 
-.hub-header .ui-hubs-organisation-thumbnail {
+.hub-header .ui-hubs-organisation-thumbnail,
+.hub-header .ui-hubs-organisation-thumbnail li{
   float:right;
+  width:inherit;
 }
 
 .hub-header .ui-hubs-organisation-thumbnail img {
   background-color: #fff;
   padding:15px;
-  min-width: 200px
 }
 
 /**
