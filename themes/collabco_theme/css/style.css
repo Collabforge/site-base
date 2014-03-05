@@ -2038,6 +2038,12 @@ form .field-name-field-file-ref {
   font-style: oblique;
 }
 
+.hub-header span.label{
+  padding:4px 8px;
+  float:right;
+  margin-top:5px;
+}
+
 .view-hubs{
   margin-top:20px;
 }
