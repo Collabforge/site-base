@@ -2055,6 +2055,15 @@ form .field-name-field-file-ref {
   margin-top:0;
 }
 
+.hub-header .ui-hubs-organisation-thumbnail {
+  float:right;
+}
+
+.hub-header .ui-hubs-organisation-thumbnail img {
+  background-color: #fff;
+  padding:15px;
+  min-width: 200px
+}
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
