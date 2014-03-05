@@ -2064,10 +2064,17 @@ form .field-name-field-file-ref {
   float:right;
 }
 
-.hub-header .ui-hubs-organisation-thumbnail .ui-org-img img {
-  background-color: #fff;
+
+.hub-header .ui-hubs-organisation-thumbnail .ui-org-img div{
+  background-color:#fff;
   padding:15px;
+  text-align: center;
 }
+
+/*.hub-header .ui-hubs-organisation-thumbnail .ui-org-img img {
+  background-color: #fff;
+  
+}*/
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
