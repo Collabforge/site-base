@@ -2026,12 +2026,12 @@ form .field-name-field-file-ref {
 .ui-inline,
 .ui-inline span,
 .ui-inline div{
-  display:inline;
+  display: inline;
 }
 
 .hub-header{
   background:#F2F2F2;
-  padding:8px 16px;
+  padding: 8px 16px;
 }
 
 .hub-header .article_text{
@@ -2039,9 +2039,11 @@ form .field-name-field-file-ref {
 }
 
 .hub-header span.label{
-  padding:4px 8px;
-  float:right;
-  margin-top:5px;
+  padding: 4px 8px 2px 8px;
+  float: right;
+  margin-top: 5px;
+  opacity: 0.65;
+
 }
 
 .view-hubs{
