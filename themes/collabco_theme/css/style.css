@@ -2050,7 +2050,7 @@ form .field-name-field-file-ref {
   margin-top:20px;
 }
 
-.hub-header .ui-published-label{
+.hub-header span.label.ui-published-label{
   float:none;
   margin-top:0;
 }
