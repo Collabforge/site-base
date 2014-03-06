@@ -2071,6 +2071,17 @@ form .field-name-field-file-ref {
   margin-bottom:0;
 }
 
+.hub-header .nav-tabs > .active > a, 
+.hub-header .nav-tabs > .active > a:hover, 
+.hub-header .nav-tabs > .active > a:focus{
+  background-color: #fbfbfb;
+}
+
+.hub-header .nav-tabs > li > a:hover,
+.hub-header .nav-tabs > li > a:focus{
+  border:none;
+  background-color: #fff;
+}
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
