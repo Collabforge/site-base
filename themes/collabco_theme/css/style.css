@@ -2109,7 +2109,7 @@ form .field-name-field-file-ref {
 .ui-button-sidenav button a:hover,
 .ui-button-sidenav button a:active,
 .ui-button-sidenav button a:focus{
-  color:##333333;
+  color:#333333;
   text-decoration:none;
 }
 
@@ -2141,7 +2141,7 @@ form .field-name-field-file-ref {
 .ui-button-sidenav button.btn-inverse a:active,
 .ui-button-sidenav button.btn-success a:active,
 .ui-button-sidenav button.btn-info a:active{
-  color:##ffffff;
+  color:#ffffff;
 }
 
 
