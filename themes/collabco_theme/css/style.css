@@ -561,13 +561,13 @@ ul.menu {
 }
 
 .btn-group > .btn:first-child {
-  margin-left: 2px;
+  /*margin-left: 2px;
   -webkit-border-top-left-radius: 0px;
   -moz-border-radius-topleft: 0px;
   border-top-left-radius: 0px;
   -webkit-border-bottom-left-radius: 0px;
   -moz-border-radius-bottomleft: 0px;
-  border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;*/
 }
 
 .btn-group > .dropdown-toggle {
