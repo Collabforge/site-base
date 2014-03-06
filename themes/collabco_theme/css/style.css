@@ -2079,7 +2079,7 @@ form .field-name-field-file-ref {
 
 .hub-header .nav-tabs > li > a:hover,
 .hub-header .nav-tabs > li > a:focus{
-  border:none;
+  border-color:transparent;
   background-color: #fff;
 }
 
