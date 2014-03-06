@@ -483,10 +483,6 @@ ul.menu {
   padding:4px 6px;
 }
 
-#header_bottom_right #user_details .btn .caret{
-  margin-top:4px;
-}
-
 #header_bottom_right .account-menu {
   float: right;
   display: inline-block;
