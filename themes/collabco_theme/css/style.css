@@ -2104,6 +2104,11 @@ form .field-name-field-file-ref {
   background-color: #e0e0e0;
 }
 
+.ui-button-sidenav {
+  margin-left:-10px;
+  margin-right:-10px;
+}
+
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
