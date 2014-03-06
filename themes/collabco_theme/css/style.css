@@ -2075,12 +2075,14 @@ form .field-name-field-file-ref {
 .hub-header .nav-tabs > .active > a:hover, 
 .hub-header .nav-tabs > .active > a:focus{
   background-color: #fbfbfb;
+  -webkit-box-shadow:inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow:inset 0 1px 0 0 #ffffff;
+  box-shadow:inset 0 1px 0 0 #ffffff;
 }
 
 .hub-header .nav-tabs > li > a:hover,
 .hub-header .nav-tabs > li > a:focus{
   border-bottom:transparent;
-  background-color: #fff;
 }
 
 /**
