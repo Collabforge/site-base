@@ -2065,6 +2065,12 @@ form .field-name-field-file-ref {
   background-color:#fff;
   padding:15px;
   text-align: center;
+  margin-bottom:1em;
+}
+
+.hub-header .ui-hubs-organisation-thumbnail .user-picture-small div {
+  text-align: center;
+  margin-top:0.875em;
 }
 
 .hub-header .nav.nav-tabs{
