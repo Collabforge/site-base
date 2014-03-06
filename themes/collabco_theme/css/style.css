@@ -2027,6 +2027,13 @@ form .field-name-field-file-ref {
 ---------------------------------------------
  */
 
+.node-type-hub .topic_host{
+  background-color:#f2f2f2;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
 .ui-inline,
 .ui-inline span,
 .ui-inline div{
