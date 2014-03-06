@@ -2034,6 +2034,12 @@ form .field-name-field-file-ref {
   padding: 8px 16px;
 }
 
+.hub-header.hub-detail-page{
+  padding-bottom:0;
+  margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
+  margin-right:-10px;
+}
+
 .hub-header .article_text{
   font-style: oblique;
 }
