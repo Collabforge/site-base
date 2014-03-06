@@ -2100,9 +2100,14 @@ form .field-name-field-file-ref {
   background-color: #e0e0e0;
 }
 
-ul.inline.ui-button-sidenav {
-  margin-left:-10px;
-  margin-right:-10px;
+.ui-button-sidenav,
+.ui-button-sidenav button {
+  width:100%;
+}
+
+.ui-button-sidenav a{
+  color:#fff;
+  text-decoration:none;
 }
 
 /**
