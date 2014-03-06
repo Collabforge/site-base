@@ -2067,6 +2067,10 @@ form .field-name-field-file-ref {
   text-align: center;
 }
 
+.hub-header .nav.nav-tabs{
+  margin-bottom:0;
+}
+
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
