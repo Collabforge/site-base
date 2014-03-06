@@ -514,6 +514,7 @@ ul.menu {
  */
 
 .btn {
+  /*
   background-image: none;
   background-color: white;
   line-height: 15px;
@@ -521,6 +522,7 @@ ul.menu {
   box-shadow: none;
   border-image: none;
   color: #999999;
+  */
 }
 
 .btn:hover,
@@ -529,18 +531,24 @@ ul.menu {
 .btn.active,
 .btn.disabled,
 .btn[disabled] {
+  /*
   background-color: #fff;
   *background-color: #fff;
+  */
 }
 
 .btn-group > .btn + .dropdown-toggle {
+  /*
   box-shadow: none;
+  */
 }
 
 .btn-group > .btn,
 .btn-group > .dropdown-menu,
 .btn-group > .popover {
+  /*
   font-size: 13px;
+  */
 }
 
 .dropdown-toggle:hover,
