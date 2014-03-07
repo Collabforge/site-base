@@ -632,13 +632,12 @@ ul.menu {
   display:inline;
 }
 
-
-/* Account Settings form - radio buttons */
-
-#user-profile-form .form-radios input[type="radio"]{
+.form-radios input[type="radio"]{
   margin-top:0;
   margin-right: 2px;
 }
+
+/* Account Settings form - radio buttons */
 
 #user-profile-form label[for="edit-node-notify"],
 #user-profile-form label[for="edit-comment-notify"]{
