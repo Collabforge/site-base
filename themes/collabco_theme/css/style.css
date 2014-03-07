@@ -2117,6 +2117,10 @@ form .field-name-field-file-ref {
   display:block;
 }
 
+.ui-button-sidenav a.btn.btn-danger{
+  margin-top:1em;
+}
+
 
 
 /**
