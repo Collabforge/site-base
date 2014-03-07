@@ -509,43 +509,101 @@ ul.menu {
 ---------------------------------------------
  */
 
-.btn {
-  /*
-  background-image: none;
-  background-color: white;
-  line-height: 15px;
-  border:none;
-  box-shadow: none;
-  border-image: none;
-  color: #999999;
-  */
+
+/* Form submit buttons - rewrites open_framework.css -------------*/
+
+input.form-submit{
+  height:auto;
+  margin-left:5px;
+  border:1px solid #d5d5d5;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+  background-image:-webkit-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image:-ms-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image:-moz-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image:-o-linear-gradient(top,#fff 0%,#e6e6e6 100%);
+  background-image:webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#e6e6e6));
+  background-image:linear-gradient(to bottom,#fff 0%,#e6e6e6 100%);
 }
 
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active,
-.btn.disabled,
-.btn[disabled] {
-  /*
-  background-color: #fff;
-  *background-color: #fff;
-  */
+input.form-submit:hover{
+  background-image:-webkit-linear-gradient(top,#f5f5f5 0%,#e6e6e6 100%);
+  background-image:-ms-linear-gradient(top,#f5f5f5 0%,#e6e6e6 100%);
+  background-image:-moz-linear-gradient(top,#f5f5f5 0%,#e6e6e6 100%);
+  background-image:-o-linear-gradient(top,#f5f5f5 0%,#e6e6e6 100%);
+  background-image:-webkit-gradient(linear,left top,left bottom,color-stop(0,#f5f5f5),color-stop(1,#e6e6e6));
+  background-image:linear-gradient(to bottom,#f5f5f5 0%,#e6e6e6 100%);
 }
 
-.btn-group > .btn + .dropdown-toggle {
-  /*
-  box-shadow: none;
-  */
+input.form-submit.form-btn-success{
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #5bb75b;
+  *background-color: #51a351;
+  background-image: -moz-linear-gradient(top, #62c462, #51a351);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#51a351));
+  background-image: -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: -o-linear-gradient(top, #62c462, #51a351);
+  background-image: linear-gradient(to bottom, #62c462, #51a351);
+  background-repeat: repeat-x;
+  border-color: #51a351 #51a351 #387038;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff51a351', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
-.btn-group > .btn,
-.btn-group > .dropdown-menu,
-.btn-group > .popover {
-  /*
-  font-size: 13px;
-  */
+input.form-submit.form-btn-success:hover,
+input.form-submit.form-btn-success:focus,
+input.form-submit.form-btn-success:active,
+input.form-submit.form-btn-success.active,
+input.form-submit.form-btn-success.disabled,
+input.form-submit.form-btn-success[disabled] {
+  color: #ffffff;
+  background-color: #51a351;
+  *background-color: #499249;
 }
+
+input.form-submit.form-btn-success:active,
+input.form-submit.form-btn-success.active {
+  background-color: #408140 \9;
+}
+
+
+input.form-submit.form-btn-danger{
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #da4f49;
+  *background-color: #bd362f;
+  background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
+  background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
+  background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
+  background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
+  background-repeat: repeat-x;
+  border-color: #bd362f #bd362f #802420;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+input.form-submit.form-btn-danger:hover,
+input.form-submit.form-btn-danger:focus,
+input.form-submit.form-btn-danger:active,
+input.form-submit.form-btn-danger.active,
+input.form-submit.form-btn-danger.disabled,
+input.form-submit.form-btn-danger[disabled] {
+  color: #ffffff;
+  background-color: #bd362f;
+  *background-color: #a9302a;
+}
+
+input.form-submit.form-btn-danger:active,
+input.form-submit.form-btn-danger.active {
+  background-color: #942a25 \9;
+}
+
+/* Dropdowns  -------------*/
 
 .dropdown-toggle:hover,
 .dropdown-toggle:focus,
@@ -558,16 +616,6 @@ ul.menu {
   *background-color: #d9d9d9;
   box-shadow: none;
   border-image: none;
-}
-
-.btn-group > .btn:first-child {
-  /*margin-left: 2px;
-  -webkit-border-top-left-radius: 0px;
-  -moz-border-radius-topleft: 0px;
-  border-top-left-radius: 0px;
-  -webkit-border-bottom-left-radius: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  border-bottom-left-radius: 0px;*/
 }
 
 .btn-group > .dropdown-toggle {
@@ -1457,15 +1505,15 @@ form .field-name-field-file-ref {
 }
 
 #comment-form {
-  font-size: 12px;
+  /*font-size: 12px;*/
 }
 
 #comment-form select {
-  font-size: 12px;
+  /*font-size: 12px;*/
 }
 
 #comment-form input {
-  font-size: 12px;
+  /*font-size: 12px;*/
 }
 
 
