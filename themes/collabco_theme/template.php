@@ -26,6 +26,11 @@ function collabco_theme_field_widget_form_alter(&$element, &$form_state, $contex
  * Impliments hook_form_alter().
  */
 function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
-
+  $form['actions']['submit']['#attributes']['class'][] = 'form-btn-success';
+  $form['actions']['delete']['#attributes']['class'][] = 'form-btn-danger';
+  $form['actions']['cancle']['#attributes']['class'][] = 'form-btn-danger';  
 }
+
+
+
 
