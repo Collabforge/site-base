@@ -515,6 +515,7 @@ ul.menu {
 input.form-submit{
   height:auto;
   margin-left:5px;
+  text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.85);
   border:1px solid #d5d5d5;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
