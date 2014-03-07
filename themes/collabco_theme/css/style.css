@@ -625,11 +625,15 @@ ul.menu {
 ---------------------------------------------
  */
 
-/* Account Settings form - radio buttons */
 
-#user-profile-form .form-radios label{
-  display:inline-block;
+/* Generic Radio button forms */
+.form-radios label,
+.form-radios input{
+  display:inline;
 }
+
+
+/* Account Settings form - radio buttons */
 
 #user-profile-form .form-radios input[type="radio"]{
   margin-top:0;
