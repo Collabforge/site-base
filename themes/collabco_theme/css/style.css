@@ -2108,48 +2108,13 @@ form .field-name-field-file-ref {
   background-color: #e0e0e0;
 }
 
-.ui-button-sidenav,
-.ui-button-sidenav button {
+.ui-button-sidenav{
   width:100%;
 }
 
-.ui-button-sidenav button a,
-.ui-button-sidenav button a:hover,
-.ui-button-sidenav button a:active,
-.ui-button-sidenav button a:focus{
-  color:#333333;
-  text-decoration:none;
-}
-
-
-.ui-button-sidenav button.btn-primary a,
-.ui-button-sidenav button.btn-warning a,
-.ui-button-sidenav button.btn-danger a,
-.ui-button-sidenav button.btn-inverse a,
-.ui-button-sidenav button.btn-success a,
-.ui-button-sidenav button.btn-info a,
-
-.ui-button-sidenav button.btn-primary a:hover,
-.ui-button-sidenav button.btn-warning a:hover,
-.ui-button-sidenav button.btn-danger a:hover,
-.ui-button-sidenav button.btn-inverse a:hover,
-.ui-button-sidenav button.btn-success a:hover,
-.ui-button-sidenav button.btn-info a:hover,
-
-.ui-button-sidenav button.btn-primary a:focus,
-.ui-button-sidenav button.btn-warning a:focus,
-.ui-button-sidenav button.btn-danger a:focus,
-.ui-button-sidenav button.btn-inverse a:focus,
-.ui-button-sidenav button.btn-success a:focus,
-.ui-button-sidenav button.btn-info a:focus,
-
-.ui-button-sidenav button.btn-primary a:active,
-.ui-button-sidenav button.btn-warning a:active,
-.ui-button-sidenav button.btn-danger a:active,
-.ui-button-sidenav button.btn-inverse a:active,
-.ui-button-sidenav button.btn-success a:active,
-.ui-button-sidenav button.btn-info a:active{
-  color:#ffffff;
+.ui-button-sidenav a.btn {
+  margin-bottom:0.5em;
+  display:block;
 }
 
 
