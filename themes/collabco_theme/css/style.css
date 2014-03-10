@@ -1726,7 +1726,7 @@ body.node-type-conversation h1#page-title {
   padding: 12px;
 }
 
-#comments .comment .field-name-comment-body {
+.comment .field-name-comment-body {
   font-weight: normal;
   font-size: 12px;
   line-height: 1.5;
