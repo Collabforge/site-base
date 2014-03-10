@@ -1754,9 +1754,7 @@ body.node-type-conversation h1#page-title {
   padding-right: 28px;
 }
 
-#comments .content,
 .comment .content {
-  /*background: white;*/
   margin: 0px;
   padding: 12px;
 }
@@ -1764,7 +1762,8 @@ body.node-type-conversation h1#page-title {
 #comments .field-name-comment-body {
   margin-bottom: 0px;
 }
-#comments .links {
+
+.comment .links {
   margin: 10px 10px 0px 0px;
   display: block;
 }
