@@ -1207,13 +1207,16 @@ ul.recent_topicslist li.views-row-first {
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 86px;
   text-transform: uppercase;
   color: #FFF;
   background: #333;
   padding: 8px 20px;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
   text-align: left;
+}
+
+.ie .topic_feature_title { /* fixes haslayout bug for IE */
+  width:90px;
 }
 
 .topic_feature_title:before{
