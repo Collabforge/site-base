@@ -1186,7 +1186,7 @@ ul.recent_topicslist li.views-row-first {
 
 .item-list ul li.topic-feature,
 #block-quicktabs-topics .item-list ul li { /*Overwrite default list stylings */
-  margin:0;
+  margin:0 -10px 1em -10px;
 }
 
 .topic-feature .recommended {
