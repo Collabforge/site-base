@@ -1220,7 +1220,7 @@ ul.recent_topicslist li.views-row-first {
   font-family:'FontAwesome';
   font-weight: normal;
   font-style: normal;
-  display: inline-block;
+  display: inline;
   content:"\F017"; /* Clock icon*/
   padding-right: 6px;
 }
