@@ -1317,13 +1317,6 @@ h2.title {
 .contentarticle .field-name-field-featured-image,
 .contentarticle .field-name-field-featured-image { display: none; }
 
-
-/* -- feature image box */
-
-.topic_feature_left img{
-  border:1px solid #F2F2F2;
-}
-
 /* -- following topics */
 
 .topic-comment-blob { border-bottom: 1px solid #6A6767; }
