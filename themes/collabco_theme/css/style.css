@@ -1891,6 +1891,7 @@ body.node-type-conversation h1#page-title {
 .field-type-text-with-summary {
   border-bottom: 1px solid #CCC;
   margin-bottom:1em;
+  padding-bottom:1em;
 }
 
 .view-member-organisations ul {
