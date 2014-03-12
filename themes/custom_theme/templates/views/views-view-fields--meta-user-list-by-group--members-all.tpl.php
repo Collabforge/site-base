@@ -26,7 +26,22 @@
 
 
 ?>
-    
+ 
+<div class="row-fluid">
+  <div class="span12">
+      <div class="span3">
+        <div class="user-picture-small"><?php echo $fields['picture']->content; ?>  </div>
+      </div>
+      <div class="span9">
+        <h5><span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
+        <span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
+      </div>
+  </div>
+</div>
+
+
+ <!-- OLD SHIT
+
       <table class="user_block">
         <tr>
           <td>
@@ -43,4 +58,9 @@
           </td>        
         </tr>
       </table>
+-->
+
+
+
+
    
