@@ -33,8 +33,8 @@
   <div class="span12">
     <a href='<?php echo $base_path . "node/$row->nid"; ?>'
        <i class="icon-file"></i>
-       <?php echo $row->node_title; ?>
-       <?php echo $fields['body']->content;?>
+       <h2><?php echo $row->node_title; ?></h2>
+       <p><?php echo $fields['body']->content;?></p>
     </a>
   </div>
 </div>
