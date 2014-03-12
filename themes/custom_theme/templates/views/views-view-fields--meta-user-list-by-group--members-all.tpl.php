@@ -26,21 +26,25 @@
 
 
 ?>
-    
-      <table class="user_block">
-        <tr>
-          <td>
-            <div class="user-picture-small"><?php echo $fields['picture'] ->content;?> </div>
-          </td>
-          <td>
-            <p>
-              Hosted by <span class="article_host_name"><a href="#"><?php echo $fields['name'] ->content;?> </a></span><br />
-              <?php echo $fields['field_business_position'] ->content;?>  &#64; <?php echo $fields['field_organisation_ref'] ->content;?> 
-            </p>
-          </td>
-          <td>
-              <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i></a> 
-          </td>        
-        </tr>
-      </table>
+ 
+<div class="row-fluid">
+  <div class="span12">
+      <div class="span3">
+        <div class="user-picture-small"><?php echo $fields['picture']->content; ?>  </div>
+      </div>
+      <div class="span9">
+        <h2 class="ui-no-margin"><span class="ui-inline"><?php echo $fields['name']->content;?></span></h2>
+        <strong><?php echo $fields['field_business_position']->content;?></strong>
+        <?php echo $fields['field_organisation_ref']->content;?>
+        <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i> Remove from this hub</a>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
    
