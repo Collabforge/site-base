@@ -34,6 +34,14 @@ else  {
   
 } ?>
 
+<div class="index_item library-file row-fluid <?php echo $library_type;?>" >
+    <div class="span12">
+      <h3><i class="icon-file icon-2x"></i>  <span class="ui-inline-label"><?php echo $fields['title'] ->content;?> </span></h3>
+    </div>
+</div>
+
+
+<!-- OLD VERSION
 <div class=index_item row-fluid <?php echo $library_type;?> >
   <div class="span2">
     <?php echo $fields['field_featured_ko_image'] ->content;?> 
@@ -59,3 +67,5 @@ else  {
     </div>
   </div>
 </div>
+
+-->
