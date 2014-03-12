@@ -36,7 +36,7 @@
         <h5><span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
         <span class="ui-inline"><strong><?php echo $fields['field_business_position']->content;?></strong></span><br>
         <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span><br>
-        <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i></a>
+        <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i> Remove member from this hub</a>
       </div>
   </div>
 </div>

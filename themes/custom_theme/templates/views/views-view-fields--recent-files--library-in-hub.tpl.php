@@ -35,11 +35,11 @@ else  {
 } ?>
 
 <div class="index_item library-file row-fluid <?php echo $library_type;?>" >
-    <div class="span12">
-      <h3>
-       <i class="icon-file"></i> <?php echo $fields['title'] ->content;?>
-      </h3>
-    </div>
+  <div class="span12">
+    <h3>
+     <i class="icon-file"></i> <?php echo $fields['title'] ->content;?>
+    </h3>
+  </div>
 </div>
 
 
