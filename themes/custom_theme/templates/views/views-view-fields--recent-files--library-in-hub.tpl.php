@@ -37,11 +37,12 @@ else  {
 <div class="index_item library-file row-fluid <?php echo $library_type;?>" >
     <div class="span12">
       
-      <h3>
-        <span class="icon-stack">
+      <span class="icon-stack">
           <i class="icon-check-empty icon-stack-base"></i>
           <i class="icon-file"></i>
-        </span>
+      </span>
+      
+      <h3>
        <?php echo $fields['title'] ->content;?>
       </h3>
 
