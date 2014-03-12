@@ -82,7 +82,6 @@
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
   <div class="nodewrapper">
   <div class="userpicture"><?php /* add "print $user_picture;" here to fix node user profiles displaying */ ?></div>
-
   <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
     <?php if (!$page): ?>
       <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
@@ -99,7 +98,8 @@
     <?php
       $may_edit = user_access('edit any conversation content') || (user_access('edit own conversation content') && $uid == $user->uid);
       if ($may_edit) {
-        print "<div class='edit_your_topic'>  <a href='/node/$nid/edit'><i class='icon-edit'></i> Edit this topic</a></div><br><br>";
+        global $base_path;
+        print "<div class='edit_your_topic'>  <a href='{$base_path}node/$nid/edit'><i class='icon-edit'></i> Edit this topic</a></div><br><br>";
       }
     ?>
     <div class="contentarticle"<?php print $content_attributes; ?>>
