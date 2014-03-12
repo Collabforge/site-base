@@ -29,7 +29,7 @@
   $library_type = ($fields['sticky']->raw == 1) ? 'sticky' : 'non-sticky';
 ?>
 
-<div class="index_item library-file row-fluid <?php echo $library_type; ?>">
+<div class="ui-library-file row-fluid <?php echo $library_type; ?>">
   <div class="span12">
     <a href='<?php echo $base_path . "node/$row->nid"; ?>'
        <i class="icon-file"></i>

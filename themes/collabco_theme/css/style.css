@@ -2175,6 +2175,14 @@ form .field-name-field-file-ref {
 }
 
 
+.ui-library-file {
+  background-color:#f2f2f2;
+  border:1px solid #ddd;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;
+}
+
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
