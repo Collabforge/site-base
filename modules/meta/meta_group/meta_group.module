@@ -1,0 +1,251 @@
+<?php
+
+
+
+/**
+ * Implements hook_views_api().
+ */
+function meta_group_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'meta_group') . '/includes/views',
+  );
+}
+
+function meta_group_og_user_access_alter(&$permissions, $context) {
+	if ($context['group_type'] == 'node') {
+		$node = $context['group'];
+		$group_is_close = _meta_group_is_close($node);
+
+		$permissions['subscribe'] = true;
+		$permissions['subscribe without approval'] = ($group_is_close == false);
+	}
+}
+
+function _meta_group_is_close($node) {
+	$wrapper = entity_metadata_wrapper('node', $node);
+	if (!isset($wrapper->{META_OG_ACCESS_FIELD})) {
+		return false;
+	}
+	return $wrapper->{META_OG_ACCESS_FIELD}->value() == META_OG_ACCESS_CLOSE;
+}
+
+function meta_group_menu() {
+	$items = array();
+
+	$items['profile/hubs'] = array(
+	    'title' => 'Your Hubs',
+	    'description' => 'Hubs you have hosted or joined',
+	    'page callback' => '_meta_group_page_profile_hubs',
+	    'access callback' => true,
+	);
+
+	$items['node/%node/topics'] = array(
+	    'title' => 'Topics',
+	    'description' => 'Topics within this hub',
+	    'page callback' => '_meta_group_page_topics',
+	    'page arguments' => array(1),
+	    'access callback' => true,
+	);
+	$items['node/%node/library'] = array(
+	    'title' => 'Library',
+	    'description' => 'Library of this hub',
+	    'page callback' => '_meta_group_page_library',
+	    'page arguments' => array(1),
+	    'access callback' => true,
+	);
+	$items['node/%node/members'] = array(
+	    'title' => 'Members',
+	    'description' => 'This Hub\'s members',
+	    'page callback' => '_meta_group_page_members',
+	    'page arguments' => array(1),
+	    'access callback' => true,
+	);
+	$items['node/%node/add/member'] = array(
+	    'title' => 'Add a member',
+	    'description' => '',
+	    'page callback' => 'drupal_get_form',
+	    'page arguments' => array('meta_group_add_user_form', 1),
+	    'access callback' => true,
+	);
+	$items['node/%node/add/member/co-owner'] = array(
+	    'title' => 'Add a co-owner',
+	    'description' => '',
+	    'page callback' => 'drupal_get_form',
+	    'page arguments' => array('meta_group_add_user_form', 1, 'co-owner'),
+	    'access callback' => true,
+	);
+	return $items;
+}
+
+
+function _meta_group_page_profile_hubs() {
+	$groups_hosted = views_embed_view('meta_node_list_group_by_user', 'list');
+	$groups_joined = views_embed_view('meta_membership_list_group_by_user', 'list');
+	$content = t('<h2>Hubs You Hosted</h2> !groups_hosted <h2>Hubs You Joined</h2> !groups_joined', array(
+		'!groups_hosted' => $groups_hosted
+		, '!groups_joined' => $groups_joined
+	));
+	return $content;
+}
+
+function _meta_group_page_topics($node) {
+	return views_embed_view('join_the_conversation', 'topics_of_hub', $node->nid);
+}
+
+
+function _meta_group_page_library($node) {
+	 return views_embed_view('recent_files', 'library_in_hub', $node->nid);
+}
+
+function _meta_group_page_members($node) {
+	 return views_embed_view('meta_user_list_by_group', 'members_all', $node->nid);
+}
+
+function meta_group_theme($existing, $type, $theme, $path)
+{
+  return array(
+      'group_actions_template' => array(
+        'template' => 'group-actions-template',
+        'variables' => array(
+        	'gid' => 0
+        )
+     ),
+  ); 
+}
+
+/**
+ * Implements hook_block_info().
+ *
+ */
+function meta_group_block_info() {
+	$blocks = array();
+	$blocks['group_actions'] = array(
+		'info' => t('Actions for a specific Group')
+		, 'cache' => DRUPAL_NO_CACHE,
+	);
+	return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ *
+ */
+function meta_group_block_view($delta = '') {
+  switch ($delta) {
+    case 'group_actions':
+      $node = menu_get_object();
+      if (!isset($node->nid)) {
+      	return;
+      }
+      if (!og_is_group('node', $node->nid)) {
+      	return;
+      }
+      $gid = $node->nid;
+      $block['subject'] = NULL;
+    
+        $content = theme('group_actions_template', array('gid' => $gid));
+        $block['content'] = $content;
+     // $block['content'] = _meta_group_block_actions($gid);
+      break;
+  }
+  return $block;
+}
+
+
+function meta_group_preprocess_group_actions_template(&$variables) {
+
+
+	$gid = $variables['gid'];
+      
+	global $user;
+        $variables['join_a_group']= FALSE;       
+        $variables['add_a_member'] = FALSE;
+        $variables['add_a_co_member'] = FALSE;
+        $variables['leave_a_group'] = FALSE ;
+        $variables['send_for_revision'] = FALSE;
+        $variables['gid']= $gid;
+	$links = array();
+
+	$is_admin = user_access('administer group') or og_user_access('node', $gid, 'administer group');
+
+	// ** Add more co-owner
+	// If:
+	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
+	// 
+        
+        if ($is_admin &&  meta_og_state_is_draft($node->nid) & !arg(2)) { 
+            $variables['send_for_revision'] = TRUE;
+        }
+        
+	if ($is_admin) {
+		$variables['add_a_co_member'] = TRUE;
+                
+	}
+
+	// ** Add a member
+	// If:
+	//	- user has 'add user' permission (should have been set for members)
+	//  
+	if ($is_admin or og_user_access('node', $gid, 'add user')) {
+		$variables['add_a_member'] = TRUE;
+	}
+
+	// ** Subscribe to group
+	// If:
+	//	- user is not a member
+	//  
+	if (!og_is_member('node', $gid)) {
+            $variables['join_a_group'] = TRUE;	
+	}
+
+
+	// ** Leave the group
+	// If:
+	//	- user is already a member
+	//  
+	if (og_is_member('node', $gid)) {          
+              $variables['leave_a_group'] = TRUE;       
+	}
+      
+}
+/**
+ * $type: can be 'co-owner' or ''
+ *
+ */
+function meta_group_add_user_form($form, &$form_state, $node, $type='') {
+	module_load_include('inc', 'og_ui', 'og_ui.admin');
+	$form = og_ui_add_users($form, $form_state, 'node', $node->nid);
+	$form['og_user']['roles']['#access'] = false;
+	$form['membership_fields']['og_membership_request']['#access'] = false;
+	$meta_roles = array();
+	foreach ($form['og_user']['roles']['#options'] as $rid => $role_name) {
+		if ($type == 'co-owner' and $role_name == OG_ADMINISTRATOR_ROLE) {
+			$meta_roles[] = $rid;
+		}
+	}
+	$form_state['meta_roles'] = $meta_roles;
+	return $form;
+}
+
+
+/**
+ * Validate handler; Add users to group.
+ */
+function meta_group_add_user_form_validate($form, &$form_state) {
+	og_ui_add_users_validate($form, $form_state);
+}
+
+
+/**
+ * Submit handler; Add users to group.
+ */
+function meta_group_add_user_form_submit($form, &$form_state) {
+	foreach ($form_state['meta_roles'] as $role) {
+		$form_state['values']['roles'][$role] = $role;
+	}
+	og_ui_add_users_submit($form, $form_state);
+}
+
+

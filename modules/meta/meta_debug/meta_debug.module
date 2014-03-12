@@ -1,0 +1,20 @@
+<?php
+
+
+function meta_debug_boot() {
+  alexar_debug(true);
+}
+
+function alexar_debug($debug=true) {
+  ini_set('display_errors', $debug);
+  ini_set('display_startup_errors', $debug);
+  error_reporting(E_ALL);
+}
+
+function x($var, $die=true) {
+  echo '<xmp>';
+  print_r($var);
+  echo '</xmp>';
+  empty($die) or die(); 
+}
+
