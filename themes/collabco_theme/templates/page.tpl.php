@@ -10,10 +10,26 @@
   </div>
 </div>
 <!-- /#skipnav -->
-<?php if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary_nav))): ?>
-<div id="admin-shortcuts" class="admin-shortcuts clearfix"> <?php print render($secondary_nav); ?> <?php print render($page['admin_shortcuts']); ?> </div>
-<?php endif; ?>
+
+
+
+
+<?php
+/*
+if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary_nav))) {
+  ?>
+  <div id="admin-shortcuts" class="admin-shortcuts clearfix">
+    <?php print render($secondary_nav); ?> <?php print render($page['admin_shortcuts']); ?>
+  </div>
+  <?php
+}
+*/
+
+?>
 <!-- /#admin-shortcuts -->
+
+
+
 
 <!-- new Header Top block -->
 <?php if (($page['header_top_middle']) || ($page['search_box']) || ($page['header_bottom_left']) || ($page['header_bottom_right'])): ?>
