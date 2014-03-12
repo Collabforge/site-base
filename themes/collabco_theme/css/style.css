@@ -1015,7 +1015,7 @@ margin-left: 0px;
 /* Your feed - from content you're following --------------*/
 
 .home_activity h2 {
-  margin: 1em 0;
+  margin: 0;
   font-size: 1.15em;
   font-weight: normal;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
