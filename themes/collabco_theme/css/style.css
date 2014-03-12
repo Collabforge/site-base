@@ -2174,7 +2174,6 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
-
 .ui-library-file {
   background-color:#f2f2f2;
   border:1px solid #ddd;
@@ -2186,12 +2185,17 @@ form .field-name-field-file-ref {
   padding:10px 20px;
 }
 
+.ui-library-file:hover,
+.ui-library-file:focus,
+.ui-library-file:active{
+  background-color: #FFEFDB;
+  border-color:#ed6a26;
+}
+
 .ui-library-file a:hover,
 .ui-library-file a:focus,
 .ui-library-file a:active{
   text-decoration: none;
-  background-color: #FFEFDB;
-  border-color:#ed6a26;
 }
 
 
