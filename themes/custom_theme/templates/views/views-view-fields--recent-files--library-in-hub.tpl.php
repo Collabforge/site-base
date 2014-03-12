@@ -23,25 +23,21 @@
  *
  * @ingroup views_templates
  */
-
-
 ?>
-<?php if ($fields['sticky'] ->raw == 1) {
-  $library_type = 'sticky';
-}
-else  {
-    $library_type = 'non-sticky';
-  
-} ?>
+<?php
+  global $base_path;
+  $library_type = ($fields['sticky']->raw == 1) ? 'sticky' : 'non-sticky';
+?>
 
-<div class="index_item library-file row-fluid <?php echo $library_type;?>" >
-    <div class="span12">
-      <h3>
-       <i class="icon-file"></i> <?php echo $fields['title'] ->content;?>
-      </h3>
-    </div>
+<div class="index_item library-file row-fluid <?php echo $library_type; ?>">
+  <div class="span12">
+    <a href='<?php echo $base_path . "node/$row->nid"; ?>'
+       <i class="icon-file"></i>
+       <?php echo $row->node_title; ?>
+       <?php echo $fields['body']->content;?>
+    </a>
+  </div>
 </div>
-
 
 <!-- OLD VERSION
 <div class=index_item row-fluid <?php echo $library_type;?> >
