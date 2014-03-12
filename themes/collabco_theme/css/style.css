@@ -129,6 +129,10 @@ table thead th {
   background-color: #f2f2f2;
 }
 
+.ui-no-margin{
+  margin:0;
+}
+
 /* Generic content page headings -------------*/
 
 #page-title { 
