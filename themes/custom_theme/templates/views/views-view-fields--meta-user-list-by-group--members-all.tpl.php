@@ -27,7 +27,7 @@
 
 ?>
  
-<div class="row-fluid index-item">
+<div class="row-fluid index_item">
   <div class="span1">
     <div class="user-picture-small"><?php echo $fields['picture']->content; ?>  </div>
   </div>
