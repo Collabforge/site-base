@@ -36,16 +36,9 @@ else  {
 
 <div class="index_item library-file row-fluid <?php echo $library_type;?>" >
     <div class="span12">
-      
-      <span class="icon-stack">
-          <i class="icon-check-empty icon-stack-base"></i>
-          <i class="icon-file"></i>
-      </span>
-      
       <h3>
-       <?php echo $fields['title'] ->content;?>
+       <i class="icon-file"></i> <?php echo $fields['title'] ->content;?>
       </h3>
-
     </div>
 </div>
 
