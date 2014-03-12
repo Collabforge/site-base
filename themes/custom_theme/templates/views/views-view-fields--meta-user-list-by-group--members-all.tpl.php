@@ -34,31 +34,15 @@
       </div>
       <div class="span9">
         <h5><span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
-        <span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
+        <span class="ui-inline"><strong><?php echo $fields['field_business_position']->content;?></strong></span> <br>
+        at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span><br>
+        <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i></a>
       </div>
   </div>
 </div>
 
 
- <!-- OLD SHIT
 
-      <table class="user_block">
-        <tr>
-          <td>
-            <div class="user-picture-small"><?php echo $fields['picture'] ->content;?> </div>
-          </td>
-          <td>
-            <p>
-              Hosted by <span class="article_host_name"><a href="#"><?php echo $fields['name'] ->content;?> </a></span><br />
-              <?php echo $fields['field_business_position'] ->content;?>  &#64; <?php echo $fields['field_organisation_ref'] ->content;?> 
-            </p>
-          </td>
-          <td>
-              <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i></a> 
-          </td>        
-        </tr>
-      </table>
--->
 
 
 
