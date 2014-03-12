@@ -20,8 +20,7 @@ $handler->display->display_options['query']['options']['distinct'] = TRUE;
 $handler->display->display_options['exposed_form']['type'] = 'basic';
 $handler->display->display_options['pager']['type'] = 'none';
 $handler->display->display_options['pager']['options']['offset'] = '0';
-$handler->display->display_options['style_plugin'] = 'grid';
-$handler->display->display_options['style_options']['columns'] = '2';
+$handler->display->display_options['style_plugin'] = 'default';
 $handler->display->display_options['row_plugin'] = 'fields';
 /* Relationship: OG membership: OG membership from User */
 $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';

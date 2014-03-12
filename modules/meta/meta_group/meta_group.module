@@ -168,8 +168,8 @@ function meta_group_preprocess_group_actions_template(&$variables) {
         $variables['gid']= $gid;
 	$links = array();
 
-	$is_admin = user_access('administer group') or og_user_access('node', $gid, 'administer group');
-
+	$is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
+       
 	// ** Add more co-owner
 	// If:
 	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
@@ -205,7 +205,9 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user is already a member
 	//  
-	if (og_is_member('node', $gid)) {          
+      
+	if (og_is_member('node', $gid) & !$is_admin) {   
+          
               $variables['leave_a_group'] = TRUE;       
 	}
       
