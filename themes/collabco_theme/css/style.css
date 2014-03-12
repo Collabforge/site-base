@@ -2178,9 +2178,20 @@ form .field-name-field-file-ref {
 .ui-library-file {
   background-color:#f2f2f2;
   border:1px solid #ddd;
+  display:block;
+  margin-bottom:1em;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
+  padding:10px 20px;
+}
+
+.ui-library-file a:hover,
+.ui-library-file a:focus,
+.ui-library-file a:active{
+  text-decoration: none;
+  background-color: #FFEFDB;
+  border-color:#ed6a26;
 }
 
 
