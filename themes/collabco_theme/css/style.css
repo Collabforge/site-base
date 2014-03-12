@@ -49,7 +49,7 @@ GLOBAL Stylesheet - Please DO NOT add theme-specific fonts sizes, images and bac
 
 
 body {
-  background: #fbfbfb url('/profiles/collabco/themes/collabco_theme/images/subtle_dots.png') repeat; 
+  background: #fbfbfb url('../images/subtle_dots.png') repeat; 
   font-family: 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: normal;
@@ -301,7 +301,7 @@ p {
 
 #logo a,               /*generic pages*/
 .ui-footer .ui-logo a{ /*login page*/
-  background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
+  background:url('../images/logo-placeholder.png') no-repeat;
   display:block;
   height:54px;
   width:200px;
@@ -319,7 +319,7 @@ p {
 /* Mobile logo */
 
 #tab-container .tab_logo.tab a{
-  background:url('/profiles/collabco/themes/collabco_theme/images/logo-placeholder.png') no-repeat;
+  background:url('../images/logo-placeholder.png') no-repeat;
   display:block;
   background-size:111px 30px; /* scale down bg image size */
   height:30px;
@@ -769,12 +769,12 @@ input[type="file"] {
 
 .not-logged-in .ui-header{
   padding-bottom:20px;
-  background:url('/sites/all/themes/custom_theme/images/shadow-top.png') no-repeat center bottom;
+  background:url('../images/shadow-top.png') no-repeat center bottom;
 }
 .not-logged-in .ui-footer{
   padding-top:40px;
   padding-bottom:40px;
-  background:url('/sites/all/themes/custom_theme/images/shadow-bottom.png') no-repeat center top;
+  background:url('../images/shadow-bottom.png') no-repeat center top;
 }
 
 .not-logged-in h1.ui-title {
