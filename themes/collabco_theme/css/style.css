@@ -2247,11 +2247,21 @@ a.ui-library-file:active{
 
 .node-knowledge-object .field-name-field-featured-ko-image {
   float:left;
-  padding-right:20px;
+  margin-right:20px;
 }
-.node-knowledge-object .field-name-body {
-  margin-top:1em;
+.node-knowledge-object .field-name-body,
+.node-knowledge-object .field-name-field-ko-file {
+  float:left;
 }
+
+.node-knowledge-object .field-name-body{
+ 
+}
+
+.node-knowledge-object .field-name-field-ko-file {
+ 
+}
+
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
