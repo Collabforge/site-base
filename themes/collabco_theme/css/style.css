@@ -133,6 +133,10 @@ table thead th {
   margin:0;
 }
 
+li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
+  display:inline;
+}
+
 /* Generic content page headings -------------*/
 
 #page-title { 
