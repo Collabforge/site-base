@@ -1,0 +1,24 @@
+<?php
+/**
+ * @file
+ * Core funcitons for the Collabco dashboard module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function collabco_dashboard_menu() {
+  $items['dashboard'] = array(
+    'title' => 'Dashboard',
+    'description' => 'Collabco user dashboard',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('Access Collabco dashboard'),
+
+    // This creates a blank page callback,
+    'page callback' => 'strrev',
+    'page arguments' => array(''),
+  );
+
+  return $items;
+}
+
