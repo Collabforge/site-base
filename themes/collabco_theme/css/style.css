@@ -2182,6 +2182,7 @@ form .field-name-field-file-ref {
   -moz-border-radius:5px;
   border-radius:5px;
   padding:10px;
+  border:1px solid #ddd;
 }
 
 .sticky .ui-library-file:before{
@@ -2198,7 +2199,8 @@ form .field-name-field-file-ref {
 }
 
 .sticky .ui-library-file {
-  background-color:#b3d9f2;
+  border-color:#b3d9f2;
+  background-color:#dbeef9;
 }
 
 .ui-library-file:hover,
