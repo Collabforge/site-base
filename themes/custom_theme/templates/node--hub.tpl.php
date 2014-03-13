@@ -96,12 +96,7 @@
     <?php print ' by ' . $name; ?>
       </div>
     <?php endif; ?></div><div class="clearfix"></div>
-    <?php
-      $may_edit = user_access('edit any hub content') || (user_access('edit own hub content') && $uid == $user->uid);
-      if ($may_edit) {
-        print "<div class='edit_your_hub'> <img src='/sites/default/themes/custom_theme/images/edit_button.png'> <a href='/node/$nid/edit'>Edit this Hub</a></div><br><br>";
-      }
-    ?>
+  
     <div class="contentarticle"<?php print $content_attributes; ?>>
       <?php
         // We hide the comments and links now so that we can render them later.
@@ -112,8 +107,7 @@
         hide($content['field_featured_hub_image']);
         hide($content['field_terms_conditions_of_hub']);
         hide($content['meta_group_access']);
-        hide($content['group_group']);
-        
+        hide($content['group_group']);       
         hide($content['meta_og_state_state']);
         print render($content);
       ?>
