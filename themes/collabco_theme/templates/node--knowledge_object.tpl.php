@@ -105,7 +105,7 @@
       <?php print render($content['comments']); ?>
       <br><br>
 
-      <div class="row-fluid">
+      <div class="row-fluid" style="clear:both;">
         <div class="span1">
           <div class="user-picture-small">
             <?php print $user_picture; ?>

@@ -2256,6 +2256,10 @@ a.ui-library-file:active{
 .node-knowledge-object .field-name-field-ko-file {
 }
 
+.node-knowledge-object .links,
+{
+  clear:both;
+}
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
