@@ -111,8 +111,8 @@
           </div>
         </div>
         <div class="activity-details span11">
-          <H2><?php print ' Shared by ' . $name; ?></H2>
-          <p><?php print ' ' . $date; ?></p>
+          <H2><?php print ' Posted by ' . $name; ?></H2>
+          <p><?php print ' on ' . $date; ?></p>
           
         </div>
       </div>
