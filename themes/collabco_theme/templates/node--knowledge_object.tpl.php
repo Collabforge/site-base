@@ -83,7 +83,7 @@
     <div class="nodewrapper">
       <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
         <?php if (!$page): ?>
-          <h2><?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+          <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
         <?php endif; ?>
         <?php print render($title_suffix); ?>
       </div>
@@ -105,10 +105,12 @@
       <br><br>
 
       <div class="row-fluid">
-        <div class="span3" style="width:50px; height: 50px;">
-        <?php print $user_picture; ?>
+        <div class="span1">
+          <div class="user-picture-small">
+            <?php print $user_picture; ?>
+          </div>
         </div>
-        <div class="activity-details span9">
+        <div class="activity-details span11">
           <p><?php print 'Posted ' . $date; ?></p>
           <p><?php print ' by ' . $name; ?></p>
         </div>
