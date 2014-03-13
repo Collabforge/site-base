@@ -2256,6 +2256,7 @@ a.ui-library-file:active{
 
 .node-knowledge-object .field-name-body{
   border-bottom:none;  
+  margin-top:20px;
 }
 
 .node-knowledge-object .field-name-field-ko-file {
