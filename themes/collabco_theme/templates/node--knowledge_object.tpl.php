@@ -82,48 +82,6 @@
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
     <div class="nodewrapper">
-    <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
-      <?php if (!$page): ?>
-        <h2><?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-      <?php endif; ?>
-      <?php print render($title_suffix); ?>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="contentarticle"<?php print $content_attributes; ?>>
-      <?php
-        // We hide the comments and links now so that we can render them later.
-        hide($content['comments']);
-        hide($content['links']);
-        print render($content);
-      ?>
-    </div>
-
-      <?php print render($content['links']); ?>
-
-      <?php print render($content['comments']); ?>
-      <br><br>
-
-      <div class="row-fluid">
-        <div class="span3" style="width:50px; height: 50px;">
-        <?php print $user_picture; ?>
-        </div>
-        <div class="activity-details span9">
-          <p><?php print 'Posted ' . $date; ?></p>
-          <p><?php print ' by ' . $name; ?></p>
-        </div>
-      </div>
-    </div>
-  </article>
-<?php endif; ?>
-
-
-<!-- OLD VERSION
-
-<?php if (!$is_front): ?>
-  <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-    <div class="nodewrapper">
       <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
         <?php if (!$page): ?>
           <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
