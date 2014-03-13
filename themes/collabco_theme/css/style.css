@@ -2230,13 +2230,9 @@ a.ui-library-file:active{
 .sticky .ui-library-file:focus,
 .sticky .ui-library-file:active{
   background-color: #b3d9f2;
+  font-size: 120%;
 }
 
-.sticky:hover .ui-library-file:before,
-.sticky:focus .ui-library-file:before,
-.sticky:active .ui-library-file:before{
-  font-size:200%;
-}
 
 .page-node-library .item-list ul li,
 .page-node-topics .item-list ul li { /*overwrite framework li styling (because this shit shouldn't be nested as LIs to begin with) */
