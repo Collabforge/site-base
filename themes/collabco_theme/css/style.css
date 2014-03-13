@@ -2174,7 +2174,64 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
+/* Generic library item styling ------------ */
 
+.ui-library-file a:hover,
+.ui-library-file a:focus,
+.ui-library-file a:active,
+a.ui-library-file:hover,
+a.ui-library-file:focus,
+a.ui-library-file:active{
+  text-decoration: none;
+}
+
+.ui-library-file {
+  background-color:#f2f2f2;
+  display:block;
+  position:relative;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;
+  padding:10px;
+  border:1px solid #ddd !important; /* WTF is there a border:none on this element!??*/;
+}
+
+.ui-library-file:hover,
+.ui-library-file:focus,
+.ui-library-file:active{
+  background-color: #ddd;
+}
+
+.ui-library-file h2 {
+  margin-top: 0;
+}
+
+/* Sticky library item styling ------------ */
+
+.sticky .ui-library-file:before{
+  content:"\f08d"; /* Pushpin icon */
+  color:#0088cc; /*Blue*/
+  font-family:'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: block;
+  font-size:1.15em;
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.sticky .ui-library-file {
+  border-color:#b3d9f2 !important;
+  background-color:#dbeef9;
+  color:#0088cc; 
+}
+
+.sticky .ui-library-file:hover,
+.sticky .ui-library-file:focus,
+.sticky .ui-library-file:active{
+  background-color: #b3d9f2;
+}
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
