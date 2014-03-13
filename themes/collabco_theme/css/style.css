@@ -2215,7 +2215,6 @@ a.ui-library-file:active{
   font-weight: normal;
   font-style: normal;
   display: block;
-  font-size:1.15em;
   position:absolute;
   top:10px;
   right:10px;
@@ -2233,9 +2232,9 @@ a.ui-library-file:active{
   background-color: #b3d9f2;
 }
 
-.sticky .ui-library-file:before:hover,
-.sticky .ui-library-file:before:focus,
-.sticky .ui-library-file:before:active{
+.sticky:hover .ui-library-file:before,
+.sticky:focus .ui-library-file:before,
+.sticky:active .ui-library-file:before{
   font-size:200%;
 }
 
