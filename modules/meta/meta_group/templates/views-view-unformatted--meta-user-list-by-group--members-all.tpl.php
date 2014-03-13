@@ -10,8 +10,8 @@
 
 
 $groups = array(
-	'member' => t('Members')
-	, 'coowner' => t('Co-owners')
+	'coowner' => t('Co-owners')
+	, 'member' => t('Members')
 );
 
 $aRows = array();
@@ -54,21 +54,27 @@ foreach ($aRows as $id => $row) {
 	$rows_grouped[$group][$id] = $row;
 }
 
-foreach ($rows_grouped as $group => $aRows) {
-	?>
-	<div class="ui-members-group">
-		<h2 class="ui-membership-title"><?php echo $groups[$group]; ?></h2>
-		<?php
-		foreach ($aRows as $id => $row) {
-			?>
-			<div<?php if ($classes_array[$id]) { print ' class="' . $classes_array[$id] .'"';  } ?>>
-				<?php print $row['content']; ?>
-			</div>
+
+foreach ($groups as $group => $group_title) {
+	if ($aRows = $rows_grouped[$group]) {
+		?>
+		<div class="ui-members-group">
+			<h2 class="ui-membership-title"><?php echo $group_title; ?></h2>
 			<?php
-		}
-		?>		
-	</div>
-	<?php
+			foreach ($aRows as $id => $row) {
+				?>
+				<div<?php if ($classes_array[$id]) { print ' class="' . $classes_array[$id] .'"';  } ?>>
+					<?php print $row['content']; ?>
+				</div>
+				<?php
+			}
+			?>
+		</div>
+		<?php
+	}
 }
+
+
+
 
 
