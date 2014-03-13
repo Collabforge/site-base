@@ -38,18 +38,14 @@
         </div>
         <div class="span10">
          <h2><?php echo $row->node_title; ?></h2>
-         <?php echo $fields['body']->content;?> <br>
-         Resource shared by <?php echo $fields['name'] ->content;?> <br />
-         <?php echo $fields['field_business_position'] ->content;?> at <?php echo $fields['field_organisation_ref'] ->content;?>
+         <?php echo $fields['body']->content;?>
         </div>
       </div>  
     </a>
   </div>
 </div>
 
-
-
-<!-- OLD VERSION
+<!-- OLD VERSION FYI
 <div class=index_item row-fluid <?php echo $library_type;?> >
   <div class="span2">
     <?php echo $fields['field_featured_ko_image'] ->content;?> 
