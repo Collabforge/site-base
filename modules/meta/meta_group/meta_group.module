@@ -143,55 +143,52 @@ function meta_group_block_info() {
  *
  */
 function meta_group_block_view($delta = '') {
-  switch ($delta) {
-    case 'group_actions':
-      $node = menu_get_object();
-      if (!isset($node->nid)) {
-      	return;
-      }
-      if (!og_is_group('node', $node->nid)) {
-      	return;
-      }
-      $gid = $node->nid;
-      $block['subject'] = NULL;
-    
-        $content = theme('group_actions_template', array('gid' => $gid));
-        $block['content'] = $content;
-     // $block['content'] = _meta_group_block_actions($gid);
-      break;
-  }
-  return $block;
+	switch ($delta) {
+		case 'group_actions':
+			$node = menu_get_object();
+			if (!isset($node->nid)) {
+				return;
+			}
+			if (!og_is_group('node', $node->nid)) {
+				return;
+			}
+			$gid = $node->nid;
+			$block['subject'] = NULL;
+			$content = theme('group_actions_template', array('gid' => $gid));
+			
+			//$content .= _meta_group_block_actions($gid);
+
+			$block['content'] = $content;
+		break;
+	}
+	return $block;
 }
 
 
 function meta_group_preprocess_group_actions_template(&$variables) {
 
-
-	$gid = $variables['gid'];
-      
-	global $user;
-        $variables['join_a_group']= FALSE;       
-        $variables['add_a_member'] = FALSE;
-        $variables['add_a_co_member'] = FALSE;
-        $variables['leave_a_group'] = FALSE ;
-        $variables['send_for_revision'] = FALSE;
-        $variables['gid']= $gid;
 	$links = array();
 
 	$is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
-       
+
+    if ($is_admin or  meta_og_state_is_draft($node->nid)) {
+    	$links[] = array(
+    		'href' => sprintf('group/node/%d/send-for-revision', $gid)
+    		, 'title' => 'Send for revision'
+    		, 'icon' => 'upload'
+    		, 'classes' => array()
+    	);
+    }
 	// ** Add more co-owner
 	// If:
 	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
 	// 
-        
-        if ($is_admin &&  meta_og_state_is_draft($node->nid) & !arg(2)) { 
-            $variables['send_for_revision'] = TRUE;
-        }
-        
 	if ($is_admin) {
-		$variables['add_a_co_member'] = TRUE;
-                
+    	$links[] = array(
+    		'href' => sprintf('node/%s/add/member/co-owner', $gid)
+    		, 'title' => 'Add a co-owner'
+    		, 'icon' => 'cog'
+    	);
 	}
 
 	// ** Add a member
@@ -199,7 +196,12 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	//	- user has 'add user' permission (should have been set for members)
 	//  
 	if ($is_admin or og_user_access('node', $gid, 'add user')) {
-		$variables['add_a_member'] = TRUE;
+    	$links[] = array(
+    		'href' => sprintf('node/%s/add/member', $gid)
+    		, 'title' => 'Add a member'
+    		, 'icon' => 'user'
+    		, 'classes' => array('btn-success')
+    	);
 	}
 
 	// ** Subscribe to group
@@ -207,7 +209,12 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	//	- user is not a member
 	//  
 	if (!og_is_member('node', $gid)) {
-            $variables['join_a_group'] = TRUE;	
+    	$links[] = array(
+    		'href' => sprintf('group/node/%s/subscribe', $gid)
+    		, 'title' => 'Join this hub'
+    		, 'icon' => 'plus'
+    		, 'classes' => array('btn-success')
+    	);
 	}
 
 
@@ -215,12 +222,17 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user is already a member
 	//  
-      
-	if (og_is_member('node', $gid) & !$is_admin) {   
-          
-              $variables['leave_a_group'] = TRUE;       
+	if (og_is_member('node', $gid)) {   
+    	$links[] = array(
+    		'href' => sprintf('group/node/%s/unsubscribe', $gid)
+    		, 'title' => 'Unsubscribe from this Hub'
+    		, 'icon' => 'remove'
+    		, 'classes' => array('btn-danger')
+    	);
 	}
-      
+
+	$variables['links'] = $links;
+
 }
 /**
  * $type: can be 'co-owner' or ''
