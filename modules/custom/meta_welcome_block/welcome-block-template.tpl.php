@@ -35,10 +35,10 @@
 
               <?php if ($first_time_user) { ?>
               <div class="span4 dashboard_1 first">
-                <h4>Learn About Meta</h4>
+                <h4>Learn About this site</h4>
                     <div class="call_out">
                         <p>Pellentesque aliquam augue ut dui aliquam consequat.</p>
-                        <a class="action" href="/about-this-site" title="About META">Read More</a>
+                        <a class="action" href="/about-this-site" title="About this site">Read More</a>
                     </div>
                 </div>
            <?php } ?>
