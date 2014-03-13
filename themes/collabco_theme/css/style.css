@@ -2245,12 +2245,12 @@ a.ui-library-file:active{
 
 /* Library Item - Detail Page Styling ----------------------*/
 
-.node-knowledge-object .field-name-field-featured-ko-image {
+.node-knowledge-object .field-name-field-featured-ko-image { /* Main image */
   float:left;
   margin-right:20px;
 }
 
-.node-knowledge-object .contentarticle .field-name-field-featured-ko-image img{
+.node-knowledge-object .contentarticle .field-name-field-featured-ko-image img{ 
   margin:0;
 }
 
@@ -2259,16 +2259,12 @@ a.ui-library-file:active{
   margin-top:10px;
 }
 
-.node-knowledge-object .field-name-field-ko-file {
+.node-knowledge-object .field-name-field-ko-file {  /* File(s) link(s) */
   font-size: 130%;
 }
 
 .node-knowledge-object .contentarticle .field-name-field-ko-file img{
   margin:10px 0;
-}
-
-.node-knowledge-object .links{
-  float:left;
 }
 
 /**
