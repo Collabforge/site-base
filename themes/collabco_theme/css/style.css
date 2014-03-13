@@ -2250,7 +2250,7 @@ a.ui-library-file:active{
   margin-right:20px;
 }
 
-.node-knowledge-object .field-name-field-featured-ko-image .contentarticle img{
+.node-knowledge-object .contentarticle .field-name-field-featured-ko-image img{
   margin:0;
 }
 
@@ -2260,9 +2260,7 @@ a.ui-library-file:active{
 
 .node-knowledge-object .field-name-field-ko-file {}
 
-.node-knowledge-object .links{
-  clear:both;
-}
+.node-knowledge-object .links{}
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
