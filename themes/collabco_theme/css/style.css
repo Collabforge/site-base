@@ -2250,11 +2250,10 @@ a.ui-library-file:active{
   margin-right:20px;
 }
 .node-knowledge-object .field-name-body{
-  
+  border-bottom:none;  
 }
 
 .node-knowledge-object .field-name-field-ko-file {
- float:left;
 }
 
 
