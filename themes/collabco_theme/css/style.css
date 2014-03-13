@@ -2174,6 +2174,8 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
+/* Generic library item styling ------------ */
+
 .ui-library-file a:hover,
 .ui-library-file a:focus,
 .ui-library-file a:active,
@@ -2184,20 +2186,20 @@ a.ui-library-file:active{
 }
 
 .ui-library-file {
-  background-color:#FFEFDB;
+  background-color:#f2f2f2;
   display:block;
   position:relative;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
   padding:10px;
-  border:1px solid #f9d9b8 !important; /* WTF is there a border:none on this element!??*/;
+  border:1px solid #ddd !important; /* WTF is there a border:none on this element!??*/;
 }
 
 .ui-library-file:hover,
 .ui-library-file:focus,
 .ui-library-file:active{
-  background-color: #f9d9b8;
+  background-color: #ddd;
 }
 
 .ui-library-file h2 {
