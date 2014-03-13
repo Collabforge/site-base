@@ -2249,6 +2249,11 @@ a.ui-library-file:active{
   float:left;
   margin-right:20px;
 }
+
+.node-knowledge-object .field-name-field-featured-ko-image .contentarticle img{
+  margin:0;
+}
+
 .node-knowledge-object .field-name-body{
   border-bottom:none;  
 }
