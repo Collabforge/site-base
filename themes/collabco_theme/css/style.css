@@ -2256,11 +2256,15 @@ a.ui-library-file:active{
 
 .node-knowledge-object .field-name-body{
   border-bottom:none;  
-  margin-top:20px;
+  margin-top:10px;
 }
 
 .node-knowledge-object .field-name-field-ko-file {
-  font-size: 150%;
+  font-size: 130%;
+}
+
+.node-knowledge-object .contentarticle .field-name-field-ko-file img{
+  margin:10px 0;
 }
 
 .node-knowledge-object .links{}
