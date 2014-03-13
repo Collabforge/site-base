@@ -2191,7 +2191,7 @@ a.ui-library-file:active{
   -moz-border-radius:5px;
   border-radius:5px;
   padding:10px;
-  border:1px solid #f7b280 !important; /* WTF is there a border:none on this element!??*/;
+  border:1px solid #f9d9b8 !important; /* WTF is there a border:none on this element!??*/;
 }
 
 .ui-library-file:hover,
