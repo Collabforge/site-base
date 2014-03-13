@@ -2200,6 +2200,7 @@ a.ui-library-file:active{
 .ui-library-file:focus,
 .ui-library-file:active{
   background-color: #ddd;
+  font-size: 120%;
 }
 
 .ui-library-file h2 {
@@ -2230,7 +2231,6 @@ a.ui-library-file:active{
 .sticky .ui-library-file:focus,
 .sticky .ui-library-file:active{
   background-color: #b3d9f2;
-  font-size: 120%;
 }
 
 
