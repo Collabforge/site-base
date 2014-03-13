@@ -26,7 +26,6 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = filter
 dependencies[] = flag
-dependencies[] = flag_hide
 dependencies[] = image
 dependencies[] = image_captcha
 dependencies[] = jquery_update
