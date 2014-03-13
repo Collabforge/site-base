@@ -76,18 +76,35 @@ function meta_group_menu() {
 	    'description' => '',
 	    'page callback' => 'drupal_get_form',
 	    'page arguments' => array('meta_group_add_user_form', 1),
-	    'access callback' => true,
+	    'access callback' => 'meta_group_add_user_access',
+	    'access arguments' => array(1),
 	);
 	$items['node/%node/add/member/co-owner'] = array(
 	    'title' => 'Add a co-owner',
 	    'description' => '',
 	    'page callback' => 'drupal_get_form',
 	    'page arguments' => array('meta_group_add_user_form', 1, 'co-owner'),
-	    'access callback' => true,
+	    'access callback' => 'meta_group_add_user_access',
+	    'access arguments' => array(1, 'co-owner'),
 	);
 	return $items;
 }
 
+
+function meta_group_add_user_access($gid, $type='member') {
+	global $user;
+	$is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
+	if ($is_admin) {
+		return true;
+	}
+	if ($type == 'member' and og_user_access('node', $gid, 'add user')) {
+		return true;
+	}
+	if ($type == 'co-owner' and meta_og_state_is_draft($gid) and meta_group_is_owner($gid)) {
+		return true;
+	}
+	return false;
+}
 
 function _meta_group_page_profile_hubs() {
 	$groups_hosted = views_embed_view('meta_node_list_group_by_user', 'list');
@@ -102,7 +119,6 @@ function _meta_group_page_profile_hubs() {
 function _meta_group_page_topics($node) {
 	return views_embed_view('join_the_conversation', 'topics_of_hub', $node->nid);
 }
-
 
 function _meta_group_page_library($node) {
 	 return views_embed_view('recent_files', 'library_in_hub', $node->nid);
@@ -166,12 +182,16 @@ function meta_group_block_view($delta = '') {
 
 
 function meta_group_preprocess_group_actions_template(&$variables) {
-
+	
+	$gid = $variables['gid'];
 	$links = array();
 
 	$is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
 
-    if ($is_admin or  meta_og_state_is_draft($node->nid)) {
+	$is_owner = meta_group_is_owner($gid);
+
+
+    if ($is_owner and meta_og_state_is_draft($gid)) {
     	$links[] = array(
     		'href' => sprintf('group/node/%d/send-for-revision', $gid)
     		, 'title' => 'Send for revision'
@@ -179,11 +199,25 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     		, 'classes' => array()
     	);
     }
+
+	// ** Edit the group
+	// If:
+	//	- The user has general 'administer groups' permission
+	//  - Or the user is the owner and the hub is still in draft
+	// 
+    if (user_access('administer group') or ($is_owner and meta_og_state_is_draft($gid))) {
+    	$links[] = array(
+    		'href' => sprintf('node/%d/edit', $gid)
+    		, 'title' => 'Edit the Hub'
+    		, 'icon' => 'edit'
+    		, 'classes' => array()
+    	);
+    }
 	// ** Add more co-owner
 	// If:
 	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
 	// 
-	if ($is_admin) {
+	if ($is_admin and !meta_og_state_is_draft($gid)) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/co-owner', $gid)
     		, 'title' => 'Add a co-owner'
@@ -282,8 +316,16 @@ function meta_group_add_user_form_submit($form, &$form_state) {
 /**
  * @return TRUE if the user is the owner
  */
-function meta_group_is_owner($gid, $uid) {
-	// @FIXME: implement the functionality
+function meta_group_is_owner($gid, $uid=NULL) {
+  global $user;
+  if (!og_is_group('node', $gid)) {
+    return false;
+  }
+  if (!isset($uid)) {
+  	$uid = $user->uid;
+  }
+  $node = node_load($gid);
+  return ($uid == $node->uid);
 }
 
 /**
