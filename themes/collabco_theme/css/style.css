@@ -2185,7 +2185,7 @@ form .field-name-field-file-ref {
 }
 
 .sticky .ui-library-file:before{
-  content:"\F06A"; /* Exclamation icon */
+  content:"\f08d"; /* Pushpin icon */
   color:#0088cc; /*Blue*/
   font-family:'FontAwesome';
   font-weight: normal;
@@ -2193,8 +2193,8 @@ form .field-name-field-file-ref {
   display: block;
   font-size:1.15em;
   position:absolute;
-  top:0;
-  right:0;
+  top:10px;
+  right:10px;
 }
 
 .ui-library-file:hover,
