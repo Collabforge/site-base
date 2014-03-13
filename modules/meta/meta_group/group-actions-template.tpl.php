@@ -23,7 +23,3 @@
   ?>
 
 </div>
-
-
-
-<?php echo $links_rendered; ?>

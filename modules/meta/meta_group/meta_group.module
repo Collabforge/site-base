@@ -266,7 +266,6 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	}
 
 	$variables['links'] = $links;
-	$variables['links_rendered'] = theme('links', array('links' => $links));
 
 }
 /**
@@ -332,7 +331,12 @@ function meta_group_is_owner($gid, $uid=NULL) {
 /**
  * @return TRUE if the user is the owner or co-owner
  */
-function meta_group_is_coowner($gid, $uid) {
+function meta_group_is_coowner($gid, $uid=NULL) {
 	// @FIXME: implement the functionality
+	global $user;
+	if (isset($uid)) {
+		$user = user_load($uid);
+	}
+	return og_user_access('node', $gid, 'administer group', $user);
 }
 
