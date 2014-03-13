@@ -83,7 +83,7 @@
             </p>
         </div>
         <?php } else { ?>
-        <a href='/group/node/<?php echo $gid ?>/subscribe' class="button orangebutton">Request membership</a>  
+        <a href='/group/node/<?php echo $gid ?>/subscribe' class="btn btn-warning">Request membership</a>  
       <?php  }  ?>
        
     </div>
