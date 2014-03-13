@@ -39,7 +39,7 @@
         <div class="span10">
           <i class="icon-file"></i>
          <h2><?php echo $row->node_title; ?></h2>
-         <p><?php echo $fields['body']->content;?></p>
+         <?php echo $fields['body']->content;?>
         </div>
       </div>  
     </a>
