@@ -2185,6 +2185,25 @@ form .field-name-field-file-ref {
   border:1px solid #ddd !important; /* WTF is there a border:none on this element!??*/;
 }
 
+.ui-library-file:hover,
+.ui-library-file:focus,
+.ui-library-file:active{
+  background-color: #FFEFDB;
+}
+
+.ui-library-file a:hover,
+.ui-library-file a:focus,
+.ui-library-file a:active{
+  text-decoration: none;
+  border-color: #ed6a26 !important;
+}
+
+.ui-library-file h2 {
+  margin-top: 0;
+}
+
+/* Sticky library item styling ------------ */
+
 .sticky .ui-library-file:before{
   content:"\f08d"; /* Pushpin icon */
   color:#0088cc; /*Blue*/
@@ -2199,7 +2218,7 @@ form .field-name-field-file-ref {
 }
 
 .sticky .ui-library-file {
-  border-color:#b3d9f2;
+  border-color:#b3d9f2 !important;
   background-color:#dbeef9;
   color:#0088cc; 
 }
@@ -2207,20 +2226,8 @@ form .field-name-field-file-ref {
 .sticky .ui-library-file:hover,
 .sticky .ui-library-file:focus,
 .sticky .ui-library-file:active{
-  background-color: #dbeef9;
+  background-color: #b3d9f2;
 }
-.ui-library-file:hover,
-.ui-library-file:focus,
-.ui-library-file:active{
-  background-color: #FFEFDB;
-}
-
-.ui-library-file a:hover,
-.ui-library-file a:focus,
-.ui-library-file a:active{
-  text-decoration: none;
-}
-
 
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
