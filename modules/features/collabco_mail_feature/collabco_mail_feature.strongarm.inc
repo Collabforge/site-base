@@ -26,7 +26,7 @@ function collabco_mail_feature_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'noreply@meta.org.au';
+  $strongarm->value = 'contact@collabforge.com';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -223,7 +223,7 @@ The [site:name] team';
 <br>
 An administrator on the [site:name] has blocked your account.<br>
 <br>
-If this is unexpected or you have further questions, feel free to contact us at contact@meta.org.au<br>
+If this is unexpected or you have further questions, feel free to contact us at contact@collabforge.com<br>
 <br>
 Kind Regards,<br>
 The [site:name] team<br>';

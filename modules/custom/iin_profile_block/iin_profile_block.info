@@ -1,6 +1,0 @@
-name = IIN Profile Block
-description = provides a profile block with user pic and links to user profile for front page of site
-core = 7.x
-package = IIN Custom
-project = "iin_profile_block"
-

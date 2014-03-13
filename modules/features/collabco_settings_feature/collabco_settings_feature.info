@@ -8,7 +8,6 @@ dependencies[] = ctools
 dependencies[] = fe_block
 dependencies[] = features
 dependencies[] = iin_navigation_block
-dependencies[] = iin_profile_block
 dependencies[] = image_captcha
 dependencies[] = jquery_update
 dependencies[] = logintoboggan

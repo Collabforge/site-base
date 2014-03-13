@@ -122,11 +122,11 @@ function collabco_organisation_feature_uuid_features_default_content() {
   'body' => array(
     'und' => array(
       0 => array(
-        'value' => '<p>Welcome to the Tier A Community. &nbsp;Please browse through the list of companies that have been confirmed as Tier A members. &nbsp;If you see member information that is out of date or incorrect, please let us know at contact@meta.org.au</p>
+        'value' => '<p>Welcome to the Tier A Community. &nbsp;Please browse through the list of companies that have been confirmed as Tier A members. &nbsp;If you see member information that is out of date or incorrect, please let us know at contact@collabforge.com</p>
 ',
         'summary' => '',
         'format' => 'full_html',
-        'safe_value' => '<p>Welcome to the Tier A Community.  Please browse through the list of companies that have been confirmed as Tier A members.  If you see member information that is out of date or incorrect, please let us know at <a href="mailto:contact@meta.org.au">contact@meta.org.au</a></p>
+        'safe_value' => '<p>Welcome to the Tier A Community.  Please browse through the list of companies that have been confirmed as Tier A members.  If you see member information that is out of date or incorrect, please let us know at <a href="mailto:contact@collabforge.com">contact@collabforge.com</a></p>
 ',
         'safe_summary' => '',
       ),
