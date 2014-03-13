@@ -22,6 +22,7 @@ dependencies[] = entity_token
 dependencies[] = entityconnect
 dependencies[] = entityreference
 dependencies[] = features
+dependencies[] = features_override
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = filter
