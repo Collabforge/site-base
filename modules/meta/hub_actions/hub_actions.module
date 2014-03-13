@@ -103,7 +103,8 @@ function hub_actions_form_knowledge_object_node_form_alter(&$form, &$form_state)
   if (arg(3)) {
     // Should copy $lang from node ?
     $lang = LANGUAGE_NONE;
-    $form['og_group_ref'][$lang]['#default_value'][] = arg(3);
+    $form['og_group_ref'][$lang]['#default_value'][] = arg(3);   
   }
+   $form['og_group_ref']['#access'] = 0;
 }
  
