@@ -10,7 +10,7 @@
     $cls = implode(' ', $classes);
     ?>
     
-    <a class="<?php echo $cls; ?>" href="<?php echo $link['href']; ?>">
+    <a class="<?php echo $cls; ?>" href="<?php echo url($link['href']); ?>">
       
       <i class="icon-<?php echo $link['icon']; ?>"></i>
       <?php echo $link['title']; ?>
@@ -25,3 +25,5 @@
 </div>
 
 
+
+<?php echo $links_rendered; ?>

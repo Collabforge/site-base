@@ -93,8 +93,8 @@ function meta_group_menu() {
 
 function meta_group_add_user_access($gid, $type='member') {
 	global $user;
-	$is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
-	if ($is_admin) {
+	$is_group_admin = og_user_access('node', $gid, 'administer group');
+	if (user_access('administer group')) {
 		return true;
 	}
 	if ($type == 'member' and og_user_access('node', $gid, 'add user')) {
@@ -217,7 +217,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
 	// 
-	if ($is_admin and !meta_og_state_is_draft($gid)) {
+	if (user_access('administer group') or ($is_owner and meta_og_state_is_draft($gid))) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/co-owner', $gid)
     		, 'title' => 'Add a co-owner'
@@ -256,7 +256,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user is already a member
 	//  
-	if (og_is_member('node', $gid)) {   
+	if (!$is_owner and og_is_member('node', $gid)) {   
     	$links[] = array(
     		'href' => sprintf('group/node/%s/unsubscribe', $gid)
     		, 'title' => 'Unsubscribe from this Hub'
@@ -266,6 +266,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	}
 
 	$variables['links'] = $links;
+	$variables['links_rendered'] = theme('links', array('links' => $links));
 
 }
 /**
