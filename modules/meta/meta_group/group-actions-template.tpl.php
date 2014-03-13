@@ -19,8 +19,8 @@
                 <a class="btn btn-success" href="/group/node/<?php echo $gid ?>/subscribe"><i class="icon-plus"></i> Join this hub</a>
             <?php } ?>  
           <?php if ($leave_a_group) {  ?>       
-		<a class="btn btn-danger" href="/group/node/<?php echo $gid ?>/unsubscribe"><i class="icon-remove"></i> Leave this hub</a>
+		<a class="btn btn-danger" href="/group/node/<?php echo $gid ?>/unsubscribe"><i class="icon-remove"></i> Unsubscribe from this Hub</a>
            <?php } ?>
               
 	</div>
--
+

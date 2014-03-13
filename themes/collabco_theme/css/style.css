@@ -2178,13 +2178,45 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
-
 .ui-library-file {
   background-color:#f2f2f2;
-  border:1px solid #ddd;
+  display:block;
+  position:relative;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
+  padding:10px;
+  border:1px solid #ddd;
+}
+
+.sticky .ui-library-file:before{
+  content:"\f08d"; /* Pushpin icon */
+  color:#0088cc; /*Blue*/
+  font-family:'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: block;
+  font-size:1.15em;
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.sticky .ui-library-file {
+  border-color:#b3d9f2;
+  background-color:#dbeef9;
+}
+
+.ui-library-file:hover,
+.ui-library-file:focus,
+.ui-library-file:active{
+  background-color: #FFEFDB;
+}
+
+.ui-library-file a:hover,
+.ui-library-file a:focus,
+.ui-library-file a:active{
+  text-decoration: none;
 }
 
 

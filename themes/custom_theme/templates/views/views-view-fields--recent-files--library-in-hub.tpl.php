@@ -29,15 +29,23 @@
   $library_type = ($fields['sticky']->raw == 1) ? 'sticky' : 'non-sticky';
 ?>
 
-<div class="ui-library-file row-fluid <?php echo $library_type; ?>">
+<div class="row-fluid <?php echo $library_type; ?>">
   <div class="span12">
-    <a href='<?php echo $base_path . "node/$row->nid"; ?>'
-       <i class="icon-file"></i>
-       <h2><?php echo $row->node_title; ?></h2>
-       <p><?php echo $fields['body']->content;?></p>
+    <a class="ui-library-file" href='<?php echo $base_path . "node/$row->nid"; ?>' >
+      <div class="row-fluid">
+        <div class="span2">
+          <?php echo $fields['field_featured_ko_image'] ->content;?> 
+        </div>
+        <div class="span10">
+         <h2><?php echo $row->node_title; ?></h2>
+         <?php echo $fields['body']->content;?>
+        </div>
+      </div>  
     </a>
   </div>
 </div>
+
+
 
 <!-- OLD VERSION
 <div class=index_item row-fluid <?php echo $library_type;?> >
