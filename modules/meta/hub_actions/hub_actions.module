@@ -100,11 +100,23 @@ function hub_actions_form_conversation_node_form_alter(&$form, &$form_state) {
 
 function hub_actions_form_knowledge_object_node_form_alter(&$form, &$form_state) {
    // x("hello knowledge");
-  if (arg(3)) {
+    $gid = intval(arg(3));
+  if (!empty($gid)) {
     // Should copy $lang from node ?
     $lang = LANGUAGE_NONE;
-    $form['og_group_ref'][$lang]['#default_value'][] = arg(3);   
+    $form['og_group_ref'][$lang]['#default_value'][] = $gid;
+    //$form['og_group_ref'][$lang]['#value'][] = $gid;
   }
-   $form['og_group_ref']['#access'] = 0;
+   $form['og_group_ref']['#access'] = false;
+ 
+   array_unshift($form['#submit'], 'hub_actions_form_knowledge_object_node_form_submit');
 }
  
+
+function hub_actions_form_knowledge_object_node_form_submit($form, &$form_state) {
+//    x($form_state['values']);
+  $gid = intval(arg(3));
+  if (!empty($gid)) {
+    $form_state['values']['og_group_ref'][LANGUAGE_NONE][0]['target_id'] = $gid;
+  }
+}
