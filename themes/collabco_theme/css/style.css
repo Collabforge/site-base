@@ -2258,7 +2258,9 @@ a.ui-library-file:active{
   border-bottom:none;  
 }
 
-.node-knowledge-object .field-name-field-ko-file {}
+.node-knowledge-object .field-name-field-ko-file {
+  font-size: 150%;
+}
 
 .node-knowledge-object .links{}
 
