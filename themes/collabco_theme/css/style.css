@@ -2197,6 +2197,10 @@ form .field-name-field-file-ref {
   right:10px;
 }
 
+.sticky .ui-library-file {
+  background-color:#b3d9f2;
+}
+
 .ui-library-file:hover,
 .ui-library-file:focus,
 .ui-library-file:active{
