@@ -2256,8 +2256,7 @@ a.ui-library-file:active{
 .node-knowledge-object .field-name-field-ko-file {
 }
 
-.node-knowledge-object .links,
-{
+.node-knowledge-object .links{
   clear:both;
 }
 
