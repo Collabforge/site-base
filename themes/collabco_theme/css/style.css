@@ -2177,10 +2177,24 @@ form .field-name-field-file-ref {
 .ui-library-file {
   background-color:#f2f2f2;
   display:block;
+  position:relative;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
   padding:10px;
+}
+
+.sticky .ui-library-file:before{
+  content:"\F06A"; /* Exclamation icon */
+  color:#0088cc; /*Blue*/
+  font-family:'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: block;
+  font-size:1.15em;
+  position:absolute;
+  top:0;
+  right:0;
 }
 
 .ui-library-file:hover,

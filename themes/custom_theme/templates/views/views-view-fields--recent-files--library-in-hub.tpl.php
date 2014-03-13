@@ -37,7 +37,6 @@
           <?php echo $fields['field_featured_ko_image'] ->content;?> 
         </div>
         <div class="span10">
-          <i class="icon-file"></i>
          <h2><?php echo $row->node_title; ?></h2>
          <?php echo $fields['body']->content;?>
         </div>
