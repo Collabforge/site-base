@@ -14,8 +14,7 @@ $groups = array(
 	, 'coowner' => t('Co-owners')
 );
 
-// initial
-$rows_full = $rows;
+$aRows = array();
 
 foreach ($view->result as $id=>$_row) {
 	/*
@@ -34,18 +33,16 @@ foreach ($view->result as $id=>$_row) {
 		[field_data_field_organisation_ref_profile2_entity_type] => profile2
 	)
 	*/
-	$members[] = $_row->uid;
-	$rows_full[$id]['uid'] = $_row->uid;
-	$rows_full[$id]['gid'] = $_row->og_membership_users_gid;
-	$rows_full[$id]['membership_id'] = $_row->og_membership_users_id;
+	$aRows[$id]['content'] = $rows[$id];
+	$aRows[$id]['uid'] = $_row->uid;
+	$aRows[$id]['gid'] = $_row->og_membership_users_gid;
+	$aRows[$id]['membership_id'] = $_row->og_membership_users_id;
 	//entity_load('og_membership', array($_row->og_membership_users_id));
 
 }
 
-
-
 $rows_grouped = array();
-foreach ($rows_full as $id => $row) {
+foreach ($aRows as $id => $row) {
 	$group = 'member';
 	if (meta_group_is_owner($row['gid'], $row['uid'])) {
 		// we do not include the owner in the members listing
@@ -54,18 +51,18 @@ foreach ($rows_full as $id => $row) {
 	if (meta_group_is_coowner($row['gid'], $row['uid'])) {
 		$group = 'coowner';
 	}
-	$rows_grouped[$group][] = $row;
+	$rows_grouped[$group][$id] = $row;
 }
 
-foreach ($rows_grouped as $group => $rows) {
+foreach ($rows_grouped as $group => $aRows) {
 	?>
 	<div class="ui-members-group">
 		<h2 class="ui-membership-title"><?php echo $groups[$group]; ?></h2>
 		<?php
-		foreach ($rows as $id => $row) {
+		foreach ($aRows as $id => $row) {
 			?>
 			<div<?php if ($classes_array[$id]) { print ' class="' . $classes_array[$id] .'"';  } ?>>
-				<?php print $row; ?>
+				<?php print $row['content']; ?>
 			</div>
 			<?php
 		}
