@@ -38,12 +38,14 @@
         </div>
         <div class="span10">
          <h2><?php echo $row->node_title; ?></h2>
-         <?php echo $fields['body']->content;?>
+         <!--<?php echo $fields['body']->content;?>-->
         </div>
       </div>  
     </a>
   </div>
 </div>
+
+
 
 <!-- OLD VERSION FYI
 <div class=index_item row-fluid <?php echo $library_type;?> >
