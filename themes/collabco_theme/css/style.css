@@ -2249,17 +2249,12 @@ a.ui-library-file:active{
   float:left;
   margin-right:20px;
 }
-.node-knowledge-object .field-name-body,
-.node-knowledge-object .field-name-field-ko-file {
-  float:left;
-}
-
 .node-knowledge-object .field-name-body{
- 
+  
 }
 
 .node-knowledge-object .field-name-field-ko-file {
- 
+ float:left;
 }
 
 
