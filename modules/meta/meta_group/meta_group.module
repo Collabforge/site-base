@@ -1,6 +1,16 @@
 <?php
 
 
+/**
+ * Implementation of hook_theme_registry_alter()
+ */
+function meta_group_theme_registry_alter(&$theme_registry) {
+	$path = drupal_get_path('module', 'meta_group') . '/templates';
+	// add templates directory to Drupal default directories
+	$theme_registry += drupal_find_theme_templates($theme_registry, '.tpl.php', $path);
+}
+
+
 
 /**
  * Implements hook_views_api().
@@ -250,4 +260,24 @@ function meta_group_add_user_form_submit($form, &$form_state) {
 	og_ui_add_users_submit($form, $form_state);
 }
 
+
+
+
+/**
+ * Helper functions
+ */
+
+/**
+ * @return TRUE if the user is the owner
+ */
+function meta_group_is_owner($gid, $uid) {
+	// @FIXME: implement the functionality
+}
+
+/**
+ * @return TRUE if the user is the owner or co-owner
+ */
+function meta_group_is_coowner($gid, $uid) {
+	// @FIXME: implement the functionality
+}
 
