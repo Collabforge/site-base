@@ -2243,6 +2243,16 @@ a.ui-library-file:active{
   margin:0;
 }
 
+/* Library Item - Detail Page Styling ----------------------*/
+
+.node-knowledge-object .field-name-field-featured-ko-image {
+  float:left;
+  padding-right:20px;
+}
+.node-knowledge-object .field-name-body {
+  margin-top:1em;
+}
+
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
