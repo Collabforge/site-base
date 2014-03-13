@@ -86,7 +86,7 @@
             </p>
         </div>
          <?php } else { ?>
-        <a href='/group/node/<?php echo $gid ?>/subscribe' class="btn btn-warning">Request membership</a>  
+        <a href='/group/node/<?php echo $gid ?>/subscribe' class="btn btn-warning"><i class="icon-plus"></i> Request membership</a>  
       <?php  }  ?>
     </div>
   </div>
