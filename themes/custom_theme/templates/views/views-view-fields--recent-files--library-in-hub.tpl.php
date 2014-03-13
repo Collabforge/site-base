@@ -38,7 +38,9 @@
         </div>
         <div class="span10">
          <h2><?php echo $row->node_title; ?></h2>
-         <?php echo $fields['body']->content;?>
+         <?php echo $fields['body']->content;?> <br>
+         Resource shared by <span class="article_host_name"><a href="#"><?php echo $fields['name'] ->content;?> </a></span><br />
+         <?php echo $fields['field_business_position'] ->content;?> at <?php echo $fields['field_organisation_ref'] ->content;?>
         </div>
       </div>  
     </a>
