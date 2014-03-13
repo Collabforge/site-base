@@ -44,11 +44,7 @@ foreach ($view->result as $id=>$_row) {
 $rows_grouped = array();
 foreach ($aRows as $id => $row) {
 	$group = 'member';
-	if (meta_group_is_owner($row['gid'], $row['uid'])) {
-		// we do not include the owner in the members listing
-		continue;
-	}
-	if (meta_group_is_coowner($row['gid'], $row['uid'])) {
+	if (meta_group_is_owner($row['gid'], $row['uid']) or meta_group_is_coowner($row['gid'], $row['uid'])) {
 		$group = 'coowner';
 	}
 	$rows_grouped[$group][$id] = $row;

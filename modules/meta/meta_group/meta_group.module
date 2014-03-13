@@ -335,8 +335,10 @@ function meta_group_is_coowner($gid, $uid=NULL) {
 	// @FIXME: implement the functionality
 	global $user;
 	if (isset($uid)) {
-		$user = user_load($uid);
+		$account = user_load($uid);
+	} else {
+		$account = $user;
 	}
-	return og_user_access('node', $gid, 'administer group', $user);
+	return og_user_access('node', $gid, 'administer group', $account);
 }
 
