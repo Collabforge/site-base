@@ -36,10 +36,10 @@
 <div class="row-fluid">
 	<div class="span8" style="position:relative;">
 
-		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:0; background: rgba(0, 0, 0, 0.5); color:#fff;">
+		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:1em; background: rgba(0, 0, 0, 0.5); color:#fff; margin:5px; padding:20px;">
 			<!-- Hub title -->
 			<h1><?php echo $fields['title']->content; ?></h1> 
-			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
+			<!--<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span> -->
 			<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
 		</div>
 
