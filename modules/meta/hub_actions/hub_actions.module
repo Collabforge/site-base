@@ -38,15 +38,19 @@ function hub_actions_block_info() {
  * Implements hook_block_view().
  */
 function hub_actions_block_view($delta='') {
+
   $block = array();
   global $base_url;
   // @TODO: Make sure if there is a better way. 
 
-  $nid = arg(1);
-  
+  $nid = arg(1);  
   $node = node_load($nid);
+  if (!isset($node->nid) or !og_is_group('node', $node)) {
+    return;
+  }
+  $gid = $node->nid;
             //@FIXME  clean access controls
-  $is_admin = user_access('administer group') || og_user_access('node', $nid, 'administer group');
+  $is_admin = user_access('administer group') || og_user_access('node', $gid, 'administer group');
   switch($delta) {
        /* case 'hub_send_for_revision':      
          if ($node->type == 'hub' &&  meta_og_state_is_draft($node->nid) & !arg(2)) {                      
@@ -55,7 +59,7 @@ function hub_actions_block_view($delta='') {
           }   
         break; */
         case 'hub_host_a_topic':  
-          if (!empty($node) && $node->type == 'hub' && arg(2)=='topics') {
+          if ($node->type == 'hub' && arg(2)=='topics') {
            if ($is_admin || og_user_access('node', $nid, 'create conversation content')) { 
                  $content = theme('hub_host_a_topic_template');        
                  $block['content'] = $content;
@@ -63,7 +67,7 @@ function hub_actions_block_view($delta='') {
           }   
         break;
         case 'hub_host_a_resource':      
-          if (!empty($node) && $node->type == 'hub'  && arg(2)=='library') {  
+          if ($node->type == 'hub'  && arg(2)=='library') {  
            if ($is_admin || og_user_access('node', $nid, 'create knowledge_object content')) {    
             $content = theme('hub_host_a_resource_template');
             $block['content'] = $content;
