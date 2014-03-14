@@ -46,7 +46,7 @@
 		</ul>
 	</div>
 
-	<div class="span6">
+	<div class="span6 ui-hub-info">
 	    <!-- Hub title -->
 		<h1><?php echo $fields['title']->content; ?></h1> 
 		<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
