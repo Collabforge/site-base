@@ -1,0 +1,2 @@
+<p><?php print '<a class="btn btn-success" href="/node/add/hub/' .$nid . '">Create a hub from this topic</a>'; ?></p>
+<p><a href="/about-hubs" target="_blank"><i class="icon-info-sign"></i> What's this?</a></p>

@@ -31,6 +31,6 @@ function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['cancel']['#attributes']['class'][] = 'form-btn-danger';  
 }
 
-
-
-
+function collabco_theme_preprocess_flag(&$variables) {
+  $variables['flag_classes_array'][] ='btn btn-warning';
+}
