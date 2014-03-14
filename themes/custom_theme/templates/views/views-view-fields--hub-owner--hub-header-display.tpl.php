@@ -34,9 +34,9 @@
 	</div>
 </div>
 <div class="row-fluid">
-	<div class="span8" style="position:relative;">
+	<div class="span9" style="position:relative;">
 
-		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:1em; background: rgba(0, 0, 0, 0.5); color:#fff; margin:5px; padding:20px;">
+		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:1.5em; background: rgba(0, 0, 0, 0.5); color:#fff; margin:5px; padding:20px;">
 			<!-- Hub title -->
 			<h1><?php echo $fields['title']->content; ?></h1> 
 			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
@@ -85,7 +85,7 @@
 	</div>
 	 -->
 
-	<div class="span3 offset1">
+	<div class="span3">
 		<!-- Organisation image -->
 		<ul class="thumbnails ui-hubs-organisation-thumbnail">
 		  <li class="span12">
