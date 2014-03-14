@@ -39,8 +39,9 @@
 		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:1em; background: rgba(0, 0, 0, 0.5); color:#fff; margin:5px; padding:20px;">
 			<!-- Hub title -->
 			<h1><?php echo $fields['title']->content; ?></h1> 
-			<!--<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span> -->
+			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
 			<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+			<p><?php echo $fields['field_tag_line']->content; ?> </p>
 		</div>
 
 		<ul class="thumbnails">
@@ -76,12 +77,13 @@
           <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub owner </span>
           <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub co-owner </span>
           <span class="label ui-inline-label label-warning"> <i class="icon-flag-alt"></i> You are a hub member </span>
-        -->
+       
 
 
 		<p><?php echo $fields['field_tag_line']->content; ?> </p>
 
 	</div>
+	 -->
 
 	<div class="span3 offset1">
 		<!-- Organisation image -->
