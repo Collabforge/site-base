@@ -2224,6 +2224,10 @@ form .field-name-field-file-ref {
   text-shadow: 0 1px 0 #000000;
 }
 
+.ui-header-img-container .ui-header-content h1{
+  line-height: 1.1;
+}
+
 /* Generic library item styling ------------ */
 
 .ui-library-file a:hover,
@@ -2390,13 +2394,10 @@ a.ui-library-file:active{
     margin-top:0;
   }
 
-  .ui-library-file .span2{ /*No library file feature image at small views */
-    display:none;
-  }
+  .ui-library-file .span2, /*No library file feature image at small views */
+  .ui-header-img-container .ui-header-content .field-content /* Hide Topic & Hub description at small size */
+  {display:none;}
 
-  .ui-header-img-container .ui-header-content .field-content{ /* Hide Topic & Hub description at small size */
-    display:none;
-  }
 }
 
 /**
