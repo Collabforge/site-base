@@ -39,16 +39,16 @@ function hub_block_view($delta='') {
 
   $nid = arg(1);
   $node = node_load($nid);
-
+     
   switch($delta) {
         case 'hub_header':
-          if ($node->type == 'hub') {
+          if (!empty($node) and $node->type == 'hub') {
             $content = theme('hub_header_template');
             $block['content'] = $content;
           }   
         break;
         case 'create_hub_from_topic':
-          if ($node->type == 'conversation') {
+          if (!empty($node) and $node->type == 'conversation') {
             $content = theme('create_hub_from_topic_template');
             $block['content'] = $content;
           }   
@@ -111,7 +111,7 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
 function hub_preprocess_page(&$vars) {
        
        $node = menu_get_object();
-       if ($node->type == 'hub')
+       if (!empty($node) && $node->type == 'hub')
        {    
            drupal_set_title('');
            unset($vars[tabs]);

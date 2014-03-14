@@ -55,7 +55,7 @@ function hub_actions_block_view($delta='') {
           }   
         break; */
         case 'hub_host_a_topic':  
-          if ($node->type == 'hub' && arg(2)=='topics') {
+          if (!empty($node) && $node->type == 'hub' && arg(2)=='topics') {
            if ($is_admin || og_user_access('node', $nid, 'create conversation content')) { 
                  $content = theme('hub_host_a_topic_template');        
                  $block['content'] = $content;
@@ -63,7 +63,7 @@ function hub_actions_block_view($delta='') {
           }   
         break;
         case 'hub_host_a_resource':      
-          if ($node->type == 'hub'  && arg(2)=='library') {  
+          if (!empty($node) && $node->type == 'hub'  && arg(2)=='library') {  
            if ($is_admin || og_user_access('node', $nid, 'create knowledge_object content')) {    
             $content = theme('hub_host_a_resource_template');
             $block['content'] = $content;
