@@ -36,7 +36,7 @@
 <div class="row-fluid">
 	<div class="span9" style="position:relative; margin-bottom:2em;">
 
-		<div style="z-index:10000; height:50%; width:94%; position:absolute; left:0px; bottom:0px; color:#fff; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%;">
+		<div style="z-index:10000; height:50%; width:94%; position:absolute; left:0px; bottom:0px; color:#fff; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%; -webkit-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px;">
 			<!-- Hub title & info -->
 			<h1><?php echo $fields['title']->content; ?></h1> 
 			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
