@@ -2130,10 +2130,10 @@ form .field-name-field-file-ref {
   margin-top:0;
 }
 
-
-.hub-header span.label.ui-inline-label span,
-.hub-header span.label.ui-inline-label div,
-.hub-header span.label.ui-inline-label i{
+.ui-inline, 
+.ui-inline span,
+.ui-inline div,
+.ui-inline i{
   display:inline;
 }
 
