@@ -36,7 +36,7 @@
 <div class="row-fluid">
 	<div class="span9" style="position:relative; margin-bottom:2em;">
 
-		<div style="z-index:10000; height:50%; width:93%; position:absolute; left:1px; bottom:1px; color:#fff; margin:0.5%; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%;">
+		<div style="z-index:10000; height:50%; width:94%; position:absolute; left:0px; bottom:0px; color:#fff; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%;">
 			<!-- Hub title & info -->
 			<h1><?php echo $fields['title']->content; ?></h1> 
 			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
@@ -44,14 +44,10 @@
 			<p><?php echo $fields['field_tag_line']->content; ?> </p>
 		</div>
 
-		<ul class="thumbnails ui-hub-feature-img">
-		  <li class="span12">
-		    <div class="thumbnail">
-				<!-- Hub img -->
-		    	<span><?php echo $fields['field_featured_hub_image']->content; ?></span>
-		    </div>
-		  </li>
-		</ul>
+		<div class="ui-hub-feature-img">
+			<!-- Hub img -->
+		    <span><?php echo $fields['field_featured_hub_image']->content; ?></span>
+		</div>
 
 	</div>
 
