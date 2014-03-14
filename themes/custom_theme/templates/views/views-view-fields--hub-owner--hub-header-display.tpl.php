@@ -40,7 +40,7 @@
 	<ul class="thumbnails ui-hubs-organisation-thumbnail">
 		  <li class="span12">
 		    <div class="thumbnail">
-		      <span class="ui-org-img"><?php echo $fields['featured_hub_image']->content; ?></span>
+		      <span class="ui-org-img"><?php echo $fields['field_featured_hub_image']->content; ?></span>
 		    </div>
 		  </li>
 		</ul>
