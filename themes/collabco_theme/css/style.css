@@ -2150,9 +2150,13 @@ form .field-name-field-file-ref {
   margin-top:0.75em;
 }
 
-.hub-header .ui-hub-info{
-  padding-left:10px;
-  padding-right:10px;
+.hub-header ul.thumbnails.ui-hub-feature-img,
+.hub-header ul.thumbnails.ui-hub-feature-img li{
+  margin:0;
+}
+
+.hub-header ul.thumbnails.ui-hub-feature-img .thumbnail{
+  padding:0.5%;
 }
 
 .hub-header .ui-hub-info h1{
