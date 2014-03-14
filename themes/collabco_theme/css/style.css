@@ -2141,6 +2141,10 @@ form .field-name-field-file-ref {
   margin-bottom:0.5em;
 }
 
+.hub-header .ui-hubs-organisation-thumbnail .ui-feature-img div{
+  text-align: center;
+}
+
 .hub-header .ui-hubs-organisation-thumbnail .user-picture-small div {
   text-align: center;
   margin-top:0.75em;
