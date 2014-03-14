@@ -123,7 +123,11 @@ function meta_group_menu() {
 }
 
 
-function meta_group_add_user_access($gid, $type='member') {
+function meta_group_add_user_access($node, $type='member') {
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	$gid = $node->nid;
 	global $user;
 	$is_group_admin = og_user_access('node', $gid, 'administer group');
 	if (user_access('administer group')) {
