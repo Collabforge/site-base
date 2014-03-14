@@ -62,10 +62,10 @@
     <div class="article_host row-fluid">
         <?php if (meta_og_state_is_open($gid) || og_is_member('node', $gid)) {  ?>
         
-        <div class="span2"> 
+        <div class="span3"> 
           <?php echo $fields['field_organisation_image'] ->content;?> 
         </div>
-        <div class="span7"> 
+        <div class="span6"> 
             <h5>Hosted by <span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
             <span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
         </div>
