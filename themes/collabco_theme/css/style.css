@@ -2130,6 +2130,13 @@ form .field-name-field-file-ref {
   margin-top:0;
 }
 
+
+.hub-header span.label.ui-inline-label span,
+.hub-header span.label.ui-inline-label div,
+.hub-header span.label.ui-inline-label i{
+  display:inline;
+}
+
 .hub-header .ui-hubs-organisation-thumbnail .thumbnail{
   padding-bottom:1em;
 }
