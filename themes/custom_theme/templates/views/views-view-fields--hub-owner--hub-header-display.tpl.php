@@ -51,38 +51,6 @@
 		</div>
 
 	</div>
-
-
-	<!-- OLD VERSION
-	<div class="span4">
-	<!-- Hub featured image 
-	<ul class="thumbnails">
-		  <li class="span12">
-		    <div class="thumbnail">
-		      <span><?php echo $fields['field_featured_hub_image']->content; ?></span>
-		    </div>
-		  </li>
-		</ul>
-	</div>
-
-	<div class="span5 ui-hub-info">
-	    <!-- Hub title 
-		<h1><?php echo $fields['title']->content; ?></h1> 
-		<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
-		<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
-		
-		<!-- These labels need logic - reimplement when time allows:
-          <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub owner </span>
-          <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub co-owner </span>
-          <span class="label ui-inline-label label-warning"> <i class="icon-flag-alt"></i> You are a hub member </span>
-       
-
-
-		<p><?php echo $fields['field_tag_line']->content; ?> </p>
-
-	</div>
-	 -->
-
 	<div class="span3">
 		<!-- Organisation image -->
 		<ul class="thumbnails ui-hubs-organisation-thumbnail">
