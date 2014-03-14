@@ -2200,6 +2200,30 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
+/* Sexy big header image container & styling ------------ */
+
+.ui-header-img-container{
+  position:relative; 
+  margin-bottom:2em;
+}
+
+.ui-header-img-container .ui-header-content{
+  z-index:10000; 
+  height:50%; 
+  width:94%; 
+  position:absolute; 
+  left:0px; 
+  bottom:0px; 
+  color:#fff; 
+  background-color:#000; /* for old skool browsers */
+  background: rgba(0, 0, 0, 0.65); 
+  padding:0 3%; 
+  -webkit-border-radius: 0 0 5px 5px; 
+  -moz-border-radius: 0 0 5px 5px; 
+  border-radius: 0 0 5px 5px; 
+  text-shadow: 0 1px 0 #000000;
+}
+
 /* Generic library item styling ------------ */
 
 .ui-library-file a:hover,
