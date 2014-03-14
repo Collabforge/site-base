@@ -34,9 +34,29 @@
 	</div>
 </div>
 <div class="row-fluid">
-	
+	<div class="span8" style="position:relative;">
+
+		<div style="z-index:10000; width:100%; height:50%; position:absolute; left:0; bottom:0; background: rgba(0, 0, 0, 0.5); color:#fff;">
+			<!-- Hub title -->
+			<h1><?php echo $fields['title']->content; ?></h1> 
+			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
+			<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+		</div>
+
+		<ul class="thumbnails">
+		  <li class="span12">
+		    <div class="thumbnail">
+		    	<span><?php echo $fields['field_featured_hub_image']->content; ?></span>
+		    </div>
+		  </li>
+		</ul>
+
+	</div>
+
+
+	<!--
 	<div class="span4">
-	<!-- Hub featured image -->
+	<!-- Hub featured image 
 	<ul class="thumbnails">
 		  <li class="span12">
 		    <div class="thumbnail">
@@ -47,7 +67,7 @@
 	</div>
 
 	<div class="span5 ui-hub-info">
-	    <!-- Hub title -->
+	    <!-- Hub title 
 		<h1><?php echo $fields['title']->content; ?></h1> 
 		<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
 		<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
@@ -58,11 +78,12 @@
           <span class="label ui-inline-label label-warning"> <i class="icon-flag-alt"></i> You are a hub member </span>
         -->
 
+
 		<p><?php echo $fields['field_tag_line']->content; ?> </p>
 
 	</div>
 
-	<div class="span3">
+	<div class="span3 offset1">
 		<!-- Organisation image -->
 		<ul class="thumbnails ui-hubs-organisation-thumbnail">
 		  <li class="span12">
