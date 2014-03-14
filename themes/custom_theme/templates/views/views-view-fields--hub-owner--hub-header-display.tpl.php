@@ -35,7 +35,18 @@
 </div>
 <div class="row-fluid">
 	
-	<div class="span9">
+	<div class="span3">
+	<!-- Hub featured image -->
+	<ul class="thumbnails ui-hubs-organisation-thumbnail">
+		  <li class="span12">
+		    <div class="thumbnail">
+		      <span class="ui-org-img"><?php echo $fields['field_featured_image']->content; ?></span>
+		    </div>
+		  </li>
+		</ul>
+	</div>
+
+	<div class="span6">
 	    <!-- Hub title -->
 		<h1><?php echo $fields['title']->content; ?></h1> 
 		<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
