@@ -137,6 +137,15 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
   display:inline;
 }
 
+/* Makes shit sit inline! -------------*/
+
+.ui-inline, 
+.ui-inline span,
+.ui-inline div,
+.ui-inline i{
+  display:inline;
+}
+
 /* Generic content page headings -------------*/
 
 #page-title { 
@@ -2130,13 +2139,6 @@ form .field-name-field-file-ref {
   margin-top:0;
 }
 
-.ui-inline, 
-.ui-inline span,
-.ui-inline div,
-.ui-inline i{
-  display:inline;
-}
-
 .hub-header .ui-hubs-organisation-thumbnail .thumbnail{
   padding-bottom:1em;
 }
@@ -2159,13 +2161,11 @@ form .field-name-field-file-ref {
 
 .hub-header .ui-hub-feature-img img{
   -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0,0,0,.5);
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,.5);
-}
-
-.hub-header .ui-hub-info h1{
-  margin-top:0;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
 }
 
 .hub-header .nav.nav-tabs{
