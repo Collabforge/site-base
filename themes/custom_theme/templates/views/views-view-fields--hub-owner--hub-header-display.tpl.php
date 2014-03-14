@@ -37,7 +37,7 @@
 	<div class="span9" style="position:relative; margin-bottom:2em;">
 
 		<div style="z-index:10000; height:50%; width:99%; position:absolute; left:0; bottom:0; color:#fff; margin:0.5%;">
-			<div style="background: rgba(0, 0, 0, 0.65); padding:0 3%; margin:1px;">
+			<div style="position:absolute; left:0; bottom:0; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%; margin:1px;">
 				<!-- Hub title & info -->
 				<h1><?php echo $fields['title']->content; ?></h1> 
 				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
