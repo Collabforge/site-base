@@ -39,7 +39,7 @@
 		<div style="z-index:10000; height:50%; width:94%; position:absolute; left:0px; bottom:0px; color:#fff; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%; -webkit-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px;">
 			<!-- Hub title & info -->
 			<h1>
-				<?php echo $fields['title']->content; ?>
+				<span class="ui-inline-label"><i class="icon-group"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>
 				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
 				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
 			</h1> 
