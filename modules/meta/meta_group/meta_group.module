@@ -1,6 +1,38 @@
 <?php
 
 
+
+/**
+ * Implementation of hook_og_membership_update()
+ * Just for backward compatibility.
+ * @TODO should be removed for a fresh product.
+ */
+function meta_group_og_membership_update(OgMembership $og_membership) {
+	_meta_group_og_membership_update($og_membership);
+}
+
+/**
+ * Implementation of hook_og_membership_insert()
+ * 
+ */
+function meta_group_og_membership_insert(OgMembership $og_membership) {
+	_meta_group_og_membership_update($og_membership);
+}
+
+function _meta_group_og_membership_update(OgMembership $og_membership) {
+	$gid = $og_membership->gid;
+	$uid = $og_membership->etid;
+	$node = node_load($gid);
+	if ($node->uid == $uid) {
+		_meta_group_role_admin_grant($gid, $uid);
+	}
+}
+
+function _meta_group_role_admin_grant($gid, $uid) {
+	$rid = _meta_group_get_rid_by_role_name($gid, OG_ADMINISTRATOR_ROLE);
+	og_role_grant('node', $gid, $uid, $rid);
+}
+
 /**
  * Implementation of hook_theme_registry_alter()
  */
@@ -341,4 +373,27 @@ function meta_group_is_coowner($gid, $uid=NULL) {
 	}
 	return og_user_access('node', $gid, 'administer group', $account);
 }
+
+/**
+ * @param $gid Gr
+ *	Group id
+ * @param $role_name
+ * The role name; you could also use standard OG role names:
+ * - OG_ADMINISTRATOR_ROLE
+ * - OG_AUTHENTICATED_ROLE
+ * - OG_ANONYMOUS_ROLE
+ *
+ * @return role id for a specified role 
+ */
+function _meta_group_get_rid_by_role_name($gid, $role_name) {
+	$node = node_load($gid);
+	$roles = og_roles('node', $node->type, $gid);
+	foreach ($roles as $_rid=>$_rname) {
+		if ($_rname == $role_name) {
+			return $_rid;
+		}
+	}
+	return;
+}
+
 
