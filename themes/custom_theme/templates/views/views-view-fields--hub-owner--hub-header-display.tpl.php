@@ -36,14 +36,12 @@
 <div class="row-fluid">
 	<div class="span9" style="position:relative; margin-bottom:2em;">
 
-		<div style="z-index:10000; height:50%; width:99%; position:absolute; left:0; bottom:0; color:#fff; margin:0.5%;">
-			<div style="position:absolute; left:0; bottom:0; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%; margin:1px;">
-				<!-- Hub title & info -->
-				<h1><?php echo $fields['title']->content; ?></h1> 
-				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
-				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
-				<p><?php echo $fields['field_tag_line']->content; ?> </p>
-			</div>
+		<div style="z-index:10000; height:50%; width:99%; position:absolute; left:0; bottom:0; color:#fff; margin:0.5%; background-color:#000; background: rgba(0, 0, 0, 0.65); padding:0 3%;">
+			<!-- Hub title & info -->
+			<h1><?php echo $fields['title']->content; ?></h1> 
+			<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
+			<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+			<p><?php echo $fields['field_tag_line']->content; ?> </p>
 		</div>
 
 		<ul class="thumbnails ui-hub-feature-img">
