@@ -139,8 +139,9 @@ function meta_group_add_user_access($gid, $type='member') {
 }
 
 function _meta_group_page_profile_hubs() {
-	$groups_hosted = views_embed_view('meta_node_list_group_by_user', 'list');
+	$groups_hosted = views_embed_view('meta_membership_list_group_by_user', 'owned');
 	$groups_joined = views_embed_view('meta_membership_list_group_by_user', 'list');
+	
 	$content = t('<h2>Hubs You Hosted</h2> !groups_hosted <h2>Hubs You Joined</h2> !groups_joined', array(
 		'!groups_hosted' => $groups_hosted
 		, '!groups_joined' => $groups_joined
