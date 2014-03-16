@@ -12,7 +12,7 @@ function collabco_dashboard_menu() {
     'title' => 'Dashboard',
     'description' => 'Collabco user dashboard',
     'type' => MENU_NORMAL_ITEM,
-    'access arguments' => array('Access Collabco dashboard'),
+    'access arguments' => array('access collabco dashboard'),
 
     // This creates a blank page callback,
     'page callback' => 'strrev',
@@ -22,3 +22,23 @@ function collabco_dashboard_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_permission().
+ */
+function collabco_dashboard_permission() {
+  return array(
+    'access collabco dashboard' => array(
+      'title' => t('Access Collabco dashboard'),
+      'description' => t('Access Collabco dashboard'),
+    ),
+  );
+}
+
+/**
+ Implements hook_user_login().
+ */
+function collabco_dashboard_user_login(&$edit, $account) {
+  if (!isset($_GET['destination'])) {
+    $_GET['destination'] = 'dashboard';
+  }
+}
