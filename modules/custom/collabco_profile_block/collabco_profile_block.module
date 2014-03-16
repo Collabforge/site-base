@@ -39,7 +39,7 @@ function collabco_profile_block_block_view($delta='') {
             }
           }
   switch($delta) {
-    case 'iin_profile_block' :
+    case 'collabco_profile_block' :
       $entity_type = 'node';
       $field = 'title';
       $groups_output = '';
