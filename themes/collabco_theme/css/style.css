@@ -2384,7 +2384,7 @@ a.ui-library-file:active{
     -moz-border-radius:5px; 
     border-radius: 5px;
   }
-  .ui-header-img-container .ui-header-content .field-content{ /* Turn off description for hubs / topics header */
+  .ui-header-img-container .ui-header-content .ui-header-description{ /* Turn off description for hubs / topics header */
     display: none; 
   }
 }

@@ -42,7 +42,7 @@
 				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
 				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
 			</h1> 
-			<?php echo $fields['field_tag_line']->content; ?>
+			<span class="ui-header-description"><?php echo $fields['field_tag_line']->content; ?></span>
 		</div>
 
 		<div class="ui-hub-feature-img">
