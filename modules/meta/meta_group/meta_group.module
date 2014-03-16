@@ -87,21 +87,24 @@ function meta_group_menu() {
 	    'description' => 'Topics within this hub',
 	    'page callback' => '_meta_group_page_topics',
 	    'page arguments' => array(1),
-	    'access callback' => true,
+	    'access callback' => '_meta_group_user_access_group',
+	    'access arguments' => array(1)
 	);
 	$items['node/%node/library'] = array(
 	    'title' => 'Library',
 	    'description' => 'Library of this hub',
 	    'page callback' => '_meta_group_page_library',
 	    'page arguments' => array(1),
-	    'access callback' => true,
+	    'access callback' => '_meta_group_user_access_group',
+	    'access arguments' => array(1)
 	);
 	$items['node/%node/members'] = array(
 	    'title' => 'Members',
 	    'description' => 'This Hub\'s members',
 	    'page callback' => '_meta_group_page_members',
 	    'page arguments' => array(1),
-	    'access callback' => true,
+	    'access callback' => '_meta_group_user_access_group',
+	    'access arguments' => array(1)
 	);
 	$items['node/%node/add/member'] = array(
 	    'title' => 'Add a member',
@@ -122,7 +125,30 @@ function meta_group_menu() {
 	return $items;
 }
 
+function meta_group_node_access($node) {
+	return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+}
 
+function _meta_group_user_access_group($node, $account=NULL) {
+	global $user;
+	if (!isset($account)) {
+		$account = user_load($user->uid);
+	}
+	if (!isset($node->nid)) {
+		return false;
+	}
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	$gid = $node->nid;
+	if (user_access('administer group', $account)) {
+		return true;
+	}
+	if (og_is_member('node', $gid, 'user', $account)) {
+		return true;
+	}
+	return false;
+}
 function meta_group_add_user_access($node, $type='member') {
 	if (!og_is_group('node', $node)) {
 		return false;
