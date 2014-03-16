@@ -2214,7 +2214,7 @@ form .field-name-field-file-ref {
   position:absolute; 
   left:0px; 
   bottom:0px; 
-  color:#222; 
+  color:#333; 
   background-color:#fff; /* for old skool browsers */
   background: rgba(255, 255, 255, 0.65); 
   padding:0 3%; 
