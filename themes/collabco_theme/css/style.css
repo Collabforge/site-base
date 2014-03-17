@@ -1551,7 +1551,7 @@ body.node-type-conversation h1#page-title {
 
  /* -- edit link for topic owner */
 .edit_your_topic {
-  float: right;
+  float: left;
   clear: left;
 }
 
