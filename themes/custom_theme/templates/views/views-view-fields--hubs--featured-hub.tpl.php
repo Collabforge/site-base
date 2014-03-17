@@ -73,21 +73,43 @@
   
             <p><i class="icon-group"></i> 
 
-              <?php echo hub_get_members_count($row->nid);  
-                
-                if (hub_get_members_count($row->nid)=="1")
-                  { 
-                    echo " Member";
-                  } else {
-                    echo " Members";
-                  }
+              <?php
+                $members_count = hub_get_members_count($row->nid);
+                echo format_plural($members_count, '1 Member', '@count Members');
               ?>
 
             </p>
         </div>
+        
+        <?php
+          } else {
+              // @TODO: better to be done in preprocess functions
+              
+
+              if (_meta_group_is_pending_member($gid)) {
+                // So the user is already requested for a membership but yet to be approved or rejected
+                ?>
+                <span class="label"><h3>&nbsp; <i class="icon-info-sign"></i> Membership requested (approval pending) &nbsp;</h3></span>
+                <?php
+              } else {
+                // The user is neither a member nor have requested for a membership
+
+                $url = sprintf('group/node/%d/subscribe', $gid);
+                ?>
+                <a href="<?php echo $url; ?>" class="btn btn-warning"><i class="icon-plus"></i> Request membership</a> 
+                
+                <?php
+              }
+          }
+        ?> 
+
+         <!-- OLD VERSION
          <?php } else { ?>
         <a href='/group/node/<?php echo $gid ?>/subscribe' class="btn btn-warning"><i class="icon-plus"></i> Request membership</a>  
-      <?php  }  ?>
+      <?php  }  ?> -->
+
+
+
     </div>
   </div>
 </div>
