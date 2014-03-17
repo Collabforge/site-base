@@ -78,47 +78,46 @@
  * @see template_process()
  */
 ?>
+
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-  <div class="nodewrapper">
-  <div class="userpicture"><?php /* add "print $user_picture;" here to fix node user profiles displaying */ ?></div>
-
-  <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
-    <?php if (!$page): ?>
-      <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-    <?php endif; ?>
-    <?php print render($title_suffix); ?></div>
-
-    <?php if ($display_submitted): ?>
-      <div class="submitted">
-        <div class="submitted-content-posted">
-    <?php print 'Posted ' . $date; ?><br />
-    <?php print ' by ' . $name; ?>
+    <div class="nodewrapper">
+      <div class="templatedtitlestyle">  <?php print render($title_prefix); ?>
+        <?php if (!$page): ?>
+          <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+        <?php endif; ?>
+        <?php print render($title_suffix); ?>
       </div>
-    <?php endif; ?></div><div class="clearfix"></div>
-  
-    <div class="contentarticle"<?php print $content_attributes; ?>>
-      <?php
-        // We hide the comments and links now so that we can render them later.
-        hide($content['comments']);
-        hide($content['links']);
-       // x($content);
-        hide($content['field_tag_line']);
-        hide($content['field_featured_hub_image']);
-        hide($content['field_terms_conditions_of_hub']);
-        hide($content['meta_group_access']);
-        hide($content['group_group']);       
-        hide($content['meta_og_state_state']);
-        print render($content);
-      ?>
-        
+
+      <div class="clearfix"></div>
+
+      <div class="contentarticle clearfix"<?php print $content_attributes; ?>>
+        <?php
+          // We hide the comments and links now so that we can render them later.
+          hide($content['comments']);
+          hide($content['links']);
+          print render($content);
+        ?>
+      </div>
+
+      <?php print render($content['links']); ?>
+
+      <?php print render($content['comments']); ?>
+      <br><br>
+
+      <div class="row-fluid" style="clear:both;">
+        <div class="span1">
+          <div class="user-picture-small">
+            <?php print $user_picture; ?>
+          </div>
+        </div>
+        <div class="activity-details span11">
+          <H2><?php print ' Posted by ' . $name; ?></H2>
+          <p><?php print ' on ' . $date; ?></p>
+          
+        </div>
+      </div>
     </div>
-
-
-    <?php print render($content['links']); ?>
-
-    <?php print render($content['comments']); ?>
-
   </article>
 <?php endif; ?>
 

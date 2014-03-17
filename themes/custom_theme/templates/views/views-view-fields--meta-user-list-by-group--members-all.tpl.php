@@ -35,7 +35,9 @@
     <h2 class="ui-no-margin"><span class="ui-inline"><?php echo $fields['name']->content;?></span></h2>
     <strong><?php echo $fields['field_business_position']->content;?></strong>
     <?php echo $fields['field_organisation_ref']->content;?>
+    <?php if (user_access('administer group')) { ?>
     <a href="/group/node/<?php echo $fields['gid']->raw ?>/admin/people/delete-membership/<?php echo $fields['id'] ->raw;?>"><i class="icon-remove"></i> Remove from this hub</a>
+    <?php } ?>  
   </div>
 </div>
 

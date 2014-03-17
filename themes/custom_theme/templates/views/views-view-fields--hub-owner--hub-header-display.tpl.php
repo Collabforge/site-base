@@ -34,23 +34,23 @@
 	</div>
 </div>
 <div class="row-fluid">
-	
-	<div class="span9">
-	    <!-- Hub title -->
-		<h1><?php echo $fields['title']->content; ?></h1> 
-		<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
-		<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
-		
-		<!-- These labels need logic - reimplement when time allows:
-          <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub owner </span>
-          <span class="label ui-inline-label label-success"> <i class="icon-cog"></i> You are hub co-owner </span>
-          <span class="label ui-inline-label label-warning"> <i class="icon-flag-alt"></i> You are a hub member </span>
-        -->
+	<div class="span9 ui-header-img-container">
+		<div class="ui-header-content" >
+			<!-- Hub title & info -->
+			<h1>
+				<span class="ui-inline"><i class="icon-group"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>
+				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
+				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+			</h1> 
+			<span class="ui-header-description"><?php echo $fields['field_tag_line']->content; ?></span>
+		</div>
 
-		<p><?php echo $fields['field_tag_line']->content; ?> </p>
+		<div class="ui-hub-feature-img">
+			<!-- Hub img -->
+		    <span><?php echo $fields['field_featured_hub_image']->content; ?></span>
+		</div>
 
 	</div>
-
 	<div class="span3">
 		<!-- Organisation image -->
 		<ul class="thumbnails ui-hubs-organisation-thumbnail">

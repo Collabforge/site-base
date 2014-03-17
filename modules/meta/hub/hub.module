@@ -8,6 +8,9 @@ function hub_theme($existing, $type, $theme, $path) {
       'hub_header_template' => array(
         'template' => 'hub-header-template',
      ),
+    'create_hub_from_topic_template' => array(
+        'template' => 'create-hub-from-topic-template',
+     ),
   );
 }
 
@@ -19,6 +22,10 @@ function hub_block_info() {
   $blocks['hub_header'] = array(
     'info' => t('Header of Hub view page'),
   ); 
+  $blocks['create_hub_from_topic'] = array(
+    'info' => t('Create a Hub from this topic'),
+  );
+  
   return $blocks;
 }
 
@@ -32,11 +39,17 @@ function hub_block_view($delta='') {
 
   $nid = arg(1);
   $node = node_load($nid);
-
+     
   switch($delta) {
         case 'hub_header':
-          if ($node->type == 'hub') {
+          if (!empty($node) and $node->type == 'hub') {
             $content = theme('hub_header_template');
+            $block['content'] = $content;
+          }   
+        break;
+        case 'create_hub_from_topic':
+          if (!empty($node) and $node->type == 'conversation') {
+            $content = theme('create_hub_from_topic_template');
             $block['content'] = $content;
           }   
         break;
@@ -44,12 +57,20 @@ function hub_block_view($delta='') {
   return $block;
 }
 
+function template_preprocess_create_hub_from_topic_template(&$variables){
+    $nid = intval(arg(1));
+    if (!empty($nid)) {
+       $variables['nid'] =  $nid; 
+    }
+    
+}
+
  function template_preprocess_hub_header_template(&$variables) {
      
         $node = node_load(arg(1)); 
         //dpm($node);
   
-	      $field = field_get_items('node', $node, 'meta_group_access');
+	$field = field_get_items('node', $node, 'meta_group_access');
         $meta_group_access = field_view_value('node', $node, 'meta_group_access', $field[0]);
         $variables['meta_group_access'] =  $meta_group_access['#markup'];
         
@@ -90,7 +111,7 @@ function hub_block_view($delta='') {
 function hub_preprocess_page(&$vars) {
        
        $node = menu_get_object();
-       if ($node->type == 'hub')
+       if (!empty($node) && $node->type == 'hub')
        {    
            drupal_set_title('');
            unset($vars[tabs]);
