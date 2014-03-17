@@ -17,7 +17,7 @@
  * @see template_preprocess_pcp_profile_percent_complete()
  */
 ?>
- 
+
 <div id="user_details" class="row-fluid">
   <div class="navigation-profile-picture" >
     <?php $picture = theme('user_picture', array('account' => $user));
