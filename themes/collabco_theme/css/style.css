@@ -2398,14 +2398,14 @@ a.ui-library-file:active{
   }
     #sidebar-first, /* Sidebar on left */
     #habla_beta_container_do_not_rely_on_div_classes_or_names{ /* Get connected box */
-    display:none; /* Hide at mobile view */
+    display: none; /* Hide at mobile view */
   }
   .views-exposed-form .views-exposed-widget .form-submit { /* No margin where button drops down */
-    margin-top:0;
+    margin-top: 0;
   }
 
-  .ui-library-file > img {
-    display:none; /*No library file feature image at small views */
+  .ui-library-file .span2 {
+    display: none; /* Hide featured img for library file at small views */
   }
 }
 
