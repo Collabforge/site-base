@@ -1311,9 +1311,14 @@ ul.recent_topicslist li.views-row-first {
 
 /* -- Sidebar with follow button */
 .sidebar_follow {
-  text-align: center;
-  margin-top:10px;
+  margin-bottom:20px;
 }
+
+.sidebar_follow a.flag.btn{
+  font-size:1.2em;
+  font-weight: bold;
+}
+
 
 /* -- article content */
 
