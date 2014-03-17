@@ -2404,10 +2404,9 @@ a.ui-library-file:active{
     margin-top:0;
   }
 
-  /*.ui-library-file .span2, /*No library file feature image at small views */
-  /*.ui-header-img-container .ui-header-content .field-content /* Hide Topic & Hub description at small size */
-  /*{display:none;}*/
-
+  .ui-library-file img {
+    display:none; /*No library file feature image at small views */
+  }
 }
 
 /**
