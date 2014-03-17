@@ -54,6 +54,9 @@ function meta_group_views_api() {
   );
 }
 
+/**
+ * Implements hook_og_user_access_alter()
+ */
 function meta_group_og_user_access_alter(&$permissions, $context) {
 	if ($context['group_type'] == 'node') {
 		$node = $context['group'];
@@ -130,7 +133,10 @@ function meta_group_menu() {
  * Implements hook_node_access()
  */
 function meta_group_node_access($node) {
-	return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+	if ($node->type == 'hub') {
+		return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+	}
+	return NODE_ACCESS_IGNORE;
 }
 /**
  * a helper function which checks if the user has general access to a group or not
