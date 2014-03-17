@@ -88,8 +88,8 @@ li {
 }
 
 .block .content {
-  padding-left: 10px;
-  padding-right: 10px;
+  /*padding-left: 10px;
+  padding-right: 10px;*/
 }
 
 .main .block {
@@ -1075,7 +1075,8 @@ margin-left: 0px;
 }
 
 .view-recent-activity li.views-row {
-  margin:0 -10px;
+  /*margin:0 -10px;*/
+  margin:0;
   padding: 10px;
   border-top: 1px solid #DFDFDF;
   border-left: 1px solid #DFDFDF;
@@ -1202,7 +1203,8 @@ ul.recent_topicslist li.views-row-first {
 
 .item-list ul li.topic-feature,
 #block-quicktabs-topics .item-list ul li { /*Overwrite default list stylings */
-  margin:0 -10px 1em -10px;
+  /*margin:0 -10px 1em -10px;*/
+  margin:0 0 1em;
 }
 
 .topic-feature .recommended {
@@ -2120,8 +2122,8 @@ form .field-name-field-file-ref {
 
 .hub-header.hub-detail-page{
   padding-bottom:0;
-  margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
-  margin-right:-10px;
+  /*margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
+  /*margin-right:-10px;*/
 }
 
 .hub-header .article_text{
@@ -2335,8 +2337,8 @@ a.ui-library-file:active{
 
 @media (min-width: 769px) {
   .title_text.container div{
-    padding-left:10px;
-    padding-right: 10px; 
+    /*padding-left:10px;
+    padding-right: 10px;*/ 
   }
 }
 @media (max-width: 979px) {
