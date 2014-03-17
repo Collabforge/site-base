@@ -26,51 +26,54 @@
 
 //x($row->nid);
 ?>
-<div class="container">
-	<div class="content">
-		<div class="row-fluid">
-			<div class="span12">
-				<!-- Breadcrumbs -->
-				<a href="/topics">Topics</a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
+
+<div class="topic-header">
+	<div class="container">
+		<div class="content">
+			<div class="row-fluid">
+				<div class="span12">
+					<!-- Breadcrumbs -->
+					<a href="/topics">Topics</a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
+				</div>
 			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span9 ui-header-img-container">
-				<div class="ui-header-content" >
-					<!-- Topic title & info -->
-					<h1>
-						<span class="ui-inline"><i class="icon-comments-alt"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>			
-					</h1> 
-					
+			<div class="row-fluid">
+				<div class="span9 ui-header-img-container">
+					<div class="ui-header-content" >
+						<!-- Topic title & info -->
+						<h1>
+							<span class="ui-inline"><i class="icon-comments-alt"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>			
+						</h1> 
+						
+					</div>
+
+					<div class="ui-hub-feature-img">
+						<!-- Topic feature img -->
+					    <span><?php echo $fields['field_featured_image']->content; ?></span>
+					</div>
+
+				</div>
+				<div class="span3">
+					<!-- Organisation image -->
+					<ul class="thumbnails ui-hubs-organisation-thumbnail">
+					  <li class="span12">
+					    <div class="thumbnail">
+					      <span class="ui-org-img"><?php echo $fields['field_organisation_image']->content; ?></span>
+					      <div class="row-fluid">
+							<div class="span3">
+								<div class="user-picture-small"><?php echo $fields['picture']->content; ?>  </div>
+							</div>
+							<div class="span9">
+								<h5>Hosted by <span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
+			        			<span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
+							</div>
+						  </div>
+
+					    </div>
+					  </li>
+					</ul>			
 				</div>
 
-				<div class="ui-hub-feature-img">
-					<!-- Topic feature img -->
-				    <span><?php echo $fields['field_featured_image']->content; ?></span>
-				</div>
-
 			</div>
-			<div class="span3">
-				<!-- Organisation image -->
-				<ul class="thumbnails ui-hubs-organisation-thumbnail">
-				  <li class="span12">
-				    <div class="thumbnail">
-				      <span class="ui-org-img"><?php echo $fields['field_organisation_image']->content; ?></span>
-				      <div class="row-fluid">
-						<div class="span3">
-							<div class="user-picture-small"><?php echo $fields['picture']->content; ?>  </div>
-						</div>
-						<div class="span9">
-							<h5>Hosted by <span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
-		        			<span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
-						</div>
-					  </div>
-
-				    </div>
-				  </li>
-				</ul>			
-			</div>
-
 		</div>
 	</div>
 </div>
