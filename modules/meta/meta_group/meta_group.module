@@ -20,6 +20,9 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
 }
 
 function _meta_group_og_membership_update(OgMembership $og_membership) {
+    if ($og_membership->group_type != 'node' or $og_membership->entity_type != 'user') {
+    	return;
+    }
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
 	$node = node_load($gid);
