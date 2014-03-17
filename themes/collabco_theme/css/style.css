@@ -87,11 +87,6 @@ li {
   margin:0; 
 }
 
-.block .content {
-  /*padding-left: 10px;
-  padding-right: 10px;*/
-}
-
 .main .block {
   margin-bottom: 10px;
 }
@@ -151,7 +146,6 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
 #page-title { 
   line-height: 1;
   text-align: left;
-  /*padding-left:10px;*/
 }
 
 /* System alerts -------------*/
@@ -1077,7 +1071,6 @@ margin-left: 0px;
 }
 
 .view-recent-activity li.views-row {
-  /*margin:0 -10px;*/
   margin:0;
   padding: 10px;
   border-top: 1px solid #DFDFDF;
@@ -1088,12 +1081,6 @@ margin-left: 0px;
 
 .view-recent-activity li.views-row:last-child{
   border-bottom: 1px solid #DFDFDF;
-}
-
-.view-recent-activity li.views-row:hover,
-.view-recent-activity li.views-row:focus,
-.view-recent-activity li.views-row:active {
-  /*background:#fffaf5;*/
 }
 
 .view-recent-activity .activity-details a:first-child{ /*User name label*/
@@ -1205,7 +1192,6 @@ ul.recent_topicslist li.views-row-first {
 
 .item-list ul li.topic-feature,
 #block-quicktabs-topics .item-list ul li { /*Overwrite default list stylings */
-  /*margin:0 -10px 1em -10px;*/
   margin:0 0 1em;
 }
 
@@ -1531,18 +1517,6 @@ form .field-name-field-file-ref {
   border-top: none;
 }
 
-#comment-form {
-  /*font-size: 12px;*/
-}
-
-#comment-form select {
-  /*font-size: 12px;*/
-}
-
-#comment-form input {
-  /*font-size: 12px;*/
-}
-
 
 
 /**
@@ -1858,7 +1832,6 @@ body.node-type-conversation h1#page-title {
   margin:10px 0;
 }
 .view-members-of-organisation .user-picture img {
-  /*width: 90px;*/
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -2128,8 +2101,6 @@ form .field-name-field-file-ref {
 
 .hub-header.hub-detail-page{
   padding-bottom:0;
-  /*margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
-  /*margin-right:-10px;*/
 }
 
 .hub-header .article_text{
