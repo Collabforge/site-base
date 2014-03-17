@@ -88,8 +88,8 @@ li {
 }
 
 .block .content {
-  padding-left: 10px;
-  padding-right: 10px;
+  /*padding-left: 10px;
+  padding-right: 10px;*/
 }
 
 .main .block {
@@ -133,12 +133,25 @@ table thead th {
   margin:0;
 }
 
+li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
+  display:inline;
+}
+
+/* Makes shit sit inline! -------------*/
+
+.ui-inline, 
+.ui-inline span,
+.ui-inline div,
+.ui-inline i{
+  display:inline;
+}
+
 /* Generic content page headings -------------*/
 
 #page-title { 
   line-height: 1;
   text-align: left;
-  padding-left:10px;
+  /*padding-left:10px;*/
 }
 
 /* System alerts -------------*/
@@ -1066,7 +1079,8 @@ margin-left: 0px;
 }
 
 .view-recent-activity li.views-row {
-  margin:0 -10px;
+  /*margin:0 -10px;*/
+  margin:0;
   padding: 10px;
   border-top: 1px solid #DFDFDF;
   border-left: 1px solid #DFDFDF;
@@ -1193,7 +1207,8 @@ ul.recent_topicslist li.views-row-first {
 
 .item-list ul li.topic-feature,
 #block-quicktabs-topics .item-list ul li { /*Overwrite default list stylings */
-  margin:0 -10px 1em -10px;
+  /*margin:0 -10px 1em -10px;*/
+  margin:0 0 1em;
 }
 
 .topic-feature .recommended {
@@ -1301,10 +1316,15 @@ ul.recent_topicslist li.views-row-first {
 
 
 /* -- Sidebar with follow button */
-.sidebar_follow {
-  text-align: center;
-  margin-top:10px;
+.sidebar_follow a.flag.btn{
+  font-size:1.175em;
+  font-weight: bold;
 }
+
+.sidebar_follow .flag-message{
+  top:2.2em;
+}
+
 
 /* -- article content */
 
@@ -1535,7 +1555,7 @@ body.node-type-conversation h1#page-title {
 
  /* -- edit link for topic owner */
 .edit_your_topic {
-  float: right;
+  float: left;
   clear: left;
 }
 
@@ -2098,6 +2118,7 @@ form .field-name-field-file-ref {
   display: inline;
 }
 
+.topic-header,
 .hub-header{
   background:#F2F2F2;
   padding: 8px 16px;
@@ -2105,8 +2126,8 @@ form .field-name-field-file-ref {
 
 .hub-header.hub-detail-page{
   padding-bottom:0;
-  margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
-  margin-right:-10px;
+  /*margin-left:-10px; /*can remove this if extraneous 'content' div is removed */
+  /*margin-right:-10px;*/
 }
 
 .hub-header .article_text{
@@ -2125,25 +2146,33 @@ form .field-name-field-file-ref {
   margin-top:20px;
 }
 
-.hub-header span.label.ui-inline-label{
-  float:none;
-  margin-top:0;
-}
-
-.hub-header .ui-hubs-organisation-thumbnail .thumbnail{
+.ui-hubs-organisation-thumbnail .thumbnail{
   padding-bottom:1em;
 }
 
-.hub-header .ui-hubs-organisation-thumbnail .ui-org-img div{
+.ui-hubs-organisation-thumbnail .ui-org-img div{
   background-color:#fff;
   padding:15px;
   text-align: center;
   margin-bottom:0.5em;
 }
 
-.hub-header .ui-hubs-organisation-thumbnail .user-picture-small div {
+.ui-hubs-organisation-thumbnail .thumbnail{
+  padding-bottom:1em;
+}
+
+.ui-hubs-organisation-thumbnail .user-picture-small div {
   text-align: center;
   margin-top:0.75em;
+}
+
+.ui-hub-feature-img img{
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
 }
 
 .hub-header .nav.nav-tabs{
@@ -2178,6 +2207,38 @@ form .field-name-field-file-ref {
   margin-top:2em;
 }
 
+/* Sexy big header image container & styling ------------ */
+
+.ui-header-img-container{
+  position:relative; 
+  margin-bottom:2em;
+}
+
+.ui-header-img-container .ui-header-content{
+  z-index:10000; 
+  height:50%; 
+  width:94%; 
+  position:absolute; 
+  left:0px; 
+  bottom:0px; 
+  color:#222; 
+  background-color:#fff; /* for old skool browsers */
+  background: rgba(255, 255, 255, 0.65); 
+  padding:0 3%; 
+  -webkit-border-radius: 0 0 5px 5px; 
+  -moz-border-radius: 0 0 5px 5px; 
+  border-radius: 0 0 5px 5px; 
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+.ui-header-img-container .ui-header-content h1{
+  line-height: 1.1;
+  font-size:2em;
+  margin-top:1em;
+}
+
+
+
 /* Generic library item styling ------------ */
 
 .ui-library-file a:hover,
@@ -2204,6 +2265,7 @@ a.ui-library-file:active{
 .ui-library-file:focus,
 .ui-library-file:active{
   background-color: #ddd;
+  font-size: 120%;
 }
 
 .ui-library-file h2 {
@@ -2219,7 +2281,6 @@ a.ui-library-file:active{
   font-weight: normal;
   font-style: normal;
   display: block;
-  font-size:1.15em;
   position:absolute;
   top:10px;
   right:10px;
@@ -2237,6 +2298,36 @@ a.ui-library-file:active{
   background-color: #b3d9f2;
 }
 
+
+.page-node-library .item-list ul li,
+.page-node-topics .item-list ul li { /*overwrite framework li styling (because this shit shouldn't be nested as LIs to begin with) */
+  margin:0;
+}
+
+/* Library Item - Detail Page Styling ----------------------*/
+
+.node-knowledge-object .field-name-field-featured-ko-image { /* Main image */
+  float:left;
+  margin-right:20px;
+}
+
+.node-knowledge-object .contentarticle .field-name-field-featured-ko-image img{ 
+  margin:0;
+}
+
+.node-knowledge-object .field-name-body{
+  border-bottom:none;  
+  margin-top:10px;
+}
+
+.node-knowledge-object .field-name-field-ko-file {  /* File(s) link(s) */
+  font-size: 130%;
+}
+
+.node-knowledge-object .contentarticle .field-name-field-ko-file img{
+  margin:10px 0;
+}
+
 /**
 26. RESPONSIVE - CONTENT-SPECIFIC
 ------------------------------------------------------------------
@@ -2245,8 +2336,8 @@ a.ui-library-file:active{
 
 @media (min-width: 769px) {
   .title_text.container div{
-    padding-left:10px;
-    padding-right: 10px; 
+    /*padding-left:10px;
+    padding-right: 10px;*/ 
   }
 }
 @media (max-width: 979px) {
@@ -2293,6 +2384,16 @@ a.ui-library-file:active{
   .node-type-basic-page h1#page-title {
     max-width: 500px;
   }
+
+  .ui-header-img-container .ui-header-content{ /* Make  header container full height at small size */
+    height:100%; 
+    -webkit-border-radius:5px; 
+    -moz-border-radius:5px; 
+    border-radius: 5px;
+  }
+  .ui-header-img-container .ui-header-content .ui-header-description{ /* Turn off description for hubs / topics header */
+    display: none; 
+  }
 }
 
 @media (max-width: 399px) {
@@ -2305,6 +2406,10 @@ a.ui-library-file:active{
   }
   .views-exposed-form .views-exposed-widget .form-submit { /* No margin where button drops down */
     margin-top:0;
+  }
+
+  .ui-library-file img {
+    display:none; /*No library file feature image at small views */
   }
 }
 

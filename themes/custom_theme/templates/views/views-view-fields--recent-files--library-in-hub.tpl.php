@@ -47,7 +47,7 @@
 
 
 
-<!-- OLD VERSION
+<!-- OLD VERSION FYI
 <div class=index_item row-fluid <?php echo $library_type;?> >
   <div class="span2">
     <?php echo $fields['field_featured_ko_image'] ->content;?> 

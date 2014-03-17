@@ -103,11 +103,11 @@ function _meta_og_state_get_state($node) {
   if (!og_is_group('node', $gid)) {
     return false;
   }
-  $group_wrapper = entity_metadata_wrapper('node', $gid);
-  if (isset($group_wrapper->{META_OG_STATE_FIELD})) {
-    return $group_wrapper->{META_OG_STATE_FIELD}->value();
+  $items = field_get_items('node', $node, META_OG_STATE_FIELD);
+  if (isset($items[0])) {
+    return $items[0]['value'];
   }
-  return false;
+  return null;
 }
 
 /**
