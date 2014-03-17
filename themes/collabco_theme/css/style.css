@@ -1311,12 +1311,16 @@ ul.recent_topicslist li.views-row-first {
 
 /* -- Sidebar with follow button */
 .sidebar_follow {
-  margin-bottom:20px;
+  margin-bottom:30px !important; /*needs important because of inheritance issues*/
 }
 
 .sidebar_follow a.flag.btn{
   font-size:1.2em;
   font-weight: bold;
+}
+
+.sidebar_follow .flag-message{
+  top:2.2em;
 }
 
 
