@@ -36,15 +36,15 @@
 	<div class="row-fluid">
 		<div class="span9 ui-header-img-container">
 			<div class="ui-header-content" >
-				<!-- Hub title & info -->
+				<!-- Topic title & info -->
 				<h1>
-					<span class="ui-inline"><i class="icon-group"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>			
+					<span class="ui-inline"><i class="icon-comments-alt"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>			
 				</h1> 
 				
 			</div>
 
 			<div class="ui-hub-feature-img">
-				<!-- Hub img -->
+				<!-- Topic feature img -->
 			    <span><?php echo $fields['field_featured_image']->content; ?></span>
 			</div>
 
