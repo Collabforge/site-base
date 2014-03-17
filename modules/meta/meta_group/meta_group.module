@@ -125,6 +125,10 @@ function meta_group_menu() {
 	return $items;
 }
 
+
+/**
+ * Implements hook_node_access()
+ */
 function meta_group_node_access($node) {
 	return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
 }
@@ -141,6 +145,12 @@ function _meta_group_user_access_group($node, $account=NULL) {
 		return false;
 	}
 	$gid = $node->nid;
+
+	if (!_meta_group_is_close($node)) {
+		return true;
+	}
+
+	// @TODO should check for $node->status?
 	if (user_access('administer group', $account)) {
 		return true;
 	}
