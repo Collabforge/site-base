@@ -192,7 +192,6 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
  */
 
 #search-box {
-  font-size: 0.85em;
   padding-top:16px;
 }
 
@@ -204,6 +203,10 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
   height: 15px;
   width: 80px;
   color: ##6a6767;
+}
+
+#block-search-form input{
+  font-size: 0.85em;
 }
 
 html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework icon double-up */
