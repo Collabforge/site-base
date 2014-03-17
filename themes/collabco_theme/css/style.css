@@ -1271,6 +1271,10 @@ ul.recent_topicslist li.views-row-first {
   margin-top: 10px;
 }
 
+.article_host h5 {
+  margin:0.25em 0;
+}
+
 .user_block .user-picture-small {
   padding-right: 10px;
 }
@@ -2404,9 +2408,10 @@ a.ui-library-file:active{
     margin-top: 0;
   }
 
+  /* This isn't working - Hide featured img for library file at small views
   .ui-library-file .span2 {
-    display: none; /* Hide featured img for library file at small views */
-  }
+    display: none;  
+  }*/
 }
 
 /**
