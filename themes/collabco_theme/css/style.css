@@ -206,7 +206,7 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
 }
 
 #block-search-form input{
-  font-size: 0.85em;
+  font-size: 0.75em;
 }
 
 html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework icon double-up */
