@@ -2404,7 +2404,7 @@ a.ui-library-file:active{
     margin-top:0;
   }
 
-  .ui-library-file img {
+  .ui-library-file > img {
     display:none; /*No library file feature image at small views */
   }
 }
