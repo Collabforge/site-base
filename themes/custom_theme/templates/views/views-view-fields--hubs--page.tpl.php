@@ -89,7 +89,7 @@
             if (_meta_group_is_pending_member($gid)) {
               // So the user is already requested for a membership but yet to be approved or rejected
               ?>
-              {ALREADY REQUESTED}
+              <span class="label label-info"> <i class="icon-info-sign"></i> Membership requested - pending approval </span>
               <?php
             } else {
               // The user is neither a member nor have requested for a membership
