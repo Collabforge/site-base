@@ -132,7 +132,9 @@ function meta_group_menu() {
 function meta_group_node_access($node) {
 	return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
 }
-
+/**
+ * a helper function which checks if the user has general access to a group or not
+ */
 function _meta_group_user_access_group($node, $account=NULL) {
 	global $user;
 	if (!isset($account)) {
@@ -436,5 +438,27 @@ function _meta_group_get_rid_by_role_name($gid, $role_name) {
 	}
 	return;
 }
+
+// @TODO: should throw an exception in case of a fault?
+function _meta_group_is_pending_member($gid, $account=NULL) {
+	global $user;
+	$node = node_load($gid);
+	if (!isset($node->nid)) {
+		return null;
+	}
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	if (!isset($account)) {
+		$account = user_load($user->uid);
+	}
+	return og_is_member('node', $gid, 'user', $account, array(OG_STATE_PENDING));
+}
+
+
+
+
+
+
 
 

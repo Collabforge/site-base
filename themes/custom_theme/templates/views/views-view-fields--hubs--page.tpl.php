@@ -61,7 +61,7 @@
     </div>
     <div class="article_host row-fluid"> 
         <?php
-        if (meta_og_state_is_open($gid) || og_is_member('node', $gid)) {
+        if (meta_og_state_is_open($gid) or og_is_member('node', $gid)) {
             ?>
             
             <div class="span2"> 
@@ -83,12 +83,25 @@
 
             <?php
         } else {
+            // @TODO: better to be done in preprocess functions
             
-            $url = sprintf('group/node/%d/subscribe', $gid);
-            ?>
-            <a href="<?php echo $url; ?>" class="btn btn-warning"><i class="icon-plus"></i> Request membership</a> 
-            
-            <?php
+
+            if (_meta_group_is_pending_member($gid)) {
+              // So the user is already requested for a membership but yet to be approved or rejected
+              ?>
+              {ALREADY REQUESTED}
+              <?php
+            } else {
+              // The user is neither a member nor have requested for a membership
+
+              $url = sprintf('group/node/%d/subscribe', $gid);
+              ?>
+              <a href="<?php echo $url; ?>" class="btn btn-warning"><i class="icon-plus"></i> Request membership</a> 
+              
+              <?php
+            }
+
+
         }
         ?>
        
