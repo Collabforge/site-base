@@ -193,11 +193,11 @@ li.views-row .field-content { /* Prevents drop-down for divs nested inside li */
 
 #search-box {
   font-size: 0.85em;
-  float: right;
   padding-top:16px;
 }
 
 #block-search-form {
+  float: right;
 }
 
 #block-search-form .search-query {
@@ -211,7 +211,8 @@ html.js #block-search-form input.form-autocomplete{ /* Overwrites open_framework
 }
 
 #block-search-form .btn-search {
-  top: 0px;
+  top: -5px;
+  right:-5px;
 }
 
 /* Search results page -----------------------*/
