@@ -75,15 +75,15 @@ function meta_email_mail_send($key,$config) {
   switch ($key) {
     // Send a simple message from the contact form.
     case 'user_added_to_hub':
-              
-        $config['message'] = 'Hi '. $to_user->name . '<br>'.
-          $from_user->name. ' has added you to the Continuous Collaboration Hub called '.$hub->title .'<br>' .
-          'You will be able to join the discussion in the Hub Topics and contribute useful files in the Hub Library <br>'.
-          'If you don\'t want updates in your Activity Feed from the Hub, simply visit Your Topics '.', find the Hub youve been added to, and click Unfollow';
-    
+        $url = url('profile/hubs', array('absolute' => TRUE));
+        $config['message'] = 'Hi '. $to_user->name . '\n'.
+          $from_user->name. ' has added you to the Continuous Collaboration Hub called '.$hub->title .'\n' .
+          'You will be able to join the discussion in the Hub Topics and contribute useful files in the Hub Library '.'\n'.
+          'If you don\'t want updates in your Activity Feed from the Hub, simply visit Your Hubs '. $url .', find the Hub you\'ve been added to, and click Unsubscribe';
+   
         break;
   }
-  
+ 
   
   $language = language_default();
 
@@ -122,7 +122,7 @@ function meta_email_mail_alter(&$message) {
     'langcode' => $message['language']->language,
   );
 
-  $signature = t("\n--Kind Regards \n The META members only community team\n", array(), $options);
+  $signature = t("\nKind Regards \n The META members only community team\n", array(), $options);
 
   if (is_array($message['body'])) {
     $message['body'][] = $signature;
