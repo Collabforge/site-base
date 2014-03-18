@@ -1074,7 +1074,8 @@ margin-left: 0px;
   display: inline-block;
 }
 
-.view-recent-activity li.views-row {
+.view-recent-activity li.views-row,
+.view-recent-activity .view-empty  {
   margin:0;
   padding: 10px;
   border-top: 1px solid #DFDFDF;
