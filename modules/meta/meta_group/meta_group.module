@@ -155,7 +155,7 @@ function meta_group_send_for_revision_access($node) {
 
 function meta_group_send_for_revision_page($node) {
 	// @TODO better to show a page and asks for a confirmation.
-	drupal_set_message(t('An email is sent to the Community Manager. You will get informed as soon as a decission is made on your Group.'));
+	drupal_set_message(t('An email has been sent to the Community Manager. You will be notified as soon as a decission is made on your Group.'));
 	global $user;
 	meta_email_send_send_for_revision($node->nid, $user->uid);
 	drupal_goto(sprintf('node/%d', $node->nid));
@@ -409,6 +409,7 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 	foreach ($form['og_user']['roles']['#options'] as $rid => $role_name) {
 		if ($type == 'co-owner' and $role_name == OG_ADMINISTRATOR_ROLE) {
 			$meta_roles[] = $rid;
+			$form['og_user']['#title'] = "Add a co-owner";
 		}
 	}
 	$form_state['meta_roles'] = $meta_roles;
