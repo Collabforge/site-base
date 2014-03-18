@@ -1900,6 +1900,10 @@ body.node-type-conversation h1#page-title {
   width: 50%;
 }
 
+.view-member-organisations .ui-organisation-img {
+  height:100px;
+}
+
 .fieldset-title {
   font-size: 0.7em;
 }
