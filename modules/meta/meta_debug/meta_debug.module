@@ -18,3 +18,20 @@ function x($var, $die=true) {
   empty($die) or die(); 
 }
 
+
+function meta_debug_menu() {
+	$items = array();
+	$items['test23'] = array(
+	    'title' => 'Testing function',
+	    'description' => 'Testing function desc',
+	    'page callback' => '_meta_test',
+            'access callback' => TRUE
+	);
+        return $items;
+}
+
+function _meta_test()
+{
+  //  x("hello");
+    meta_email_send_send_for_revision(271,202);
+}
