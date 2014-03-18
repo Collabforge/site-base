@@ -1049,7 +1049,7 @@ margin-left: 0px;
 
 .news_update h2 {
   margin: 20px 0 0 0;
-  font-size: 1.875em;
+  font-size: 26px;
   font-weight: normal;
   font-weight: normal;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
@@ -1069,6 +1069,7 @@ margin-left: 0px;
   font-style: normal;
   display: inline-block;
   padding-left:0.25em;
+  font-size: 1.5em;
   content:"\F0A1"; /*Bullhorn icon*/
 }
 
