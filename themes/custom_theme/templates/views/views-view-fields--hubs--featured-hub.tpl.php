@@ -91,7 +91,6 @@
 
         if (_meta_group_is_pending_member($gid)) {
           // So the user is already requested for a membership but yet to be approved or rejected
-          echo 'Here!';
           ?>
           <span class="label"><h3>&nbsp; <i class="icon-info-sign"></i> Membership requested (approval pending) &nbsp;</h3></span>
           <?php
