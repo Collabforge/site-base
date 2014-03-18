@@ -139,8 +139,9 @@ function og_ui_add_users($form, &$form_state, $group_type, $gid) {
 
   $form['og_user'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Add a group member to %group', array('%group' => $label)),
+    '#title' => t('Add to %group', array('%group' => $label)),
   );
+
   $form['og_user']['name'] = array(
     '#type' => 'textfield',
     '#title' => t('User name'),
