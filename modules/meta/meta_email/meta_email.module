@@ -87,7 +87,7 @@ function meta_email_mail_send($key,$config) {
           If you don't want updates in your Activity Feed from the Hub, simply visit Your Hubs @url , find the Hub you've been added to, and click Unsubscribe",$values);
         break;
     case 'send_for_revision' :
-        $to = variable_get('site_mail', 'admin@example.com');
+       // $to = variable_get('site_mail', 'admin@example.com');
         $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail ); 
         $config['message'] = t("Hi META admin, \n
          A new Hub requires your attention. @from has submitted their hub '@title' for you to review.
@@ -245,14 +245,5 @@ function meta_email_send_user_joined($gid, $uid) {
       , '#hub' => $group->title
     )));
 }
-
-
-
-
-
-
-
-
-
 
 
