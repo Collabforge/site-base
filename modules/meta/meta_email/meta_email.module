@@ -38,16 +38,15 @@ function meta_email_mail($key, &$message, $params) {
   switch ($key) {
     // Send a simple message from the contact form.
     case 'user_added_to_hub':
-       // x("in correct fn");
+   
       $message['subject'] = t('E-mail sent from @site-name', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
-      // Note that the message body is an array, not a string.
-    //  $message['body'][] = t('Hi @name sent you the following message:', array('@name' => $user->name), $options);
-      // Because this is just user-entered text, we do not need to translate it.
-      // Since user-entered text may have unintentional HTML entities in it like
-      // '<' or '>', we need to make sure these entities are properly escaped,
-      // as the body will later be transformed from HTML to text, meaning
-      // that a normal use of '<' will result in truncation of the message.
-
+  
+      $message['body'][] = check_plain($params['message']);
+      break;
+    case 'send_for_revision':
+      
+      $message['subject'] = t('Hub Owner sent hub for revision', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
+     
       $message['body'][] = check_plain($params['message']);
       break;
   }
@@ -210,10 +209,10 @@ function meta_email_send_send_for_revision($gid, $uid) {
       );
   meta_email_mail_send('send_for_revision',$config);
   // @TODO should be implemented HERE
-  drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has asked for a revision for Hub #hub', array(
+ /* drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has asked for a revision for Hub #hub', array(
       '#user' => $user->name
       , '#hub' => $group->title
-    )));
+    ))); */
 }
 
 
