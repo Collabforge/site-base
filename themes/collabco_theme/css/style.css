@@ -1084,6 +1084,10 @@ margin-left: 0px;
   background:#fff;
 }
 
+.view-recent-activity .view-empty {
+  border-bottom: 1px solid #DFDFDF;
+}
+
 .view-recent-activity li.views-row:last-child{
   border-bottom: 1px solid #DFDFDF;
 }
