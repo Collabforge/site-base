@@ -60,48 +60,52 @@
       </div>
     </div>
     <div class="article_host row-fluid"> 
-        <?php
-          if (meta_og_state_is_open($gid) or og_is_member('node', $gid)) {
+      
+      <?php
+      if (meta_og_state_is_open($gid) or og_is_member('node', $gid)) {
+
         ?>
-            
-            <div class="span2"> 
-              <?php echo $fields['field_organisation_image'] ->content;?> 
-            </div>
-            <div class="span8"> 
-                <h5>Hosted by <span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
-                <span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
-            </div>
-            <div class="span2"> 
-              <p>
-                <i class="icon-group"></i>
-                <?php
-                $members_count = hub_get_members_count($row->nid);
-                echo format_plural($members_count, '1 Member', '@count Members');
-                ?>
-              </p>
-            </div>
-
+        <div class="span2"> 
+          <?php echo $fields['field_organisation_image'] ->content;?> 
+        </div>
+        <div class="span8"> 
+          <h5>Hosted by <span class="ui-inline"><?php echo $fields['name']->content;?></span></h5>
+          <span class="ui-inline"><?php echo $fields['field_business_position']->content;?></span> at <span class="ui-inline"><?php echo $fields['field_organisation_ref']->content;?> </span>
+        </div>
+        <div class="span2"> 
+          <p>
+            <i class="icon-group"></i>
             <?php
-              } else {
-                  // @TODO: better to be done in preprocess functions
-                  
-
-                  if (_meta_group_is_pending_member($gid)) {
-                    // So the user is already requested for a membership but yet to be approved or rejected
-                    ?>
-                    <span class="label"><h3>&nbsp; <i class="icon-info-sign"></i> Membership requested (approval pending) &nbsp;</h3></span>
-                    <?php
-                  } else {
-                    // The user is neither a member nor have requested for a membership
-
-                    $url = sprintf('group/node/%d/subscribe', $gid);
-                    ?>
-                    <a href="<?php echo $url; ?>" class="btn btn-warning"><i class="icon-plus"></i> Request membership</a> 
-                    
-                    <?php
-                  }
-              }
+            $members_count = hub_get_members_count($row->nid);
+            echo format_plural($members_count, '1 Member', '@count Members');
             ?>
+          </p>
+        </div>
+        <?php
+
+      } else {
+        // @TODO: better to be done in preprocess functions
+
+
+        if (_meta_group_is_pending_member($gid)) {
+          // So the user is already requested for a membership but yet to be approved or rejected
+          
+          ?>
+          <span class="label"><h3>&nbsp; <i class="icon-info-sign"></i> Membership requested (approval pending) &nbsp;</h3></span>
+          <?php
+
+        } else {
+          // The user is neither a member nor have requested for a membership
+
+          $url = sprintf('group/node/%d/subscribe', $gid);
+          ?>
+          <a href="<?php echo $url; ?>" class="btn btn-warning"><i class="icon-plus"></i> Request membership</a> 
+
+          <?php
+        
+        }
+      }
+      ?>
        
     </div>
   </div>
