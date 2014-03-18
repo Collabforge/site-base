@@ -1871,28 +1871,6 @@ body.node-type-conversation h1#page-title {
 ---------------------------------------------
  */
 
-.twocolgrid {
-  /*float: left;
-  width: 40%;
-  height: 120px;
-  padding-bottom: 5px;
-  margin-right: 25px;
-  margin-bottom: 30px;
-  vertical-align: baseline;
-  margin-left: 10px;*/
-}
-
-.orgbox {
-  /*text-align:center;
-  margin: 20px 5% 0 5%;*/
-}
-
-.orgtext {
-  /*position: relative;
-  clear:left;
-  display:inline;
-  margin:10px auto;*/
-}
 
 .field-type-text-with-summary {
   border-bottom: 1px solid #CCC;
@@ -1903,7 +1881,7 @@ body.node-type-conversation h1#page-title {
 .view-member-organisations table td{
   text-align: center;
   background:#fff;
-  padding:10px;
+  padding:20px 10px;
   border-top:1px solid #ddd;
   border-bottom:1px solid #ddd;
   border-left:0;
@@ -1912,7 +1890,6 @@ body.node-type-conversation h1#page-title {
 
 .view-member-organisations table.cols-4 td{
   width: 25%;
-
 }
 
 .view-member-organisations table.cols-3 td{
@@ -1921,28 +1898,6 @@ body.node-type-conversation h1#page-title {
 
 .view-member-organisations table.cols-2 td{
   width: 50%;
-}
-
-.view-member-organisations ul {
-  /*margin:0;
-  clear: both;
-  height:30px;
-  padding:20px 0;*/
-}
-
-.view-member-organisations .views-row {
-  /*margin-top: 1em;
-  padding-bottom: 10px;
-  border-bottom: none;*/
-}
-
-.view-member-organisations ul li {
-  /*display: inline;*/
-}
-.view-member-organisations ul {
-  /*padding-bottom: 10px;
-  margin-bottom: 15px;
-  height: 80px;*/
 }
 
 .fieldset-title {
