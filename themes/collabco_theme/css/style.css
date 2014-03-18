@@ -1905,6 +1905,12 @@ body.node-type-conversation h1#page-title {
   text-align: center;
 }
 
+.view-member-organisations .ui-organisation-txt {
+  background:#fbfbfb;
+  padding:2px 0;
+  margin-top:10px;
+}
+
 .fieldset-title {
   font-size: 0.7em;
 }
