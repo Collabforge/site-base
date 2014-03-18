@@ -1882,8 +1882,7 @@ body.node-type-conversation h1#page-title {
   background:#fff;
   padding:20px;
   margin-top:10px;
-  border-top:1px solid #fbfbfb;
-  border-bottom:1px solid #fbfbfb;
+  border-bottom:2px solid #fbfbfb;
   border-left:0;
   border-right:0;
 }
