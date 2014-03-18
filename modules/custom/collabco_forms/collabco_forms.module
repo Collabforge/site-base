@@ -68,6 +68,15 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
 
 /**
  * Implements hook_form_FORMID_alter().
+ *
+ * Set up a redirecion handler for the File (aka Knowledge Object) content type.
+ */
+function collabco_forms_form_knowledge_object_node_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'collabco_forms_redirect_handler';
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
  */
 function collabco_forms_form_comment_form_alter(&$form, &$form_state, $form_id) {
   $form['notify_settings']['notify']['#title'] = t('Notify me via email for...');
@@ -158,14 +167,27 @@ function collabco_forms_form_user_register_form_alter(&$form, &$form_state) {
  */
 function collabco_forms_redirect_handler($form, &$form_state) {
   global $base_url;
-  switch ($form['#user_category']) {
-    case 'account':
-      $form_state['redirect'] = $base_url;
-      break;
-    case 'profile':
-      $form_state['redirect'] = $base_url . '/user';
-      break;
+
+  if ($form['#form_id'] == 'knowledge_object_node_form') {
+    // This doesn't work at the mo.
+    // Redirect destination needs to be conditional on where we came from
+    // $destination = "/hubs";
+    // $form_state['redirect'] = "$base_url/$destination";
+    return;
+  }
+
+  if (isset($form['#user_category'])) {
+    switch ($form['#user_category']) {
+      case 'account':
+        $form_state['redirect'] = $base_url;
+        break;
+      case 'profile':
+        $form_state['redirect'] = "$base_url/user";
+        break;
+      default:
     }
+  }
+
 }
 
 /**
