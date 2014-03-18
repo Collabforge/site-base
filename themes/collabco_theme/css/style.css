@@ -1881,7 +1881,7 @@ body.node-type-conversation h1#page-title {
 .view-member-organisations table td{
   text-align: center;
   background:#fff;
-  padding:20px 10px;
+  padding:20px;
   border-top:1px solid #ddd;
   border-bottom:1px solid #ddd;
   border-left:0;
@@ -1902,6 +1902,9 @@ body.node-type-conversation h1#page-title {
 
 .view-member-organisations .ui-organisation-img {
   height:100px;
+  display:table-cell;
+  vertical-align: bottom;
+  text-align: center;
 }
 
 .fieldset-title {
