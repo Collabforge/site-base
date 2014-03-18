@@ -167,3 +167,19 @@ function meta_email_og_membership_insert(OgMembership $og_membership) {
         meta_email_mail_send('user_added_to_hub',$config); 
     }
 }
+
+
+
+/**
+* Helper functions for other modules
+* +++++++++++++++++++++
+*/
+
+
+function meta_email_send_send_for_revision($gid, $nid) {
+  // @TODO should be implemented
+}
+
+
+
+
