@@ -41,25 +41,26 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
     $form['comment_notify_settings']['#title'] = t('Email notification settings');
     if (!empty($form['comment_notify_settings']['node_notify'])) {
       $node_settings = &$form['comment_notify_settings']['node_notify'];
-      $node_settings['#title'] = t('Receive emails when someone comments on content I posted');
+      $node_settings['#title'] = t('For topics I host');
       $node_settings['#type'] = 'radios';
       $node_settings['#options'] = array(
+        TRUE => t('Send emails when new comment are posted'),
         FALSE => t('Do not send any emails'),
-        TRUE => t('Send emails whenever anyone comments on content I posted')
       );
       $node_settings['#description'] = t('You cannot disable notifications for individual threads.');
     }
     if (!empty($form['comment_notify_settings']['comment_notify'])) {
       $comment_settings = &$form['comment_notify_settings']['comment_notify'];
-      $comment_settings['#title'] = t('Receive emails when someone comments on content after I do');
+      $comment_settings['#title'] = t('After I comment on a topic:');
       $comment_settings['#type'] = 'radios';
-      $comment_settings['#options'][COMMENT_NOTIFY_DISABLED] = t('Do not send any emails');
       if (isset($comment_settings['#options'][COMMENT_NOTIFY_NODE])) {
-        $comment_settings['#options'][COMMENT_NOTIFY_NODE] = t('Send emails whenever anyone comments on content after I do');
+        $comment_settings['#options'][COMMENT_NOTIFY_NODE] = t('Send emails when new comments are posted');
       }
-      if (isset($comment_settings[COMMENT_NOTIFY_COMMENT])) {
-        $comment_settings['#options'][COMMENT_NOTIFY_COMMENT] = t('Send emails only when someone replies to my comments');
+      if (isset($comment_settings['#options'][COMMENT_NOTIFY_COMMENT])) {
+        $comment_settings['#options'][COMMENT_NOTIFY_COMMENT] = t('Send emails when someone replies to my comment');
       }
+      unset($comment_settings['#options'][COMMENT_NOTIFY_DISABLED]);
+      $comment_settings['#options'][COMMENT_NOTIFY_DISABLED] = t('Do not send any emails');
       $comment_settings['#default_value'] = reset($form['comment_notify_settings']['comment_notify']['#default_value']);
       $comment_settings['#description'] = t('You can disable these notiﬁcations later for individual pieces of content, by visiting the web page for that content.');
     }
