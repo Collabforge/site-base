@@ -1086,6 +1086,18 @@ margin-left: 0px;
   font-style: normal;
 }
 
+.news_update img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
+}
+
+.news_update .topic_item{
+  padding-left:10px;
+}
 
 /* Your feed - from content you're following --------------*/
 
