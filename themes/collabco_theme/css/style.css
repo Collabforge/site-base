@@ -1077,6 +1077,12 @@ margin-left: 0px;
   content:"\F0A1"; /*Bullhorn icon*/
 }
 
+.news_update .ui-created-date{
+  font-weight: normal;
+  color:#999;
+  padding-top:10px;
+}
+
 
 /* Your feed - from content you're following --------------*/
 
