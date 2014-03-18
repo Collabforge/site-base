@@ -1062,6 +1062,12 @@ margin-left: 0px;
   border-radius: 10px 10px 0 0;
 }
 
+.news_update h2 strong {
+  font-size: 1.5em;
+  padding-left:0.25em;
+  font-weight: normal;
+} 
+
 .news_update h2:before{
   font-family:'FontAwesome';
   font-weight: normal;
