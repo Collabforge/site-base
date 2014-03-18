@@ -1900,16 +1900,17 @@ body.node-type-conversation h1#page-title {
   width: 50%;
 }
 
-.view-member-organisations .ui-organisation-img {
+
+.view-member-organisations .ui-organisation-container {
+  position: relative;
+}
+.view-member-organisations .ui-organisation-container .ui-organisation-img {
   height:100px;
   text-align: center;
-  width:100%;
+  position: absolute;
+  bottom:0;
 }
 
-.view-member-organisations .ui-organisation-img img {
-  display:table-cell;
-  vertical-align: bottom;
-}
 
 .fieldset-title {
   font-size: 0.7em;
