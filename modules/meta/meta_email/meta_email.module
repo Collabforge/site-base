@@ -176,9 +176,31 @@ function meta_email_og_membership_insert(OgMembership $og_membership) {
 */
 
 
-function meta_email_send_send_for_revision($gid, $nid) {
-  // @TODO should be implemented
+/**
+ * Sends an email when a user has requested a Draft Hub to be revised
+ */
+function meta_email_send_send_for_revision($gid, $uid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  if (!$user = user_load($uid)) {
+    return false;
+  }
+  
+  // @TODO should be implemented HERE
+
+
+  drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has asked for a revision for Hub #hub', array(
+      '#user' => $user->name
+      , '#hub' => $group->title
+    )));
 }
+
+
+
+
+
+
 
 
 

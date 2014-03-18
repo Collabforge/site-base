@@ -512,8 +512,32 @@ function _meta_group_is_pending_member($gid, $account=NULL) {
 	return og_is_member('node', $gid, 'user', $account, array(OG_STATE_PENDING));
 }
 
+/**
+ * Checks if provided node id belongs to a Meta group node
+ * @param
+ *   $gid
+ * @return
+ *     TRUE in case it is the $node->nid for an actual Meta Group; otherwise returns FALSE
+ */
+function meta_group_is_group($gid) {
+	return false != meta_group_get_group($gid);
+}
 
-
+/**
+ * Returns the correspondant Group node after doing checks.
+ * @return
+ *     $node object if the checks are passed; otherwise returns FALSE
+ */
+function meta_group_get_group($gid) {
+	$node = node_load($gid);
+	if (!isset($node->nid)) {
+		return false;
+	}
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	return $node;
+}
 
 
 
