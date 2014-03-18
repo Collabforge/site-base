@@ -1902,6 +1902,12 @@ body.node-type-conversation h1#page-title {
 
 .view-member-organisations table td{
   text-align: center;
+  background:#fff;
+  padding:10px;
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  border-left:0;
+  border-right:0;
 }
 
 .view-member-organisations table.cols-4 td{
