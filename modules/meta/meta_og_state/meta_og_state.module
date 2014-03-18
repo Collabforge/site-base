@@ -232,6 +232,30 @@ function meta_og_state_form_node_form_alter(&$form, &$form_state) {
   } 
 }
 
+/**
+ * 
+ */
+function meta_og_state_field_attach_update($entity_type, $entity) {
+
+  if (!isset($entity->nid)) {
+    return;
+  }
+  $nid = $entity->nid;
+  if (!meta_group_is_group($nid)) {
+    return;
+  }
+  $group = $entity;
+  $gid = $group->nid;
+  
+
+  $state_new = _meta_og_state_get_state($group);
+  $state_old = _meta_og_state_get_state($group->original);
+
+  if ($state_old == META_OG_STATE_DRAFT and $state_new == META_OG_STATE_PUBLISHED) {
+    meta_email_send_group_published($gid);
+  }
+}
+
 
 
 

@@ -2,6 +2,7 @@ name = State for OG groups
 description = "Adds state like Draft/Published to Organic Group's groups"
 package = "Meta"
 dependencies[] = og
+dependencies[] = meta_group
 dependencies[] = meta_core
 
 
