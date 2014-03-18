@@ -1048,7 +1048,7 @@ margin-left: 0px;
 
 
 .news_update h2 {
-  margin: 20px 0 0 0;
+  margin: 10px 0 0 0;
   font-size: 26px;
   font-weight: normal;
   font-weight: normal;
@@ -1090,7 +1090,7 @@ margin-left: 0px;
 /* Your feed - from content you're following --------------*/
 
 .home_activity h2 {
-  margin: 0;
+  margin: 10px 0 0 0;
   font-size: 1.15em;
   font-weight: normal;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
