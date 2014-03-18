@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Implementation of hook_og_membership_update()
  * Just for backward compatibility.
@@ -20,6 +19,9 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
 }
 
 function _meta_group_og_membership_update(OgMembership $og_membership) {
+    if ($og_membership->group_type != 'node' or $og_membership->entity_type != 'user') {
+    	return;
+    }
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
 	$node = node_load($gid);
@@ -85,6 +87,8 @@ function meta_group_menu() {
 	    'access callback' => true,
 	);
 
+
+	// Pages for a Group
 	$items['node/%node/topics'] = array(
 	    'title' => 'Topics',
 	    'description' => 'Topics within this hub',
@@ -109,6 +113,9 @@ function meta_group_menu() {
 	    'access callback' => '_meta_group_user_access_group',
 	    'access arguments' => array(1)
 	);
+
+
+	// Functionalities for a Group
 	$items['node/%node/add/member'] = array(
 	    'title' => 'Add a member',
 	    'description' => '',
@@ -125,8 +132,37 @@ function meta_group_menu() {
 	    'access callback' => 'meta_group_add_user_access',
 	    'access arguments' => array(1, 'co-owner'),
 	);
+	$items['node/%node/send-for-revision'] = array(
+	    'title' => 'Send for Revision',
+	    'description' => '',
+	    'page callback' => 'meta_group_send_for_revision_page',
+	    'page arguments' => array(1),
+	    'access callback' => 'meta_group_send_for_revision_access',
+	    'access arguments' => array(1),
+	);
+
 	return $items;
 }
+
+
+
+
+function meta_group_send_for_revision_access($node) {
+	// @FIXME
+	return true;
+}
+
+
+function meta_group_send_for_revision_page($node) {
+	// @TODO better to show a page and asks for a confirmation.
+	drupal_set_message(t('An email is sent to the Community Manager. You will get informed as soon as a decission is made on your Group.'));
+	global $user;
+	meta_email_send_send_for_revision($node->nid, $user->uid);
+	drupal_goto(sprintf('node/%d', $node->nid));
+}
+
+
+
 
 
 /**
@@ -167,24 +203,7 @@ function _meta_group_user_access_group($node, $account=NULL) {
 	}
 	return false;
 }
-function meta_group_add_user_access($node, $type='member') {
-	if (!og_is_group('node', $node)) {
-		return false;
-	}
-	$gid = $node->nid;
-	global $user;
-	$is_group_admin = og_user_access('node', $gid, 'administer group');
-	if (user_access('administer group')) {
-		return true;
-	}
-	if ($type == 'member' and og_user_access('node', $gid, 'add user')) {
-		return true;
-	}
-	if ($type == 'co-owner' and meta_og_state_is_draft($gid) and meta_group_is_owner($gid)) {
-		return true;
-	}
-	return false;
-}
+
 
 function _meta_group_page_profile_hubs() {
 	$groups_hosted = views_embed_view('meta_membership_list_group_by_user', 'owned');
@@ -274,7 +293,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 
     if ($is_owner and meta_og_state_is_draft($gid)) {
     	$links[] = array(
-    		'href' => sprintf('group/node/%d/send-for-revision', $gid)
+    		'href' => sprintf('node/%d/send-for-revision', $gid)
     		, 'title' => 'Send for revision'
     		, 'icon' => 'upload'
     		, 'classes' => array()
@@ -349,9 +368,37 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	$variables['links'] = $links;
 
 }
+
+
+
 /**
- * $type: can be 'co-owner' or ''
- *
+ * Access check for form meta_group_add_user_form
+ * @see meta_group_add_user_form()
+ */
+function meta_group_add_user_access($node, $type='member') {
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	$gid = $node->nid;
+	global $user;
+	$is_group_admin = og_user_access('node', $gid, 'administer group');
+	if (user_access('administer group')) {
+		return true;
+	}
+	if ($type == 'member' and og_user_access('node', $gid, 'add user')) {
+		return true;
+	}
+	if ($type == 'co-owner' and meta_og_state_is_draft($gid) and meta_group_is_owner($gid)) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * Implementation of form for sending a Group for revision
+ * @param
+ *  $type
+ *   can be 'co-owner' or ''
  */
 function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 	module_load_include('inc', 'og_ui', 'og_ui.admin');
@@ -386,6 +433,10 @@ function meta_group_add_user_form_submit($form, &$form_state) {
 	}
 	og_ui_add_users_submit($form, $form_state);
 }
+
+
+
+
 
 
 
@@ -461,7 +512,32 @@ function _meta_group_is_pending_member($gid, $account=NULL) {
 	return og_is_member('node', $gid, 'user', $account, array(OG_STATE_PENDING));
 }
 
+/**
+ * Checks if provided node id belongs to a Meta group node
+ * @param
+ *   $gid
+ * @return
+ *     TRUE in case it is the $node->nid for an actual Meta Group; otherwise returns FALSE
+ */
+function meta_group_is_group($gid) {
+	return false != meta_group_get_group($gid);
+}
 
+/**
+ * Returns the correspondant Group node after doing checks.
+ * @return
+ *     $node object if the checks are passed; otherwise returns FALSE
+ */
+function meta_group_get_group($gid) {
+	$node = node_load($gid);
+	if (!isset($node->nid)) {
+		return false;
+	}
+	if (!og_is_group('node', $node)) {
+		return false;
+	}
+	return $node;
+}
 
 
 

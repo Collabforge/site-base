@@ -167,3 +167,70 @@ function meta_email_og_membership_insert(OgMembership $og_membership) {
         meta_email_mail_send('user_added_to_hub',$config); 
     }
 }
+
+
+
+/**
+* Helper functions for other modules
+* +++++++++++++++++++++
+*/
+
+
+/**
+ * Sends an email when a user has requested a Draft Hub to be revised
+ */
+function meta_email_send_send_for_revision($gid, $uid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  if (!$user = user_load($uid)) {
+    return false;
+  }
+  
+  // @TODO should be implemented HERE
+  drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has asked for a revision for Hub #hub', array(
+      '#user' => $user->name
+      , '#hub' => $group->title
+    )));
+}
+
+
+/**
+ * Sends appropriate emails when a Group is published
+ */
+function meta_email_send_group_published($gid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  // @TODO should be implemented HERE
+  drupal_set_message(t('DEBUG: PLACEHOLDER for email: Hub #hub is published', array(
+      '#hub' => $group->title
+  )));
+
+}
+
+
+/**
+ * Sends appropriate emails when a User is joined a Group
+ */
+function meta_email_send_user_joined($gid, $uid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  // @TODO should be implemented HERE
+  drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has joined the Hub #hub', array(
+      '#user' => $user->name
+      , '#hub' => $group->title
+    )));
+}
+
+
+
+
+
+
+
+
+
+
+
