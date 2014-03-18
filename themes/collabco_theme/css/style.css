@@ -1049,7 +1049,8 @@ margin-left: 0px;
 
 .news_update h2 {
   margin: 0;
-  font-size: 1.15em;
+  font-size: 1.5em;
+  font-weight: normal;
   font-weight: normal;
   font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif;
   border-top: 1px solid #DFDFDF;
@@ -1062,25 +1063,26 @@ margin-left: 0px;
   border-radius: 10px 10px 0 0;
 }
 
-.news_update h2 strong {
-  font-size: 1.5em;
-  padding-left:0.25em;
-  font-weight: normal;
-} 
-
 .news_update h2:before{
   font-family:'FontAwesome';
   font-weight: normal;
   font-style: normal;
   display: inline-block;
   font-size: 1.5em;
+  padding-left:0.25em;
   content:"\F0A1"; /*Bullhorn icon*/
 }
 
 .news_update .ui-created-date{
   font-weight: normal;
-  color:#999;
   padding-top:10px;
+  font-style: normal;
+  color:#999;
+}
+
+.news_update .ui-created-date em{
+  font-weight: normal;
+  font-style: normal;
 }
 
 
