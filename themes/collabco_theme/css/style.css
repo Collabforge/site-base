@@ -1028,6 +1028,26 @@ margin-left: 0px;
   padding:15px 0;
 }
 
+/* Latest news node --------------*/
+
+.ui-news-homepage {
+  background:#f2f2f2;
+  border:1px solid #ddd;
+  padding:20px;
+  -moz-box-sizing: border-box; 
+   -webkit-box-sizing: border-box;
+   box-sizing:border-box;
+}
+
+.ui-news-homepage h2,
+.ui-news-homepage h3,
+.ui-news-homepage h4,
+.ui-news-homepage h5 {
+  margin:0;
+}
+
+
+
 
 /* Your feed - from content you're following --------------*/
 
