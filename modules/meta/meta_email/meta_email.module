@@ -103,7 +103,7 @@ function meta_email_mail_send($key,$config) {
          Name: @from "
           ,$values);
         break;  
-        
+  }    
  
   $language = language_default();
 
