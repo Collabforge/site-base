@@ -45,7 +45,19 @@ function meta_email_mail($key, &$message, $params) {
       break;
     case 'send_for_revision':
       
-      $message['subject'] = t('Hub Owner sent hub for revision', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
+      $message['subject'] = t('Hub owner sent hub for revision', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
+     
+      $message['body'][] = check_plain($params['message']);
+      break;
+    case 'join_hub':
+      
+      $message['subject'] = t('Member requested for joining the hub ', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
+     
+      $message['body'][] = check_plain($params['message']);
+      break;
+    case 'hub_published':
+      
+      $message['subject'] = t('Meta Admin published your hub', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
      
       $message['body'][] = check_plain($params['message']);
       break;
@@ -90,8 +102,7 @@ function meta_email_mail_send($key,$config) {
         $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail ); 
         $config['message'] = t("Hi META admin, \n
          A new Hub requires your attention. @from has submitted their hub '@title' for you to review.
-         Member name: @from
-         Member organisation: @from
+         Member name: @from    
          Member email: @from_email "
           ,$values);
         break;  
@@ -102,6 +113,15 @@ function meta_email_mail_send($key,$config) {
          Name: @from "
           ,$values);
         break;  
+    case 'hub_published' :
+        $url = url('hubs', array('absolute' => TRUE));
+        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail, '@to' => $to_user->name, '@url' => $url ); 
+        $config['message'] = t("Hi @to, \n
+         Your hub, @title, has been approved and published by the META Administrator.
+         Click here to view your hub @url "
+          ,$values);  
+       break;   
+      
   }    
  
   $language = language_default();
@@ -171,7 +191,8 @@ function meta_email_og_membership_insert(OgMembership $og_membership) {
         if (is_object($hub)) {  
             $from_uid = $hub->uid;
         }
-
+         if ($from_uid == $to_uid ) 
+             return false;
       $config = array(
         'group' => $gid
         , 'from' => $from_uid
@@ -223,10 +244,22 @@ function meta_email_send_group_published($gid) {
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }
+  
+  // @FIXME Assigning the admin id
+  $from_uid = 1;
+  $to_uid = $group->uid;
+  $config = array(
+        'group' => $gid
+        , 'from' => $from_uid
+        , 'to' => $to_uid      
+      );
+
+
+  meta_email_mail_send('hub_published',$config);
   // @TODO should be implemented HERE
-  drupal_set_message(t('DEBUG: PLACEHOLDER for email: Hub #hub is published', array(
+ /* drupal_set_message(t('DEBUG: PLACEHOLDER for email: Hub #hub is published', array(
       '#hub' => $group->title
-  )));
+  ))); */
 
 }
 
@@ -238,11 +271,26 @@ function meta_email_send_user_joined($gid, $uid) {
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }
+  if (!$user = user_load($uid)) {
+    return false;
+  }
+  
+  $to_uid = $group->uid;
+
+  $config = array(
+        'group' => $gid
+        , 'from' => $uid
+        , 'to' => $to_uid      
+      );
+  
+
+  meta_email_mail_send('join_hub',$config);
+  
   // @TODO should be implemented HERE
-  drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has joined the Hub #hub', array(
+ /* drupal_set_message(t('DEBUG: PLACEHOLDER for email: User #user has joined the Hub #hub', array(
       '#user' => $user->name
       , '#hub' => $group->title
-    )));
-}
+    ))); */
+} 
 
 
