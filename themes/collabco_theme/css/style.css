@@ -1902,9 +1902,13 @@ body.node-type-conversation h1#page-title {
 
 .view-member-organisations .ui-organisation-img {
   height:100px;
+  text-align: center;
+  width:100%;
+}
+
+.view-member-organisations .ui-organisation-img img {
   display:table-cell;
   vertical-align: bottom;
-  text-align: center;
 }
 
 .fieldset-title {
