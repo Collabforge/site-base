@@ -1110,7 +1110,8 @@ margin-left: 0px;
   margin-top:5px; /*needs this at responsive size*/
 }
 
-.news_update .item-list ul li.topic-feature {
+.news_update .item-list ul li.topic-feature,
+.news_update .item-list ul {
   margin:0;
 }
 
