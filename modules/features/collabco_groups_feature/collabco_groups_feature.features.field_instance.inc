@@ -399,7 +399,7 @@ function collabco_groups_feature_field_default_field_instances() {
     'bundle' => 'og_membership_type_default',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'This is the text a user may send to the group administrators.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
