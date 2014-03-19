@@ -1000,14 +1000,11 @@ margin-left: 0px;
 
 .dashboard_head {}
 
-.block-meta-welcome-block {
-  margin-bottom: 20px;
-}
-
 .dashboard{
   background-color: #f2f2f2;
   border: 1px solid #cccccc;
   padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .dashboard, .dashboard h4, .dashboard p{
