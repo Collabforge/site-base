@@ -1422,14 +1422,13 @@ h2.title {
 }
 
 .contentarticle img { 
-  margin: 20px 0; 
-}
-
-
-/* -- News article featured image */
-
-.contentarticle .field-name-field-featured-image{ 
-  
+  margin: 0 0 20px 0; 
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.35);
 }
 
 /* -- following topics */
