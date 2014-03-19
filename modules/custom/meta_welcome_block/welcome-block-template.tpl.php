@@ -58,7 +58,7 @@
                         </div>&nbsp;&nbsp; <?php  print $current_percent; ?>%
                        </div>
 
-                        <a class="action" href="<?php echo $_GLOBALS['base_path']; ?>user/<?php print $user->uid; ?>/edit/profile" title="Edit META Profile">Edit Your Profile</a>
+                        <a class="action" href="<?php echo $_GLOBAL['base_path']; ?>user/<?php print $user->uid; ?>/edit/profile" title="Edit META Profile">Edit Your Profile</a>
 
                     </div>
                 </div>

@@ -20,7 +20,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			<a href="<?php echo $_GLOBALS['base_path']; ?>/user/<?php print $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
+			<a href="<?php echo $_GLOBAL['base_path']; ?>/user/<?php print $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
 			<?php } ?>
 		</div>
 	</div>
