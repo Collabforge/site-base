@@ -1110,6 +1110,11 @@ margin-left: 0px;
   margin-top:5px; /*needs this at responsive size*/
 }
 
+.news_update .item-list ul li.topic-feature {
+  margin:0;
+}
+
+
 /* Your feed - from content you're following --------------*/
 
 .home_activity h2 {
