@@ -276,6 +276,9 @@ function flag_hide_preprocess_node(&$variables) {
  * @return bool
  */
 function flag_hide_content_is_empty($content) {
+  if (is_array($content)) {
+    return FALSE;
+  }
   $stripped_content = trim(strip_tags($content, '<img>'));
   return empty($stripped_content);
 }
