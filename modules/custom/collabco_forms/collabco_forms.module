@@ -44,7 +44,7 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
       $node_settings['#title'] = t('For topics I host');
       $node_settings['#type'] = 'radios';
       $node_settings['#options'] = array(
-        TRUE => t('Send emails when new comment are posted'),
+        TRUE => t('Send emails when new comments are posted'),
         FALSE => t('Do not send any emails'),
       );
       $node_settings['#description'] = t('You cannot disable notifications for individual threads.');
@@ -81,6 +81,9 @@ function collabco_forms_form_knowledge_object_node_form_alter(&$form, &$form_sta
  * Implements hook_form_FORMID_alter().
  */
 function collabco_forms_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // '#disabled' does not seem to work here
+  unset($form['author']['_author']);
+
   $form['notify_settings']['notify']['#title'] = t('Notify me via email for...');
   $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_NODE] = t('all new comments');
   $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_COMMENT] = t('replies to my comment');
