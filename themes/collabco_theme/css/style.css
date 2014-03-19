@@ -1426,10 +1426,11 @@ h2.title {
 }
 
 
-/* -- hide featured image */
+/* -- News article featured image */
 
-.contentarticle .field-name-field-featured-image,
-.contentarticle .field-name-field-featured-image { display: none; }
+.contentarticle .field-name-field-featured-image{ 
+  
+}
 
 /* -- following topics */
 
