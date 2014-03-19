@@ -1047,6 +1047,10 @@ margin-left: 0px;
   margin:0;
 }
 
+.news_update {
+  margin-bottom:0;
+}
+
 .news_update .flag-wrapper {
   float: right;
   margin-left: 10px;
