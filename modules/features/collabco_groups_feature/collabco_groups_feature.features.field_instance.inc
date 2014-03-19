@@ -411,7 +411,7 @@ function collabco_groups_feature_field_default_field_instances() {
     ),
     'entity_type' => 'og_membership',
     'field_name' => 'og_membership_request',
-    'label' => 'Request message',
+    'label' => 'Please tell us more about yourself and why you would like to become a member',
     'required' => FALSE,
     'settings' => array(
       'text_processing' => 0,
@@ -435,8 +435,8 @@ function collabco_groups_feature_field_default_field_instances() {
   t('Group');
   t('Group visibility');
   t('Only make this available to the group(s):');
-  t('Request message');
-  t('This is the text a user may send to the group administrators.');
+  t('Please tell us more about yourself and why you would like to become a member');
+  t('');
 
   return $field_instances;
 }
