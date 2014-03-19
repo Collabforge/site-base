@@ -1046,6 +1046,11 @@ margin-left: 0px;
   margin:0;
 }
 
+.ui-news-homepage .flag-wrapper {
+  float:right;
+  margin-left: 10px;
+}
+
 
 .news_update h2 {
   margin: 10px 0 0 0;
