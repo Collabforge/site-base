@@ -81,12 +81,14 @@
 						    <div class="thumbnail">
 						      <span class="ui-org-img"><?php echo $fields['field_featured_hub_image']->content; ?></span>
 						      <div class="row-fluid">
-								<div class="span12">
+								<div class="span9">
 									<h5>Belongs to hub: <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
-				        			<!-- needs labels for open / closed and tagline -->
+				        			<span class="ui-inline"><?php echo $fields['field_tag_line']->content;?></span>
+								</div>
+								<div class="span3">
+									<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
 								</div>
 							  </div>
-
 						    </div>
 						  </li>
 						</ul>	
