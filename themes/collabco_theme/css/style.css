@@ -2205,6 +2205,10 @@ form .field-name-field-file-ref {
   margin-top:20px;
 }
 
+.ui-hubs-organisation-thumbnail {
+  margin:0;
+}
+
 .ui-hubs-organisation-thumbnail .thumbnail{
   padding-bottom:1em;
 }
