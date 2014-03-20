@@ -750,73 +750,77 @@ input[type="file"] {
 ---------------------------------------------
  **/
 
-.not-logged-in .container{
-  width: 400px;
+.ui-login-forms .container{
+  max-width: 400px;
   text-align: center;
 }
 
-.not-logged-in .form-item, .not-logged-in .form-actions {
+.ie6 .ui-login-forms .container{
+  width: 400px;
+}
+
+.ui-login-forms .form-item, .ui-login-forms .form-actions {
   margin-top: 2em;
   margin-bottom: 2em;
 }
 
-.not-logged-in .container input[type="text"],
-.not-logged-in .container input[type="password"] {
+.ui-login-forms .container input[type="text"],
+.ui-login-forms .container input[type="password"] {
   width: 96%;
   padding: 10px 2%;
 }
 
-.not-logged-in .container label {
+.ui-login-forms .container label {
   text-align: left;
   font-size: 18px;
 }
 
-.not-logged-in .container .description{
+.ui-login-forms .container .description{
   text-align: left;
 }
 
-.not-logged-in .container form .form-required{
+.ui-login-forms .container form .form-required{
   display:none;
 }
 
-.not-logged-in .container form .form-type-password label a{
+.ui-login-forms .container form .form-type-password label a{
   float:right;
   font-size:12px;
 }
 
-.not-logged-in .ui-header{
+.ui-login-forms .ui-header{
   padding-bottom:20px;
   background:url('../images/shadow-top.png') no-repeat center bottom;
 }
-.not-logged-in .ui-footer{
+.ui-login-forms .ui-footer{
   padding-top:40px;
   padding-bottom:40px;
   background:url('../images/shadow-bottom.png') no-repeat center top;
 }
 
-.not-logged-in h1.ui-title {
+.ui-login-forms h1.ui-title {
   font-size: 3em;
   line-height: 1;
   margin-top:20px; 
 }
 
 
-.not-logged-in h1.ui-title img {
+.ui-login-forms h1.ui-title img {
   padding-right: 10px;
   margin-top:-5px;
 }
 
-.not-logged-in h2.ui-subtitle{
+.ui-login-forms h2.ui-subtitle{
   color:#999;
 }
 
-.not-logged-in .form-actions a,
-.not-logged-in .form-actions input{
+.ui-login-forms .form-actions a,
+.ui-login-forms .form-actions input{
   display:block;
   clear:both;
 }
 
-.not-logged-in .form-actions h3{
+.ui-login-forms .form-actions h3{
   border-top:1px solid #e5e5e5;
   margin-top:2em;
   padding:2em 0 1em 0;
@@ -824,7 +828,7 @@ input[type="file"] {
   text-transform: uppercase;
 }
 
-.not-logged-in .form-actions .span6 {
+.ui-login-forms .form-actions .span6 {
   background:#fff;
   padding:1em 0;
   -moz-border-radius: 10px;
@@ -833,7 +837,7 @@ input[type="file"] {
   border:1px solid #f2f2f2;
 }
 
-.not-logged-in .form-actions input#edit-submit{
+.ui-login-forms .form-actions input#edit-submit{
   margin-bottom: 3em;
   width:100%;
   padding-top:10px;
@@ -842,19 +846,19 @@ input[type="file"] {
   text-transform: uppercase;
 }
 
-.not-logged-in .ui-messages{
+.ui-login-forms .ui-messages{
   margin-top:20px;
 }
 
-.not-logged-in .ui-messages ul li{
+.ui-login-forms .ui-messages ul li{
   text-align: left;
   margin-bottom: 0.5em;
 }
-.not-logged-in .ui-messages ul li:last-child{
+.ui-login-forms .ui-messages ul li:last-child{
   margin-bottom: 0em;
 }
 
-.not-logged-in .ui-box {
+.ui-login-forms .ui-box {
   text-align: left;
   padding:10px 15px;
   background:#ffefdb;
@@ -2460,7 +2464,7 @@ a.ui-library-file:active{
 }
 
 @media (max-width: 399px) {
-  .not-logged-in .container{
+  .ui-login-forms .container{
     width:100%;
   }
     #sidebar-first, /* Sidebar on left */
