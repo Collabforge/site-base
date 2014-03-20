@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Implements hook_preprocess_page()
+ */
+function meta_ux_preprocess_page(&$vars) {
+  $menu = menu_get_item();
+  $path = $menu['path'];
+  if (_meta_ux_path_is_login_forms($path)) {
+    $vars['theme_hook_suggestions'][] = 'page__annon';
+  }
+}
+
+/**
+ * Implements hook_preprocess_html()
+ */
+function meta_ux_preprocess_html(&$vars) {
+  $menu = menu_get_item();
+  $path = $menu['path'];
+  if (_meta_ux_path_is_login_forms($path)) {
+    
+    $vars['classes_array'][] = 'ui-login-forms';
+    if ($path == 'user/register') {
+      $vars['title'] = t('Create a new account');
+      $vars['subtitle'] = t('Register now for the meta members only');
+    }
+    if ($path == 'user' or $path == 'user/login') {
+      $vars['title'] = t('Members log in');
+      $vars['subtitle'] = t('Secure members-only area');
+    }
+    // Change the page title.
+    if ($path == 'user/%/edit') {
+      drupal_set_title('Edit your account');
+    }
+    if ($path == 'user/%/edit/profile') {
+      drupal_set_title('Edit your profile');
+    }
+
+    if ($path == 'user/%') {
+      drupal_set_title('');
+    }
+  }
+
+}
+
+function _meta_ux_path_is_login_forms($path) {
+  $menu = menu_get_item();
+  $path = $menu['path'];
+  if (in_array($path, array('user/register', 'user/login'))) {
+    return true;
+  }
+  global $user;
+  if (empty($user->uid) and $path == 'user') {
+    return true;
+  }
+  return false;
+}
+
+
+
+
