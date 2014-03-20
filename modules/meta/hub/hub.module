@@ -37,8 +37,13 @@ function hub_block_view($delta='') {
   global $base_url;
   // @TODO: Make sure if there is a better way. 
 
-  $nid = arg(1);
-  $node = node_load($nid);
+   $node = menu_get_object();
+   if (!is_object($node)) {
+       return false;
+   }
+ /*
+   $nid = arg(1); 
+   $node = node_load($nid); */
      
   switch($delta) {
         case 'hub_header':
@@ -49,8 +54,11 @@ function hub_block_view($delta='') {
         break;
         case 'create_hub_from_topic':
           if (!empty($node) and $node->type == 'conversation') {
-            $content = theme('create_hub_from_topic_template');
-            $block['content'] = $content;
+              $groups = og_get_entity_groups('node',$node);
+              if (empty($groups)){         
+                  $content = theme('create_hub_from_topic_template');
+                  $block['content'] = $content;
+              }           
           }   
         break;
   }
