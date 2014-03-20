@@ -79,16 +79,18 @@
 						<ul class="thumbnails ui-hubs-organisation-thumbnail">
 						  <li class="span12">
 						    <div class="thumbnail">
-						      <span><?php echo $fields['field_featured_hub_image']->content; ?></span>
 						      <div class="row-fluid">
-								<div class="span12">
+						        <div class="span3">
+						        	<span><?php echo $fields['field_featured_hub_image']->content; ?></span>
+						        </div>
+								<div class="span9">
 									<h5>Belongs to hub: <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
 								</div>
 							  </div>
 						    </div>
 						  </li>
 						</ul>	
-						
+
 					<?php 
 							 
 						}
