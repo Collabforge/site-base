@@ -2270,8 +2270,9 @@ form .field-name-field-file-ref {
 }
 
 .ui-header-img-container .ui-header-content{
-  z-index:10000; 
+  z-index:998; 
   height:50%; 
+  overflow:hidden;
   position:absolute; 
   left:0px; 
   bottom:0px; 
