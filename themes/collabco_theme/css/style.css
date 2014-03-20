@@ -2214,7 +2214,8 @@ form .field-name-field-file-ref {
 }
 
 .ui-hubs-organisation-thumbnail .ui-hub-icon i:before{
-  color:#b2b2b2;
+  color: #b2b2b2;
+  font-size: 175%;
 }
 
 .ui-hubs-organisation-thumbnail.thumbnails > li {
