@@ -6,7 +6,6 @@ version = 7.x-1.0
 project = collabco_mentions
 dependencies[] = entity
 dependencies[] = mentions
-dependencies[] = mentions_suggestions
 dependencies[] = rules
 features[features_api][] = api:2
 features[features_overrides][] = filter.email.filters|filter_mentions
