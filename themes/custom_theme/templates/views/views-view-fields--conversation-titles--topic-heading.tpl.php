@@ -86,7 +86,7 @@
 				        			<span class="ui-inline"><?php echo $fields['field_tag_line']->content;?></span>
 								</div>
 								<div class="span3">
-									<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+									<?php echo $fields['meta_group_access']->raw  ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
 								</div>
 							  </div>
 						    </div>
