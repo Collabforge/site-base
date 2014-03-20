@@ -70,7 +70,35 @@
 
 					    </div>
 					  </li>
-					</ul>			
+					</ul>	
+
+					<!-- If attached to hub -->
+					<?php $hub_not_attached = '<div class="field-content"></div>'; 
+					if ($fields['og_group_ref']->content != $hub_not_attached) { 
+
+						<ul class="thumbnails ui-hubs-organisation-thumbnail">
+						  <li class="span12">
+						    <div class="thumbnail">
+						      <span class="ui-org-img"><?php echo $fields['field_featured_hub_image']->content; ?></span>
+						      <div class="row-fluid">
+								<div class="span12">
+									<h5>Belongs to hub: <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
+				        			<!-- needs labels for open / closed and tagline -->
+								</div>
+							  </div>
+
+						    </div>
+						  </li>
+						</ul>	
+
+					<?php 
+							echo $fields['field_featured_hub_image']->content;
+							echo $fields['meta_group_access']->raw ? 'Open' : 'Closed';
+							echo $fields['field_tag_line']->content;
+							echo $fields['og_group_ref']->content;  
+						}
+					?>
+
 				</div>
 
 			</div>
@@ -80,11 +108,4 @@
 
 
 
-<?php $hub_not_attached = '<div class="field-content"></div>'; 
-if ($fields['og_group_ref']->content != $hub_not_attached) { 
- echo $fields['field_featured_hub_image']->content;
- echo $fields['meta_group_access']->raw ? 'Open' : 'Close';
- echo $fields['field_tag_line']->content;
-echo $fields['og_group_ref']->content;  
-}
-?>
+
