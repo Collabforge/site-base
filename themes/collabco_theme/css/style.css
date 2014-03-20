@@ -2209,6 +2209,14 @@ form .field-name-field-file-ref {
   margin:0;
 }
 
+.ui-hubs-organisation-thumbnail .ui-hub-icon {
+  text-align: center;
+}
+
+.ui-hubs-organisation-thumbnail .ui-hub-icon i:before{
+  font-size: 150%;
+}
+
 .ui-hubs-organisation-thumbnail.thumbnails > li {
   margin-bottom:10px;
 } 
