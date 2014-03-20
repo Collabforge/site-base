@@ -74,7 +74,7 @@
 
 					<!-- If attached to hub -->
 					<?php $hub_not_attached = '<div class="field-content"></div>'; 
-					if ($fields['og_group_ref']->content != $hub_not_attached) { 
+					if ($fields['og_group_ref']->content != $hub_not_attached) {  ?>
 
 						<ul class="thumbnails ui-hubs-organisation-thumbnail">
 						  <li class="span12">
