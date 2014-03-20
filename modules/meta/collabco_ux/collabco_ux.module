@@ -3,10 +3,10 @@
 /**
  * Implements hook_preprocess_page()
  */
-function meta_ux_preprocess_page(&$vars) {
+function collabco_ux_preprocess_page(&$vars) {
   $menu = menu_get_item();
   $path = $menu['path'];
-  if (_meta_ux_path_is_login_forms($path)) {
+  if (_collabco_ux_path_is_login_forms($path)) {
     $vars['theme_hook_suggestions'][] = 'page__annon';
   }
 }
@@ -14,10 +14,10 @@ function meta_ux_preprocess_page(&$vars) {
 /**
  * Implements hook_preprocess_html()
  */
-function meta_ux_preprocess_html(&$vars) {
+function collabco_ux_preprocess_html(&$vars) {
   $menu = menu_get_item();
   $path = $menu['path'];
-  if (_meta_ux_path_is_login_forms($path)) {
+  if (_collabco_ux_path_is_login_forms($path)) {
     
     $vars['classes_array'][] = 'ui-login-forms';
     if ($path == 'user/register') {
@@ -40,10 +40,9 @@ function meta_ux_preprocess_html(&$vars) {
       drupal_set_title('');
     }
   }
-
 }
 
-function _meta_ux_path_is_login_forms($path) {
+function _collabco_ux_path_is_login_forms($path) {
   $menu = menu_get_item();
   $path = $menu['path'];
   if (in_array($path, array('user/register', 'user/login'))) {
