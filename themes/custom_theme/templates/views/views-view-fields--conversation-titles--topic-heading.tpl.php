@@ -77,3 +77,14 @@
 		</div>
 	</div>
 </div>
+
+
+
+<?php $hub_not_attached = '<div class="field-content"></div>'; 
+if ($fields['og_group_ref']->content != $hub_not_attached) { 
+ echo $fields['field_featured_hub_image']->content;
+ echo $fields['meta_group_access']->raw ? 'Open' : 'Close';
+ echo $fields['field_tag_line']->content;
+echo $fields['og_group_ref']->content;  
+}
+?>
