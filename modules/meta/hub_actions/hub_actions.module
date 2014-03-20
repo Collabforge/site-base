@@ -133,3 +133,18 @@ function hub_actions_form_knowledge_object_node_form_submit($form, &$form_state)
     $form_state['values']['og_group_ref'][LANGUAGE_NONE][0]['target_id'] = $gid;
   }
 }
+
+function hub_actions_node_insert($node)
+{
+    if ($node->type == 'conversation') 
+    {
+        $group = field_get_items('node', $node, 'og_group_ref');
+        
+        if (!empty($group)) {
+            $group = field_view_value('node', $node, 'og_group_ref', $group[0]);  
+            drupal_set_message('Go back to Hub '.$group['#markup']);
+        }
+       
+    }      
+    
+}
