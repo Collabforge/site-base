@@ -81,10 +81,10 @@
 						    <div class="thumbnail">
 						      <div class="row-fluid">
 						        <div class="span3">
-						        	<div class="user-picture-small"><?php echo $fields['field_featured_hub_image']->content; ?></div>
+						        	<i class="icon-group"></i> &nbsp;
 						        </div>
 								<div class="span9">
-									<h5><i class="icon-group"></i> Belongs to hub:<br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
+									<h5> Belongs to hub:<br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
 								</div>
 							  </div>
 						    </div>
