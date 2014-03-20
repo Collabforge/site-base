@@ -81,7 +81,7 @@
 						    <div class="thumbnail">
 						      <div class="row-fluid">
 						        <div class="span3 ui-hub-icon">
-						        	<h5><i class="icon-group"></i></h5>
+						        	<h5><i class="icon-group icon-2x"></i></h5>
 						        </div>
 								<div class="span9">
 									<h5>Belongs to hub:<br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
