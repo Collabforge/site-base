@@ -47,7 +47,7 @@ function meta_og_state_node_grants($account, $op) {
   } else {
     $groups = og_get_entity_groups('user', $account);
   }
-  
+
   $grants = array();
   foreach ($groups as $group_type => $gids) {
     foreach ($gids as $gid) {
@@ -111,7 +111,7 @@ function _meta_og_state_get_state($node) {
 }
 
 /**
- * 
+ *
 */
 function meta_og_state_is_draft($gid) {
   $group_wrapper = entity_metadata_wrapper('node', $gid);
@@ -229,11 +229,11 @@ function meta_og_state_field_access($op, $field, $entity_type, $entity, $account
 function meta_og_state_form_node_form_alter(&$form, &$form_state) {
   if (!isset($form_state['node']->nid)) { // new node
     $form['meta_og_state_state']['und']['#required'] = false;
-  } 
+  }
 }
 
 /**
- * 
+ *
  */
 function meta_og_state_field_attach_update($entity_type, $entity) {
 
@@ -241,12 +241,12 @@ function meta_og_state_field_attach_update($entity_type, $entity) {
     return;
   }
   $nid = $entity->nid;
-  if (!meta_group_is_group($nid)) {
+  if (!function_exists('meta_group_is_group') || !meta_group_is_group($nid)) {
     return;
   }
   $group = $entity;
   $gid = $group->nid;
-  
+
 
   $state_new = _meta_og_state_get_state($group);
   $state_old = _meta_og_state_get_state($group->original);
