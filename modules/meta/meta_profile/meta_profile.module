@@ -1,74 +1,24 @@
 <?php
 
-/**
-  @alexarpen
-*/
-
 // @FIXME: this should be done via variable or a more reliable way. not just being hardcoded.
 define('META_PROFILE_PHOTO_FIELD', 'field_profile_photo');
 
-
-function meta_profile_enable() {
-  //_meta_profile_helper_update_weight('profile2', 1);
-  //_meta_profile_helper_update_weight('meta_profile', 2);
-}
-function meta_profile_disable() {
-  // _meta_profile_helper_update_weight('profile2', 2);
-  // _meta_profile_helper_update_weight('meta_profile', 1);
-}
-function meta_profile_form_alter(&$form, &$form_state, $form_id) {
-}
-
-
-
-
-function _meta_profile_hide_form_item(&$item) {
-  $item['#access'] = false;
-  //drupal_set_message('DEBUG: The photo field has been made hidden.');
-}
-
-
-/*
-function meta_profile_preprocess_page(&$vars) {
-  if (_meta_profile_is_in_resetpass_page()) {
-    $vars['tabs']['#secondary'] = array();
-  }
-}
-*/
 function meta_profile_form_user_register_form_alter(&$form, &$form_state) {
   // Make the default photo profile hidden if it's already there.
   if (isset($form['picture'])) {
-    _meta_profile_hide_form_item($form['picture']);
+    $form['picture']['#access'] = false;
+    _meta_profile_hide_form_item();
   }
 }
-
-// @TODO: make sure that there is no better way rather than checking a user data
-function _meta_profile_is_in_resetpass_page() {
-  return !empty($_GET['pass-reset-token']);
-}
-
 
 function meta_profile_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  if (_meta_profile_is_in_resetpass_page()) {
-    //$form['#action'] = url(current_path(), array('external' => FALSE));
-  }
-
-
   // Make the default photo profile hidden if it's already there.
   if (isset($form['picture'])) {
-    _meta_profile_hide_form_item($form['picture']);
+    $form['picture']['#access'] = false;
   }
-    
-    // We are going to do the submit process after everything has done
-    $form['#submit'][] = '_meta_profile_form_submit';
-
-
-
-    if (_meta_profile_is_in_resetpass_page()) {
-      //_meta_profile_clean_pass_reset_form($form);
-    }
+  // We are going to do the submit process after everything has done
+  $form['#submit'][] = '_meta_profile_form_submit';
 }
-
 
 function _meta_profile_clean_pass_reset_form(&$form) {
   foreach ($form as $key=>&$item) {
@@ -87,10 +37,6 @@ function _meta_profile_clean_pass_reset_form(&$form) {
   }
 }
 
-
-
-
-
 function _meta_profile_form_submit($form, &$form_state) {
 
     if (isset($form_state['values']['profile_profile'][META_PROFILE_PHOTO_FIELD])) {
@@ -106,15 +52,14 @@ function _meta_profile_form_submit($form, &$form_state) {
     }
   }
 
+
 /**
-  updated the profile photo based on an already-updaloaded drupal file
-  @TODO: more check and validation.
+ * Updates the profile photo based on an already-updaloaded drupal file
+ * @TODO: more check and validation.
 */
 function _meta_profile_update_user_photo($uid, $fid) {
 
-
   $user = user_load($uid);
-
   $file = file_load($fid);
   $picture = (object) array(
     'fid' => $file->fid
@@ -123,45 +68,8 @@ function _meta_profile_update_user_photo($uid, $fid) {
     , 'filemime' => $file->filemime
     , 'uri' => $file->uri
   );
-
   $user->picture = $picture;
-
   user_save($user);
-
 }
 
-
-/*
-
-alexar_debug(true);
-
-function alexar_debug($debug=true) {
-  ini_set('display_errors', $debug);
-  ini_set('display_startup_errors', $debug);
-  error_reporting(E_ALL);
-}
-
-function x($var, $die=true) {
-  echo '<xmp>';
-  print_r($var);
-  echo '</xmp>';
-  empty($die) or die(); 
-}
-
-
-*/
-
-
-/**
-  Helpers
-*/
-
-
-function _meta_profile_helper_update_weight($module, $weight) {
-  db_update('system')
-  ->fields(array('weight' => $weight))
-  ->condition('type', 'module')
-  ->condition('name', $module)
-  ->execute();
-}
 
