@@ -7,7 +7,7 @@ function collabco_ux_preprocess_page(&$vars) {
   $menu = menu_get_item();
   $path = $menu['path'];
   if (_collabco_ux_path_is_login_forms($path)) {
-    $vars['theme_hook_suggestions'][] = 'page__annon';
+    $vars['theme_hook_suggestions'][] = 'page__login_forms';
   }
 }
 
