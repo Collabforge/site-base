@@ -1,5 +1,0 @@
-name = Custom: Handle profile photo
-description = Custom module for handling profile photo field in Profile and Account pages.
-version = 1.1
-core = 7.x
-
