@@ -136,15 +136,18 @@ function hub_actions_form_knowledge_object_node_form_submit($form, &$form_state)
 
 function hub_actions_node_insert($node)
 {
-    if ($node->type == 'conversation') 
+    if ($node->type == 'conversation' or $node->type == 'knowledge_object') 
     {
         $group = field_get_items('node', $node, 'og_group_ref');
         
         if (!empty($group)) {
-            $group = field_view_value('node', $node, 'og_group_ref', $group[0]);  
-            drupal_set_message('Go back to Hub '.$group['#markup']);
+            $section  = $node->type == 'conversation' ? 'topics':'library';
+            $group_markup = field_view_value('node', $node, 'og_group_ref', $group[0]);           
+            $url = url('node/'.$group[0]['target_id'].'/'.$section);
+            $group_link = '<a class=action href='. $url.'>'. $group_markup['#markup'].'</a>';
+            drupal_set_message('Go back to Hub '.$group_link);
         }
-       
+        
     }      
     
 }
