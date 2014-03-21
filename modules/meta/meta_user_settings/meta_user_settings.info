@@ -1,0 +1,6 @@
+name = Meta user settings
+description = TODO: Description of module
+dependencies[] = meta_group
+package = Meta
+core = 7.x
+files[] = tests/meta_user_settings.test
