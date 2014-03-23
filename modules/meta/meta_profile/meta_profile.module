@@ -7,7 +7,6 @@ function meta_profile_form_user_register_form_alter(&$form, &$form_state) {
   // Make the default photo profile hidden if it's already there.
   if (isset($form['picture'])) {
     $form['picture']['#access'] = false;
-    _meta_profile_hide_form_item();
   }
 }
 
