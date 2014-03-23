@@ -335,7 +335,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user has 'add user' permission (should have been set for members)
 	//  
-	if ($is_admin or og_user_access('node', $gid, 'add user')) {
+	if ((!module_exists('meta_og_state') or !meta_og_state_is_draft($gid)) and ($is_admin or og_user_access('node', $gid, 'add user'))) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member', $gid)
     		, 'title' => 'Add a member'
