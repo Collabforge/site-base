@@ -66,6 +66,8 @@ function hub_block_view($delta='') {
 }
 
 function template_preprocess_create_hub_from_topic_template(&$variables){
+
+    //@FIXME: This should not be done here. This need a simple theme function not a template and a preprocessor
     $nid = intval(arg(1));
     if (!empty($nid)) {
        $variables['nid'] =  $nid; 
