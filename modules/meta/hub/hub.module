@@ -34,7 +34,7 @@ function hub_block_info() {
  */
 function hub_block_view($delta='') {
   $block = array();
-  global $base_url;
+  global $base_url, $user;
   // @TODO: Make sure if there is a better way. 
 
    $node = menu_get_object();
@@ -55,7 +55,7 @@ function hub_block_view($delta='') {
         case 'create_hub_from_topic':
           if (!empty($node) and $node->type == 'conversation') {
               $groups = og_get_entity_groups('node',$node);
-              if (empty($groups)){         
+              if (empty($groups) and $node->uid == $user->uid){         
                   $content = theme('create_hub_from_topic_template');
                   $block['content'] = $content;
               }           
