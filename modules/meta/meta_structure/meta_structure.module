@@ -2,6 +2,16 @@
 
 
 
+/**
+ * Implements hook_views_api().
+ */
+function meta_structure_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'meta_structure') . '/includes/views',
+  );
+}
+
 function meta_structure_menu() {
   $items['topics'] = array(
     'page callback' => '_meta_structure_page_topics'
