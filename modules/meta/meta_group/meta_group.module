@@ -546,6 +546,49 @@ function meta_group_get_group($gid) {
 	return $node;
 }
 
+/**
+ * Returns list of members for a specific group
+ */
+function meta_group_get_group_members($gid) {
+	$query = new EntityFieldQuery();
+	$result = $query
+		->entityCondition('entity_type', 'og_membership')
+		->propertyCondition('group_type', 'node', '=')
+		->propertyCondition('gid', $gid, '=')
+		->propertyCondition('entity_type', 'user', '=')
+		->execute();
+	if (empty($result['og_membership'])) {
+		return array();
+	}
+	$memberships = entity_load('og_membership', array_keys($result['og_membership']));
+	$users = array();
+	foreach ($memberships as $membership) {
+		$users[] = user_load($membership->etid);
+	}
+	return $users;
+}
+
+/**
+ * Returns list of Community Managers which can administer groups
+ */
+function meta_group_get_admins() {
+	$query = db_select('role_permission', 'rp');
+			$query->join('users_roles', 'ur', 'rp.rid = ur.rid');
+	$result = $query
+	        ->fields('ur', array('uid'))
+	        ->condition('rp.permission', 'administer group', '=')
+	        ->execute()->fetchAll();
+	$users = array();
+	foreach ($result as $record) {
+		$users[] = user_load($record->uid);
+	}
+	return $users;
+}
+
+
+
+
+
 
 
 
