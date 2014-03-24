@@ -30,9 +30,12 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-     <li><a href="/user/<?php print $user->uid; ?>/edit">account</a></li>
-     <li><a href="/user/<?php print $user->uid; ?>/edit/profile">profile</a></li>
-     <li><a href="/user/logout">logout</a></li>
+    <li class="first leaf active-trail" style="list-style:none;"><a href="/" style="color:#ed6a26;"><i class="icon-rss">&nbsp;</i>  Activity Feed</a></li>
+    <li class="first leaf" style="list-style:none;"><a href="/user" ><i class="icon-user">&nbsp;</i> My Profile</a></li>
+    <li class="first leaf" style="list-style:none;"><a href="/your-topics" ><i class="icon-list">&nbsp;</i> My Topics</a></li>
+    <li class="first leaf" style="list-style:none;"><a href="/profile/hubs" ><i class="icon-globe">&nbsp;</i> My Hubs</a></li>
+    <li class="first leaf" style="list-style:none;"><a href="/user/<?php print $user->uid; ?>/edit" style="color:#666;"><i class="icon-cog">&nbsp;</i>  Account settings</a></li>
+    <li class="last leaf" style="list-style:none;"><a href="/user/logout" title="icon-signout" style="color:#666;"><i class="icon-signout">&nbsp;</i> Log out</a></li>
     </ul>
   </div>
 </div>
