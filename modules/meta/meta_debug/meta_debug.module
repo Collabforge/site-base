@@ -22,16 +22,14 @@ function x($var, $die=true) {
 function meta_debug_menu() {
 	$items = array();
 	$items['test23'] = array(
-	    'title' => 'Testing function',
-	    'description' => 'Testing function desc',
-	    'page callback' => '_meta_test',
-            'access callback' => TRUE
+    'title' => 'Testing function',
+    'description' => 'Testing function desc',
+    'page callback' => '_meta_test',
+    'access callback' => false
 	);
-        return $items;
+  return $items;
 }
 
-function _meta_test()
-{
-  //  x("hello");
-    meta_email_send_send_for_revision(271,202);
+function _meta_test() {
 }
+
