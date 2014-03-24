@@ -34,3 +34,61 @@ function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
 function collabco_theme_preprocess_flag(&$variables) {
   $variables['flag_classes_array'][] ='btn btn-warning';
 }
+
+
+
+/*
+ * Implements hook_menu_link
+ * Copy of open_framework_menu_link(). just applying it to all menus
+ */
+function collabco_theme_menu_link(array $vars) {
+  $element = $vars['element'];
+
+  $link_theming_functions = (array)$element['#theme'];
+
+  if (_collabco_theme_menu_is_dropdown($link_theming_functions)) {
+    $sub_menu = '';
+    if ($element['#below']) {
+      // Add our own wrapper
+      unset($element['#below']['#theme_wrappers']);
+      $sub_menu = '<ul class="dropdown-menu">' . drupal_render($element['#below']) . '</ul>';
+      $element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
+      $element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
+
+      // Check if this element is nested within another
+      if ((!empty($element['#original_link']['depth'])) && ($element['#original_link']['depth'] > 1)) {
+      // Generate as dropdown submenu
+        $element['#attributes']['class'][] = 'dropdown-submenu';
+      }
+      else {
+        // Generate as standard dropdown
+        $element['#attributes']['class'][] = 'dropdown';
+        $element['#localized_options']['html'] = TRUE;
+        $element['#title'] .= ' <span class="caret"></span>';
+      }
+
+      // Set dropdown trigger element to # to prevent inadvertant page loading with submenu click
+      $element['#localized_options']['attributes']['data-target'] = '#';
+    }
+
+    $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+    return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+
+  } else {
+    $element = $vars['element'];
+    $sub_menu = '';
+
+    if ($element['#below']) {
+      $sub_menu = drupal_render($element['#below']);
+    }
+    $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+    return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+  }
+}
+
+function _collabco_theme_menu_is_dropdown($link_theming_functions) {
+  // @FIXME: it should be decided what menus need this
+  // in_array('menu_link__main_menu', $link_theming_functions);
+  return true;
+}
+
