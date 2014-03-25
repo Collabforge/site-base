@@ -47,7 +47,7 @@ function meta_email_send_group_published($gid) {
 /**
  * Sends appropriate emails when a Topic is added to a Group
  */
-function meta_email_callback_group_topic_added($gid) {
+function meta_email_callback_group_content_added($gid, $nid) {
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }

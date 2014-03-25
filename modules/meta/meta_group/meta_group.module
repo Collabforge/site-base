@@ -1,6 +1,19 @@
 <?php
 
 
+
+function meta_group_node_insert($node) {
+	if (!in_array($node->type, array('conversation', 'knowledge_object'))) {
+		return;
+	}
+	if (!$group = meta_group_get_group($node->nid)) {
+		return false;
+	}
+	if (module_exists('meta_email')) {
+		meta_email_callback_group_content_added($group->nid, $node->nid);
+	}
+}
+
 /**
  * Implementation of hook_og_membership_update()
  * Just for backward compatibility.
