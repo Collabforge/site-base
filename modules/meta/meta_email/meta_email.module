@@ -64,7 +64,7 @@ function meta_email_callback_group_content_added($gid, $nid) {
 /**
  * Sends appropriate emails when a User is joined a Group
  */
-function meta_email_send_user_joined($gid, $uid) {
+function meta_email_callback_user_joined($gid, $uid) {
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }
