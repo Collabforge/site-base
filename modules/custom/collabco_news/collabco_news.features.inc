@@ -104,7 +104,7 @@ function collabco_news_node_info() {
     'news_update' => array(
       'name' => t('News Update'),
       'base' => 'node_content',
-      'description' => t('This is used by Meta team. '),
+      'description' => t('Fot creating news or blog style articles.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

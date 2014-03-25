@@ -161,7 +161,7 @@ function collabco_forms_form_user_profile_form_alter(&$form, &$form_state) {
  * Implements hook_form_FORMID_alter().
  */
 function collabco_forms_form_user_register_form_alter(&$form, &$form_state) {
-  $form['account']['mail']['#description'] = t('A valid e-mail address. All e-mails from the website will be sent to this address. Members of META will be able to contact you unless you change this in your Account settings.');
+  $form['account']['mail']['#description'] = t('A valid e-mail address. All e-mails from the website will be sent to this address. Members of the site will be able to contact you unless you change this in your Account settings.');
 }
 
 /**

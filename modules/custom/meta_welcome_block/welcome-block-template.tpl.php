@@ -21,7 +21,7 @@
 
 <?php if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
 <style type="text/css">
-    .meta-percent-bar.profile2-profile{ width: <?php print $current_percent; ?>%; }
+    .collabco-percent-bar.profile2-profile{ width: <?php print $current_percent; ?>%; }
     .profile2-profile{ padding-left: 0%; }
 </style>
 
@@ -35,10 +35,10 @@
 
               <?php if ($first_time_user) { ?>
               <div class="span4 dashboard_1 first">
-                <h4>Learn About Meta</h4>
+                <h4>Learn About this site</h4>
                     <div class="call_out">
                         <p>Pellentesque aliquam augue ut dui aliquam consequat.</p>
-                        <a class="action" href="/about-this-site" title="About META">Read More</a>
+                        <a class="action" href="/about-this-site" title="About this site">Read More</a>
                     </div>
                 </div>
            <?php } ?>
@@ -52,8 +52,8 @@
 
                        <div class="pcp-wrapper pcp-profile2 pcp-profile">
                         <div class="percent-bar">
-                        <div class="meta-percent-bar-wrapper">
-                        <div class="meta-percent-bar profile2-profile"></div>
+                        <div class="collabco-percent-bar-wrapper">
+                        <div class="collabco-percent-bar profile2-profile"></div>
                         </div>
                         </div>&nbsp;&nbsp; <?php  print $current_percent; ?>%
                        </div>

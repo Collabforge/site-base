@@ -37,7 +37,7 @@ if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary
     <div class="container" id="header_container">
       <div class="row-fluid" id="header_top" >
         <?php if ($logo): ?>
-        <div id="logo" class="span4 site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> &nbsp; </a>
+        <div id="logo" class="span4 site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><img src="<?php print $logo ?>" alt="<?php print $site_name_and_slogan ?>" title="<?php print $site_name_and_slogan ?>" id="logo" /></a>
         </div>
         <?php endif; ?>
         <?php if ($page['header_top_middle']): ?>
@@ -90,7 +90,7 @@ if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary
       </div>
       <!-- /#sidebar-first -->
       <?php endif; ?>
-      <div id="content" class="mc-content <?php if (($page['sidebar_first']) && ($page['sidebar_second'])): print 'span6'; elseif (($page['sidebar_first']) || ($page['sidebar_second'])): print 'span8'; else: print 'span12'; endif; ?>">
+      <div id="content" class="mc-content <?php if (($page['sidebar_first']) && ($page['sidebar_second'])): print 'span6'; elseif (($page['sidebar_first']) || ($page['sidebar_second'])): print 'span9'; else: print 'span12'; endif; ?>">
         <div id="content-wrapper" class="content-wrapper">
           <div id="content-head" class="row-fluid content-head">
             <div id="highlighted" class="clearfix"><?php print render($page['highlighted']); ?></div>
@@ -197,7 +197,7 @@ if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary
       </div>
       <!-- /#content -->
       <?php if ($page['sidebar_second']): ?>
-      <div id="sidebar-second" class="sidebar span4 site-sidebar-second">
+      <div id="sidebar-second" class="sidebar span3 site-sidebar-second">
         <div class="row-fluid"><?php print render($page['sidebar_second']); ?></div>
       </div>
       <!-- /#sidebar-second -->

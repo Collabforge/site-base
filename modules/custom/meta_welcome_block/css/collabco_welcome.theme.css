@@ -1,0 +1,14 @@
+.collabco-percent-bar-wrapper {
+  width: 100%;
+  border: 1px solid #000;
+  padding: 1px;
+  float:left;
+}
+.collabco-percent-bar {
+  height: 10px;
+  background-color: #777;
+}
+.percent-bar{
+  width:160px;
+}
+

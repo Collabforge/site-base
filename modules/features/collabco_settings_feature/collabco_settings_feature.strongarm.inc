@@ -264,17 +264,17 @@ function collabco_settings_feature_strongarm() {
   $strongarm->name = 'image_captcha_fonts_preview_map_cache';
   $strongarm->value = array(
     '4556e1d5954466dc8d6d3622bb08949a' => (object) array(
-      'uri' => 'sites/members.meta.org.au/modules/captcha/image_captcha/fonts/Tesox/tesox.ttf',
+      'uri' => 'profiles/collabco/modules/contrib/captcha/image_captcha/fonts/Tesox/tesox.ttf',
       'filename' => 'tesox.ttf',
       'name' => 'tesox',
     ),
     'e75c67802e4b04df5e5e4ec5b4932778' => (object) array(
-      'uri' => 'sites/members.meta.org.au/modules/captcha/image_captcha/fonts/Tuffy/Tuffy.ttf',
+      'uri' => 'profiles/collabco/modules/contrib/captcha/image_captcha/fonts/Tuffy/Tuffy.ttf',
       'filename' => 'Tuffy.ttf',
       'name' => 'Tuffy',
     ),
     '7505eb53bd627e859d1ca65c69fcdfee' => (object) array(
-      'uri' => 'sites/members.meta.org.au/modules/captcha/image_captcha/fonts/Tuffy/Tuffy_Bold.ttf',
+      'uri' => 'profiles/collabco/modules/contrib/captcha/image_captcha/fonts/Tuffy/Tuffy_Bold.ttf',
       'filename' => 'Tuffy_Bold.ttf',
       'name' => 'Tuffy_Bold',
     ),

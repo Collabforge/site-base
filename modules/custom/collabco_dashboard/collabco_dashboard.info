@@ -1,0 +1,4 @@
+name = Collabco dashboard
+description = The user dashboard for Collabco sites
+core = 7.x
+package = Collabco

@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ */
+
+/**
+ * Implement hook_menu().
+ */
+function mef_menu() {
+  $items['modal_forms/%ctools_js/eform/submit/%entityform_empty'] = array(
+    'title' => 'Edit',
+    'page callback' => 'mef_entityform_add_page',
+    'page arguments' => array(4, 1),
+    // TODO:
+    'access callback' => TRUE,
+//    'access callback' => 'node_access',
+//    'access arguments' => array('update', 2),
+    'weight' => 0,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['modal_forms/%ctools_js/entityform/%entityform/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'mef_entityform_edit_page',
+    'page arguments' => array(3, 1),
+    // TODO:
+    'access callback' => TRUE,
+//    'access callback' => 'node_access',
+//    'access arguments' => array('update', 2),
+    'weight' => 0,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Modal Entityform add page callback.
+ */
+function mef_entityform_add_page($entityform, $js) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    return drupal_goto('eform/submit/' . $entityform->type, array('query' => drupal_get_query_parameters()));
+  }
+
+  $title = t('Fill up form');
+
+  mef_entity_form($entityform, $title, TRUE);
+}
+
+/**
+ * Modal Entityform edit page callback.
+ */
+function mef_entityform_edit_page($entityform, $js) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    return drupal_goto('entityform/' . $entityform->entityform_id . '/edit', array('query' => drupal_get_query_parameters()));
+  }
+
+  $title = t('Edit form values');
+
+  mef_entity_form($entityform, $title, TRUE);
+}
+
+/**
+ * Build the Modal Entityform Form.
+ *
+ * @param string $entityformtype
+ *   Entityform type machine name.
+ * @param string $title
+ *   The Modal Popup Title.
+ * @param boolean $force_page_reload
+ *   Indicates if page should be reloaded after form submission.
+ */
+function mef_entity_form($entityform, $title, $force_page_reload = FALSE) {
+  ctools_include('entityform.admin', 'entityform', '');
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  $form_state = array(
+    'title' => $title,
+    'ajax'  => TRUE,
+    'build_info' => array(
+      'args'  => array($entityform, 'submit'),
+    ),
+  );
+
+  $commands = ctools_modal_form_wrapper('entityform_edit_form', $form_state);
+
+  if (!empty($form_state['executed']) && empty($form_state['rebuild'])) {
+    // overwrite commands.
+    $commands = array();
+
+    ctools_add_js('ajax-responder');
+    $commands[] = ctools_modal_command_dismiss();
+    $modal_commands = array();
+    if (module_exists('modal_messages')) {
+      $modal_commands = modal_messages_get_as_ajax_commands($force_page_reload);
+    }
+    if (!empty($modal_commands)) {
+      foreach ($modal_commands as $command) {
+        $commands[] = $command;
+      }
+    }
+    elseif ($force_page_reload) {
+      $commands[] = ctools_ajax_command_reload();
+    }
+
+    print ajax_render($commands);
+    exit;
+  }
+
+  print ajax_render($commands);
+  exit;
+}

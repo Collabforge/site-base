@@ -1,0 +1,44 @@
+<?php
+/**
+ * @file
+ * Core funcitons for the Collabco dashboard module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function collabco_dashboard_menu() {
+  $items['dashboard'] = array(
+    'title' => 'Dashboard',
+    'description' => 'Collabco user dashboard',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('access collabco dashboard'),
+
+    // This creates a blank page callback,
+    'page callback' => 'strrev',
+    'page arguments' => array(''),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function collabco_dashboard_permission() {
+  return array(
+    'access collabco dashboard' => array(
+      'title' => t('Access Collabco dashboard'),
+      'description' => t('Access Collabco dashboard'),
+    ),
+  );
+}
+
+/**
+ Implements hook_user_login().
+ */
+function collabco_dashboard_user_login(&$edit, $account) {
+  if (!isset($_GET['destination'])) {
+    $_GET['destination'] = 'dashboard';
+  }
+}

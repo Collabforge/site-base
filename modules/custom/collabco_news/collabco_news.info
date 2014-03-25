@@ -5,7 +5,6 @@ package = Collabco
 version = 7.x-1.0
 project = collabco_news
 dependencies[] = collabco_core
-dependencies[] = collabco_news
 dependencies[] = node
 dependencies[] = og_context
 dependencies[] = options

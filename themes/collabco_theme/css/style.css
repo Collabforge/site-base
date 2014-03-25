@@ -318,10 +318,12 @@ p {
 
 #logo a,               /*generic pages*/
 .ui-footer .ui-logo a{ /*login page*/
+  /*
   background:url('../images/logo-placeholder.png') no-repeat;
   display:block;
   height:54px;
   width:200px;
+  */
 }
 
 .ui-footer .ui-logo a{
@@ -336,11 +338,13 @@ p {
 /* Mobile logo */
 
 #tab-container .tab_logo.tab a{
+  /*
   background:url('../images/logo-placeholder.png') no-repeat;
   display:block;
   background-size:111px 30px; /* scale down bg image size */
   height:30px;
   width:111px;
+  */
 }
 
 

@@ -1,5 +1,5 @@
-name = Meta Welcome Block
-description = provides a Welcome block for Meta users.
+name = Collabco Welcome Block
+description = provides a Welcome block for users.
 core = 7.x
 package = Meta
 project ="meta_welcome_block"

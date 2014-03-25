@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * Installation functions for the Collabco Core module.
+ */
+
+/**
+ * Uninstall 'captcha' module.
+ */
+function collabco_core_update_7100() {
+  $modules = array('image_captcha', 'captcha');
+  module_disable($modules);
+  drupal_uninstall_modules($modules, FALSE);
+}

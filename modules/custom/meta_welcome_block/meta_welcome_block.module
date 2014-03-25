@@ -17,7 +17,7 @@ function meta_welcome_block_theme($existing, $type, $theme, $path) {
 function meta_welcome_block_block_info() {
   $blocks = array();
   $blocks['meta_welcome_block'] = array(
-    'info' => t('Meta Welcome Block (for front page)'),
+    'info' => t('Welcome Block (for front page)'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -47,7 +47,7 @@ function template_preprocess_welcome_block_template(&$variables) {
   $variables['introduce_yourself'] = array_key_exists($user->uid, $uids);
 
   //profile completeness
-  drupal_add_css(drupal_get_path('module', 'meta_welcome_block') . '/css/meta_welcome.theme.css');
+  drupal_add_css(drupal_get_path('module', 'meta_welcome_block') . '/css/collabco_welcome.theme.css');
         if ($profile2_entity = entity_get_info('profile2')) {
         foreach ($profile2_entity['bundles'] as $bundle => $values) {
             $out = pcp_get_complete_percentage_data('profile2', $bundle, $user);
