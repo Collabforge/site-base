@@ -1,0 +1,4 @@
+name = Meta follow
+description = Helper functions regarding to the Meta follow
+package = Meta
+core = 7.x

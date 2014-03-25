@@ -34,6 +34,10 @@
 		<div class="profile-page-user-bio">
 			<?php print render ($fields['field_personal_bio']); ?>
 		</div>
+                <br>
+		<div class="profile-page-user-organisation">
+			<?php print render ($fields['field_organisation_ref']); ?>
+		</div>
 	</div>
 
 	<div class="span3 last">
