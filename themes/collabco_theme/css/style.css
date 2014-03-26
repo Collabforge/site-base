@@ -930,6 +930,25 @@ input[type="file"] {
 margin-left: 0px;
 }
 
+/* Sidebar secondary navigation ------- */
+.sidebar .nav .user-navigation {
+  margin:0;
+}
+
+.sidebar .nav .user-navigation,
+.sidebar .nav .user-navigation li.ui-navigation-menu{
+  list-style: none;
+}
+
+.sidebar .nav .user-navigation li.ui-navigation-menu a{
+  padding:5px 10px;
+}
+
+.sidebar .nav .user-navigation li.ui-navigation-menu.active a{
+  background:#000;
+  color:#fff;
+}
+
 .dash_profile .content div {
   text-align: center;
   margin: 0px;
