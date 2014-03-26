@@ -16,6 +16,120 @@ function meta_email_mail_alter(&$message) {
   }
 }
 
+
+
+
+
+
+function _meta_email_settings_default($key) {
+  // you can change it by case
+  return true;
+}
+
+function _meta_email_settings_get($key=null, $account=null) {
+  if (!isset($account)) {
+    global $user;
+    $account = user_load($user->uid);
+  }
+  $data = $account->data['meta_email'];
+  if (!isset($key)) {
+    return $data;
+  }
+  if (isset($data[$key])) {
+    return $data[$key];
+  }
+  return _meta_email_settings_default($key);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function meta_email_form_alter(&$form, &$form_state, $form_id) {
+  if (!in_array($form_id, array('user_register_form', 'user_profile_form'))) {
+    return;
+  }
+  if ($form['#user_category'] != 'account') {
+    return;
+  }
+  $account = $form['#user'];
+  $form['meta_user_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Notification settings'),
+    '#weight' => 1,
+    '#collapsible' => true,
+    '#access' => true,
+  );
+  $config = _meta_email_settings_config();
+  foreach ($config as $config_key=>$config_item) {
+    $values = array();
+    foreach ($config_item['keys'] as $_key=>$_title) {
+      if (_meta_email_settings_get($_key)) {
+        $values[$_key] = $_key;
+      }
+    }
+    $form['meta_email']['meta_email_' . $config_key] = array(
+      '#type' => 'checkboxes'
+      , '#title' => $config_item['label']
+      , '#default_value' => $values
+      , '#options' => $config_item['keys']
+      , '#access' => true
+    );
+  }
+}
+
+function _meta_email_settings_config() {
+  return array(
+    'topic_hostedby' => array(
+      'label' => t('For Topics I host, email me when')
+      , 'keys' => array(
+        'comment_replied__to_topic_owner' => t('Someone replies to my comment')
+        , 'comment_added__to_topic_owner' => t('New comments are added')
+      )
+    )
+    , 'topic_followedby' => array(
+      'label' => t('For Topics I follow, email me when')
+      , 'keys' => array(
+        'comment_replied__to_topic_followers' => t('Someone replies to my comment')
+        , 'comment_added__to_topic_followers' => t('New comments are added')
+      )
+    )
+    , 'group_hostedby' => array(
+      'label' => t('For group I host, email me when')
+      , 'keys' => array(
+        'member_joined__to_group_owner' => t('A new member joins')
+        , 'group_topic_added__to_group_owner' => t('A topic is added')
+        , 'group_resource_added__to_group_owner' => t('A library file is added')
+      )
+    )
+    , 'group_memberof' => array(
+      'label' => t('For group I belong to, email me when')
+      , 'keys' => array(
+        'member_joined__to_group_members' => t('A new member joins')
+        , 'group_topic_added__to_group_members' => t('A topic is added')
+        , 'group_resource_added__to_group_members' => t('A library file is added')
+      )
+    )
+  );
+}
+
+/**
+ * Implements hook_user_presave().
+ */
+function meta_email_user_presave(&$edit, $account, $category) {
+  $data = array();
+  $config = _meta_email_settings_config();
+  foreach (array_keys($config) as $config_key) {
+    $data = array_merge($data, $edit['meta_email_' . $config_key]);
+  }
+  $edit['data']['meta_email'] = $data;
+}
+
+
+
+
+
+
+
 /**
  * Sends an email when a user has requested a Draft Hub to be revised
  */
@@ -107,8 +221,8 @@ function meta_email_callback_comment_added($comment) {
     meta_email_send('comment_replied__to_topic_followers', $commentator, $followers, $vars);
     meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
   } else {
-    meta_email_send('comment_added__to_topic_followers', $commentator, $owner, $vars);
-    meta_email_send('comment_added__to_topic_owner', $commentator, $owner, $vars);
+    meta_email_send('comment_added__to_topic_followers', $commentator, array($owner), $vars);
+    meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
   }
 
   if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
@@ -148,13 +262,19 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
       , '#vars' => print_r($vars, true)
     )));
   }
-
   foreach ($to_users as $to_user) {
-    $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
-    if ($result['result'] == TRUE) {
-      drupal_set_message(t('Your message has been sent.'));
+    // Integration with module meta_user_settings
+    if (_meta_email_settings_get($key, $to_user)) {
+      $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
+      if ($result['result'] == TRUE) {
+        drupal_set_message(t('Your message has been sent.'));
+      } else {
+        drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+      }
     } else {
-      drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+      if (META_EMAIL_DEBUG) {
+        drupal_set_message(t('Not sent to #user because of their profile settings.', array('#user' => $to_user->mail)), 'warning');
+      }
     }
   }
 }
