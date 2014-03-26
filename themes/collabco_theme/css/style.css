@@ -932,7 +932,9 @@ margin-left: 0px;
 
 /* Sidebar secondary navigation ------- */
 .sidebar .nav.user-navigation {
-  margin:0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .sidebar .nav.user-navigation,
@@ -941,12 +943,16 @@ margin-left: 0px;
 }
 
 .sidebar .nav.user-navigation li.ui-navigation-menu a{
-  padding:5px 10px;
+  padding: 5px 10px;
+  display: block;
 }
 
-.sidebar .nav.user-navigation li.ui-navigation-menu.active a{
-  background:#000;
-  color:#fff;
+.sidebar .nav.user-navigation li.ui-navigation-menu.active a,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:hover,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:active,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:focus{
+  background: #333;
+  color: #fff;
 }
 
 .dash_profile .content div {
