@@ -66,22 +66,17 @@ function collabco_profile_block_block_view($delta='') {
             , 'html' => TRUE
           )
         
-          , 'ui-navigation-menu ui-menu-your-topics leaf' => array(
+          , 'ui-navigation-menu ui-your-topics leaf' => array(
               'title' => '<i class="icon-list">&nbsp;</i> My Topics'
               , 'href' => sprintf('your-topics')
           
             , 'html' => TRUE
           )
-          , 'ui-navigation-menu ui-menu-your-hubs leaf' => array(
+          , 'ui-navigation-menu ui-your-hubs leaf' => array(
               'title' => '<i class="icon-globe">&nbsp;</i> My Hubs'
               , 'href' => sprintf('profile/hubs')
               , 'html' => TRUE
-          )         
-           , 'ui-navigation-menu ui-menu-hub-members last leaf' => array(
-              'title' => '<i class="icon-signout">&nbsp;</i> Log out'
-              , 'href' => sprintf('user/logout')
-              , 'html' => TRUE
-          )
+          )                  
         );
         $attributes = array('class' => array('menu nav user-navigation'));
   

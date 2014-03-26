@@ -934,6 +934,33 @@ input[type="file"] {
 margin-left: 0px;
 }
 
+/* Sidebar secondary navigation ------- */
+.sidebar .nav.user-navigation {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.sidebar .nav.user-navigation,
+.sidebar .nav.user-navigation li.ui-navigation-menu{
+  list-style: none;
+  margin:0;
+  padding:0;
+}
+
+.sidebar .nav.user-navigation li.ui-navigation-menu a{
+  padding: 5px 10px;
+  display: block;
+}
+
+.sidebar .nav.user-navigation li.ui-navigation-menu.active a,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:hover,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:active,
+.sidebar .nav.user-navigation li.ui-navigation-menu a:focus{
+  background: #333;
+  color: #fff;
+}
+
 .dash_profile .content div {
   text-align: center;
   margin: 0px;
