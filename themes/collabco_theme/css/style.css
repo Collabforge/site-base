@@ -658,6 +658,25 @@ input.form-submit.form-btn-danger.active {
 }
 
 
+/* Tighten up dropdown menus -----------------*/
+
+ul.dropdown-menu,
+ul.dropdown-menu li,
+ul.dropdown-menu li.leaf {
+  list-style: none;
+}
+
+ul.dropdown-menu li,
+ul.dropdown-menu li.leaf {
+  margin:0;
+  padding:0;
+}
+
+ul.dropdown-menu li a,
+ul.dropdown-menu li.leaf a {
+  margin:0;
+}
+
 /**
 8. QUICKTABS
 ---------------------------------------------
