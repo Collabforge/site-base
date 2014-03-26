@@ -940,6 +940,8 @@ margin-left: 0px;
 .sidebar .nav.user-navigation,
 .sidebar .nav.user-navigation li.ui-navigation-menu{
   list-style: none;
+  margin:0;
+  padding:0;
 }
 
 .sidebar .nav.user-navigation li.ui-navigation-menu a{
