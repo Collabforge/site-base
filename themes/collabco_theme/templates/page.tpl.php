@@ -36,10 +36,10 @@ if ((($user->uid) && ($page['admin_shortcuts'])) || (($user->uid) && ($secondary
   <div id="header" class="clearfix header" role="banner">
     <div class="container" id="header_container">
       <div class="row-fluid" id="header_top" >
-        <?php if ($logo): ?>
+        
         <div id="logo" class="span4 site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">&nbsp;</a>
         </div>
-        <?php endif; ?>
+        
         <?php if ($page['header_top_middle']): ?>
         <div id="header_top_middle" class="span6"> <?php print render($page['header_top_middle']); ?>
         </div>
