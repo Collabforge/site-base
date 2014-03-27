@@ -48,12 +48,14 @@
 		<div class="profile-page-user-external">
 			<?php print render ($fields['field_external_link']); if(isset($fields['field_external_link'])) { echo "<br>"; } ?>
         </div>
-        <?php if ($is_contactable): ?>
+        <?php if (($account->uid == $user->uid) || $is_contactable): ?>
 		  <div class="profile-page-user-email">
 			<div class="field-label"><b>Email address</b></div>
 			<div class="field-item"><a href="mailto:<?php print $account->mail; ?>"><?php print $account->mail; ?></a></div>
           </div>
-        <br/>
+        <?php endif; ?>
+        <?php if ($is_contactable): ?>
+        	<br/>
 		<div class="profile-page-user-contact">
           <div class="field-label"><b>Send <?php print $account->name; ?> an email</b></div>
           <div class="field-item">
