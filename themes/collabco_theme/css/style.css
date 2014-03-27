@@ -2528,6 +2528,10 @@ a.ui-library-file:active{
   .ui-header-img-container .ui-header-content .ui-header-description{ /* Turn off description for hubs / topics header */
     display: none; 
   }
+
+  .page-dashboard .sidebar-first { /*hide left sidenav for small screens */
+    display:none;
+  }
 }
 
 @media (max-width: 399px) {
