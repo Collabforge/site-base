@@ -61,19 +61,19 @@ function collabco_profile_block_block_view($delta='') {
             , 'html' => TRUE
           )
          , 'ui-navigation-menu ui-my-profile leaf' => array(
-              'title' => '<i class="icon-user">&nbsp;</i> My Profile'
+              'title' => '<i class="icon-user">&nbsp;</i> ' . t('My Profile')
               , 'href' => sprintf('user')  	    
             , 'html' => TRUE
           )
         
           , 'ui-navigation-menu ui-your-topics leaf' => array(
-              'title' => '<i class="icon-list">&nbsp;</i> My Topics'
+              'title' => '<i class="icon-list">&nbsp;</i> ' . t('My Topics')
               , 'href' => sprintf('your-topics')
           
             , 'html' => TRUE
           )
           , 'ui-navigation-menu ui-your-hubs leaf' => array(
-              'title' => '<i class="icon-globe">&nbsp;</i> My Hubs'
+              'title' => '<i class="icon-globe">&nbsp;</i> ' . t('My Hubs')
               , 'href' => sprintf('profile/hubs')
               , 'html' => TRUE
           )                  
