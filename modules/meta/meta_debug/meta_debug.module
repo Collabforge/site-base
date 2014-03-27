@@ -1,8 +1,17 @@
 <?php
 
-
+/**
+ * Implements hook_boot()
+ */
 function meta_debug_boot() {
   alexar_debug(true);
+}
+
+/**
+ * Implements hook_init()
+ */
+function meta_debug_init() {
+    
 }
 
 function alexar_debug($debug=true) {
