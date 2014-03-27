@@ -2529,7 +2529,7 @@ a.ui-library-file:active{
     display: none; 
   }
 
-  .page-dashboard .sidebar-first { /*hide left sidenav for small screens */
+  #sidebar-first{ /*hide left sidenav for small screens */
     display:none;
   }
 }
