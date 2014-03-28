@@ -103,7 +103,8 @@ function meta_group_menu() {
 	    'title' => 'Your Hubs',
 	    'description' => 'Hubs you have hosted or joined',
 	    'page callback' => '_meta_group_page_profile_hubs',
-	    'access callback' => true,
+	    'access callback' => 'user_access',
+            'access arguments' => 'create conversation content'
 	);
 
 
