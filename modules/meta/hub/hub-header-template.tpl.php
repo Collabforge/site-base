@@ -11,7 +11,7 @@
  
    			<?php print  views_embed_view('hub_owner','hub_header_display'); ?>
 
-			<?php echo $links; ?>
+			<?php echo t($links); ?>
 
 		</div>
 	</div>

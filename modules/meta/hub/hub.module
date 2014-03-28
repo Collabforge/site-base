@@ -97,7 +97,7 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
               , 'href' => sprintf('node/%s', $node->nid)
           )
           , 'ui-header-menu ui-menu-hub-topics' => array(
-              'title' => 'Topics'
+              'title' => t('Topics')
               , 'href' => sprintf('node/%s/topics', $node->nid)
           )
           , 'ui-header-menu ui-menu-hub-library' => array(

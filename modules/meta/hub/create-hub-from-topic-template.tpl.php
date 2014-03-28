@@ -1,7 +1,7 @@
 
 <p>
 	<a class="btn btn-success" href="<?php echo url('node/add/hub/' . $nid); ?>">
-		Create a hub from this topic
+		<?php echo t('Create a hub from this topic'); ?>
 	</a>
 </p>
 <p>

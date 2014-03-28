@@ -13,7 +13,7 @@
     <a class="<?php echo $cls; ?>" href="<?php echo url($link['href']); ?>">
       
       <i class="icon-<?php echo $link['icon']; ?>"></i>
-      <?php echo $link['title']; ?>
+      <?php echo t($link['title']); ?>
 
     </a>
 
