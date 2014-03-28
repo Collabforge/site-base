@@ -290,6 +290,10 @@ function meta_email_mail($key, &$message, $params) {
     'langcode' => $message['language']->language,
   );
 
+  $params = array_merge(array(
+    '!site_name' => variable_get('site_name', '')
+  ), $params);
+
   switch ($key) {
     case 'comment_replied__to_topic_followers':
       $message['subject'] = t('!site_name - !replying_member has replied to your comment', $params, $options);
@@ -347,6 +351,16 @@ function meta_email_mail($key, &$message, $params) {
   }
   $signature = "\n" . t("Kind Regards \n The META members only community", array(), $options) . "\n";
   $message['body'][] = $signature;
+
+
+  drupal_set_message(t('Key: !key <br />Subject: !subject <br />Body: !body<br />', array(
+    '!key' => $key
+    , '!subject' => $message['subject']
+    , '!body' => $message['body'][0]
+  )), 'warning');
+
+
+
 }
 
 /**
