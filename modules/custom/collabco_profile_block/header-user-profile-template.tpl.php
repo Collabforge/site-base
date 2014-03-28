@@ -32,8 +32,8 @@
     <ul class="dropdown-menu user-nav">
     <li class="first leaf user-nav-activity-feed" ><a href="/"><i class="icon-rss">&nbsp;</i>  Activity Feed</a></li>
     <li class="first leaf  user-nav-my-profile" ><a href="/user" ><i class="icon-user">&nbsp;</i> My Profile</a></li>
-    <li class="first leaf user-nav-my-topics" ><a href="/your-topics" ><i class="icon-list">&nbsp;</i> My Topics</a></li>
-    <li class="first leaf user-nav-my-topics" ><a href="/profile/hubs" ><i class="icon-globe">&nbsp;</i> My Hubs</a></li>
+    <li class="first leaf user-nav-my-topics" ><a href="/your-topics" ><i class="icon-list">&nbsp;</i> <?php echo t('My Topics'); ?></a></li>
+    <li class="first leaf user-nav-my-topics" ><a href="/profile/hubs" ><i class="icon-globe">&nbsp;</i> <?php echo t('My Hubs'); ?></a></li>
     <li class="first leaf user-nav-account-setting" ><a href="/user/<?php print $user->uid; ?>/edit" style="color:#666;"><i class="icon-cog">&nbsp;</i>  Account settings</a></li>
     <li class="last leaf user-nav-logout" ><a href="/user/logout" title="icon-signout" style="color:#666;"><i class="icon-signout">&nbsp;</i> Log out</a></li>
     </ul>
