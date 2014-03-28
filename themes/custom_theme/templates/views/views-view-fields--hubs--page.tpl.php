@@ -29,7 +29,7 @@
 ?>  
 <?php  $gid = $fields['nid']->raw ?> 
 <div class="index_item row-fluid">
-  <div class="span2">  
+  <div class="span2">
     <?php echo $fields['field_featured_hub_image']->content; ?>
   </div>
   <div class="span10 topic_item">
