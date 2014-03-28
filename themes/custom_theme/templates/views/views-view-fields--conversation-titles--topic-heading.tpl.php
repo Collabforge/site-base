@@ -33,7 +33,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<!-- Breadcrumbs -->
-					<a href="/topics">Topics</a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
+					<a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
 				</div>
 			</div>
 			<div class="row-fluid">
@@ -84,7 +84,7 @@
 						        	<h5><i class="icon-group"></i></h5>
 						        </div>
 								<div class="span9">
-									<h5>Belongs to hub:<br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
+									<h5><?php echo t('Belongs to hub:'); ?><br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
 								</div>
 							  </div>
 						    </div>
