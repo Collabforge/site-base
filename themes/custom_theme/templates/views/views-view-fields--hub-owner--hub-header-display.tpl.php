@@ -30,7 +30,7 @@
 <div class="row-fluid">
 	<div class="span12">
 		<!-- Breadcrumbs -->
-		<a href="/hubs">Hubs</a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
+		<a href="/hubs"><?php echo t('Hubs'); ?></a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
 	</div>
 </div>
 <div class="row-fluid">
@@ -40,7 +40,7 @@
 			<h1>
 				<span class="ui-inline"><i class="icon-group"></i>&nbsp;<?php echo $fields['title']->content; ?>&nbsp;</span>
 				<span class="label ui-inline-label"><?php echo $fields['meta_og_state_state']->content; ?></span>
-				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> Closed Hub </span>'; ?> 
+				<?php echo meta_og_state_is_open($fields['nid']->raw) ?  '<span class="label label-info ui-inline-label"> <i class="icon-unlock-alt"></i> '.t('Open Hub').' </span>' : '<span class="label ui-inline-label">  <i class="icon-lock"></i> '.t('Closed Hub').' </span>'; ?> 
 			</h1> 
 			<span class="ui-header-description"><?php echo $fields['field_tag_line']->content; ?></span>
 		</div>

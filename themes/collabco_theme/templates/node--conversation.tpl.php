@@ -99,7 +99,7 @@
       $may_edit = user_access('edit any conversation content') || (user_access('edit own conversation content') && $uid == $user->uid);
       if ($may_edit) {
         global $base_path;
-        print "<div class='edit_your_topic'>  <a href='{$base_path}node/$nid/edit'><i class='icon-edit'></i> Edit this topic</a></div><br><br>";
+        print "<div class='edit_your_topic'>  <a href='{$base_path}node/$nid/edit'><i class='icon-edit'></i> " . t('Edit this topic') . "</a></div><br><br>";
       }
     ?>
     <div class="contentarticle"<?php print $content_attributes; ?>>

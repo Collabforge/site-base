@@ -48,7 +48,7 @@
           <div class="article_text"><?php echo $fields['field_tag_line']->content; ?></div>
         </div>
         <div class="span3">
-          <?php echo meta_og_state_is_open($gid) ? '<span class="label label-info"> <i class="icon-unlock-alt"></i> Open Hub </span>' : '<span class="label">  <i class="icon-lock"></i> Closed Hub </span>'; ?>
+          <?php echo meta_og_state_is_open($gid) ? '<span class="label label-info"> <i class="icon-unlock-alt"></i> '. t('Open Hub') . ' </span>' : '<span class="label">  <i class="icon-lock"></i> '.t('Closed Hub').' </span>'; ?>
           
             <!-- These labels need logic - reimplement when time allows:
               <span class="label label-success"> <i class="icon-cog"></i> You are hub owner </span>
