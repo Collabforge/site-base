@@ -2549,7 +2549,9 @@ a.ui-library-file:active{
   ul.quicktabs-tabs li,
   ul.quicktabs-tabs li a,
   ul.nav-tabs li,
-  ul.nav-tabs li a { /* Make quicktabs full width*/
+  ul.nav-tabs li a,
+  ul.nav-tabs > li,
+  ul.nav-tabs > li > a  { /* Make quicktabs full width*/
     display: block;
     border:0;
     background:#fff;
