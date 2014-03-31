@@ -347,7 +347,10 @@ function meta_email_mail($key, &$message, $params) {
      $message['subject'] = t('PLACEHOLDER', $params, $options);
      $message['body'][] = t('PLACEHOLDER', $params, $options);
     break;
-
+    default:
+       $params = array( '!key' => $key );
+      $message['subject'] = t('!key', $params, $options);
+      $message['body'][] = t('!key', $params, $options);
   }
   $signature = "\n" . t("Kind Regards \n The META members only community", array(), $options) . "\n";
   $message['body'][] = $signature;
