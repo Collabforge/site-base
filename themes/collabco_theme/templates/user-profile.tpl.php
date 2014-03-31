@@ -13,7 +13,7 @@
 	</div>
 	<div class="span7">
 		<div class="profile-page-title">    
-			<p><?php print($full_name); ?></p>
+			<p><?php /* temp removed print($full_name); */ ?></p>
 		</div>
 	</div>
 	<div class="span3 last">

@@ -2546,6 +2546,35 @@ a.ui-library-file:active{
     margin-top: 0;
   }
 
+  ul.quicktabs-tabs li,
+  ul.quicktabs-tabs li a,
+  .nav-tabs > li,
+  .nav-tabs > li > a,
+  .nav.nav-tabs > li > a   { /* Make quicktabs full width*/
+    display: block;
+    float: none;
+    text-align: left;
+    border: 1px solid transparent;
+    background: #fff;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  ul.quicktabs-tabs li a.active,
+  ul.quicktabs-tabs li a:hover,
+  ul.quicktabs-tabs li a:focus,
+  .nav-tabs > .active > a, 
+  .nav-tabs > .active > a:hover, 
+  .nav-tabs > .active > a:focus,
+  .hub-header .nav-tabs > .active > a, 
+  .hub-header .nav-tabs > .active > a:hover, 
+  .hub-header .nav-tabs > .active > a:focus {
+    border: solid 1px #ddd;
+    background:#f2f2f2;
+    box-shadow: none;
+  }
+
   /* This isn't working - Hide featured img for library file at small views
   .ui-library-file .span2 {
     display: none;  
