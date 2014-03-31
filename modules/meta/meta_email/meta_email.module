@@ -4,7 +4,7 @@
  * Drupal's mail API.
  */
 
-define('META_EMAIL_DEBUG', true);
+define('META_EMAIL_DEBUG', FALSE);
 
 
 /**
