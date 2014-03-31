@@ -67,7 +67,7 @@ function meta_email_form_alter(&$form, &$form_state, $form_id) {
         $values[$_key] = $_key;
       }
     }
-    $form['meta_email']['meta_email_' . $config_key] = array(
+    $form['meta_user_settings']['meta_email']['meta_email_' . $config_key] = array(
       '#type' => 'checkboxes'
       , '#title' => $config_item['label']
       , '#default_value' => $values
