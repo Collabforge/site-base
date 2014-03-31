@@ -2546,6 +2546,16 @@ a.ui-library-file:active{
     margin-top: 0;
   }
 
+  ul.quicktabs-tabs li,
+  ul.quicktabs-tabs li a,
+  ul.nav-tabs li,
+  ul.nav-tabs li a { /* Make quicktabs full width*/
+    display: block;
+    border:0;
+    background:#fff;
+    border-radius: 0;
+  }
+
   /* This isn't working - Hide featured img for library file at small views
   .ui-library-file .span2 {
     display: none;  
