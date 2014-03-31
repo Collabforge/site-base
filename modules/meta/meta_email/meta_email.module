@@ -352,14 +352,13 @@ function meta_email_mail($key, &$message, $params) {
   $signature = "\n" . t("Kind Regards \n The META members only community", array(), $options) . "\n";
   $message['body'][] = $signature;
 
-
+if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
   drupal_set_message(t('Key: !key <br />Subject: !subject <br />Body: !body<br />', array(
     '!key' => $key
     , '!subject' => $message['subject']
     , '!body' => $message['body'][0]
   )), 'warning');
-
-
+}
 
 }
 
