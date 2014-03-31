@@ -118,21 +118,11 @@ function collabco_forms_form_user_profile_form_alter(&$form, &$form_state) {
     // Tick the "Personal contact form" box by default.
     if (isset($form['contact']['contact'])) {
 
-
-      /**
-        Auto-check the contact checkbox, if this is the first time user is visiting their profile.
-      */
-
-      // alexar: old code
-      // $form['contact']['contact']['#default_value'] = isset($account->data['contact']) ? $account->data['contact'] : TRUE;
-      
-      // alexar: new code
       if (!isset($account->data['contact'])) {
-        $form['contact']['contact']['#default_value'] = true;
+        watchdog('collabco_forms', 'User %uid: personal contact checkbox was not initialised -- auto-ticked.', array('%uid' => $account->uid));
+        $form['contact']['contact']['#default_value'] = TRUE;
       }
 
-
-      
       $form['contact']['contact']['#description'] = t('Allow other users on the site to see your email address and contact you via a contact form on your profile page. Site administrators will still be able to contact you if this is disabled.');
     }
 
