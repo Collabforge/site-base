@@ -2554,15 +2554,17 @@ a.ui-library-file:active{
     display: block;
     float: none;
     text-align: left;
-    border: 0;
+    border: 1px solid transparent;
     background: #fff;
     -webkit-border-radius: 0;
     border-radius: 0;
     margin: 0;
   }
   
-   ul.quicktabs-tabs li .active a,
-   .nav-tabs > .active > a, 
+  ul.quicktabs-tabs li a.active,
+  ul.quicktabs-tabs li a:hover,
+  ul.quicktabs-tabs li a:focus,
+  .nav-tabs > .active > a, 
   .nav-tabs > .active > a:hover, 
   .nav-tabs > .active > a:focus,
   .hub-header .nav-tabs > .active > a, 
