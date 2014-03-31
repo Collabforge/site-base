@@ -2548,13 +2548,13 @@ a.ui-library-file:active{
 
   ul.quicktabs-tabs li,
   ul.quicktabs-tabs li a,
-  ul.nav-tabs li,
-  ul.nav-tabs li a,
-  ul.nav-tabs > li,
-  ul.nav-tabs > li > a  { /* Make quicktabs full width*/
+  .nav-tabs > li,
+  .nav-tabs > li > a  { /* Make quicktabs full width*/
     display: block;
-    border:0;
-    background:#fff;
+    float: none;
+    border: 0;
+    background: #fff;
+    -webkit-border-radius: 0;
     border-radius: 0;
   }
 
