@@ -331,14 +331,17 @@ function meta_email_mail($key, &$message, $params) {
      $message['body'][] = t('Hi !receiver_name, <br/> Your group !group_name has been published on !site_name. <br/><br/> You can view the group <a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
     case 'member_joined__to_new_member':
+        drupal_set_message("In key :member_joined__to_new_member");
      $message['subject'] = t('!site_name - welcome to !group_name.', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> You are now a member of !group_name on !site_name. <br/><br/> You can view the group<a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
-    case 'member_joined__to_group_owner':        
+    case 'member_joined__to_group_owner':   
+       drupal_set_message("In key :member_joined__to_group_owner");
      $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'member_joined__to_group_members':
+        drupal_set_message("In key :member_joined__to_group_members");
      $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
