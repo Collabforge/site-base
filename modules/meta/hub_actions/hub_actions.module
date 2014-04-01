@@ -146,6 +146,7 @@ function hub_actions_node_insert($node)
             $url = url('node/'.$group[0]['target_id'].'/'.$section);
             $group_link = '<a class=action href='. $url.'>'. $group_markup['#markup'].'</a>';
             drupal_set_message('Go back to Hub '.$group_link);
+            meta_email_callback_group_content_added($group[0]['target_id'],$node->nid);
         }
         
     }      

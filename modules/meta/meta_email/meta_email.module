@@ -4,7 +4,7 @@
  * Drupal's mail API.
  */
 
-define('META_EMAIL_DEBUG', false);
+define('META_EMAIL_DEBUG', FALSE);
 
 
 /**
@@ -137,10 +137,17 @@ function meta_email_send_send_for_revision($gid, $uid) {
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }
+  $group_owner = user_load($gid);
   if (!$user = user_load($uid)) {
     return false;
   }
   $admins = meta_group_get_admins();
+  
+  $vars = array (
+  '!group_name' => $group->title,
+  '!group_owner' => $group_owner->name,
+  '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+  );
   meta_email_send('group_waiting_approval__to_requester', null, array($user), $vars);
   meta_email_send('group_waiting_approval__to_admins', null, $admins, $vars);
 }
@@ -154,6 +161,10 @@ function meta_email_send_group_published($gid) {
     return false;
   }
   $owner = user_load($group->uid);
+  $vars = array (
+    '!group_name' => $group->title,
+    '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+  );
   meta_email_send('group_published__to_group_owner', null, array($owner), $vars);
 }
 
@@ -162,16 +173,52 @@ function meta_email_send_group_published($gid) {
  * Sends appropriate emails when a Topic is added to a Group
  */
 function meta_email_callback_group_content_added($gid, $nid) {
+  
+    
   if (!$group = meta_group_get_group($gid)) {
     return false;
   }
+  $node =node_load($nid);
+   if (empty($node)) {
+     return false;
+    }
   $owner = user_load($group->uid);
   $members = meta_group_get_group_members($gid);
+  
+  $members_excluded = array(); 
+  foreach ($members as $member) {
+     
+      if ($member->uid == $owner->uid){        
+          continue;
+      }
+      /* Do not send to the coowner if he has created the topic */
+      if ($member->uid == $node->uid){
+          continue;
+      }
+          
+      $members_excluded[] = $member;
+  }
+ 
+  $topic_owner = user_load($node->uid);
   $vars = array(
-    '' => ''
+    '!topic_title' => $node->title
+    ,'!group_name' => $group->title
+    ,'!topic_owner' => $topic_owner->name
+    ,'!topic_link' => url('node/' . $node->nid,array(absolute=>true))
   );
-  meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
-  meta_email_send('group_topic_added__to_group_members', null, $members, $vars);
+  if ($node->type == 'conversation') { 
+      if ($owner->uid != $node->uid){  // Don't send a mail to group owner ,if the he created a topic (self mail not required)  
+        meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
+      }
+        meta_email_send('group_topic_added__to_group_members', null, $members_excluded, $vars);
+  }
+  else {
+      if ($owner->uid != $node->uid){
+        meta_email_send('group_library_added__to_group_owner', null, array($owner), $vars);
+      }
+      meta_email_send('group_library_added__to_group_members', null, $members_excluded, $vars);
+  }
+      
 }
 
 
@@ -230,7 +277,7 @@ function meta_email_callback_comment_added($comment) {
     '#comment' => sprintf('%s %s', $comment->subject, $comment->comment)
     , '!commenting_member' => $commentator->realname
     , '!topic_title ' => $node->title
-    , '!topic_link' => url('node/' . $node->nid)
+    , '!topic_link' => url('node/' . $node->nid,array(absolute=>true))
   );
 
   if (!empty($comment->pid)) {
@@ -286,7 +333,7 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
       $vars['!receiver_name'] = $to_user->realname;
       $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
       if ($result['result'] == TRUE) {
-        drupal_set_message(t('Your message has been sent.'));
+        //drupal_set_message(t('Your message has been sent.'));
       } else {
         drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
       }
@@ -311,7 +358,8 @@ function meta_email_mail($key, &$message, $params) {
  // drupal_set_message("The initial params are:".print_r($params,true));
   $params = array_merge(array(
     '!site_name' => variable_get('site_name', '')
-    , '!site_url' => url('<front>')
+    , '!site_url' => url('<front>',array('absolute'=>true))
+    ,'!site_email' => variable_get('site_mail','')
   ), $params);
  // drupal_set_message("After alteration params are:".print_r($params,true));
  // drupal_set_message("key:".$key); 
@@ -337,18 +385,18 @@ function meta_email_mail($key, &$message, $params) {
      $message['body'][] = t('Hi !receiver_name, <br/> Your group !group_name has been published on !site_name. <br/><br/> You can view the group  <a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
     case 'member_joined__to_new_member':
-     $message['subject'] = t('!site_name - welcome to !group_name.', $params);
-     $message['body'][] = t('Hi !receiver_name, \n You are now a member of !group_name on !site_name. \n \n You can view the group<a href="!group_link">here</a>.\n \n Kind Regards,\n !site_name.', $params);
+     $message['subject'] = t('!site_name - welcome to !group_name.', $params,$options);
+     $message['body'][] = t('Hi !receiver_name, <br/> You are now a member of !group_name on !site_name. <br/><br/> You can view the group<a href="!group_link">here</a>.<br/><br/> Kind Regards,<br/> !site_name.', $params, $options);
     break;
     case 'member_joined__to_group_owner':   
-     $message['subject'] = t('!site_name - !joining_member has joined !group_name',$params);
-     $message['body'][] = t('Hi !receiver_name, \n !joining_member has joined <a href="!group_link">!group_name</a>.\n \n Kind Regards,\n!site_name.\n \n \n You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name',$params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.<br/><br/> Kind Regards,<br/>!site_name.<br/><br/><br/> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     // $message['subject'] = "This is the subject";
     // $message['body'][] = "This is the body";
     break;
     case 'member_joined__to_group_members':
-     $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params);
-     $message['body'][] = t('Hi !receiver_name, \n !joining_member has joined <a href="!group_link">!group_name</a>.\n \n Kind Regards,\n !site_name.\n \n \n You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.<br/><br/> Kind Regards,<br/> !site_name.<br/><br/><br/> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
     break;
     case 'group_waiting_approval__to_requester':
      $message['subject'] = t('!site_name - !group_name has been sent for approval', $params, $options);
@@ -366,13 +414,24 @@ function meta_email_mail($key, &$message, $params) {
      $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
+    case 'group_library_added__to_group_owner':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'group_library_added__to_group_members':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+
+
     case 'PLACEHOLDER':
      $message['subject'] = t('PLACEHOLDER', $params, $options);
      $message['body'][] = t('PLACEHOLDER', $params, $options);
     break;
     default:
        $params = array( '!key' => $key );
-       drupal_set_message("In the default ");
+     
+      //  drupal_set_message("In the default ");
        $message['subject'] = "hello";
        $message['body'][] = "This is mail body";
   }
