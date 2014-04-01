@@ -4,7 +4,7 @@
  * Drupal's mail API.
  */
 
-define('META_EMAIL_DEBUG', true);
+define('META_EMAIL_DEBUG', false);
 
 
 /**
@@ -202,7 +202,9 @@ function meta_email_callback_user_joined($gid, $uid) {
   }
 
   $vars = array(
-    '' => ''
+    '!group_name' => $group->title
+    ,'!joining_member' => $user->name
+    ,'!group_link' => url('node/'.$gid,array(absolute=>true))   
   );
   meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
   meta_email_send('member_joined__to_new_member', null, array($user), $vars);
@@ -302,17 +304,17 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
  */
 function meta_email_mail($key, &$message, $params) {
   global $user;
-  drupal_set_message("In the meta email mail");
+ // drupal_set_message("In the meta email mail");
   $options = array(
     'langcode' => $message['language']->language,
   );
-  drupal_set_message("The initial params are:".print_r($params,true));
+ // drupal_set_message("The initial params are:".print_r($params,true));
   $params = array_merge(array(
     '!site_name' => variable_get('site_name', '')
     , '!site_url' => url('<front>')
   ), $params);
-  drupal_set_message("After alteration params are:".print_r($params,true));
-  drupal_set_message("key:".$key); 
+ // drupal_set_message("After alteration params are:".print_r($params,true));
+ // drupal_set_message("key:".$key); 
   switch ($key) {
     case 'comment_replied__to_topic_followers':
       $message['subject'] = t('!site_name - !commenting_member has replied to your comment', $params, $options);
@@ -332,7 +334,7 @@ function meta_email_mail($key, &$message, $params) {
     break;
     case 'group_published__to_group_owner':
      $message['subject'] = t('!site_name - !group_name has been published', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br/> Your group !group_name has been published on !site_name. <br/><br/> You can view the group <a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> Your group !group_name has been published on !site_name. <br/><br/> You can view the group  <a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
     case 'member_joined__to_new_member':
      $message['subject'] = t('!site_name - welcome to !group_name.', $params, $options);
@@ -342,7 +344,7 @@ function meta_email_mail($key, &$message, $params) {
      $message['subject'] = t('!site_name - !joining_member has joined !group_name',$params);
      $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     // $message['subject'] = "This is the subject";
-     $message['body'][] = "This is the body";
+    // $message['body'][] = "This is the body";
     break;
     case 'member_joined__to_group_members':
      $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params, $options);
