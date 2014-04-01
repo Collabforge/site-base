@@ -253,8 +253,13 @@ function meta_email_callback_user_joined($gid, $uid) {
     ,'!joining_member' => $user->name
     ,'!group_link' => url('node/'.$gid,array(absolute=>true))   
   );
-  meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
+  
+  if ($owner->uid !=$group->uid){
+      meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
+  }
+  if ($user->uid !=$group->uid ){
   meta_email_send('member_joined__to_new_member', null, array($user), $vars);
+  }
   meta_email_send('member_joined__to_group_members', null, $members_excluded, $vars);
 } 
 
@@ -386,7 +391,7 @@ function meta_email_mail($key, &$message, $params) {
     break;
     case 'member_joined__to_new_member':
      $message['subject'] = t('!site_name - welcome to !group_name.', $params,$options);
-     $message['body'][] = t('Hi !receiver_name, <br/> You are now a member of !group_name on !site_name. <br/><br/> You can view the group<a href="!group_link">here</a>.<br/><br/> Kind Regards,<br/> !site_name.', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> You are now a member of !group_name on !site_name. <br/><br/> You can view the group <a href="!group_link">here</a>.<br/><br/> Kind Regards,<br/> !site_name.', $params, $options);
     break;
     case 'member_joined__to_group_owner':   
      $message['subject'] = t('!site_name - !joining_member has joined !group_name',$params, $options);
