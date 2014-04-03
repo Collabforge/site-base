@@ -24,16 +24,16 @@ function meta_follow_get_followers($nid, $flag_name=null) {
 	if (!isset($flag_name)) {
 		$flag_name = variable_get('meta_follow_flag_type', 'follow');
 	}
-	$flags = flag_get_user_flags('node', $nid);
-	if (!isset($flags[$flag_name])) {
-		return array();
-	}
+       
+	//$flags = flag_get_user_flags('node', $nid);
+        $flags = flag_get_entity_flags('node', $nid,$flag_name);             
 	$users = array();
-	foreach ($flags[$flag_name] as $flag) {
+	foreach ($flags as $flag) {
+               
 		if (empty($flag->uid)) {
 			continue;
-		}
-		$users[] = user_load($flag->uid);
+		} 
+		$users[] = user_load($flag->uid);           
 	}
 	return $users;
 }

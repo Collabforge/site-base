@@ -4,7 +4,7 @@
  * Drupal's mail API.
  */
 
-define('META_EMAIL_DEBUG', true);
+define('META_EMAIL_DEBUG', FALSE);
 
 
 /**
@@ -55,7 +55,7 @@ function meta_email_form_alter(&$form, &$form_state, $form_id) {
   $form['meta_user_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Notification settings'),
-    '#weight' => 1,
+    '#weight' => 2,
     '#collapsible' => true,
     '#access' => true,
   );
@@ -279,7 +279,21 @@ function meta_email_callback_comment_added($comment) {
   $followers = meta_follow_get_followers($node->nid);
   
  // drupal_set_message(print_r($followers,true));
-
+  
+  $follower_included = array(); 
+  foreach ($followers as $follower) {
+      
+      if ($follower->uid == $commentator->uid) {         
+          continue;
+      }   
+      if ($follower->uid == $owner->uid){
+          continue;
+      }
+      $follower_included[] = $follower;
+  }
+    
+ // drupal_set_message(print_r($follower_included,true));
+  
   $vars = array(
     '#comment' => sprintf('%s %s', $comment->subject, $comment->comment)
     , '!commenting_member' => $commentator->realname
@@ -291,12 +305,16 @@ function meta_email_callback_comment_added($comment) {
  //    drupal_set_message("Comment replied loop");
     $comment_parent = comment_load($comment->pid);
     $vars['#comment_parent'] = sprintf('%s %s', $comment_parent->subject, $comment_parent->comment);
-    meta_email_send('comment_replied__to_topic_followers', $commentator, $followers, $vars);
-    meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
+    meta_email_send('comment_replied__to_topic_followers', $commentator, $follower_included, $vars);
+    if ($commentator->uid !=$owner->uid) {
+        meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
+    }
   } else {
   //  drupal_set_message("Comment Added loop");
-    meta_email_send('comment_added__to_topic_followers', $commentator, $followers, $vars);
-    meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
+    meta_email_send('comment_added__to_topic_followers', $commentator, $follower_included, $vars);
+    if ($commentator->uid !=$owner->uid) {
+         meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
+    }
   }
 
   if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
@@ -374,37 +392,37 @@ function meta_email_mail($key, &$message, $params) {
  // drupal_set_message("key:".$key); 
   switch ($key) {
     case 'comment_replied__to_topic_followers':
-      $message['subject'] = t('!site_name - !commenting_member has replied to your comment', $params, $options);
-      $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has replied to your comment in !topic_name on !site_name. <br/><br/> You can view the reply <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+      $message['subject'] = t('!site_name - !commenting_member has replied to a comment', $params, $options);
+      $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has replied to a comment in !topic_title  on !site_name. <br/><br/> You can view the reply <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'comment_replied__to_topic_owner':
-     $message['subject'] = t('!site_name - !commenting_member has replied to your comment on !topic_title', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has replied to your comment in !topic_title on !site_name. <br/><br/> You can view the reply <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+     $message['subject'] = t('!site_name - !commenting_member has replied to a comment on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has replied to a comment in !topic_title   on !site_name. <br/><br/> You can view the reply <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'comment_added__to_topic_followers':
-     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has made a comment in !topic_title on !site_name. <br/><br/> You can view the comment <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has made a comment in !topic_title  on !site_name. <br/><br/> You can view the comment <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'comment_added__to_topic_owner':
-     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has made a comment in your post !topic_title on !site_name. <br/><br/> You can view the comment <a href="!topic_link">here</a>.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has made a comment in your post !topic_title  on !site_name. </br></br> You can view the comment <a href="!topic_link">here</a>.</br></br>Kind Regards,</br></br>!site_name.</br></br></br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'group_published__to_group_owner':
      $message['subject'] = t('!site_name - !group_name has been published', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> Your group !group_name has been published on !site_name. <br/><br/> You can view the group  <a href="!group_link">here</a>.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
     case 'member_joined__to_new_member':
-     $message['subject'] = t('!site_name - welcome to !group_name.', $params,$options);
+     $message['subject'] = t('!site_name - welcome to !group_name .', $params,$options);
      $message['body'][] = t('Hi !receiver_name, <br/> You are now a member of !group_name on !site_name. <br/><br/> You can view the group <a href="!group_link">here</a>.<br/><br/> Kind Regards,<br/> !site_name.', $params, $options);
     break;
     case 'member_joined__to_group_owner':   
-     $message['subject'] = t('!site_name - !joining_member has joined !group_name',$params, $options);
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name ',$params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.<br/><br/> Kind Regards,<br/>!site_name.<br/><br/><br/> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     // $message['subject'] = "This is the subject";
     // $message['body'][] = "This is the body";
     break;
     case 'member_joined__to_group_members':
-     $message['subject'] = t('!site_name - !joining_member has joined !group_name', $params, $options);
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !joining_member has joined <a href="!group_link">!group_name</a>.<br/><br/> Kind Regards,<br/> !site_name.<br/><br/><br/> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
     break;
     case 'group_waiting_approval__to_requester':
@@ -416,19 +434,19 @@ function meta_email_mail($key, &$message, $params) {
      $message['body'][] = t('Hi !receiver_name, <br/>!group_owner has submitted <a href="!group_link">!group_name</a> for review and approval.</br></br>If you need to contact the group owner, please do so via their email - !group_owner_email. Otherwise, to publish the group, please edit the group <a href="!group_link">here</a> and set the status to "Published". This will notify the owner and publish the group.</br></br>Kind Regards,</br>!site_name.', $params, $options);
     break;
     case 'group_topic_added__to_group_owner':
-     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'group_topic_added__to_group_members':
-     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'group_library_added__to_group_owner':
-     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'group_library_added__to_group_members':
-     $message['subject'] = t('!site_name - !topic_title has been added to !group_name', $params, $options);
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br/> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.</br></br>Kind Regards,</br>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
 
