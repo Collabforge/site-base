@@ -405,7 +405,11 @@ function meta_email_mail($key, &$message, $params) {
     break;
     case 'comment_added__to_topic_owner':
      $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title ', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br/> !commenting_member has made a comment in your post !topic_title  on !site_name. <br/><br/> You can view the comment <a href="!topic_link">here</a>.<br/><br/>Kind Regards,<br/><br/>!site_name.<br/><br/><br/>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+     $message['body'][] = t('<p>Hi !receiver_name,</p>
+      <p>!commenting_member has made a comment in your post !topic_title  on !site_name.</p>
+      <p>You can view the comment <a href="!topic_link">here</a>.</p>
+      <p>Kind Regards,<br/><br/>!site_name.</p>
+      <p>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.</p>', $params, $options);
     break;
     case 'group_published__to_group_owner':
      $message['subject'] = t('!site_name - !group_name has been published', $params, $options);
