@@ -214,9 +214,9 @@ function meta_email_callback_group_content_added($gid, $nid) {
   }
   else {
       if ($owner->uid != $node->uid){
-        meta_email_send('group_library_added__to_group_owner', null, array($owner), $vars);
+        meta_email_send('group_resource_added__to_group_owner', null, array($owner), $vars);
       }
-      meta_email_send('group_library_added__to_group_members', null, $members_excluded, $vars);
+      meta_email_send('group_resource_added__to_group_members', null, $members_excluded, $vars);
   }
       
 }
@@ -254,11 +254,10 @@ function meta_email_callback_user_joined($gid, $uid) {
     ,'!group_link' => url('node/'.$gid,array(absolute=>true))   
   );
   
-  if ($owner->uid !=$group->uid){
-      meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
-  }
+  
   if ($user->uid !=$group->uid ){
-  meta_email_send('member_joined__to_new_member', null, array($user), $vars);
+       meta_email_send('member_joined__to_new_member', null, array($user), $vars);
+       meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
   }
   meta_email_send('member_joined__to_group_members', null, $members_excluded, $vars);
 } 
@@ -445,11 +444,11 @@ function meta_email_mail($key, &$message, $params) {
      $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
-    case 'group_library_added__to_group_owner':
+    case 'group_resource_added__to_group_owner':
      $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
-    case 'group_library_added__to_group_members':
+    case 'group_resource_added__to_group_members':
      $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
      $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
