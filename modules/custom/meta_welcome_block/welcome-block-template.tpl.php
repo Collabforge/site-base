@@ -20,7 +20,11 @@
 
 
 <?php if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
-
+<!-- note - do not remove, the percentage is a PHP variable, not hardcoded. this is necessary. -->
+<style type="text/css">
+    .collabco-percent-bar.profile2-profile{ width: <?php print $current_percent; ?>%; }
+    .profile2-profile{ padding-left: 0%; }
+</style>
 
     <div class="dashboard">
         <div class-"row-fluid dashboard_head">
