@@ -29,8 +29,8 @@ function og_install() {
       'field_name' => $field_name,
       'bundle' => OG_MEMBERSHIP_TYPE_DEFAULT,
       'entity_type' => 'og_membership',
-      'label' => t('Please tell us more about yourself and why you would like to become a member'),
-      'description' => t(''),
+      'label' => t('Request message'),
+      'description' => t('This is the text a user may send to the group administrators.'),
       'required' => FALSE,
     );
     field_create_instance($instance);
@@ -1181,7 +1181,7 @@ function og_update_7204() {
   }
 }
 
-/*
+/**
  * Add an index to {og_membership} on group_type.
  */
 function og_update_7205() {

@@ -35,7 +35,7 @@ function collabco_dashboard_permission() {
 }
 
 /**
- Implements hook_user_login().
+  * Implements hook_user_login().
  */
 function collabco_dashboard_user_login(&$edit, $account) {
   if (!isset($_GET['destination'])) {

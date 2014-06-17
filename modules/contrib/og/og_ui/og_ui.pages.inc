@@ -154,7 +154,7 @@ function og_ui_confirm_subscribe($form, &$form_state, $group_type, $gid, $accoun
   $form['gid'] = array('#type' => 'value', '#value' => $gid);
   $form['field_name'] = array('#type' => 'value', '#value' => $field_name);
 
-  return confirm_form($form, t('Thanks for your interest in %title', array('%title' => $label)), $wrapper->url->value(), ' ', t('Join'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to join the group %title?', array('%title' => $label)), $wrapper->url->value(), ' ', t('Join'), t('Cancel'));
 }
 
 /**
