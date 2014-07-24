@@ -1,0 +1,52 @@
+<?php
+
+
+
+/**
+ * Implements hook_views_api().
+ */
+function collabco_structure_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'collabco_structure') . '/includes/views',
+  );
+}
+
+function collabco_structure_menu() {
+  $items['topics'] = array(
+    'page callback' => '_collabco_structure_page_topics'
+    , 'access callback' => true
+  );
+  $items['hubs'] = array(
+    'page callback' => '_collabco_structure_page_hubs'
+    , 'access callback' => true
+  );
+  return $items;
+}
+
+function _collabco_structure_page_topics() {
+  // Nothing. this page should be there just for the views.
+  return '';
+}
+
+function _collabco_structure_page_hubs() {
+  // Nothing. this page should be there just for the views.
+  return '';
+}
+
+
+
+function collabco_structure_preprocess_page(&$vars) {
+  $vars['mobile']['block_search'] = _collabco_structure_block_view('search', 'form');
+  $menu_profile = _collabco_structure_block_view('menu', 'menu-profile-menu');
+  $menu_secondary = _collabco_structure_block_view('menu', 'menu-collabco-secondary-menu');
+  $menu_primary = _collabco_structure_block_view('system', 'main-menu');
+  $vars['mobile']['block_menu'] = $menu_primary . $menu_secondary;
+  $vars['mobile']['block_profile'] = $menu_profile;
+}
+
+
+function _collabco_structure_block_view($module, $delta) {
+  $block = module_invoke($module, 'block_view', $delta);
+  return render($block['content']);
+}

@@ -1,0 +1,4 @@
+name = collabco follow
+description = Helper functions regarding to the collabco follow
+package = collabco
+core = 7.x

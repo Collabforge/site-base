@@ -49,7 +49,7 @@ function collabco_profile_block_block_view($delta='') {
           $node = node_load($gid);
           $group_links = '<a href="'.$base_url.'/node/' . $node->nid . '">' . $node->title . '</a>';
         }
-        // DISABLED BY MATT FOR META DEMO. I only disabled the output obviously. Re-enable by removing comment-out.
+        // DISABLED BY MATT FOR collabco DEMO. I only disabled the output obviously. Re-enable by removing comment-out.
         /*$groups_output = '<div><h6>Your Groups:</h6><div>' . $group_links . '</div></div>';*/
       }
       

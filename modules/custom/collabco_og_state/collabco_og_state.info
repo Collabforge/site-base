@@ -1,0 +1,12 @@
+name = Collabco State for OG groups
+description = "Adds states like Draft/Published to Organic Group's groups"
+package = "Collabco"
+dependencies[] = og
+dependencies[] = collabco_group
+dependencies[] = collabco_collabco_core
+
+
+version = 1.1
+core = 7.x
+
+

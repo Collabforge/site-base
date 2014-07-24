@@ -1,0 +1,5 @@
+name = Collabco field access
+description = Handles access control for general fields in a Collabco site
+dependencies[] = collabco_collabco_core
+package = Collabco
+core = 7.x

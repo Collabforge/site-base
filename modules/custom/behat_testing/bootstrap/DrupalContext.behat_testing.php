@@ -50,7 +50,7 @@ class DrupalContext extends MinkContext {
   public function __construct(array $parameters) {
 
     $this->parameters = $parameters;
-    $this->base_url = "http://meta.local";
+    $this->base_url = "http://collabco.local";
     // Bootstrap drupal.
     $_SERVER['PHP_SELF'] = basename(__FILE__);
     $_SERVER['REMOTE_ADDR'] = $parameters['site'];
@@ -308,7 +308,7 @@ class DrupalContext extends MinkContext {
       ->entityCondition('bundle', $content_type)
       ->propertyCondition('title', $title)
       ->propertyCondition('language', $language)
-      ->addMetaData('account', $account)
+      ->addcollabcoData('account', $account)
       ->execute();
 
     $nodes = isset($result['node']) ? entity_load('node', array_keys($result['node'])) : array();

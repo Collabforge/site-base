@@ -1,0 +1,10 @@
+name = Collabco group functionalities
+description = Handles group access-related functionalities in Collabco
+
+dependencies[] = collabco_og_access
+files[] = includes/views/collabco_group.views.inc
+
+
+version = 1.2
+core = 7.x
+

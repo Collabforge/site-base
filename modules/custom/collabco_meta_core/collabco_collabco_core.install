@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file collabco_core.install
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function collabco_core_enable() {
+	variable_set('collabco_user_role_content_manager', 'Community Moderator');
+}
+
+/**
+ * Implements hook_disable().
+ */
+function collabco_core_disable() {
+	variable_del('collabco_user_role_content_manager');
+}

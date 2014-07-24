@@ -1,0 +1,6 @@
+name = Collabco Welcome Block
+description = provides a Welcome block for users.
+core = 7.x
+package = collabco
+project ="collabco_welcome_block"
+

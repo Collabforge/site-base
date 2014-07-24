@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_boot()
+ */
+function collabco_debug_boot() {
+  alexar_debug(true);
+}
+
+/**
+ * Implements hook_init()
+ */
+function collabco_debug_init() {
+    
+}
+
+function alexar_debug($debug=true) {
+  ini_set('display_errors', $debug);
+  ini_set('display_startup_errors', $debug);
+  error_reporting(E_ALL);
+}
+
+function x($var, $die=true) {
+  echo '<xmp>';
+  print_r($var);
+  echo '</xmp>';
+  empty($die) or die(); 
+}
+
+
+function collabco_debug_menu() {
+	$items = array();
+	$items['test23'] = array(
+    'title' => 'Testing function',
+    'description' => 'Testing function desc',
+    'page callback' => '_collabco_test',
+    'access callback' => false
+	);
+  return $items;
+}
+
+function _collabco_test() {
+}
+

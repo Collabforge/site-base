@@ -1,0 +1,70 @@
+<?php
+
+
+/**
+ * Implements hook_theme().
+ */
+function collabco_welcome_block_theme($existing, $type, $theme, $path) {
+  return array(
+      'welcome_block_template' => array(
+        'template' => 'welcome-block-template',
+     ),
+  );
+}
+/**
+ * Implements hook_block_info().
+ */
+function collabco_welcome_block_block_info() {
+  $blocks = array();
+  $blocks['collabco_welcome_block'] = array(
+    'info' => t('Welcome Block (for front page)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function collabco_welcome_block_block_view($delta='') {
+  $block = array();
+  switch($delta) {
+      case 'collabco_welcome_block' :
+            $content = theme('welcome_block_template');
+            $block['content'] = $content;
+      break;
+  }
+  return $block;
+}
+
+function template_preprocess_welcome_block_template(&$variables) {
+
+  global $user;
+  $variables['first_time_user'] = TRUE;
+  $variables['profile_completeness'] = TRUE;
+  // passing the node 15 of introduce yourself
+  $uids = collabco_forms_get_comment_uids_for_node(15);
+  $variables['introduce_yourself'] = array_key_exists($user->uid, $uids);
+
+  //profile completeness
+  drupal_add_css(drupal_get_path('module', 'collabco_welcome_block') . '/css/collabco_welcome.theme.css');
+        if ($profile2_entity = entity_get_info('profile2')) {
+        foreach ($profile2_entity['bundles'] as $bundle => $values) {
+            $out = pcp_get_complete_percentage_data('profile2', $bundle, $user);
+            $hide = variable_get('pcp_profile2_' . $bundle . '_hide_block_on_complete', 0);
+            $variables['current_percent'] = $out['current_percent'];
+            // If the block should be hidden, hide it.
+            if (($hide && ($out['incomplete'] == 0)) || empty($out)) {
+              $subject = '';
+              $variables['profile_completeness'] = FALSE;
+            }
+         }
+
+     }
+   if ($variables['introduce_yourself'] && !$variables['profile_completeness']) {
+     $variables['first_time_user'] = FALSE;
+   }
+
+
+
+}
