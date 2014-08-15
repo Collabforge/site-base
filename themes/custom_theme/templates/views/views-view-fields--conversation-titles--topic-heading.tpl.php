@@ -32,9 +32,9 @@
 
 <?php $hub_not_attached = '<div class="field-content"></div>'; 
 	if ($fields['og_group_ref']->content != $hub_not_attached) {
-		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i>';
+		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i> <a href="/node/'.$gid.'/topics">Topics</a> <i class="icon-angle-right"></i>';
 	} else {
-		$breadcrumbTopicHub = '<div class="bc-n">';
+		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i>';
 	}
 ?>
 <div class="topic-header">
@@ -43,7 +43,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<!-- Breadcrumbs -->
-					<?php echo $breadcrumbTopicHub; ?> <a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span> </div> 
+					<?php echo $breadcrumbTopicHub; ?> <span><?php echo $fields['title']->raw; ?></span> </div> 
 				</div>
 			</div>
 			<div class="row-fluid">
