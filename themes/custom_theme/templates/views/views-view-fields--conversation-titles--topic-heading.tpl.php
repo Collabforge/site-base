@@ -26,14 +26,20 @@
 
 //x($row->nid);
 ?>
-
+<?php $hub_not_attached = '<div class="field-content"></div>'; 
+	if ($fields['og_group_ref']->content != $hub_not_attached) {
+		$breadcrumbTopicHub = $fields['og_group_ref']->content.'<i class="icon-angle-right"></i>';
+	} else {
+		$breadcrumbTopicHub = "";
+	}
+?>
 <div class="topic-header">
 	<div class="container">
 		<div class="content">
 			<div class="row-fluid">
 				<div class="span12">
 					<!-- Breadcrumbs -->
-					<a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
+					<?php echo $breadcrumbTopicHub; ?> <a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i> <span><?php echo $fields['title']->raw; ?></span>  
 				</div>
 			</div>
 			<div class="row-fluid">
