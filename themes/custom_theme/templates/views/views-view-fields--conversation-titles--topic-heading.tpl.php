@@ -28,7 +28,7 @@
 ?>
 <?php $hub_not_attached = '<div class="field-content"></div>'; 
 	if ($fields['og_group_ref']->content != $hub_not_attached) {
-		$breadcrumbTopicHub = $fields['og_group_ref']->content.'<i class="icon-angle-right"></i>';
+		$breadcrumbTopicHub = '<span>'.$fields['og_group_ref']->content.'<i class="icon-angle-right"></i></span>';
 	} else {
 		$breadcrumbTopicHub = "";
 	}
