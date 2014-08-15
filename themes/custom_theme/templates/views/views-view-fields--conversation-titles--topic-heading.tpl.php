@@ -34,7 +34,7 @@
 	if ($fields['og_group_ref']->content != $hub_not_attached) {
 		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i> <a href="/node/'.$gid.'/topics">Topics</a> <i class="icon-angle-right"></i>';
 	} else {
-		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics"><?php echo t('Topics'); ?></a> <i class="icon-angle-right"></i>';
+		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics"><Topics</a> <i class="icon-angle-right"></i>';
 	}
 ?>
 <div class="topic-header">
