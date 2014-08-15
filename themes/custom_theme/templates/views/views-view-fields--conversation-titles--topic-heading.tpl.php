@@ -27,12 +27,12 @@
 //x($row->nid);
 ?>
 <style>
-.field-content {display: inline;}
+.bc-g .field-content {display: inline;}
 </style>
 
 <?php $hub_not_attached = '<div class="field-content"></div>'; 
 	if ($fields['og_group_ref']->content != $hub_not_attached) {
-		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.'<i class="icon-angle-right"></i>';
+		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i>';
 	} else {
 		$breadcrumbTopicHub = '<div class="bc-n">';
 	}
