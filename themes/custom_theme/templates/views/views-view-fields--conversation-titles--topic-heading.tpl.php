@@ -30,11 +30,16 @@
 .bc-g .field-content {display: inline;}
 </style>
 
-<?php $hub_not_attached = '<div class="field-content"></div>'; 
+<?php
+// @todo - get the god damn GID
+$node = node_load(arg(1));
+$gids = og_get_entity_groups('node', $node);
+$gid = empty($gids) ? 0 : reset($gids['node']);
+$hub_not_attached = '<div class="field-content"></div>'; 
 	if ($fields['og_group_ref']->content != $hub_not_attached) {
 		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i> <a href="/node/'.$gid.'/topics">Topics</a> <i class="icon-angle-right"></i>';
 	} else {
-		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics"><Topics</a> <i class="icon-angle-right"></i>';
+		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics">Topics</a> <i class="icon-angle-right"></i>';
 	}
 ?>
 <div class="topic-header">
