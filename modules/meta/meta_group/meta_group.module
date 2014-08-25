@@ -39,7 +39,10 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
 	_meta_group_og_membership_update($gid, $uid);
-	meta_email_callback_user_joined($gid, $uid);
+  
+  $state = $og_membership->state;
+  // 1 == 'active', 2 == 'pending'
+	meta_email_callback_user_joined($gid, $uid, $state);
 }
 
 function _meta_group_og_membership_update($gid, $uid) {

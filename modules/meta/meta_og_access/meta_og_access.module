@@ -119,7 +119,7 @@ function meta_og_state_is_open($gid) {
 function meta_og_access_og_fields_info() {
   $allowed_values = array(
     META_OG_ACCESS_OPEN => 'Open - accessible to all site users',
-    META_OG_ACCESS_CLOSE =>  'Close - accessible only to group members',
+    META_OG_ACCESS_CLOSE =>  'Closed - accessible only to group members',
   );
   $items[META_OG_ACCESS_FIELD] = array(
     'type' => array('group'),
