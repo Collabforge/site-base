@@ -23,24 +23,23 @@
  *
  * @ingroup views_templates
  */
-
-//x($row->nid);
 ?>
 <style>
 .bc-g .field-content {display: inline;}
 </style>
 
 <?php
-// @todo - get the god damn GID
 $node = node_load(arg(1));
 $gids = og_get_entity_groups('node', $node);
 $gid = empty($gids) ? 0 : reset($gids['node']);
+$is_in_draft = function_exists('meta_og_state_is_draft') ? meta_og_state_is_draft($gid) : FALSE;
 $hub_not_attached = '<div class="field-content"></div>'; 
-	if ($fields['og_group_ref']->content != $hub_not_attached) {
-		$breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i> <a href="/node/'.$gid.'/topics">Topics</a> <i class="icon-angle-right"></i>';
-	} else {
-		$breadcrumbTopicHub = '<div class="bc-n"><a href="/topics">Topics</a> <i class="icon-angle-right"></i>';
-	}
+if ($fields['og_group_ref']->content != $hub_not_attached) {
+  $breadcrumbTopicHub = '<div class="bc-g">'.$fields['og_group_ref']->content.' <i class="icon-angle-right"></i> <a href="/node/' . $gid . '/topics">Topics</a> <i class="icon-angle-right"></i>';
+}
+else {
+  $breadcrumbTopicHub = '<div class="bc-n"><a href="/topics">Topics</a> <i class="icon-angle-right"></i>';
+}
 ?>
 <div class="topic-header">
 	<div class="container">
@@ -48,7 +47,7 @@ $hub_not_attached = '<div class="field-content"></div>';
 			<div class="row-fluid">
 				<div class="span12">
 					<!-- Breadcrumbs -->
-					<?php echo $breadcrumbTopicHub; ?> <span><?php echo $fields['title']->raw; ?></span> </div> 
+					<?php echo $breadcrumbTopicHub; ?> <span><?php echo $fields['title']->raw; ?></span> </div>
 				</div>
 			</div>
 			<div class="row-fluid">
@@ -68,7 +67,6 @@ $hub_not_attached = '<div class="field-content"></div>';
 
 				</div>
 				<div class="span3">
-					<!-- Organisation image -->
 					<ul class="thumbnails ui-hubs-organisation-thumbnail">
 					  <li class="span12">
 					    <div class="thumbnail">
@@ -89,7 +87,7 @@ $hub_not_attached = '<div class="field-content"></div>';
 
 					<!-- If attached to hub -->
 					<?php $hub_not_attached = '<div class="field-content"></div>'; 
-					if ($fields['og_group_ref']->content != $hub_not_attached) {  ?>
+            if ($fields['og_group_ref']->content != $hub_not_attached) {  ?>
 
 						<ul class="thumbnails ui-hubs-organisation-thumbnail">
 						  <li class="span12">
@@ -98,21 +96,23 @@ $hub_not_attached = '<div class="field-content"></div>';
 						        <div class="span3 ui-hub-icon">
 						        	<h5><i class="icon-group"></i></h5>
 						        </div>
-								<div class="span9">
-									<h5><?php echo t('Belongs to hub:'); ?><br> <span class="ui-inline"><?php echo $fields['og_group_ref']->content;?></span></h5>
-								</div>
-							  </div>
+                    <div class="span9">
+                      <h5><?php echo t('Belongs to hub'); ?>:
+                        <br>
+                        <span class="ui-inline">
+                          <?php echo $fields['og_group_ref']->content;?>
+                          (<?php echo $is_in_draft ? '<em>' . t('in draft') . '</em>' : t('published'); ?>)
+                        </span>
+                      </h5>
+                    </div>
+                  </div>
 						    </div>
 						  </li>
 						</ul>	
-
-					<?php 
-							 
+					<?php 	 
 						}
 					?>
-
 				</div>
-
 			</div>
 		</div>
 	</div>
