@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Enable access control for Open and Closed groups and group content.
+ * Enable access control for Published and In Draft groups.
  */
 
 /**
@@ -38,16 +38,17 @@ function meta_og_state_node_grants($account, $op) {
     return;
   }
   $groups = array(
-    'node' => array()
+    'node' => array(),
   );
   if (user_access('administer group', $account)) {
     $groups = og_get_all_group();
-  } else {
+  }
+  else {
     $groups = og_get_entity_groups('user', $account);
   }
   
   $grants = array();
-  foreach ($groups as $group_type => $gids) {
+  foreach ($groups as $gids) {
     foreach ($gids as $gid) {
       $node = node_load($gid);
       // if user is the owner of admin user for the group give them the key
@@ -65,21 +66,20 @@ function meta_og_state_node_grants($account, $op) {
  */
 function meta_og_state_node_access_records($node) {
   if (empty($node->status)) {
-    // Node is unpublished, so we don't allow every group member to see
-    // it.
+    // Node is unpublished, so we don't allow any group member to see it
     return array();
   }
-
-  // make sure that this is a group
-  if (!og_is_group('node', $node->nid)) {
-    return array();
-  }
+  // Make sure that this is a group.
   $gid = $node->nid;
+  if (!og_is_group('node', $gid)) {
+    return array();
+  }
   $state = _meta_og_state_get_state($node);
   $grants = array();
   if ($state == META_OG_STATE_DRAFT) {
-    // we just for Draft state right now. We can handle other states if there are any, here.
-    // we just care about 'view' grant. other grants are being handled right now by default permissions.
+    // Just Draft state for now. We can handle other states here later.
+    // We just care about 'view' grant. Other grants are being handled by
+    // default permissions.
     $grants[] = array(
       'realm' => META_OG_STATE_REALM,
       'gid' => $gid,
@@ -93,19 +93,18 @@ function meta_og_state_node_access_records($node) {
 }
 
 /**
- * Checking if the node is part of a Closed group.
+ * Checking if the node is part of a Published or In Draft group.
  */
-
 function _meta_og_state_get_state($node) {
   $gid = $node->nid;
   if (!og_is_group('node', $gid)) {
-    return false;
+    return FALSE;
   }
   $items = field_get_items('node', $node, META_OG_STATE_FIELD);
   if (isset($items[0])) {
     return $items[0]['value'];
   }
-  return null;
+  return NULL;
 }
 
 /**
@@ -118,7 +117,6 @@ function meta_og_state_is_draft($gid) {
   }
   return null;
 }
-
 
 /**
  * Implement hook_og_permission().
@@ -133,7 +131,6 @@ function meta_og_state_og_permission() {
   );
   return $items;
 }
-
 
 /**
  * Implement hook_og_fields_info().
@@ -176,8 +173,6 @@ function meta_og_state_og_fields_info() {
   return $items;
 }
 
-
-
 /**
  * Implementation of hook_field_access().
  *
@@ -206,16 +201,12 @@ function meta_og_state_field_access($op, $field, $entity_type, $entity, $account
     // If not the "Draft/Published" radios, then we have nothing to do here.
     return;
   }
-
   if (user_access('administer group')) {
     return TRUE;
   }
-
-  // users should know the state!
   if ($op == 'view') {
     return;
   }
-
   if (user_access('bypass node access', $account)) {
     return TRUE;
   }
@@ -245,14 +236,12 @@ function meta_og_state_field_attach_update($entity_type, $entity) {
     return;
   }
   $group = $entity;
-  $gid = $group->nid;
   
-
   $state_new = _meta_og_state_get_state($group);
   $state_old = _meta_og_state_get_state($group->original);
 
   if ($state_old == META_OG_STATE_DRAFT and $state_new == META_OG_STATE_PUBLISHED) {
-    meta_email_send_group_published($gid);
+    meta_email_send_group_published($group->nid);
   }
 }
 

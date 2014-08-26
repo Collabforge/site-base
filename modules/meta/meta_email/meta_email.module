@@ -135,8 +135,8 @@ function meta_email_send_send_for_revision($gid, $uid) {
     '!group_owner' => $group_owner->name,
     '!group_link' => url('node/'. $group->nid, array('absolute' => TRUE)),
   );
-  meta_email_send('group_waiting_approval__to_requester', null, array($user), $pars);
-  meta_email_send('group_waiting_approval__to_admins', null, meta_group_get_admins(), $pars);
+  meta_email_send('group_waiting_approval__to_requester', NULL, array($user), $pars);
+  meta_email_send('group_waiting_approval__to_admins', NULL, meta_group_get_admins(), $pars);
 }
 
 /**
@@ -144,14 +144,14 @@ function meta_email_send_send_for_revision($gid, $uid) {
  */
 function meta_email_send_group_published($gid) {
   if (!$group = meta_group_get_group($gid)) {
-    return false;
+    return FALSE;
   }
   $owner = user_load($group->uid);
   $vars = array (
     '!group_name' => $group->title,
-    '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+    '!group_link' => url('node/' . $group->nid, array('absolute' => TRUE))
   );
-  meta_email_send('group_published__to_group_owner', null, array($owner), $vars);
+  meta_email_send('group_published__to_group_owner', NULL, array($owner), $vars);
 }
 
 /**
@@ -162,20 +162,20 @@ function meta_email_callback_group_content_added($gid, $nid) {
   if (!$group = meta_group_get_group($gid)) {
     return FALSE;
   }
-  $node =node_load($nid);
-   if (empty($node)) {
-     return false;
-    }
+  $node = node_load($nid);
+  if (empty($node)) {
+    return FALSE;
+  }
   $owner = user_load($group->uid);
   $members = meta_group_get_group_members($gid);
   
   $members_excluded = array(); 
   foreach ($members as $member) {
-    if ($member->uid == $owner->uid){        
+    if ($member->uid == $owner->uid) {
       continue;
     }
-    /* Do not send to the coowner if he has created the topic */
-    if ($member->uid == $node->uid){
+    /* Do not send to the co-owner if they created the topic */
+    if ($member->uid == $node->uid) {
       continue;
     }
     $members_excluded[] = $member;
@@ -188,9 +188,9 @@ function meta_email_callback_group_content_added($gid, $nid) {
     '!topic_owner' => $topic_owner->name,
     '!topic_link' => url('node/' . $node->nid, array('absolute' => TRUE)),
   );
-  if ($node->type == 'conversation') { 
+  if ($node->type == 'conversation') {
+    // Don't send a mail to group owner, if they themselves created the topic.
     if ($owner->uid != $node->uid){  
-      // Don't send a mail to group owner, if the he created a topic (self mail not required)
       meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
     }
     meta_email_send('group_topic_added__to_group_members', null, $members_excluded, $vars);
@@ -358,7 +358,7 @@ function meta_email_mail($key, &$message, $params) {
   );
   $params = array_merge(array(
     '!site_name' => variable_get('site_name', ''),
-    '!site_url' => url('<front>',array('absolute'=>true)),
+    '!site_url' => url('<front>', array('absolute' => TRUE)),
     '!site_email' => variable_get('site_mail',''),
   ), $params);
 
