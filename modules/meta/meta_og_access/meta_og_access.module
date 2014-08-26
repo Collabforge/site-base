@@ -85,7 +85,7 @@ function meta_og_access_node_access_records($node) {
 function _meta_og_access_has_close_group($node) {
   $entity_groups = og_get_entity_groups('node', $node);
   if (empty($entity_groups)) {
-    return false;
+    return FALSE;
   }
   foreach ($entity_groups as $group_type => $values) {
     entity_load($group_type, $values);

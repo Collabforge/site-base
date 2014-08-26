@@ -1,7 +1,5 @@
 <?php
 
-
-
 function meta_group_node_insert($node) {
 	if (!in_array($node->type, array('conversation', 'knowledge_object'))) {
 		return;
@@ -20,29 +18,60 @@ function meta_group_node_insert($node) {
  * @TODO should be removed for a fresh product.
  */
 function meta_group_og_membership_update(OgMembership $og_membership) {
-    if ($og_membership->group_type != 'node' or $og_membership->entity_type != 'user') {
-    	return;
-    }
+  // Group Type must be node and enity type must be user.
+  if ($og_membership->group_type != 'node' || $og_membership->entity_type != 'user') {
+    return;
+  }
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
 	_meta_group_og_membership_update($gid, $uid);
 }
 
 /**
- * Implementation of hook_og_membership_insert()
- * 
+ * Implementation of hook_og_membership_insert() 
  */
 function meta_group_og_membership_insert(OgMembership $og_membership) {
-    if ($og_membership->group_type != 'node' or $og_membership->entity_type != 'user') {
-    	return;
-    }
+  // Group Type must be node and enity type must be user.
+  if ($og_membership->group_type != 'node' || $og_membership->entity_type != 'user') {
+    return;
+  }
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
-	_meta_group_og_membership_update($gid, $uid);
-  
-  $state = $og_membership->state;
-  // 1 == 'active', 2 == 'pending'
-	meta_email_callback_user_joined($gid, $uid, $state);
+  _meta_group_og_membership_update($gid, $uid);
+
+  $mid = $og_membership->id;
+  $og_state = $og_membership->state;
+  // $og_state is one of: OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED
+
+  if (function_exists('meta_og_state_is_draft')) {
+    $group = meta_group_get_group($gid);
+    if (meta_og_state_is_draft($gid)) {
+      drupal_set_message(t('%title is now @state and still <em>in draft</em>. You need to press <strong>Send for revision</strong> to have it published.', array(
+        '%title' => $group->title,
+        '@state' => meta_group_og_state_title($og_state),
+      )));
+    }
+    else {
+      drupal_set_message(t('%title is now @state and published.', array(
+        '%title' => $group->title,
+        '@state' => meta_group_og_state_title($og_state),
+      )));
+    }
+  }
+	meta_email_callback_user_joined($gid, $uid, $mid, $og_state);
+}
+
+/**
+ * Return a text equivalent of the Organic Groups status code.
+ * 
+ * @param int $state
+ *   Code as used by Organic Groups module
+ * @return string
+ *   I18n string, one of 'active', 'pending' or 'blocked'
+ */
+function meta_group_og_state_title($og_state) {
+  $titles = og_group_content_states();
+  return strtolower($titles[$og_state - 1]);
 }
 
 function _meta_group_og_membership_update($gid, $uid) {
@@ -66,8 +95,6 @@ function meta_group_theme_registry_alter(&$theme_registry) {
 	$theme_registry += drupal_find_theme_templates($theme_registry, '.tpl.php', $path);
 }
 
-
-
 /**
  * Implements hook_views_api().
  */
@@ -84,17 +111,16 @@ function meta_group_views_api() {
 function meta_group_og_user_access_alter(&$permissions, $context) {
 	if ($context['group_type'] == 'node') {
 		$node = $context['group'];
-		$group_is_close = _meta_group_is_close($node);
-
-		$permissions['subscribe'] = true;
-		$permissions['subscribe without approval'] = ($group_is_close == false);
+		$group_is_closed = meta_group_is_closed($node);
+		$permissions['subscribe'] = TRUE;
+		$permissions['subscribe without approval'] = !$group_is_closed;
 	}
 }
 
-function _meta_group_is_close($node) {
+function meta_group_is_closed($node) {
 	$wrapper = entity_metadata_wrapper('node', $node);
 	if (!isset($wrapper->{META_OG_ACCESS_FIELD})) {
-		return false;
+		return FALSE;
 	}
 	return $wrapper->{META_OG_ACCESS_FIELD}->value() == META_OG_ACCESS_CLOSE;
 }
@@ -109,7 +135,6 @@ function meta_group_menu() {
 	    'access callback' => 'user_access',
             'access arguments' => 'create conversation content'
 	);
-
 
 	// Pages for a Group
 	$items['node/%node/topics'] = array(
@@ -136,7 +161,6 @@ function meta_group_menu() {
 	    'access callback' => '_meta_group_user_access_group',
 	    'access arguments' => array(1)
 	);
-
 
 	// Functionalities for a Group
 	$items['node/%node/add/member'] = array(
@@ -167,14 +191,10 @@ function meta_group_menu() {
 	return $items;
 }
 
-
-
-
 function meta_group_send_for_revision_access($node) {
 	// @FIXME
-	return true;
+	return TRUE;
 }
-
 
 function meta_group_send_for_revision_page($node) {
 	// @TODO better to show a page and asks for a confirmation.
@@ -183,10 +203,6 @@ function meta_group_send_for_revision_page($node) {
 	meta_email_send_send_for_revision($node->nid, $user->uid);
 	drupal_goto(sprintf('node/%d', $node->nid));
 }
-
-
-
-
 
 /**
  * Implements hook_node_access()
@@ -206,36 +222,50 @@ function _meta_group_user_access_group($node, $account=NULL) {
 		$account = user_load($user->uid);
 	}
 	if (!isset($node->nid)) {
-		return false;
+		return FALSE;
 	}
 	if (!og_is_group('node', $node)) {
-		return false;
+		return FALSE;
 	}
 	$gid = $node->nid;
 
-	if (!_meta_group_is_close($node)) {
-		return true;
+	if (!meta_group_is_closed($node)) {
+		return TRUE;
 	}
 
 	// @TODO should check for $node->status?
 	if (user_access('administer group', $account)) {
-		return true;
+		return TRUE;
 	}
 	if (og_is_member('node', $gid, 'user', $account)) {
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 
 function _meta_group_page_profile_hubs() {
+  global $user;
 	$groups_hosted = views_embed_view('meta_membership_list_group_by_user', 'owned');
 	$groups_joined = views_embed_view('meta_membership_list_group_by_user', 'list');
-	
-	$content = t('<h2>Hubs You Hosted</h2> !groups_hosted <h2>Hubs You Joined</h2> !groups_joined', array(
-		'!groups_hosted' => $groups_hosted
-		, '!groups_joined' => $groups_joined
-	));
+
+  $admin_uids = array_keys(meta_group_get_admins());
+  
+  if (in_array($user->uid, $admin_uids)) {
+    $groups_in_draft = views_embed_view('meta_node_list_hub', 'list');
+   	$content = t('<h2>Hubs you host</h2> !groups_hosted <h2>Hubs you joined</h2> !groups_joined <h2>Hubs you may publish</h2> !groups_in_draft', array(
+      '!groups_hosted' => $groups_hosted,
+      '!groups_joined' => $groups_joined,
+      '!groups_in_draft' => $groups_in_draft,
+    ));
+  }
+  else {
+    $content = t('<h2>Hubs you host</h2> !groups_hosted <h2>Hubs you joined</h2> !groups_joined', array(
+      '!groups_hosted' => $groups_hosted,
+      '!groups_joined' => $groups_joined,
+    ));
+  }
+
 	return $content;
 }
 
@@ -251,8 +281,7 @@ function _meta_group_page_members($node) {
 	 return views_embed_view('meta_user_list_by_group', 'members_all', $node->nid);
 }
 
-function meta_group_theme($existing, $type, $theme, $path)
-{
+function meta_group_theme($existing, $type, $theme, $path) {
   return array(
       'group_actions_template' => array(
         'template' => 'group-actions-template',
@@ -276,10 +305,8 @@ function meta_group_block_info() {
 	return $blocks;
 }
 
-
 /**
  * Implements hook_block_view().
- *
  */
 function meta_group_block_view($delta = '') {
 	switch ($delta) {
@@ -302,7 +329,6 @@ function meta_group_block_view($delta = '') {
 	}
 	return $block;
 }
-
 
 function meta_group_preprocess_group_actions_template(&$variables) {
 	
@@ -374,7 +400,6 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     	);
 	}
 
-
 	// ** Leave the group
 	// If:
 	//	- user is already a member
@@ -389,10 +414,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	}
 
 	$variables['links'] = $links;
-
 }
-
-
 
 /**
  * Access check for form meta_group_add_user_form
@@ -439,14 +461,12 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 	return $form;
 }
 
-
 /**
  * Validate handler; Add users to group.
  */
 function meta_group_add_user_form_validate($form, &$form_state) {
 	og_ui_add_users_validate($form, $form_state);
 }
-
 
 /**
  * Submit handler; Add users to group.
@@ -555,16 +575,16 @@ function meta_group_is_group($gid) {
 function meta_group_get_group($gid) {
 	$node = node_load($gid);
 	if (!isset($node->nid)) {
-		return false;
+		return FALSE;
 	}
 	if (!og_is_group('node', $node)) {
-		return false;
+		return FALSE;
 	}
 	return $node;
 }
 
 /**
- * Returns list of members for a specific group
+ * Returns the list of members for a specific group.
  */
 function meta_group_get_group_members($gid) {
 	$query = new EntityFieldQuery();
@@ -586,18 +606,18 @@ function meta_group_get_group_members($gid) {
 }
 
 /**
- * Returns list of Community Managers which can administer groups
+ * Returns the list of users that have permissions to administer groups.
  */
 function meta_group_get_admins() {
 	$query = db_select('role_permission', 'rp');
-			$query->join('users_roles', 'ur', 'rp.rid = ur.rid');
+  $query->join('users_roles', 'ur', 'rp.rid = ur.rid');
 	$result = $query
-	        ->fields('ur', array('uid'))
-	        ->condition('rp.permission', 'administer group', '=')
-	        ->execute()->fetchAll();
+    ->fields('ur', array('uid'))
+    ->condition('rp.permission', 'administer group', '=')
+    ->execute()->fetchAll();
 	$users = array();
 	foreach ($result as $record) {
-		$users[] = user_load($record->uid);
+		$users[$record->uid] = user_load($record->uid);
 	}
 	return $users;
 }

@@ -4,26 +4,20 @@
  * Drupal's mail API.
  */
 
-define('META_EMAIL_DEBUG', TRUE);
-
+define('META_EMAIL_DEBUG', FALSE);
 
 /**
  * Implements hook_mail_alter
  */
 function meta_email_mail_alter(&$message) {
   if (META_EMAIL_DEBUG) {
-    $message->send = false;
+    $message->send = FALSE;
   }
 }
 
-
-
-
-
-
 function _meta_email_settings_default($key) {
   // you can change it by case
-  return true;
+  return TRUE;
 }
 
 function _meta_email_settings_get($key=null, $account=null) {
@@ -56,8 +50,8 @@ function meta_email_form_alter(&$form, &$form_state, $form_id) {
     '#type' => 'fieldset',
     '#title' => t('Notification settings'),
     '#weight' => 2,
-    '#collapsible' => true,
-    '#access' => true,
+    '#collapsible' => TRUE,
+    '#access' => TRUE,
   );
   $config = _meta_email_settings_config();
   foreach ($config as $config_key=>$config_item) {
@@ -68,11 +62,11 @@ function meta_email_form_alter(&$form, &$form_state, $form_id) {
       }
     }
     $form['meta_user_settings']['meta_email']['meta_email_' . $config_key] = array(
-      '#type' => 'checkboxes'
-      , '#title' => $config_item['label']
-      , '#default_value' => $values
-      , '#options' => $config_item['keys']
-      , '#access' => true
+      '#type' => 'checkboxes',
+      '#title' => $config_item['label'],
+      '#default_value' => $values,
+      '#options' => $config_item['keys'],
+      '#access' => TRUE,
     );
   }
 }
@@ -124,34 +118,26 @@ function meta_email_user_presave(&$edit, $account, $category) {
   $edit['data']['meta_email'] = $data;
 }
 
-
-
-
-
-
-
 /**
  * Sends an email when a user has requested a Draft Hub to be revised
  */
 function meta_email_send_send_for_revision($gid, $uid) {
   if (!$group = meta_group_get_group($gid)) {
-    return false;
+    return FALSE;
   }
-  $group_owner = user_load($gid);
   if (!$user = user_load($uid)) {
-    return false;
+    return FALSE;
   }
-  $admins = meta_group_get_admins();
+  $group_owner = user_load($group->uid);
   
-  $vars = array (
-  '!group_name' => $group->title,
-  '!group_owner' => $group_owner->name,
-  '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+  $pars = array (
+    '!group_name' => $group->title,
+    '!group_owner' => $group_owner->name,
+    '!group_link' => url('node/'. $group->nid, array('absolute' => TRUE)),
   );
-  meta_email_send('group_waiting_approval__to_requester', null, array($user), $vars);
-  meta_email_send('group_waiting_approval__to_admins', null, $admins, $vars);
+  meta_email_send('group_waiting_approval__to_requester', null, array($user), $pars);
+  meta_email_send('group_waiting_approval__to_admins', null, meta_group_get_admins(), $pars);
 }
-
 
 /**
  * Sends appropriate emails when a Group is published
@@ -168,15 +154,13 @@ function meta_email_send_group_published($gid) {
   meta_email_send('group_published__to_group_owner', null, array($owner), $vars);
 }
 
-
 /**
  * Sends appropriate emails when a Topic is added to a Group
  */
 function meta_email_callback_group_content_added($gid, $nid) {
   
-    
   if (!$group = meta_group_get_group($gid)) {
-    return false;
+    return FALSE;
   }
   $node =node_load($nid);
    if (empty($node)) {
@@ -187,81 +171,83 @@ function meta_email_callback_group_content_added($gid, $nid) {
   
   $members_excluded = array(); 
   foreach ($members as $member) {
-     
-      if ($member->uid == $owner->uid){        
-          continue;
-      }
-      /* Do not send to the coowner if he has created the topic */
-      if ($member->uid == $node->uid){
-          continue;
-      }
-          
-      $members_excluded[] = $member;
+    if ($member->uid == $owner->uid){        
+      continue;
+    }
+    /* Do not send to the coowner if he has created the topic */
+    if ($member->uid == $node->uid){
+      continue;
+    }
+    $members_excluded[] = $member;
   }
  
   $topic_owner = user_load($node->uid);
   $vars = array(
-    '!topic_title' => $node->title
-    ,'!group_name' => $group->title
-    ,'!topic_owner' => $topic_owner->name
-    ,'!topic_link' => url('node/' . $node->nid,array(absolute=>true))
+    '!topic_title' => $node->title,
+    '!group_name' => $group->title,
+    '!topic_owner' => $topic_owner->name,
+    '!topic_link' => url('node/' . $node->nid, array('absolute' => TRUE)),
   );
   if ($node->type == 'conversation') { 
-      if ($owner->uid != $node->uid){  // Don't send a mail to group owner ,if the he created a topic (self mail not required)  
-        meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
-      }
-        meta_email_send('group_topic_added__to_group_members', null, $members_excluded, $vars);
+    if ($owner->uid != $node->uid){  
+      // Don't send a mail to group owner, if the he created a topic (self mail not required)
+      meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
+    }
+    meta_email_send('group_topic_added__to_group_members', null, $members_excluded, $vars);
   }
   else {
-      if ($owner->uid != $node->uid){
-        meta_email_send('group_resource_added__to_group_owner', null, array($owner), $vars);
-      }
-      meta_email_send('group_resource_added__to_group_members', null, $members_excluded, $vars);
-  }
-      
+    if ($owner->uid != $node->uid){
+      meta_email_send('group_resource_added__to_group_owner', null, array($owner), $vars);
+    }
+    meta_email_send('group_resource_added__to_group_members', null, $members_excluded, $vars);
+  } 
 }
 
-
 /**
- * Sends appropriate emails when a User is joined a Group
+ * Sends appropriate emails when a user joins a group or requests membership.
  */
-function meta_email_callback_user_joined($gid, $uid, $state) {
+function meta_email_callback_user_joined($gid, $uid, $mid, $og_state) {
+  if ($og_state != OG_STATE_ACTIVE && $og_state != OG_STATE_PENDING) {
+    // @todo
+    return FALSE;
+  }
   if (!$group = meta_group_get_group($gid)) {
-    return false;
+    return FALSE;
   }
   if (!$user = user_load($uid)) {
-    return false;
+    return FALSE;
   }
-  
   $owner = user_load($group->uid);
+
   $members = meta_group_get_group_members($gid);
   $members_excluded = array(); 
   foreach ($members as $member) {
-      
-      
-      if ($member->uid == $user->uid) {         
-          continue;
-      }
-      if ($member->uid == $owner->uid){        
-          continue;
-      }
-      $members_excluded[] = $member;
+    if ($member->uid == $user->uid) {         
+      continue;
+    }
+    if ($member->uid == $owner->uid) {
+      continue;
+    }
+    $members_excluded[] = $member;
   }
 
-  $vars = array(
-    '!group_name' => $group->title
-    ,'!joining_member' => $user->name
-    ,'!group_link' => url('node/'.$gid,array(absolute=>true))   
+  $pars = array(
+    '!group_name' => $group->title,
+    '!joining_member' => $user->name,
+    '!group_link' => url("node/$gid", array('absolute' => TRUE)),
+    '!group_membership_edit' => url("group/node/$gid/admin/people/edit-membership/$mid", array('absolute' => TRUE)),
   );
-  
   if ($user->uid != $group->uid) {
-    meta_email_send($state == 1 ? 'member_joined__to_new_member' : 'member_request__to_new_member', null, array($user), $vars);
-    meta_email_send($state == 1 ? 'member_joined__to_group_owner' : 'member_request__to_group_owner', null, array($owner), $vars);
+    $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_new_member' : 'member_request__to_new_member';
+    meta_email_send($key, NULL, array($user), $pars);
+    $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_group_owner' : 'member_request__to_group_owner';
+    meta_email_send($key, NULL, array($owner), $pars);
   }
-  meta_email_send($state == 1 ? 'member_joined__to_group_members' : 'member_request__to_group_members', null, $members_excluded, $vars);
+  if (!empty($members_excluded)) {
+    $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_group_members' : 'member_request__to_group_members';
+    meta_email_send($key, NULL, $members_excluded, $pars);
+  }
 } 
-
-
 
 function meta_email_callback_comment_added($comment) {
 
@@ -271,47 +257,39 @@ function meta_email_callback_comment_added($comment) {
   if ($node->type != 'conversation') {
     return;
   }
-
   $owner = user_load($node->uid);
   $commentator = user_load($comment->uid);
+
   $followers = meta_follow_get_followers($node->nid);
-  
- // drupal_set_message(print_r($followers,true));
-  
   $follower_included = array(); 
-  foreach ($followers as $follower) {
-      
-      if ($follower->uid == $commentator->uid) {         
-          continue;
-      }   
-      if ($follower->uid == $owner->uid){
-          continue;
-      }
-      $follower_included[] = $follower;
+  foreach ($followers as $follower) {    
+    if ($follower->uid == $commentator->uid) {         
+        continue;
+    }   
+    if ($follower->uid == $owner->uid){
+        continue;
+    }
+    $follower_included[] = $follower;
   }
-    
- // drupal_set_message(print_r($follower_included,true));
-  
   $vars = array(
-    '#comment' => sprintf('%s %s', $comment->subject, $comment->comment)
-    , '!commenting_member' => $commentator->realname
-    , '!topic_title ' => $node->title
-    , '!topic_link' => url('node/' . $node->nid,array(absolute=>true))
+    '#comment' => sprintf('%s %s', $comment->subject, $comment->comment),
+    '!commenting_member' => $commentator->realname,
+    '!topic_title ' => $node->title,
+    '!topic_link' => url('node/' . $node->nid, array('absolute' => TRUE)),
   );
 
   if (!empty($comment->pid)) {
- //    drupal_set_message("Comment replied loop");
     $comment_parent = comment_load($comment->pid);
     $vars['#comment_parent'] = sprintf('%s %s', $comment_parent->subject, $comment_parent->comment);
     meta_email_send('comment_replied__to_topic_followers', $commentator, $follower_included, $vars);
     if ($commentator->uid !=$owner->uid) {
-        meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
+      meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
     }
-  } else {
-  //  drupal_set_message("Comment Added loop");
+  }
+  else {
     meta_email_send('comment_added__to_topic_followers', $commentator, $follower_included, $vars);
     if ($commentator->uid !=$owner->uid) {
-         meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
+      meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
     }
   }
 
@@ -322,8 +300,6 @@ function meta_email_callback_comment_added($comment) {
     )));
   }
 }
-
-
 
 /**
  * Sends an e-mail.
@@ -346,10 +322,10 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
       $_to_emails[] = $_to_user->mail;
     }
     drupal_set_message(t('Email #key is being sent from #from to #to_users with variables: #vars', array(
-      '#key' => $key
-      , '#from' => $from
-      , '#to' => print_r($_to_emails, true)
-      , '#vars' => print_r($vars, true)
+      '#key' => $key,
+      '#from' => $from,
+      '#to' => print_r($_to_emails, TRUE),
+      '#vars' => print_r($vars, TRUE),
     )));
   }
   foreach ($to_users as $to_user) {
@@ -359,35 +335,33 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
       $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
       if ($result['result'] == TRUE) {
         //drupal_set_message(t('Your message has been sent.'));
-      } else {
+      }
+      else {
         drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
       }
-    } else {
+    }
+    else {
       if (META_EMAIL_DEBUG) {
-        drupal_set_message(t('Not sent to #user because of their profile settings.', array('#user' => $to_user->mail)), 'warning');
+        drupal_set_message(t('Mail not sent to #user because of their profile settings.', array('#user' => $to_user->mail)), 'warning');
       }
     }
   }
 }
-
 
 /**
  * Implements hook_mail().
  */
 function meta_email_mail($key, &$message, $params) {
   global $user;
- // drupal_set_message("In the meta email mail");
   $options = array(
     'langcode' => $message['language']->language,
   );
- // drupal_set_message("The initial params are:".print_r($params,true));
   $params = array_merge(array(
-    '!site_name' => variable_get('site_name', '')
-    , '!site_url' => url('<front>',array('absolute'=>true))
-    ,'!site_email' => variable_get('site_mail','')
+    '!site_name' => variable_get('site_name', ''),
+    '!site_url' => url('<front>',array('absolute'=>true)),
+    '!site_email' => variable_get('site_mail',''),
   ), $params);
- // drupal_set_message("After alteration params are:".print_r($params,true));
- // drupal_set_message("key:".$key); 
+
   switch ($key) {
     case 'comment_replied__to_topic_followers':
       $message['subject'] = t('!site_name - !commenting_member has replied to a comment', $params, $options);
@@ -419,7 +393,7 @@ function meta_email_mail($key, &$message, $params) {
     break;
     case 'member_request__to_group_owner':
      $message['subject'] = t('!site_name - !joining_member has requested membership of "!group_name"', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>!joining_member just requested membership of <a href="!group_link">!group_name</a>. Can you please review their request and approve it or contact them to discuss their request?<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>!joining_member just requested membership of <a href="!group_link">!group_name</a>. Can you please review their request and <a href="!group_membership_edit">approve it</a> or contact them to discuss their request?<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
     case 'member_request__to_group_members':
      $message['subject'] = t('!site_name - !joining_member has requested membership of "!group_name"', $params, $options);
@@ -439,7 +413,7 @@ function meta_email_mail($key, &$message, $params) {
     break;
     case 'group_waiting_approval__to_requester':
      $message['subject'] = t('!site_name - "!group_name" has been sent for approval', $params, $options);
-     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>The community managers of !site_name have been notified to review <a href="!group_link">!group_name</a>. It will be reviewed and approved or you will be contacted by email for more information. If you have not been contacted and the hub has not been approved within 4 working days, please contact us at !site_email.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>The administrators of !site_name have been notified to review <a href="!group_link">!group_name</a>. It will be reviewed and approved or you will be contacted by email for more information. If you have not been contacted and the hub has not been approved within 4 working days, please contact us at !site_email.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
     break;
     case 'group_waiting_approval__to_admins':
      $message['subject'] = t('!site_name - "!group_name" is pending approval', $params, $options);
@@ -462,20 +436,11 @@ function meta_email_mail($key, &$message, $params) {
      $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>!topic_owner has created "!topic_title" in "!group_name". Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
     break;
 
-
-    case 'PLACEHOLDER':
-     $message['subject'] = t('PLACEHOLDER', $params, $options);
-     $message['body'][] = t('PLACEHOLDER', $params, $options);
-    break;
     default:
-       $params = array( '!key' => $key );
-     
-      //  drupal_set_message("In the default ");
-       $message['subject'] = "hello";
-       $message['body'][] = "This is mail body";
+      $params = array('!key' => $key);
+      $message['subject'] = t('Unknown email key: %key', array('%key' => $key));
+      $message['body'][] = t('Please contact your system administrator');
   }
- // $signature = "\n" . t("Kind Regards \n The META members community", array(), $options) . "\n";
- // $message['body'][] = $signature;
 
   if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
     drupal_set_message(t('Key: !key <br>Subject: !subject <br>Body: !body<br>', array(
@@ -485,6 +450,8 @@ function meta_email_mail($key, &$message, $params) {
     )), 'warning');
   }
 
+  // @todo @fixme TEMP remove next line!!!
+  //$message = array();
 }
 
 /**
@@ -524,6 +491,3 @@ for help
 
 
 */
-
-
-

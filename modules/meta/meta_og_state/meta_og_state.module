@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Enable access control for Open and Close groups and group content.
+ * Enable access control for Open and Closed groups and group content.
  */
 
 /**
@@ -11,21 +11,19 @@
 define('META_OG_STATE_REALM', 'meta_og_state');
 
 /**
- * Group state field.
+ * Group state field, i.e. "Draft/Published" radios on node edit form.
  */
 define('META_OG_STATE_FIELD', 'meta_og_state_state');
 
-
 /**
- * Define group access as OPEN.
+ * Draft state of radio button.
  */
 define('META_OG_STATE_DRAFT', 0);
 
 /**
- * Define group access as CLOSE.
+ * Published state of radio button.
  */
 define('META_OG_STATE_PUBLISHED', 1);
-
 
 
 function meta_og_state_init() {
@@ -95,7 +93,7 @@ function meta_og_state_node_access_records($node) {
 }
 
 /**
- * Checking if the node is part of a Close group.
+ * Checking if the node is part of a Closed group.
  */
 
 function _meta_og_state_get_state($node) {
@@ -205,6 +203,7 @@ function meta_og_state_og_fields_info() {
  */
 function meta_og_state_field_access($op, $field, $entity_type, $entity, $account) {
   if ($field['field_name'] != META_OG_STATE_FIELD) {
+    // If not the "Draft/Published" radios, then we have nothing to do here.
     return;
   }
 
@@ -212,23 +211,24 @@ function meta_og_state_field_access($op, $field, $entity_type, $entity, $account
     return TRUE;
   }
 
-  // users should now the state!
+  // users should know the state!
   if ($op == 'view') {
     return;
   }
 
   if (user_access('bypass node access', $account)) {
-    return true;
+    return TRUE;
   }
   if (user_access('administer group', $group)) {
-    return true;
+    return TRUE;
   }
-  return false;
+  return FALSE;
 }
 
 function meta_og_state_form_node_form_alter(&$form, &$form_state) {
-  if (!isset($form_state['node']->nid)) { // new node
-    $form['meta_og_state_state']['und']['#required'] = false;
+  if (!isset($form_state['node']->nid)) {
+    // New node, set "Draft/Published" to NOT required.
+    $form['meta_og_state_state']['und']['#required'] = FALSE;
   } 
 }
 
