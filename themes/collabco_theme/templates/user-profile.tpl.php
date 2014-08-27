@@ -3,6 +3,7 @@
   $full_name = $user_profile['field_first_name']['#object']->name;
   $account = $elements['#account'];
   $is_contactable = _contact_personal_tab_access($account);
+  global $base_path;
 ?>
 
 <div class="user-profile">
@@ -20,7 +21,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			<a href="<?php echo $_GLOBAL['base_path']; ?>/user/<?php print $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
+			  <a href="<?php echo "$base_path/user/" . $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
 			<?php } ?>
 		</div>
 	</div>
