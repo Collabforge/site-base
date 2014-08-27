@@ -4,7 +4,7 @@
   <?php
   foreach ($links as $link) {
     $classes = array('btn');
-    if (is_array($link['classes'])) {
+    if (isset($link['classes']) && is_array($link['classes'])) {
       $classes = array_merge($classes, $link['classes']);
     }
     $cls = implode(' ', $classes);
