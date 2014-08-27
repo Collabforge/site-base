@@ -359,7 +359,7 @@ function meta_email_mail($key, &$message, $params) {
   $params = array_merge(array(
     '!site_name' => variable_get('site_name', ''),
     '!site_url' => url('<front>', array('absolute' => TRUE)),
-    '!site_email' => variable_get('site_mail',''),
+    '!site_email' => variable_get('site_mail', ''),
   ), $params);
 
   switch ($key) {
@@ -444,13 +444,12 @@ function meta_email_mail($key, &$message, $params) {
 
   if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
     drupal_set_message(t('Key: !key <br>Subject: !subject <br>Body: !body<br>', array(
-      '!key' => $key
-      , '!subject' => $message['subject']
-      , '!body' => $message['body'][0]
+      '!key' => $key,
+      '!subject' => $message['subject'],
+      '!body' => $message['body'][0],
     )), 'warning');
   }
-
-  // @todo @fixme TEMP remove next line!!!
+  // @todo @fixme TEMP test, disables all emails going out Remove next line!!!
   //$message = array();
 }
 
