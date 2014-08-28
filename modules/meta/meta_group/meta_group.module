@@ -128,12 +128,12 @@ function meta_group_is_closed($node) {
 function meta_group_menu() {
 	$items = array();
 
-	$items['profile/hubs'] = array(
+	$items['your-hubs'] = array(
 	    'title' => 'Your Hubs',
 	    'description' => 'Hubs you have hosted or joined',
 	    'page callback' => '_meta_group_page_profile_hubs',
 	    'access callback' => 'user_access',
-      'access arguments' => 'create conversation content'
+      'access arguments' => array('create conversation content'),
 	);
 
 	// Pages for a Group

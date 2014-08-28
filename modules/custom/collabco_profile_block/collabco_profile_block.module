@@ -74,7 +74,7 @@ function collabco_profile_block_block_view($delta='') {
           )
           , 'ui-navigation-menu ui-your-hubs leaf' => array(
               'title' => '<i class="icon-globe">&nbsp;</i> ' . t('My Hubs')
-              , 'href' => sprintf('profile/hubs')
+              , 'href' => sprintf('your-hubs')
               , 'html' => TRUE
           )                  
         );
