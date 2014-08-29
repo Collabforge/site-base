@@ -350,9 +350,7 @@ $.Autocompleter = function(input, options) {
 		// if an AJAX url has been supplied, try loading the data now
 		} else if( (typeof options.url == "string") && (options.url.length > 0) ){
 			
-			var extraParams = {
-				timestamp: +new Date()
-			};
+			var extraParams = { };
 			$.each(options.extraParams, function(key, param) {
 				extraParams[key] = typeof param == "function" ? param() : param;
 			});

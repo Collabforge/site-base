@@ -104,8 +104,15 @@ class FeedsNodeProcessor extends FeedsProcessor {
       }
 
       if (!$access) {
-        $message = 'User %name is not authorized to %op content type %content_type.';
-        throw new FeedsAccessException(t($message, array('%name' => $author->name, '%op' => $op, '%content_type' => $entity->type)));
+        $message = t('The user %name is not authorized to %op content of type %content_type. To import this item, either the user "@name" (author of the item) must be given the permission to @op content of type @content_type, or the option "Authorize" on the Node processor settings must be turned off.', array(
+          '%name' => $author->name,
+          '%op' => $op,
+          '%content_type' => $entity->type,
+          '@name' => $author->name,
+          '@op' => $op,
+          '@content_type' => $entity->type,
+        ));
+        throw new FeedsAccessException($message);
       }
     }
   }
@@ -134,28 +141,12 @@ class FeedsNodeProcessor extends FeedsProcessor {
   }
 
   /**
-   * Implement expire().
-   *
-   * @todo: move to processor stage?
+   * Overrides parent::expiryQuery().
    */
-  public function expire($time = NULL) {
-    if ($time === NULL) {
-      $time = $this->expiryTime();
-    }
-    if ($time == FEEDS_EXPIRE_NEVER) {
-      return;
-    }
-    $count = $this->getLimit();
-    $nodes = db_query_range("SELECT n.nid FROM {node} n JOIN {feeds_item} fi ON fi.entity_type = 'node' AND n.nid = fi.entity_id WHERE fi.id = :id AND n.created < :created", 0, $count, array(':id' => $this->id, ':created' => REQUEST_TIME - $time));
-    $nids = array();
-    foreach ($nodes as $node) {
-      $nids[$node->nid] = $node->nid;
-    }
-    $this->entityDeleteMultiple($nids);
-    if (db_query_range("SELECT 1 FROM {node} n JOIN {feeds_item} fi ON fi.entity_type = 'node' AND n.nid = fi.entity_id WHERE fi.id = :id AND n.created < :created", 0, 1, array(':id' => $this->id, ':created' => REQUEST_TIME - $time))->fetchField()) {
-      return FEEDS_BATCH_ACTIVE;
-    }
-    return FEEDS_BATCH_COMPLETE;
+  protected function expiryQuery(FeedsSource $source, $time) {
+    $select = parent::expiryQuery($source, $time);
+    $select->condition('e.created', REQUEST_TIME - $time, '<');
+    return $select;
   }
 
   /**
@@ -378,4 +369,5 @@ class FeedsNodeProcessor extends FeedsProcessor {
     }
     return 0;
   }
+
 }

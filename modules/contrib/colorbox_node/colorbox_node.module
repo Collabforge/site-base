@@ -58,10 +58,12 @@ function colorbox_node_form_alter(&$form, &$form_state, $form_id) {
  * will determine the internal path and node id.
  */
 function colorbox_node_output($path) {
-  // @TODO, we should be able to use this for users too,
   // Lets beef this up and make it more intelligent around
   // the system path.
-  if(!isset($_GET['destination'])) $_GET['destination'] = $path;
+  if(!isset($_GET['destination'])) {
+    $_GET['destination'] = $path;
+  }
+  drupal_static('colorbox_original_q', $_GET['q']);
   $_GET['q'] = $path;
 
   // Fetch our callback based on our path.
@@ -77,8 +79,6 @@ function colorbox_node_output($path) {
   $commands = array();
   // Is we have an array, lets assume we need to render it out.
   if (is_array($page_callback_result)) {
-    // @TODO: Update this to reflect the correct method once this
-    // issue is resolved: http://drupal.org/node/1154382
     if (isset($page_callback_result['nodes'])) {
       foreach ($page_callback_result['nodes'] as $nid => $tmpNode) {
         if (isset($tmpNode['#view_mode'])) {
@@ -199,4 +199,156 @@ function colorbox_node_context_registry() {
       ),
     ),
   );
+}
+
+/**
+ * Implement hook_ctools_plugin_api()
+ */
+function colorbox_node_ctools_plugin_api($module, $api) {
+  if ($module == 'page_manager') {
+    return array('version' => 2);
+  }
+}
+
+/**
+ * Implement hook_ctools_plugin_directory()
+ */
+function colorbox_node_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'page_manager' || $module == 'ctools') {
+    return 'ctools/plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_menu_attribute_info().
+ */
+function colorbox_node_menu_attribute_info() {
+  // Add a data-inner-width attribute.
+  $attributes['data-inner-width'] = array(
+    'label' => t('Data-Inner-Width (px)'),
+    'description' => t('Specifies the inner width used by colorbox.'),
+    'form' => array(
+      '#size' => 5,
+    ),
+  );
+
+  // Add a data-inner-width attribute.
+  $attributes['data-inner-height'] = array(
+    'label' => t('Data-Inner-Height (px)'),
+    'description' => t('Specifies the inner height used by colorbox.'),
+    'form' => array(
+      '#size' => 5,
+    ),
+  );
+  return $attributes;
+}
+
+
+/*
+ * Implements hook_field_formatter_info_alter().
+ */
+function colorbox_node_field_formatter_info_alter(&$info) {
+  if(isset($info['entityreference_label'])) {
+    //$info['entityreference_label']['module'] = 'colorbox_node';
+    $info['entityreference_label']['settings'] += array(
+      'colorbox_node_link' => FALSE,
+      'colorbox_node_width' => '600',
+      'colorbox_node_height' => '600',
+    );
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function colorbox_node_field_formatter_settings_form_alter(&$settings_form, $context) {
+  // Integration with the entityreference module
+  if ($context['instance']['display'][$context['view_mode']]['type'] == 'entityreference_label') {
+    $display = $context['instance']['display'][$context['view_mode']];
+    $settings = $display['settings'];
+
+    $settings_form['colorbox_node_link'] = array(
+      '#title' => t('Open in a Colorbox'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['colorbox_node_link'],
+      '#dependency' => array(
+        'edit-fields-field-reference-settings-edit-form-settings-link' => array(1),
+      ),
+    );
+    $settings_form['colorbox_node_width'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Colorbox Width'),
+      '#default_value' => !empty($settings['colorbox_node_width']) ? $settings['colorbox_node_width'] : '600',
+      '#dependency' => array(
+        'edit-fields-field-reference-settings-edit-form-settings-colorbox-node-link' => array(1),
+      ),
+      '#dependency_count' => 1,
+      '#weight' => 1,
+    );
+    $settings_form['colorbox_node_height'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Colorbox Height'),
+      '#default_value' => !empty($settings['colorbox_node_height']) ? $settings['colorbox_node_height'] : '600',
+      '#dependency' => array(
+        'edit-fields-field-reference-settings-edit-form-settings-colorbox-node-link' => array(1),
+      ),
+      '#dependency_count' => 1,
+      '#weight' => 2,
+    );
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function colorbox_node_field_formatter_settings_summary_alter(&$summary, $context) {
+  if ($context['instance']['display'][$context['view_mode']]['type'] == 'entityreference_label') {
+    $display = $context['instance']['display'][$context['view_mode']];
+    $settings = $display['settings'];
+    if (!empty($summary)) {
+      $summary .= '<br />';
+    }
+    if ($settings['colorbox_node_link']) {
+      $summary .= t('Open in Colorbox');
+    }
+  }
+}
+
+/**
+ * Implements hook_field_attach_view_alter().
+ */
+function colorbox_node_field_attach_view_alter(&$output, $context) {
+  foreach (element_children($output) as $field_name) {
+    $element = &$output[$field_name];
+
+    $field = field_info_field($field_name);
+
+    if(!isset($field['settings']['target_type'])) continue;
+
+    // Load up the rest of our data since we have a target type.
+    $instance = field_info_instance($element['#entity_type'], $field_name, $element['#bundle']);
+    $entity = entity_get_info($field['settings']['target_type']);
+
+    $display = $instance['display']['default'];
+    $settings = $display['settings'];
+
+    // If we are not linking as a colorbox, then just continue on.
+    if(!isset($settings['colorbox_node_link']) || !$settings['colorbox_node_link']) {
+      continue;
+    }
+
+    $handler = entityreference_get_selection_handler($field, $instance, $element['#entity_type'], $entity);
+    foreach (element_children($element) as $delta) {
+      $label = $handler->getLabel($element['#items'][$delta]['entity']);
+      if($uri = entity_uri($field['settings']['target_type'], $element['#items'][$delta]['entity'])) {
+        $uri['options']['attributes'] = array(
+          'class' => array('colorbox-node'),
+          'data-inner-width' => $settings['colorbox_node_width'],
+          'data-inner-height' => $settings['colorbox_node_height'],
+
+        );
+        $element[$delta]['#markup'] = l($label, $uri['path'], $uri['options']);
+      }
+    }
+  }
 }

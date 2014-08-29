@@ -41,7 +41,7 @@ class MandrillMailSystem implements MailSystemInterface {
   public function mail(array $message) {
     // Optionally log mail keys not using Mandrill already. Helpful in
     // configuring Mandrill.
-    if (variable_get('mandrill_log_defaulted_sends')) {
+    if (variable_get('mandrill_log_defaulted_sends', FALSE)) {
       $systems = mailsystem_get();
       $registered = FALSE;
       foreach ($systems as $key => $system) {
@@ -66,13 +66,12 @@ class MandrillMailSystem implements MailSystemInterface {
     $mailer = mandrill_get_api_object();
 
     // Apply input format to body.
-    $html = $message['body'];
     $format = variable_get('mandrill_filter_format', '');
     if (!empty($format)) {
-      $html = check_markup($message['body'], $format);
+      $message['body'] = check_markup($message['body'], $format);
     }
 
-    // Extract an arry of recipients.
+    // Extract an array of recipients.
     $to = mandrill_get_to($message['to']);
 
     // Prepare headers, defaulting the reply-to to the from address since
@@ -103,10 +102,37 @@ class MandrillMailSystem implements MailSystemInterface {
       }
     }
 
+    // The Mime Mail module (mimemail) expects attachments as an array of file
+    // arrays in $message['params']['attachments']. As many modules assume you
+    // will be using Mime Mail to handle attachments, we need to parse this
+    // array as well.
+    if (isset($message['params']['attachments']) && !empty($message['params']['attachments'])) {
+      foreach ($message['params']['attachments'] as $attachment) {
+        $attachment_path = drupal_realpath($attachment['uri']);
+        if (is_file($attachment_path)) {
+          $struct = $mailer->getAttachmentStruct($attachment_path);
+          // Allow for customised filenames.
+          if (!empty($attachment['filename'])) {
+            $struct['name'] = $attachment['filename'];
+          }
+          $attachments[] = $struct;
+        }
+      }
+      // Remove the file objects from $message['params']['attachments'].
+      // (This prevents double-attaching in the drupal_alter hook below.)
+      unset($message['params']['attachments']);
+    }
+
+    // Account for the plaintext parameter provided by the mimemail module.
+    $plain_text = empty($message['params']['plaintext']) ? drupal_html_to_text($message['body']) : $message['params']['plaintext'];
+
+    // Get metadata.
+    $metadata = isset($message['metadata']) ? $message['metadata'] : array();
+
     $from = mandrill_from();
     $mandrill_message = array(
-      'html' => $html,
-      'text' => drupal_html_to_text($message['body']),
+      'html' => $message['body'],
+      'text' => $plain_text,
       'subject' => $message['subject'],
       'from_email' => $from['email'],
       'from_name' => $from['name'],
@@ -123,8 +149,12 @@ class MandrillMailSystem implements MailSystemInterface {
       'google_analytics_campaign' => variable_get('mandrill_analytics_campaign', ''),
       'attachments' => $attachments,
       'view_content_link' => $view_content,
+      'metadata' => $metadata,
     );
-
+    $subaccount = variable_get('mandrill_subaccount', FALSE);
+    if ($subaccount) {
+      $mandrill_message['subaccount'] = $subaccount;
+    }
     // Allow other modules to alter the Mandrill message, and sender/args.
     $mandrill_params = array(
       'message' => $mandrill_message,
@@ -138,12 +168,13 @@ class MandrillMailSystem implements MailSystemInterface {
     if (mandrill_process_async()) {
       $queue = DrupalQueue::get(MANDRILL_QUEUE, TRUE);
       $queue->createItem($mandrill_params);
-      watchdog('mandrill', 'Message from %from to %to queued for delivery.',
-        array(
-          '%from' => $from['email'],
-          '%to' => $to[0]['email'],
-          WATCHDOG_NOTICE
-        ));
+      if (variable_get('mandrill_batch_log_queued', TRUE)) {
+        watchdog('mandrill', 'Message from %from to %to queued for delivery.',
+          array(
+            '%from' => $from['email'],
+            '%to' => $to[0]['email'],
+          ), WATCHDOG_NOTICE);
+      }
       return TRUE;
     }
     else {
