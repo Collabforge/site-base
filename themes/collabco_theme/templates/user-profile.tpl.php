@@ -21,7 +21,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			  <a href="<?php echo "$base_path/user/" . $account->uid; ?>/edit/profile"><i class="icon-edit"></i> <?php echo $base_path; ?> Edit your profile</a>
+			  <a href="<?php echo "$base_path/user/" . $account->uid; ?>/edit/profile"><i class="icon-edit"></i> <?php echo $base_path." | ".$base_root; ?> Edit your profile</a>
 			<?php } ?>
 		</div>
 	</div>
