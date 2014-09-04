@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * collabco_views.module
+ * Adds complex fields, filters and sorts to easily build Views member reports.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function collabco_views_views_api() {
+  return array(
+    'api' => views_api_version(),
+    'path' => drupal_get_path('module', 'collabco_views') . '/views',
+  );
+}
