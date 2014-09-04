@@ -3,7 +3,7 @@
   $full_name = $user_profile['field_first_name']['#object']->name;
   $account = $elements['#account'];
   $is_contactable = _contact_personal_tab_access($account);
-  global $base_path;
+  global $base_path, $base_root;
 ?>
 
 <div class="user-profile">
