@@ -3,6 +3,22 @@
         // Lets find our class name and change our URL to
         // our defined menu path to open in a colorbox modal.
         attach: function (context, settings) {
+            // Make sure colorbox exists.
+            if (!$.isFunction($.colorbox)) {
+                return;
+            }
+
+            // Mobile detection extracted from the colorbox module.
+            // If the mobile setting is turned on, it will turn off the colorbox modal for mobile devices.
+            if (settings.colorbox.mobiledetect && window.matchMedia) {
+                // Disable Colorbox for small screens.
+                mq = window.matchMedia("(max-device-width: " + settings.colorbox.mobiledevicewidth + ")");
+                if (mq.matches) {
+                    return;
+                }
+            }
+
+
             $('.colorbox-node', context).once('init-colorbox-node-processed', function () {
                 $(this).colorboxNode({'launch': false});
             });
@@ -40,10 +56,21 @@
             pathname = '/' + parse.pathname;
         }
 
+        // If clean URL's are not turned on, lets check for that.
+        var url = $.getParameterByName('q', href);
         if (base_path != '/') {
-            var link = pathname.replace(base_path, base_path + 'colorbox/') + parse.search;
+            if (url != '') {
+                var link = pathname.replace(base_path, base_path + '?q=colorbox/') + url;
+            } else {
+                console.log('check2');
+                var link = pathname.replace(base_path, base_path + 'colorbox/') + parse.search;
+            }
         } else {
-            var link = base_path + 'colorbox' + pathname + parse.search;
+            if (url != '') {
+                var link = base_path + '?q=colorbox' + pathname + url;
+            } else {
+                var link = base_path + 'colorbox' + pathname + parse.search;
+            }
         }
 
         // Bind Ajax behaviors to all items showing the class.
@@ -60,7 +87,12 @@
         }
 
         $(this).click(function () {
-            $this = $(this);
+            $this = $(this).clone();
+
+            // Clear out the rel to prevent any confusion if not using the gallery class.
+            if(!$this.hasClass('colorbox-node-gallery')) {
+                $this.attr('rel', '');
+            }
 
             // Lets extract our width and height giving priority to the data attributes.
             var innerWidth = $this.data('inner-width');
@@ -78,7 +110,7 @@
             params.open = true;
 
             // Launch our colorbox with the provided settings
-            $(this).colorbox($.extend({}, Drupal.settings.colorbox, params));
+            $this.colorbox($.extend({}, Drupal.settings.colorbox, params));
         });
 
         // Log our click handler to our ajax object
@@ -97,52 +129,74 @@
     // and manually force a click on the link to call that AJAX and update the
     // modal window.
     $.fn.colorboxNodeGroup = function () {
-        // Lets do something wonky with galleries.
-        var rel = $(this).attr('rel');
-        if ($('a[rel="' + rel + '"]:not("#colorbox a[rel="' + rel + '"]")').length > 1) {
-            $related = $('a[rel="' + rel + '"]:not("#colorbox a[rel="' + rel + '"]")');
-            var idx = $related.index($(this));
-            var tot = $related.length;
+        // Lets do setup our gallery type of functions.
+        var $this = $(this);
+        var rel = $this.attr('rel');
+        if(rel && $this.hasClass('colorbox-node-gallery')) {
+            if ($('a.colorbox-node-gallery[rel="' + rel + '"]:not("#colorbox a[rel="' + rel + '"]")').length > 1) {
+                $related = $('a.colorbox-node-gallery[rel="' + rel + '"]:not("#colorbox a[rel="' + rel + '"]")');
 
-            // Show our gallery buttons
-            $('#cboxPrevious, #cboxNext').show();
-            $.colorbox.next = function () {
-                index = getIndex(1);
-                $related[index].click();
-
-            };
-            $.colorbox.prev = function () {
-                index = getIndex(-1);
-                $related[index].click();
-            };
-
-            // Setup our current HTML
-            $('#cboxCurrent').html(Drupal.settings.colorbox.current.replace('{current}', idx + 1).replace('{total}', tot)).show();
-
-            var prefix = 'colorbox';
-            // Remove Bindings and re-add
-            // @TODO: There must be a better way?  If we don't remove it causes a memory to be exhausted.
-            $(document).unbind('keydown.' + prefix);
-
-            // Add Key Bindings
-            $(document).bind('keydown.' + prefix, function (e) {
-                var key = e.keyCode;
-                if ($related[1] && !e.altKey) {
-                    if (key === 37) {
-                        e.preventDefault();
-                        $.colorbox.prev();
-                    } else if (key === 39) {
-                        e.preventDefault();
-                        $.colorbox.next();
+                // filter $related array by href, to have mutliple colorbox links to the same target
+                // appear as one item in the gallery only
+                var $related_unique = [];
+                $related.each(function() {
+                    findHref($related_unique, this.href);
+                    if (!findHref($related_unique, this.href).length) {
+                        $related_unique.push(this);
                     }
-                }
-            });
-        }
+                });
+                // we have to get the actual used element from the filtered list in order to get it's relative index
+                var current = findHref($related_unique, $this.get(0).href);
+                $related = $($related_unique);
+                var idx = $related.index($(current));
+                var tot = $related.length;
 
-        function getIndex(increment) {
-            var max = $related.length;
-            var newIndex = (idx + increment) % max;
-            return (newIndex < 0) ? max + newIndex : newIndex;
+                // Show our gallery buttons
+                $('#cboxPrevious, #cboxNext').show();
+                $.colorbox.next = function () {
+                    index = getIndex(1);
+                    $related[index].click();
+                };
+                $.colorbox.prev = function () {
+                    index = getIndex(-1);
+                    $related[index].click();
+                };
+
+                // Setup our current HTML
+                $('#cboxCurrent').html(Drupal.settings.colorbox.current.replace('{current}', idx + 1).replace('{total}', tot)).show();
+
+                var prefix = 'colorbox';
+                // Remove Bindings and re-add
+                // @TODO: There must be a better way?  If we don't remove it causes a memory to be exhausted.
+                $(document).unbind('keydown.' + prefix);
+
+                // Add Key Bindings
+                $(document).bind('keydown.' + prefix, function (e) {
+                    var key = e.keyCode;
+                    if ($related[1] && !e.altKey) {
+                        if (key === 37) {
+                            e.preventDefault();
+                            $.colorbox.prev();
+                        } else if (key === 39) {
+                            e.preventDefault();
+                            $.colorbox.next();
+                        }
+                    }
+                });
+            }
+
+            function getIndex(increment) {
+                var max = $related.length;
+                var newIndex = (idx + increment) % max;
+                return (newIndex < 0) ? max + newIndex : newIndex;
+            }
+
+            // Find a colorbox link by href in an array
+            function findHref(items, href){
+                return $.grep(items, function(n, i){
+                    return n.href == href;
+                });
+            };
         }
     }
 
@@ -184,5 +238,16 @@
     $.urlDataParams = function (innerWidth, innerHeight) {
         return {'innerWidth':innerWidth,'innerHeight':innerHeight};
     };
+
+    $.getParameterByName = function(name, href) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexString = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexString);
+        var found = regex.exec(href);
+        if(found == null)
+            return "";
+        else
+            return decodeURIComponent(found[1].replace(/\+/g, " "));
+    }
 
 })(jQuery);

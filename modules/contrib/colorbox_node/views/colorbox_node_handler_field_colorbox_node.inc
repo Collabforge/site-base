@@ -82,10 +82,17 @@ class colorbox_node_handler_field_colorbox_node extends views_handler_field_node
   function render_link($data, $values) {
     if (!empty($this->options['link_to_node']) && !empty($this->additional_fields['nid'])) {
         if (!empty($this->options['node_in_colorbox'])) {
-          $this->options['alter']['link_class'] = 'colorbox-node';
+          // If we have a rel gallery for the colorbox, lets add our rel attribute
+          // and our gallery class to the link output.
+          if(!empty($this->options['node_in_colorbox_rel'])) {
+            $this->options['alter']['rel'] = $this->options['node_in_colorbox_rel'];
+            $this->options['alter']['link_class'] = 'colorbox-node colorbox-node-gallery';
+          }
+          else {
+            $this->options['alter']['link_class'] = 'colorbox-node';
+          }
           $this->options['alter']['link_attributes']['data-inner-width'] = $this->options['node_in_colorbox_width'];
           $this->options['alter']['link_attributes']['data-inner-height'] = $this->options['node_in_colorbox_height'];
-          $this->options['alter']['rel'] = $this->options['node_in_colorbox_rel'];
         }
     }
     return parent::render_link($data, $values);

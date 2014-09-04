@@ -41,6 +41,18 @@ You can choose between a custom JavaScript widget (included with the
 module) or fall back to the core Drupal autocomplete widget. The default is to
 use the custom widget.
 
+Normally, the module will make autocomplete responses cacheable by external
+caches (e.g., Varnish) using the page_cache_maximum_age Drupal variable (set in
+Admin > Config > Performance > Expiration of Cached Pages). Optionally, you can
+set a different cache lifetime just for autocomplete responses by overriding
+this variable in settings.php:
+
+  // Make autocomplete responses cacheable for 3600 seconds (1 hour)
+  $conf['apachesolr_autocomplete_cache_maximum_age'] = 3600;
+
+If you set this to 0, responses will *not* have the necessary Cache-Control
+headers and thus will not be cached externally.
+
 -- TROUBLESHOOTING --
 
 If you are having trouble with the autocomplete suggestions not working 

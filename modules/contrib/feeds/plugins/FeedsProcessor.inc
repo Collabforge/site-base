@@ -400,23 +400,87 @@ abstract class FeedsProcessor extends FeedsPlugin {
   }
 
   /**
-   * Delete feed items younger than now - $time. Do not invoke expire on a
-   * processor directly, but use FeedsImporter::expire() instead.
+   * Deletes feed items older than REQUEST_TIME - $time.
    *
-   * @see FeedsImporter::expire().
-   * @see FeedsDataProcessor::expire().
+   * Do not invoke expire on a processor directly, but use
+   * FeedsSource::expire() instead.
+   *
+   * @param FeedsSource $source
+   *   The source to expire entities for.
    *
    * @param $time
-   *   If implemented, all items produced by this configuration that are older
-   *   than REQUEST_TIME - $time should be deleted.
-   *   If $time === NULL processor should use internal configuration.
+   *   (optional) All items produced by this configuration that are older than
+   *   REQUEST_TIME - $time should be deleted. If NULL, processor should use
+   *   internal configuration. Defaults to NULL.
    *
-   * @return
+   * @return float
    *   FEEDS_BATCH_COMPLETE if all items have been processed, a float between 0
    *   and 0.99* indicating progress otherwise.
+   *
+   * @see FeedsSource::expire()
    */
-  public function expire($time = NULL) {
-    return FEEDS_BATCH_COMPLETE;
+  public function expire(FeedsSource $source, $time = NULL) {
+    $state = $source->state(FEEDS_PROCESS_EXPIRE);
+
+    if ($time === NULL) {
+      $time = $this->expiryTime();
+    }
+    if ($time == FEEDS_EXPIRE_NEVER) {
+      return;
+    }
+
+    $select = $this->expiryQuery($source, $time);
+
+    // If there is no total, query it.
+    if (!$state->total) {
+      $state->total = $select->countQuery()->execute()->fetchField();
+    }
+
+    // Delete a batch of entities.
+    $entity_ids = $select->range(0, $this->getLimit())->execute()->fetchCol();
+    if ($entity_ids) {
+      $this->entityDeleteMultiple($entity_ids);
+      $state->deleted += count($entity_ids);
+      $state->progress($state->total, $state->deleted);
+    }
+    else {
+      $state->progress($state->total, $state->total);
+    }
+  }
+
+  /**
+   * Returns a database query used to select entities to expire.
+   *
+   * Processor classes should override this method to set the age portion of the
+   * query.
+   *
+   * @param FeedsSource $source
+   *   The feed source.
+   * @param int $time
+   *   Delete entities older than this.
+   *
+   * @return SelectQuery
+   *   A select query to execute.
+   *
+   * @see FeedsNodeProcessor::expiryQuery()
+   */
+  protected function expiryQuery(FeedsSource $source, $time) {
+    // Build base select statement.
+    $info = $this->entityInfo();
+    $id_key = db_escape_field($info['entity keys']['id']);
+
+    $select = db_select($info['base table'], 'e');
+    $select->addField('e', $info['entity keys']['id'], 'entity_id');
+    $select->join(
+      'feeds_item',
+      'fi',
+      "e.$id_key = fi.entity_id AND fi.entity_type = :entity_type", array(
+        ':entity_type' => $this->entityType(),
+    ));
+    $select->condition('fi.id', $this->id);
+    $select->condition('fi.feed_nid', $source->feed_nid);
+
+    return $select;
   }
 
   /**
@@ -470,10 +534,10 @@ abstract class FeedsProcessor extends FeedsPlugin {
     // mapping on a prepopulated item such as an existing node.
     foreach ($this->config['mappings'] as $mapping) {
       if (isset($targets[$this->id][$mapping['target']]['real_target'])) {
-        unset($target_item->{$targets[$this->id][$mapping['target']]['real_target']});
+        $target_item->{$targets[$this->id][$mapping['target']]['real_target']} = NULL;
       }
-      elseif (isset($target_item->{$mapping['target']})) {
-        unset($target_item->{$mapping['target']});
+      else {
+        $target_item->{$mapping['target']} = NULL;
       }
     }
 
@@ -506,12 +570,19 @@ abstract class FeedsProcessor extends FeedsPlugin {
           isset($targets[$this->id][$mapping['target']]['callback']) &&
           function_exists($targets[$this->id][$mapping['target']]['callback'])) {
         $callback = $targets[$this->id][$mapping['target']]['callback'];
+
+        // All target callbacks expect an array.
+        if (!is_array($value)) {
+          $value = array($value);
+        }
+
         $callback($source, $target_item, $mapping['target'], $value, $mapping);
       }
       else {
         $this->setTargetElement($source, $target_item, $mapping['target'], $value, $mapping);
       }
     }
+
     return $target_item;
   }
 
@@ -592,7 +663,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
     $form['input_format'] = array(
       '#type' => 'select',
       '#title' => t('Text format'),
-      '#description' => t('Select the input format for the body field of the nodes to be created.'),
+      '#description' => t('Select the default input format for the text fields of the nodes to be created.'),
       '#options' => $format_options,
       '#default_value' => isset($this->config['input_format']) ? $this->config['input_format'] : 'plain_text',
       '#required' => TRUE,
@@ -667,10 +738,10 @@ abstract class FeedsProcessor extends FeedsPlugin {
    *
    * @param FeedsSource $source
    *   The source information about this import.
-   * @param $result
+   * @param FeedsParserResult $result
    *   A FeedsParserResult object.
    *
-   * @return
+   * @return int
    *   The serial id of an entity if found, 0 otherwise.
    */
   protected function existingEntityId(FeedsSource $source, FeedsParserResult $result) {
@@ -680,23 +751,40 @@ abstract class FeedsProcessor extends FeedsPlugin {
       ->condition('entity_type', $this->entityType())
       ->condition('id', $source->id);
 
-    // Iterate through all unique targets and test whether they do already
-    // exist in the database.
+    $targets = &drupal_static('FeedsProcessor::existingEntityId', array());
+    if (!isset($targets[$this->id])) {
+      $targets[$this->id] = $this->getMappingTargets();
+    }
+
+    $entity_id = 0;
+
+    // Iterate through all unique targets and test whether they already exist in
+    // the database.
     foreach ($this->uniqueTargets($source, $result) as $target => $value) {
-      switch ($target) {
-        case 'url':
-          $entity_id = $query->condition('url', $value)->execute()->fetchField();
-          break;
-        case 'guid':
-          $entity_id = $query->condition('guid', $value)->execute()->fetchField();
-          break;
+      if ($target === 'guid' || $target === 'url') {
+        $entity_id = $query->condition($target, $value)->execute()->fetchField();
       }
-      if (isset($entity_id)) {
-        // Return with the content id found.
+
+      if (!$entity_id && !empty($targets[$this->id][$target]['unique_callbacks'])) {
+        if (!is_array($value)) {
+          $value = array($value);
+        }
+
+        foreach ($targets[$this->id][$target]['unique_callbacks'] as $callback) {
+          if (is_callable($callback) && $entity_id = call_user_func_array($callback, array($source, $this->entityType(), $this->bundle(), $target, $value))) {
+            // Stop at the first unique ID returned by a callback.
+            break;
+          }
+        }
+      }
+
+      // Return with the content id found.
+      if ($entity_id) {
         return $entity_id;
       }
     }
-    return 0;
+
+    return $entity_id;
   }
 
 

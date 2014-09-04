@@ -3,12 +3,12 @@ description = "Support module for Feeds related testing."
 package = Testing
 version = VERSION
 core = 7.x
-files[] = feeds_test.module
+test_dependencies[] = entity
 hidden = TRUE
 
-; Information added by drupal.org packaging script on 2013-07-06
-version = "7.x-2.0-alpha8+7-dev"
+; Information added by Drupal.org packaging script on 2014-08-28
+version = "7.x-2.0-alpha8+46-dev"
 core = "7.x"
 project = "feeds"
-datestamp = "1373116220"
+datestamp = "1409268532"
 

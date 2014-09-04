@@ -100,9 +100,11 @@ function apachesolr_autocomplete_callback($keys = '') {
   }
 
   $result = array();
+  $show_counts = apachesolr_autocomplete_variable_get_counts();
   if (apachesolr_autocomplete_variable_get_widget() == 'custom') {
     // Place suggestions into new array for returning as JSON.
-    foreach ($suggestions as $key => $display) {
+    foreach ($suggestions as $key => $suggestion) {
+      $display = theme($suggestion['theme'], array('suggestion' => $suggestion, 'show_counts' => $show_counts));
       $result[] = array(
         "key" => substr($key,1),
         "display" => $display
@@ -110,10 +112,25 @@ function apachesolr_autocomplete_callback($keys = '') {
     }
   }
   else {
-    foreach ($suggestions as $key => $display) {
+    foreach ($suggestions as $key => $suggestion) {
+      $display = theme($suggestion['theme'], array('suggestion' => $suggestion, 'show_counts' => $show_counts));
       $result[substr($key,1)] = $display;
     }
   }
+
+  // Add caching headers.
+  // The cache lifetime will be:
+  //  * apachesolr_autocomplete_cache_maximum_age if it's set and >0
+  //  * else, use page_cache_maximum_age.
+  $cache_max_age = variable_get('apachesolr_autocomplete_cache_maximum_age', -1);
+  if ($cache_max_age == -1) {
+    $cache_max_age = variable_get('page_cache_maximum_age', 0);
+  }
+  if ($cache_max_age > 0) {
+    // Only add the caching headers if necessary.
+    drupal_add_http_header('Cache-Control', 'public, max-age=' . $cache_max_age);
+  }
+  // Send the output.
   drupal_json_output($result);
   exit();
 }
@@ -145,19 +162,23 @@ function apachesolr_autocomplete_theme() {
  */
 function theme_apachesolr_autocomplete_highlight($variables) {
   static $first = true;
+  $keys = $variables['suggestion']['keys'];
+  $suggestion_string = $variables['suggestion']['suggestion'];
+  $count = $variables['suggestion']['count'];
+  $show_counts = $variables['show_counts'];
 
   $html = '';
   $html .= '<div class="apachesolr_autocomplete suggestion">';
-  $html .= '<strong>' . drupal_substr($variables['suggestion'], 0, strlen($variables['keys'])) . '</strong>' . drupal_substr($variables['suggestion'], strlen($variables['keys']));
+  $html .= '<strong>' . drupal_substr($suggestion_string, 0, strlen($keys)) . '</strong>' . drupal_substr($suggestion_string, strlen($keys));
   $html .= '</div>';
-  if ($variables['count'] && $variables['show_counts']) {
+  if ($count && $show_counts) {
     if ($first) {
       $html .= "<div class='apachesolr_autocomplete message' style='float:right'>";
-      $html .= t('!count results', array('!count' => $variables['count']));
+      $html .= t('!count results', array('!count' => $count));
       $html .= "</div><br style='clear:both'>";
       $first = false;
     } else {
-      $html .= "<div class='apachesolr_autocomplete message count'>" . $variables['count'] . "</div><br style='clear:both'>";
+      $html .= "<div class='apachesolr_autocomplete message count'>$count</div><br style='clear:both'>";
     }
   }
   return $html;
@@ -167,7 +188,8 @@ function theme_apachesolr_autocomplete_highlight($variables) {
  * Themes the spellchecker's suggestion.
  */
 function theme_apachesolr_autocomplete_spellcheck($variables) {
-  return '<span class="apachesolr_autocomplete message">' . t('Did you mean') .':</span> ' . $variables['suggestion'];
+  $suggestion_string = $variables['suggestion']['suggestion'];
+  return '<span class="apachesolr_autocomplete message">' . t('Did you mean') .':</span> ' . $suggestion_string;
 }
 
 /**
@@ -217,7 +239,7 @@ function apachesolr_autocomplete_suggest_word_completion($keys, $suggestions_to_
   $params = apachesolr_autocomplete_basic_params($suggestions_to_return);
   $params['facet.prefix'] = $last_part;
   // Get array of themed suggestions.
-  $result = apachesolr_autocomplete_suggest($first_part, $params, 'apachesolr_autocomplete_highlight', $keys, $suggestions_to_return);
+  $result = apachesolr_autocomplete_suggest($first_part, $params, $keys, $suggestions_to_return);
   if ($result && $result['suggestions']) {
     return $result['suggestions'];
   } else {
@@ -251,7 +273,7 @@ function apachesolr_autocomplete_suggest_additional_term($keys, $suggestions_to_
   $replacements = array();
 
   // Get array of themed suggestions.
-  $result = apachesolr_autocomplete_suggest($keys, $params, 'apachesolr_autocomplete_highlight', $keys, $suggestions_to_return);
+  $result = apachesolr_autocomplete_suggest($keys, $params, $keys, $suggestions_to_return);
   if ($result && apachesolr_autocomplete_variable_get_suggest_keywords()) {
     if (isset($result['suggestions']) && sizeof($result['suggestions'])) {
       $suggestions = array_merge($suggestions, $result['suggestions']);
@@ -269,7 +291,7 @@ function apachesolr_autocomplete_suggest_additional_term($keys, $suggestions_to_
         $new_keywords = strtr($keys, $replacements);
         if ($new_keywords != $keys) {
           // Place spellchecker suggestion before others
-          $suggestions = array_merge(array('*' . $new_keywords => theme('apachesolr_autocomplete_spellcheck', array('suggestion' => $new_keywords))), $suggestions);
+          $suggestions = array_merge(array('*' . $new_keywords => array('theme' => 'apachesolr_autocomplete_spellcheck', 'suggestion' => $new_keywords)), $suggestions);
         }
       }
     }
@@ -279,11 +301,10 @@ function apachesolr_autocomplete_suggest_additional_term($keys, $suggestions_to_
 }
 
 
-function apachesolr_autocomplete_suggest($keys, $params, $theme_callback, $orig_keys, $suggestions_to_return = 5) {
+function apachesolr_autocomplete_suggest($keys, $params, $orig_keys, $suggestions_to_return = 5) {
   $matches = array();
   $suggestions = array();
   $keys = trim($keys);
-  $show_counts = apachesolr_autocomplete_variable_get_counts();
 
   // We need the keys array to make sure we don't suggest words that are already
   // in the search terms.
@@ -356,7 +377,7 @@ function apachesolr_autocomplete_suggest($keys, $params, $theme_callback, $orig_
     if ($response->response->numFound > 0 && $keys != '') {
       // Add * to array element key to force into a string, else PHP will
       // renumber keys that look like numbers on the returned array.
-      $suggestions['*' . $keys] = theme('apachesolr_autocomplete_highlight', array('keys' => $keys, 'suggestion' => $keys, 'count' => $response->response->numFound, 'show_counts' => $show_counts));
+      $suggestions['*' . $keys] = array('theme' => 'apachesolr_autocomplete_highlight', 'keys' => $keys, 'suggestion' => $keys, 'count' => $response->response->numFound);
     }
 
     // Build suggestions using returned facets
@@ -371,7 +392,7 @@ function apachesolr_autocomplete_suggest($keys, $params, $theme_callback, $orig_
         if ($suggestion != '') {
           // Add * to array element key to force into a string, else PHP will
           // renumber keys that look like numbers on the returned array.
-          $suggestions['*' . $suggestion] = theme('apachesolr_autocomplete_highlight', array('keys' => $orig_keys, 'suggestion' => $suggestion, 'count' => $count, 'show_counts' => $show_counts));
+          $suggestions['*' . $suggestion] = array('theme' => 'apachesolr_autocomplete_highlight', 'keys' => $orig_keys, 'suggestion' => $suggestion, 'count' => $count);
         }
       }
     }

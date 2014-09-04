@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Main module functions for mandrill_reports.
+ */
 
 /**
  * Implements hook_menu().
@@ -8,7 +12,7 @@ function mandrill_reports_menu() {
   $items['admin/reports/mandrill'] = array(
     'title' => 'Mandrill',
     'page callback' => 'mandrill_reports_dashboard_page',
-    'access arguments' => array('administer mandrill'),
+    'access arguments' => array('view mandrill reports'),
     'description' => 'View Mandrill dashboard.',
   );
   $items['admin/reports/mandrill/dashboard'] = array(
@@ -19,21 +23,34 @@ function mandrill_reports_menu() {
   $items['admin/reports/mandrill/summary'] = array(
     'title' => 'Account summary',
     'page callback' => 'mandrill_reports_summary_page',
-    'access arguments' => array('administer mandrill'),
+    'access arguments' => array('view mandrill reports'),
     'description' => 'View account summary.',
-    'type' => MENU_LOCAL_TASK
+    'type' => MENU_LOCAL_TASK,
   );
 
   return $items;
 }
 
 /**
+ * Implements hook_permission().
+ */
+function mandrill_reports_permission() {
+  return array(
+    'view mandrill reports' => array(
+      'title' => t('View Mandrill reports'),
+      'description' => t('View all Mandrill reports.'),
+    ),
+  );
+}
+
+/**
  * Return an associative array containing raw stats.
  *
  * @return array
+ *   Associative array containing report data.
  */
 function mandrill_reports_data() {
-  if ($cache = cache_get('mandrill_report_data') ) {
+  if ($cache = cache_get('mandrill_report_data')) {
     return $cache->data;
   }
 
@@ -41,28 +58,39 @@ function mandrill_reports_data() {
   $api = mandrill_get_api_object();
 
   if ($api) {
-      // basic user info
+    // Basic user info.
     $data['user'] = $api->users_info();
 
-    // tags
+    // Tags.
     $tags = $api->tags_list();
     foreach ($tags as $tag) {
-      $data['tags'][$tag['tag']] = $api->tags_info($tag['tag']);
-      $data['tags'][$tag['tag']]['time_series'] = $api->tags_time_series($tag['tag']);
+      if (!empty($tag['tag'])) {
+        $data['tags'][$tag['tag']] = $api->tags_info($tag['tag']);
+        $data['tags'][$tag['tag']]['time_series'] = $api->tags_time_series($tag['tag']);
+      }
     }
 
-    // all time
+    // All time.
     $data['all_time_series'] = $api->tags_all_time_series();
 
-    // senders: data is not being used, and the API currently (3/12/13) behaves badly
-    // if you have a bad email address anywhere in your sender history, so commenting out for now:
-    // $senders = $api->senders_list();
-    // foreach ($senders as $sender) {
-    //   $data['senders'][$sender['address']] = $api->senders_info($sender['address']);
-    //   $data['senders'][$sender['address']]['time_series'] = $api->senders_time_series($sender['address']);
-    // }
+    // Senders: data is not being used, and the API currently (3/12/13) behaves
+    // badly if you have a bad email address anywhere in your sender history, so
+    // commenting out for now:
+    $senders = $api->senders_list();
+    foreach ($senders as $sender) {
+      try {
+        $data['senders'][$sender['address']] = $api->senders_info($sender['address']);
+        $data['senders'][$sender['address']]['time_series'] = $api->senders_time_series($sender['address']);
+      }
+      catch (MandrillException $e) {
+        watchdog('mandrill', 'An error occurred requesting sender information from Mandrill for address %address. "%message"', array(
+          '%address' => $sender['address'],
+          '%message' => $e->getMessage(),
+        ), WATCHDOG_ERROR);
+      }
+    }
 
-    // urls
+    // Urls.
     $urls = $api->urls_list();
     foreach ($urls as $url) {
       // Api has been intermittently tacking on incomplete $url arrays,
@@ -72,43 +100,49 @@ function mandrill_reports_data() {
         $data['urls'][$url['url']]['time_series'] = $api->urls_time_series($url['url']);
       }
     }
-
     cache_set('mandrill_report_data', $data, 'cache', CACHE_TEMPORARY);
-    return $data;
   }
   else {
     drupal_set_message(t('Please enter a Mandrill API key to use reports.'));
     drupal_goto('admin/config/services/mandrill');
   }
+  return $data;
 }
 
 /**
  * Page callback for rendering stats.
  *
  * @return array
+ *   Render array.
  */
 function mandrill_reports_dashboard_page() {
   $data = mandrill_reports_data();
-  // all time series chart data
+  $settings = array();
+  // All time series chart data.
   foreach ($data['all_time_series'] as $series) {
     $settings['mandrill_reports']['volume'][] = array(
       'date' => $series['time'],
       'sent' => $series['sent'],
       'bounced' => $series['hard_bounces'] + $series['soft_bounces'],
-      'rejected' => $series['rejects']
+      'rejected' => $series['rejects'],
     );
     $settings['mandrill_reports']['engagement'][] = array(
       'date' => $series['time'],
-      'open_rate' => $series['sent'] == 0 ? 0 : $series['unique_opens']/$series['sent'],
-      'click_rate' => $series['sent'] == 0 ? 0 : $series['unique_clicks']/$series['sent']
+      'open_rate' => $series['sent'] == 0 ? 0 : $series['unique_opens'] / $series['sent'],
+      'click_rate' => $series['sent'] == 0 ? 0 : $series['unique_clicks'] / $series['sent'],
     );
   }
 
-  // url table
+  // Url table.
   $rows = array();
-  $header = array(t('URL'), t('Delivered'), t('Unique clicks'), t('Total Clicks'));
+  $header = array(
+    t('URL'),
+    t('Delivered'),
+    t('Unique clicks'),
+    t('Total Clicks'),
+  );
   foreach ($data['urls'] as $url) {
-    $percent = number_format($url['unique_clicks']/$url['sent'], 2)*100;
+    $percent = number_format($url['unique_clicks'] / $url['sent'], 2) * 100;
     $rows[] = array(
       l($url['url'], $url['url']),
       $url['sent'],
@@ -122,37 +156,37 @@ function mandrill_reports_dashboard_page() {
       'js' => array(
         array(
           'data' => 'https://www.google.com/jsapi',
-          'type' => 'external'
+          'type' => 'external',
         ),
         $path . '/mandrill_reports.js',
         array(
           'data' => $settings,
-          'type' => 'setting'
-        )
-      )
+          'type' => 'setting',
+        ),
+      ),
     ),
     'message' => array(
       '#markup' => t(
         'The following reports are based on Mandrill data from the last 30 days. For more comprehensive data, please visit your !dashboard. !cache to ensure the data is current.',
         array(
-          '!dashboard' => l('Mandrill Dashboard', 'https://mandrillapp.com/'),
-	        '!cache' => l('Clear your cache', 'admin/config/development/performance')
+          '!dashboard' => l(t('Mandrill Dashboard'), 'https://mandrillapp.com/'),
+          '!cache' => l(t('Clear your cache'), 'admin/config/development/performance'),
         )
-      )
+      ),
     ),
     'volume' => array(
       '#prefix' => '<h2>' . t('Sending Volume') . '</h2>',
-      '#markup' => '<div id="mandrill-volume-chart"></div>'
+      '#markup' => '<div id="mandrill-volume-chart"></div>',
     ),
     'engagement' => array(
       '#prefix' => '<h2>' . t('Average Open and Click Rate') . '</h2>',
-      '#markup' => '<div id="mandrill-engage-chart"></div>'
+      '#markup' => '<div id="mandrill-engage-chart"></div>',
     ),
     'urls' => array(
       '#prefix' => '<h2>' . t('Tracked URLs') . '</h2>',
       '#theme' => 'table',
       '#header' => $header,
-      '#rows' => $rows
+      '#rows' => $rows,
     ),
   );
 
@@ -193,7 +227,7 @@ function mandrill_reports_summary_page() {
       $stat['opens'],
       $stat['unique_opens'],
       $stat['clicks'],
-      $stat['unique_clicks']
+      $stat['unique_clicks'],
     );
   }
 
@@ -207,14 +241,14 @@ function mandrill_reports_summary_page() {
         array(t('Backlog'), $info['backlog']),
       ),
       '#header' => array(t('Attribute'), t('Value')),
-      '#caption' => t('Active API user information.')
+      '#caption' => t('Active API user information.'),
     ),
     'stats' => array(
       '#theme' => 'table',
       '#rows' => $rows,
       '#header' => $header,
-      '#caption' => t('This table contains an aggregate summary of the account\'s sending stats.')
-    )
+      '#caption' => t("This table contains an aggregate summary of the account's sending stats."),
+    ),
   );
 
   return $render;

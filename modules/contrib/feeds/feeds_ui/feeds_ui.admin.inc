@@ -348,7 +348,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Fetcher.
   $fetcher = $plugins[$config['fetcher']['plugin_key']];
   $actions = array();
-  if (feeds_get_form($importer->fetcher, 'configForm')) {
+  if ($importer->fetcher->hasConfigForm()) {
     $actions = array(l(t('Settings'), $path . '/settings/' . $config['fetcher']['plugin_key']));
   }
   $info['title'] = t('Fetcher');
@@ -365,7 +365,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Parser.
   $parser = $plugins[$config['parser']['plugin_key']];
   $actions = array();
-  if (feeds_get_form($importer->parser, 'configForm')) {
+  if ($importer->parser->hasConfigForm()) {
     $actions = array(l(t('Settings'), $path . '/settings/' . $config['parser']['plugin_key']));
   }
   $info['title'] = t('Parser');
@@ -382,7 +382,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Processor.
   $processor = $plugins[$config['processor']['plugin_key']];
   $actions = array();
-  if (feeds_get_form($importer->processor, 'configForm')) {
+  if ($importer->processor->hasConfigForm()) {
     $actions[] = l(t('Settings'), $path . '/settings/' . $config['processor']['plugin_key']);
   }
   $actions[] = l(t('Mapping'), $path . '/mapping');
@@ -718,7 +718,7 @@ function feeds_ui_mapping_settings_form_callback($form, $form_state) {
  * Validation handler for feeds_ui_mapping_form().
  */
 function feeds_ui_mapping_form_validate($form, &$form_state) {
-  if (empty($form_state['values']['source']) xor empty($form_state['values']['target'])) {
+  if (!strlen($form_state['values']['source']) xor !strlen($form_state['values']['target'])) {
 
     // Check triggering_element here so we can react differently for ajax
     // submissions.
@@ -726,7 +726,7 @@ function feeds_ui_mapping_form_validate($form, &$form_state) {
 
       // Regular form submission.
       case 'op':
-        if (empty($form_state['values']['source'])) {
+        if (!strlen($form_state['values']['source'])) {
           form_error($form['source'], t('You must select a mapping source.'));
         }
         else {
@@ -790,7 +790,7 @@ function feeds_ui_mapping_form_submit($form, &$form_state) {
 
   $processor->addConfig(array('mappings' => $mappings));
 
-  if (!empty($form_state['values']['source']) && !empty($form_state['values']['target'])) {
+  if (strlen($form_state['values']['source']) && strlen($form_state['values']['target'])) {
     try {
       $mappings = $processor->getMappings();
       $mappings[] = array(
@@ -819,7 +819,7 @@ function _feeds_ui_format_options($options) {
   $result = array();
   foreach ($options as $k => $v) {
     if (is_array($v) && !empty($v['name'])) {
-      $result[$k] = $v['name'];
+      $result[$k] = $v['name'] . ' (' . $k . ')';
     }
     elseif (is_array($v)) {
       $result[$k] = $k;
@@ -1064,7 +1064,7 @@ function theme_feeds_ui_mapping_form($variables) {
   $rows = array();
   foreach (element_children($form['legendset']['legend']['targets']) as $k) {
     $rows[] = array(
-      check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['name'])),
+      check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['name']) . ' (' . $k . ')'),
       check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['description'])),
     );
   }
@@ -1185,6 +1185,7 @@ function feeds_ui_importer_import_submit($form, &$form_state) {
   $save = feeds_importer($importer->id);
   $save->setConfig($importer->config);
   foreach (array('fetcher', 'parser', 'processor') as $type) {
+    $save->setPlugin($importer->config[$type]['plugin_key']);
     $save->$type->setConfig($importer->config[$type]['config']);
   }
   $save->save();
