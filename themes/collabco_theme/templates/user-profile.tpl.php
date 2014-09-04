@@ -21,7 +21,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			drupal_set_message(print_r($GLOBALS, TRUE));
+			<?php drupal_set_message(print_r($GLOBALS, TRUE)); ?>
 			  <a href="<?php echo "$base_path/user/" . $account->uid; ?>/edit/profile"><i class="icon-edit"></i> <?php echo $base_path." | ".$base_root; ?> Edit your profile</a>
 			<?php } ?>
 		</div>
