@@ -52,10 +52,10 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
       )));
     }
     else {
-      drupal_set_message(t('%title is now @state and published.', array(
-        '%title' => $group->title,
-        '@state' => meta_group_og_state_title($og_state),
-      )));
+      //drupal_set_message(t('%title is published and @state.', array(
+      //  '%title' => $group->title,
+      //  '@state' => meta_group_og_state_title($og_state),
+      //)));
     }
   }
 	meta_email_callback_user_joined($gid, $uid, $mid, $og_state);
@@ -71,7 +71,7 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
  */
 function meta_group_og_state_title($og_state) {
   $titles = og_group_content_states();
-  return strtolower($titles[$og_state - 1]);
+  return strtolower($titles[$og_state]);
 }
 
 function _meta_group_og_membership_update($gid, $uid) {
@@ -246,26 +246,28 @@ function _meta_group_user_access_group($node, $account=NULL) {
 
 function _meta_group_page_profile_hubs() {
   global $user;
-	$groups_hosted = views_embed_view('meta_membership_list_group_by_user', 'owned');
-	$groups_joined = views_embed_view('meta_membership_list_group_by_user', 'list');
 
-  $admin_uids = array_keys(meta_group_get_admins());
+  $is_admin = in_array($user->uid, array_keys(meta_group_get_admins()));
+
+  $groups_hosted = views_embed_view('meta_membership_list_group_by_user', 'owned');
+	$groups_joined = views_embed_view('meta_membership_list_group_by_user', 'list');
   
-  if (in_array($user->uid, $admin_uids)) {
+  $content = t('<h2>Hubs you joined</h2> !groups_joined<h2>Hubs you host</h2> !groups_hosted', array(
+    '!groups_joined' => $groups_joined,
+    '!groups_hosted' => $groups_hosted,
+  ));
+  if ($is_admin) {
     $groups_in_draft = views_embed_view('meta_node_list_hub', 'list');
-   	$content = t('<h2>Hubs you host</h2> !groups_hosted <h2>Hubs you joined</h2> !groups_joined <h2>Hubs you may publish</h2> !groups_in_draft', array(
-      '!groups_hosted' => $groups_hosted,
-      '!groups_joined' => $groups_joined,
+    $content .= t('<h2>Hubs you may publish</h2> !groups_in_draft', array(
       '!groups_in_draft' => $groups_in_draft,
     ));
   }
-  else {
-    $content = t('<h2>Hubs you host</h2> !groups_hosted <h2>Hubs you joined</h2> !groups_joined', array(
-      '!groups_hosted' => $groups_hosted,
-      '!groups_joined' => $groups_joined,
+  if (!strpos($groups_hosted, 'nothing') || $is_admin) {
+    $members_pending = views_embed_view('og_members_admin2');
+    $content .= t('<h2>Hubs with pending or blocked members</h2> !members_pending', array(
+      '!members_pending' => $members_pending,
     ));
   }
-
 	return $content;
 }
 

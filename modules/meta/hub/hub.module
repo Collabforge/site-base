@@ -133,6 +133,7 @@ function hub_get_members_count($gid) {
       ->fields('og')  
       ->condition('og.entity_type','user','=')
       ->condition('og.gid', $gid, '=')
+      ->condition('og.state', 1, '=')
       ->execute();
     $num_of_results = $result->rowCount();   
     return $num_of_results;

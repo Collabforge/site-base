@@ -218,17 +218,14 @@ function meta_email_callback_user_joined($gid, $uid, $mid, $og_state) {
     return FALSE;
   }
   $owner = user_load($group->uid);
-
+  $admins = meta_group_get_admins();
   $members = meta_group_get_group_members($gid);
-  $members_excluded = array(); 
+
+  $remaining_members = array();
   foreach ($members as $member) {
-    if ($member->uid == $user->uid) {         
-      continue;
+    if ($member->uid != $user->uid && $member->uid == $owner->uid) {
+      $remaining_members[] = $member;
     }
-    if ($member->uid == $owner->uid) {
-      continue;
-    }
-    $members_excluded[] = $member;
   }
 
   $pars = array(
@@ -242,10 +239,11 @@ function meta_email_callback_user_joined($gid, $uid, $mid, $og_state) {
     meta_email_send($key, NULL, array($user), $pars);
     $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_group_owner' : 'member_request__to_group_owner';
     meta_email_send($key, NULL, array($owner), $pars);
+    meta_email_send($key, NULL, $admins, $pars);
   }
-  if (!empty($members_excluded)) {
+  if (!empty($remaining_members)) {
     $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_group_members' : 'member_request__to_group_members';
-    meta_email_send($key, NULL, $members_excluded, $pars);
+    meta_email_send($key, NULL, $remaining_members, $pars);
   }
 } 
 
@@ -449,44 +447,6 @@ function meta_email_mail($key, &$message, $params) {
       '!body' => $message['body'][0],
     )), 'warning');
   }
-  // @todo @fixme TEMP test, disables all emails going out Remove next line!!!
+  //@todo @fixme TEMP test, disables all emails going out Remove next line!!!
   //$message = array();
 }
-
-/**
-for help
-
-    case 'user_added_to_hub':
-         $config['message'] = t("Hi @username \n
-          @from has added you to the Continuous Collaboration Hub called @title \n
-          You will be able to join the discussion in the Hub Topics and contribute useful files in the Hub Library \n
-          If you don't want updates in your Activity Feed from the Hub, simply visit Your Hubs @url , find the Hub you've been added to, and click Unsubscribe",$values);
-        break;
-    case 'send_for_revision' :
-       // $to = variable_get('site_mail', 'admin@example.com');
-        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail ); 
-        $config['message'] = t("Hi META admin, \n
-         A new Hub requires your attention. @from has submitted their hub '@title' for you to review.
-         Member name: @from    
-         Member email: @from_email "
-          ,$values);
-        break;  
-    case 'join_hub' :
-        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail, '@to' => $to_user->name ); 
-        $config['message'] = t("Hi @to, \n
-         A member has joined your hub, '@title'. 
-         Name: @from "
-          ,$values);
-        break;  
-    case 'hub_published' :
-        $url = url('hubs', array('absolute' => TRUE));
-        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail, '@to' => $to_user->name, '@url' => $url ); 
-        $config['message'] = t("Hi @to, \n
-         Your hub, @title, has been approved and published by the META Administrator.
-         Click here to view your hub @url "
-          ,$values);  
-       break;   
-
-
-
-*/
