@@ -174,7 +174,7 @@ function theme_date_nav_title($params) {
       break;
     case 'month':
       $format = !empty($format) ? $format : (empty($date_info->mini) ? $format_with_year : $format_without_year);
-      $title = date_format_date($date_info->min_date, 'custom', $format);
+      $title = date_format_date($date_info->min_date, 'custom', 'M');
       $date_arg = $date_info->year . '-' . date_pad($date_info->month);
       break;
     case 'day':
