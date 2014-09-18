@@ -84,6 +84,10 @@ function collabco_forms_form_comment_form_alter(&$form, &$form_state, $form_id) 
   // '#disabled' does not seem to work here
   unset($form['author']['_author']);
 
+  $form['actions']['submit']['#value'] = 
+    in_array('inline_entity_form_trigger_submit', $form['actions']['submit']['#submit'])
+    ? t('Post comment and attachment') : t('Post comment');
+
   $form['notify_settings']['notify']['#title'] = t('Notify me via email for...');
   $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_NODE] = t('all new comments');
   $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_COMMENT] = t('replies to my comment');
@@ -191,4 +195,51 @@ function collabco_forms_redirect_handler($form, &$form_state) {
 function collabco_forms_field_extra_fields_alter(&$extra_fields) {
   // "User name and password"
   $extra_fields['user']['user']['form']['account']['description'] .= ' ' . t('NOT USED ON THIS SITE');
+}
+
+/**
+ * Implements hook_filter_info_alter().
+ */
+function collabco_forms_filter_info_alter(&$info) {
+  $info['filter_html']['default settings']['filter_html_help'] = 0;
+  unset($info['filter_autop']['tips callback']);
+  unset($info['filter_html']['tips callback']); 
+  unset($info['filter_url']['tips callback']);
+  unset($info['freelinking']['tips callback']); // freelinking.module
+  unset($info['filter_mentions']['tips callback']); // mentions.module
+}
+
+/**
+ * Implements hook_inline_entity_form_settings_alter().
+ *
+ * @param $settings
+ *   An array with the following keys:
+ *   - entity_type - The entity_type being managed.
+ *   - bundles - Bundles of entities that the user is allowed to create.
+ *   - column - The name of the ref. field column that stores the entity id.
+ * @param $field
+ *   The field array of the reference field.
+ * @param $instance
+ *   The instance array of the reference field.
+ */
+function collabco_forms_inline_entity_form_settings_alter(&$settings, $field, $instance) {
+  if ($field['type'] == 'entityreference' && $field['field_name'] == 'field_file_ref') {
+    // Only knowledge_objects may be added via the inline entity form.
+    // @todo detect what field_file_ref refers to and use that
+    $settings['bundles'] = array('knowledge_object');
+  }
+}
+
+/**
+ * Perform alterations before an entity form is included in the IEF widget.
+ *
+ * @param $entity_form
+ *   Nested array of form elements that comprise the entity form.
+ * @param $form_state
+ *   The form state of the parent form.
+ */
+function collabco_forms_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  if ($entity_form['#bundle'] == 'knowledge_object') {
+    unset($entity_form['og_group_ref']);
+  }
 }
