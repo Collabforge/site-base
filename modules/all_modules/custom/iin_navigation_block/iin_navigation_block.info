@@ -1,0 +1,11 @@
+name = IIN Navigation Block
+description = provides a navigation block for site users.
+core = 7.x
+package = IIN Custom
+
+
+; Information added by drush on 2013-08-29
+version = "meta-dev"
+project = "iin_navigation_block"
+datestamp = "1377773591"
+

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Collabco User Stats Feature feature.
+ */
+
+include_once 'collabco_user_stats_feature.features.inc';

@@ -1,0 +1,134 @@
+<?php
+
+/**
+ * Set parent nid and save term.
+ */
+function profile_importer_import() {
+  // Query migrating database.
+  $query = db_select('profile_import', 'p')
+    ->fields('p')
+    ->execute();
+  foreach ($query as $row) {
+    $user_query = db_select('users', 'u')
+      ->fields('u')
+      ->condition('name', $row->Name, '=')
+      ->execute();
+    foreach ($user_query as $user) {
+      $profile = profile_create(array('user' => $user->uid, 'type' => 'profile'));
+      $profile->field_personal_bio['und'][0]['value'] = check_plain($row->PersonalBio);
+      $profile->field_personal_bio['und'][0]['format'] = 'filtered_html';
+      $profile->field_business_position['und'][0]['value'] = check_plain($row->BusinessPosition);
+      profile_importer_add_subterm(check_plain($row->expertise), 'areas_of_participant_expertise', $profile);
+      $org_query = db_select('node', 'o')
+        ->fields('o')
+        ->condition('title', $row->Organisation, '=')
+        ->execute();
+      foreach ($org_query as $org) {
+        if (!empty($org->nid)) {
+          $profile->field_organisation_ref['und'][0]['target_id'] = $org->nid;
+        }
+      }
+      profile2_save($profile);
+    }
+  }
+}
+
+function profile_importer_add_subterm($value, $vocab, $entity) {
+  if ($value) {
+    $names = taxonomy_vocabulary_get_names();
+    $vid = $names[$vocab]->vid;
+    $term = new stdClass();
+    $term->vid = $vid;
+    $term->name = $value;
+    $terms = taxonomy_get_term_by_name($value, $vocab);
+    foreach ($terms as $t) {
+      // Checks to see if exists a term with the same name and parent.
+      if ((empty($t->parent) and empty($term->parent)) or ($t->parent === $term->parent)) {
+        $term->tid = $t->tid;
+        return;
+      }
+    }
+    if (empty($term->tid)) {
+      // This is a new term, so save it.
+      taxonomy_term_save($term);
+    }
+    // Term field to point to the final term id.
+    $entity->field_areas_of_expertise['und'][0]['tid'] = $term->tid;
+  }
+}
+
+/**
+ * Set parent nid and save term.
+ */
+function profile_importer_message_fix() {
+  // Query migrating database.
+  $query = db_select('profile_import', 'p')
+    ->fields('p')
+    ->execute();
+  foreach ($query as $row) {
+    $user_query = db_select('users', 'u')
+      ->fields('u')
+      ->condition('name', $row->Name, '=')
+      ->execute();
+    foreach ($messages as $message) {
+      $message = message_create('create_comment', array(), $account);
+      // Save reference to the node in the node reference field, and the
+      // "publish" state (i.e. if the node is published or unpublished).
+      $wrapper = entity_metadata_wrapper('message', $message);
+      $wrapper->field_node_ref->get;
+      $wrapper->field_comment_ref->get($comment);
+
+      // The message should be published only if the node and the comment are
+      // both published.
+      $published = $node->status && $comment->status;
+      $wrapper->field_published->set($published);
+      $wrapper->save();
+
+      $ork_query = db_select('node', 'o')
+        ->fields('o')
+        ->condition('title', $row->Organisation, '=')
+        ->execute();
+      foreach ($org_query as $org) {
+        if (!empty($org->nid)) {
+          $profile->field_organisation_ref['und'][0]['target_id'] = $org->nid;
+        }
+      }
+      profile2_save($profile);
+    }
+  }
+}
+
+
+/**
+ * Set parent nid and save term.
+ */
+function profile_importer_uppercase_username() {
+  // Query migrating database.
+  $users = entity_load('user');
+  foreach ($users as $user) {
+    if (!empty($user->name)) {
+      $language = ($user->language) ? $user->language : 'und';
+      $name = ucwords($user->name);
+      $split_names = explode(' ', $name);
+      $edit = array(
+        'name' => $name,
+        'field_first_name' => array(
+          $language => array(
+            0 => array(
+              'value' => $split_names[0],
+            ),
+          ),
+        ),
+        'field_last_name' => array(
+          $language => array(
+            0 => array(
+              'value' => $split_names[1],
+            ),
+          ),
+        ),
+      );
+      user_save($user,$edit);
+    }
+  }
+}
+
