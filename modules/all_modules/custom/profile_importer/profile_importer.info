@@ -1,4 +1,0 @@
-name = Profile Importer
-description = imports profiles
-core = 7.x
-package = Collabco

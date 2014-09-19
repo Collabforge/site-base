@@ -1,1 +1,16 @@
-26fb988
+Collabco Base Engine Changelog & Version
+
+Current version: 1.1.0
+
+--------- Version 1.1.0 -----------
+19/09/2014
+ - Removed Custom Theme (/profiles/collabco/themes/custom_theme)
+ + Merged Custom Theme into Collabco
+ + Minimised large images (up to 50% reduction)
+ - Removed ckeditor.zip (useless) and ckeditor_old (useless)
+ + Updated collabco.info with warning not to install traditionally.
+
+
+--------- Version 1.0.0 -----------
+19/09/2014
+ + Began versioning, starting from stable

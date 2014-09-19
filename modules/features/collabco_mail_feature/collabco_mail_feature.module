@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Collabco Mail Feature feature.
- */
-
-include_once 'collabco_mail_feature.features.inc';
