@@ -9,6 +9,8 @@ Current version: 1.1.0
  + Minimised large images (up to 50% reduction)
  - Removed ckeditor.zip (useless) and ckeditor_old (useless)
  + Updated collabco.info with warning not to install traditionally.
+ - Removed and rearranged folders in modules
+ - Removed “features” directory in modules, moved to repo “Utilities”
 
 
 --------- Version 1.0.0 -----------
