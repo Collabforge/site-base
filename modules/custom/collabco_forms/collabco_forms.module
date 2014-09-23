@@ -202,11 +202,32 @@ function collabco_forms_field_extra_fields_alter(&$extra_fields) {
  */
 function collabco_forms_filter_info_alter(&$info) {
   $info['filter_html']['default settings']['filter_html_help'] = 0;
+  // This will suppress info in two places: below the form and on the separate
+  // /filter/tips page reached when you click "More info about text formats"
+  // An alternative is to suppress these via CSS.
   unset($info['filter_autop']['tips callback']);
-  unset($info['filter_html']['tips callback']); 
+  unset($info['filter_html']['tips callback']);
   unset($info['filter_url']['tips callback']);
-  unset($info['freelinking']['tips callback']); // freelinking.module
-  unset($info['filter_mentions']['tips callback']); // mentions.module
+  //unset($info['freelinking']['tips callback']); // freelinking.module
+  //unset($info['filter_mentions']['tips callback']); // mentions.module
+}
+
+/**
+ * Implements hook_field_widget_FIELDTYPE_form_alter().
+ */
+function collabco_forms_field_widget_file_generic_form_alter(&$element, &$form_state, $context) {
+  unset($element['#file_upload_description']);
+}
+
+/**
+ * Implements hook_field_widget_FIELDTYPE_form_alter().
+ */
+function collabco_forms_field_widget_image_image_form_alter(&$elements, &$form_state, $context) {
+  if (is_array($elements)) {
+    foreach ($elements as $key => $element) {
+      unset($elements[$key]['#description']);
+    }
+  }
 }
 
 /**
@@ -241,5 +262,7 @@ function collabco_forms_inline_entity_form_settings_alter(&$settings, $field, $i
 function collabco_forms_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
   if ($entity_form['#bundle'] == 'knowledge_object') {
     unset($entity_form['og_group_ref']);
+    // Default, 'Published' is fine.
+    unset($entity_form['status']);
   }
 }
