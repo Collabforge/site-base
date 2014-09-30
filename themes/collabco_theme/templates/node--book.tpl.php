@@ -78,33 +78,42 @@
  * @see template_process()
  */
 ?>
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-
-  <?php print $user_picture; ?>
-
-  <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
-
-  <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
-  <?php endif; ?>
-
-  <div class="content"<?php print $content_attributes; ?>>
-    <?php
-      // We hide the comments and links now so that we can render them later.
-      hide($content['comments']);
-      hide($content['links']);
-      print render($content);
-    ?>
+<?php if (!$is_front): ?>
+  <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+  <div class="nodewrapper">
+  <div class="userpicture">
+    <?php /* add "print $user_picture;" here to fix node user profiles displaying */ ?>
   </div>
 
-  <?php print render($content['links']); ?>
+    <?php if ($display_submitted): ?>
+      <div class="submitted">
+        <div class="submitted-content-posted">
+           <?php print 'Posted ' . $date; ?><br />
+           <?php print ' by ' . $name; ?>
+      </div>
+    <?php endif; ?></div><div class="clearfix"></div>
 
-  <?php print render($content['comments']); ?>
+    <div class="contentarticle"<?php print $content_attributes; ?>>
+      <?php print render($content['print_links']); ?>
+      <div class="templatedtitlestyle">
+        <?php print render($title_prefix); ?>
+        <h2<?php print $title_attributes; ?>><?php print $title; ?></h2>
+        <?php print render($title_suffix); ?>
+      </div>
+      <div class="contentartcile-inner">
+        <?php
+          // We hide these items here so that we can render them later.
+          hide($content['book_navigation']);
+          hide($content['comments']);
+          hide($content['links']);
+          print render($content);
+        ?>
+      </div>
+    </div>
+    <?php print render($content['book_navigation']); ?>
+    <?php print render($content['links']); ?>
+    <?php print render($content['comments']); ?>
 
-</article>
+  </article>
+<?php endif; ?>
+
