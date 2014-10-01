@@ -41,7 +41,7 @@
       <?php if ($prev_url): ?>
         <a href="<?php print $prev_url; ?>" class="page-previous" title="<?php print t('Go to previous page'); ?>"><?php print t('‹ ') . t('Previous')/*$prev_title;*/ ?></a>
       <?php endif; ?>
-      <?php if (FALSE/*$parent_url*/): ?>
+      <?php if ($parent_url): ?>
         <a href="<?php print $parent_url; ?>" class="page-up" title="<?php print t('Go to parent page'); ?>"><?php print t('up'); ?></a>
       <?php endif; ?>
       <?php if ($next_url): ?>
