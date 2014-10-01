@@ -10,6 +10,8 @@ stylesheets[all][] = css/open_framework.css
 stylesheets[print][] = css/open_framework_print.css
 stylesheets[all][] = css/ie.css
 
+; bootstrap.min.js is loaded conditionally, due to issue with book navigation.
+; see open_framework_js_alter(), template.php.
 ;scripts[] = bootstrap/js/bootstrap.min.js
 scripts[] = js/open_framework.js
 scripts[] = js/override.js

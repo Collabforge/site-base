@@ -34,6 +34,12 @@ function open_framework_js_alter(&$javascript) {
 	  $javascript["$migrate_file"]['weight'] = 1;
     }
   }
+  $page = menu_get_object();
+  // Don't load bootstrap JS when on book pages. It breaks navigation block.
+  if (empty($page->book)) {
+    $bootstrap_js = drupal_get_path('theme', 'open_framework') . '/bootstrap/js/bootstrap.min.js';
+    drupal_add_js($bootstrap_js);
+  }
 }
 
 function open_framework_preprocess_page(&$vars) { 
