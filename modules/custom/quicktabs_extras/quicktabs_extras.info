@@ -1,0 +1,4 @@
+name = Quicktabs Extras
+description = Alters functionality of quicktabs by breaking out content from nav
+core = 7.x
+dependencies[] = "quicktabs"

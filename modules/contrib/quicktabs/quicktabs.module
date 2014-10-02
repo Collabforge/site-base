@@ -135,7 +135,7 @@ function quicktabs_block_info() {
   $blocks = array();
   foreach (quicktabs_load_multiple() as $qt_name => $quicktabs) {
     $blocks[$qt_name]['info'] = $quicktabs->title;
-    $blocks[$qt_name . '_qt_content']['info'] = $quicktabs->title . ' - Content';
+    $blocks[$qt_name]['cache'] = DRUPAL_NO_CACHE;
   }
   return $blocks;
 }
@@ -145,24 +145,11 @@ function quicktabs_block_info() {
  */
 function quicktabs_block_view($delta = '') {
   $block = array();
-
-  // Check if it is the content block or not
-  substr($delta, -11) == '_qt_content' ? $content_tab = 1 : $content_tab = 0;
-  if($content_tab) {
-    $delta = substr($delta,0, strrpos($delta, '_qt_content'));
-  }
-
   if ($qt = quicktabs_build_quicktabs($delta)) {
     if (isset($qt['content']) && !empty($qt['content'])) {
       $block['content'] = $qt['content'];
       $block['content']['#contextual_links']['quicktabs'] = array('admin/structure/quicktabs/manage', array($delta));
       $block['subject'] = check_plain($qt['#title']);
-      // remove either the tabs or content depending on the block
-      if($content_tab){
-        unset($block['content']['content']['tabs']);
-      }else{
-        unset($block['content']['content']['container']);
-      }
     }
   }
   return $block;
