@@ -1,0 +1,5 @@
+name = Meta field access
+description = Handles access control for general fields in a Meta site
+dependencies[] = meta_core
+package = Meta
+core = 7.x
