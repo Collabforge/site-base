@@ -299,6 +299,11 @@ p {
   font-size: 0.875em;
 }
 
+.node-type-book #page-title {
+  /* Page title provided by node--book.tpl.php */
+  display: none;
+}
+
 /* Icon overrides ---------------------------*/
 
 [class^="icon-"], [class*=" icon-"]{ /*NB this can be removed if the fontawesome css is inherited after bootstrap*/
