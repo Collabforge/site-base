@@ -1,6 +1,0 @@
-name = Custom: Hub actions page
-description = Custom module for handling hub actions
-version = 1.0
-core = 7.x
-package = hub
-project = "Custom hub"

@@ -1,5 +1,0 @@
-name = Customisation for admin pages
-description = Custom module for altering forms and configuarion in admin area
-version = 1.1
-core = 7.x
-

@@ -1,5 +1,0 @@
-name = Enables debug
-description = Enables error reporting and also provide some development functions. <i><IMPORTANT</i> Should NOT be enabled in Production website.
-version = 1.0
-core = 7.x
-
