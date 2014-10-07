@@ -21,9 +21,9 @@ dependencies[] = libraries
 ; Naturally to use OpenLayers or Leaflet maps, you'll need the OpenLayers and/or
 ; Leaflet modules.
 
-; Information added by Drupal.org packaging script on 2014-02-06
-version = "7.x-1.24"
+; Information added by Drupal.org packaging script on 2014-03-30
+version = "7.x-1.25"
 core = "7.x"
 project = "ip_geoloc"
-datestamp = "1391668113"
+datestamp = "1396180746"
 

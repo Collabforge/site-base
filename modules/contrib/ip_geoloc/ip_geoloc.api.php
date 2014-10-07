@@ -42,8 +42,6 @@ function hook_get_ip_geolocation_alter(&$location) {
  *   The view from which $marker_locations was generated.
  */
 function hook_ip_geoloc_marker_locations_alter(&$marker_locations, &$view) {
-  // Machine name of your view here.
-
   // The $marker_location->marker_color has to be the name (without extension)
   // of one of the files in the ip_geoloc/markers directory, or alternative,
   // if configured at admin/config/system/ip_geoloc.
@@ -54,6 +52,7 @@ function hook_ip_geoloc_marker_locations_alter(&$marker_locations, &$view) {
   // be centered on it. Or you can choose one of the other centering options, as
   // per normal.
 
+  // Machine name of your view goes in the line below.
   if ($view->name == 'my_beautiful_view') {
     if (count($marker_locations) >= 2) {
       $marker_locations[0]->marker_color = 'orange';
@@ -64,6 +63,7 @@ function hook_ip_geoloc_marker_locations_alter(&$marker_locations, &$view) {
     $observatory->longitude = -0.0015;
     $observatory->balloon_text = t('The zero-meridian passes through the courtyard of the <strong>Greenwich</strong> observatory.');
     $observatory->marker_color = 'white';
+    
     array_unshift($marker_locations, $observatory);
   }
 }

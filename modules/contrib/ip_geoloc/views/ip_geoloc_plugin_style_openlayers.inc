@@ -106,6 +106,9 @@ class ip_geoloc_plugin_style_openlayers extends views_plugin_style {
 
       $center_option = !isset($this->options['center_option']) ? IP_GEOLOC_MAP_CENTER_ON_FIRST_LOCATION : $this->options['center_option'];
       $visitor_location = ip_geoloc_get_visitor_location();
+      if (!isset($visitor_location['longitude'])) {
+        $visitor_location = db_query('SELECT * FROM {ip_geoloc} WHERE ip_address = :ip_address', array(':ip_address' => ip_address()))->fetchAssoc();
+      }
       if ($center_option == IP_GEOLOC_MAP_CENTER_ON_VISITOR && $center_set = isset($visitor_location['longitude'])) {
         $longitude = $visitor_location['longitude'];
         $latitude  = $visitor_location['latitude'];

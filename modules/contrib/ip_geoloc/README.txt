@@ -13,19 +13,21 @@ Download and enable IPGV&M like any other module. Visit its
 configuration page, .../admin/config/system/ip_geoloc.
 If you intend to use IPGV&M's built-in interface to Google Maps, untick all
 "Data collection option" boxes.
-If you intend to use IPGV&M with the OpenLayers module and also wish to
-show and center on the visitor's HTML-5 retrieved location, then you do need to
-tick the first "Data collection option" and select applicable roles below it.
+If you intend to use IPGV&M with the OpenLayers or Leaflet modules and also wish
+to show and center on the visitor's HTML-5 retrieved location, then you DO need
+to tick the first "Data collection option" and select applicable roles below it.
 
 You are now ready to map your View of Location, Geofield, Geolocation Field or
 GetLocations data and optionally center that map on the visitor's location.
 Visit the IPGV&M configuration page to specify an alternative marker set. When
 using Leaflet you can superimpose Font Awesome font characters on top of your
-markers.
+markers. See below for instructions on how to download the Font Awesome library.
 
-The "Views PHP" module is required for some of the Views included with IPGV&M.
-Session Cache API and "High-performance Javascript callback handler" modules are
-optional, but recommended.
+The "Views PHP" module is required for the included /visitor-log View. The core
+module Statistics must be enabled also when you wish to collect visitor data.
+It is not required for maps in general. The "Session Cache API" and
+"High-performance Javascript callback handler" modules are optional, but
+recommended.
 
 If you want to center the map on the visitor's location, but don't want to use
 the HTML5 style of location retrieval involving a browser prompt, you may want
@@ -76,19 +78,18 @@ for free.
 1a. If you decide to employ Smart IP....
 Install and enable Smart IP. There is no need to enable the Device Geolocation
 submodule as IPGV&M already has that functionality, plus more. At
-Configuration >> Smart IP you'll find two options to upload historic lat/long
-data. The one using the IPinfoDB web service is probably the quickest. The API
-key required on the Smart IP configuration page is free and is sent to you
-immediately by return email after you have filled out the short form at
-http://ipinfodb.com/register.php. On the Smart IP configuration page perform an
-IP lookup to verify that the key is correct.
+Configuration >> Smart IP you'll find a number of source to upload historic
+lat/long data. Pick any of these. A low-cost option is to download
+http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz and
+uncompress it in /sites/default/private/smart_ip.
+You may untick all the check boxes under the heading "Smart IP settings" on
+the Configuration >> Smart IP page.
 
 1b. If you decide to employ GeoIP instead of Smart IP...
-Download and enable the module. Then download and uncompress
-http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz and place
-it in sites/all/libraries/geoip. Go to the GeoIP configuration page and type
-the name of the file you've just downloaded, GeoLiteCity.dat. Save. That should
-be it.
+Download and enable the module. Then download
+http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz and 
+uncompress it in sites/all/libraries/geoip. Go to the GeoIP configuration page
+and type the name of the file you've just downloaded, GeoLiteCity.dat. Save.
 
 2. With either Smart IP or GeoIP configured, visit Configuration >> IPGV&M.
 Tick the check boxes as appropriate.
@@ -100,7 +101,7 @@ of 10 most recent visitors" should now show more markers.
 
 4. Go back the Configuration >> IPGV&M and complete the import process
 with a larger batch size until the IP geolocation database is up to date with
-the access log. It will automatically remain in synch from now on.
+the access log. It will automatically remain in sync from now on.
 
 CONFIGURING YOUR VIEW TO DISPLAY AS A MAP
 =========================================
@@ -129,7 +130,7 @@ Don't forget to download the Leaflet javascript library from
 http://leafletjs.com/download.html dropping it in sites/all/libraries and
 changing the folder name to leaflet. Remember to install and enable the
 Libraries API module too.
-If all's ok, you won't see any errors in the Status Report, i.e.
+When all's ok, you won't see any errors in the Status Report, i.e.
 .../admin/reports/status.
 
 OPENLAYERS TIPS
@@ -179,15 +180,16 @@ differentiator settings.
 =================================================================
 To install Font Awesome visit http://fortawesome.github.io/Font-Awesome and
 press the "Download" button. Unzip the downloaded file into the Drupal
-libraries directory, typically sites/all/libraries, so that the path to the
-essential style sheet becomes
-sites/all/libraries/font-awesome/css/font-awesome.css
+libraries directory, typically sites/all/libraries. Remove the version number
+from the directory name, so that the path to the essential style sheet becomes
+sites/all/libraries/font-awesome/css/font-awesome.min.css. Double-check via the
+Status Report page, .../admin/reports/status.
 
 UTILITY FUNCTIONS
 =================
-First of all, check out file ip_geoloc_api.inc for a number of useful utility
-functions for creating maps and markers, calculating distances between locations
-etc. All functions are documented and should be straightforward to use.
+Check out file ip_geoloc_api.inc for a number of useful utility functions for
+creating maps and markers, calculating distances between locations etc. All
+functions are documented and should be straightforward to use.
 
 HOOKS
 =====
@@ -196,19 +198,18 @@ See ip_geoloc.api.php
 HIGH PERFORMANCE AJAX
 =====================
 IPGV&M will take advantage of the "High-performance Javascript callback
-handler", if installed. Here are its installation instructions for Apache,
-in bullet form. For Nginx, see http://drupal.org/node/1876418
-
-o download and enable https://drupal.org/project/js (7.x-1.0-beta3 or later)
-o copy the file sites/all/modules/js/js.php to the document root, i.e where
-  index.php lives
+handler", if installed.
+Installation instructions for Nginx: http://drupal.org/node/1876418
+Installation instructions for Apache: 
+o download and enable https://drupal.org/project/js
+o find the .htacess in your document root, where your index.php lives
 o visit admin/config/system/js which displays a number of lines tailored for
   your server
-o copy those lines and paste them into the .htaccess file in the document-root,
-  immediately below the line "RewriteEngine on".
+o copy those lines and paste them into .htaccess below the line
+  "RewriteEngine on".
 
 IPGV&M will now perform its AJAX calls more efficiently. To switch this feature
-off, comment out the newly added lines from the .htaccess file (# in front).
+off, comment out the newly added lines from the .htaccess file (put # in front).
 
 RESTRICTIONS IMPOSED BY GOOGLE
 ==============================

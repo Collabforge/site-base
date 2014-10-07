@@ -54,11 +54,10 @@ class ip_geoloc_plugin_style_map extends views_plugin_style {
 
     $form['map_options'] = array(
       '#title' => t('Map options'),
-      '#type' => 'textfield',
-      '#size' => 127,
-      '#maxlength' => 511,
+      '#type' => 'textarea',
+      '#size' => 3,
       '#default_value' => $this->options['map_options'],
-      '#description' => t("If left blank, the default %default_options will produce a world map zoomed in to level 2. A list of map options can be found <a href='!google_map_docs'>here</a>. Remember to separate options with comma's, not semi-colons, and make sure your (double) quotes match.<br/>These options apply a grey hue to all roads:<br/>%example_options", array(
+      '#description' => t("If left blank, the default %default_options will produce a world map zoomed in to level 2 (subject to the centering option selected). A list of map options can be found <a href='!google_map_docs'>here</a>. Remember to separate options with comma's, not semi-colons, and make sure your (double) quotes match.<br/>These options apply a grey hue to all roads:<br/>%example_options", array(
         '%default_options' => IP_GEOLOC_RECENT_VISITORS_MAP_OPTIONS,
         '%example_options' => IP_GEOLOC_EXAMPLE_MAP_OPTIONS,
         '!google_map_docs' => IP_GEOLOC_DOC_GOOGLE_MAP_OPTIONS)),
@@ -150,7 +149,7 @@ class ip_geoloc_plugin_style_map extends views_plugin_style {
 
     if ($visitor_marker || $center_option == IP_GEOLOC_MAP_CENTER_ON_VISITOR) {
       // Perform database IP lookup as backup/replacement for HTML5 location
-      // Visitor may be moving so ignore existing lat/long.
+      // Visitor may be moving so ignore lat/long we have on the db.
       $resample = TRUE;
       // Do not store lat/long and city as it will obliterate the
       // reverse-geocoded one.
@@ -158,6 +157,10 @@ class ip_geoloc_plugin_style_map extends views_plugin_style {
       // We only need lat/long, not full street address.
       $reverse_geocode = FALSE;
       $visitor_location = ip_geoloc_get_location_by_ip(ip_address(), $resample, $store, $reverse_geocode);
+      if (!isset($visitor_location['latitude'])) {
+        // If everything failed use whatever we have on the database.
+        $visitor_location = db_query('SELECT * FROM {ip_geoloc} WHERE ip_address = :ip_address', array(':ip_address' => ip_address()))->fetchAssoc();
+      }
       if (isset($visitor_location['latitude']) && isset($visitor_location['longitude'])) {
         $center_latlng = array($visitor_location['latitude'], $visitor_location['longitude']);
       }

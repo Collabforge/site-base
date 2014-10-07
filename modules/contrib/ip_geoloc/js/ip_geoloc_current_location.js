@@ -10,20 +10,9 @@
         navigator.geolocation.getCurrentPosition(getLocation, handleLocationError, {enableHighAccuracy: true, timeout: 20000});
       }
       else {
-        // Use the geo.js unified API. This covers the W3C Geolocation API as well
-        // as some specific devices like Palm and Blackberry.
-        var data = new Object;
-        if (typeof(geo_position_js) != 'object') {
-          data['error'] = Drupal.t('IPGV&M: device does not support W3C API and the unified geo_position_js device API is not loaded.');
-          callback_php(callback_url, data, false);
-          return;
-        }
-        if (geo_position_js.init()) {
-          data['error'] = Drupal.t('IPGV&M cannot accurately determine visitor location. Browser does not support getCurrentPosition(): @browser', { '@browser': navigator.userAgent });
-          callback_php(callback_url, data, false);
-          return;
-        }
-        geo_position_js.getCurrentPosition(getLocation, handleLocationError, {enableHighAccuracy: true, timeout: 20000});
+        data['error'] = Drupal.t('IPGV&M: device does not support W3C API.');
+        callback_php(callback_url, data, false);
+        return;
       }
 
       function getLocation(position) {
@@ -36,15 +25,15 @@
           ip_geoloc_address['longitude'] = position.coords.longitude;
           ip_geoloc_address['accuracy']  = position.coords.accuracy;
 
-          if (status == google.maps.GeocoderStatus.OK) {
+          if (status === google.maps.GeocoderStatus.OK) {
             var google_address = response[0];
             ip_geoloc_address['formatted_address'] = google_address.formatted_address;
             for (var i = 0; i < google_address.address_components.length; i++) {
               var component = google_address.address_components[i];
-              if (component.long_name != null) {
+              if (component.long_name !== null) {
                 var type = component.types[0];
                 ip_geoloc_address[type] = component.long_name;
-                if (type == 'country' && component.short_name != null) {
+                if (type === 'country' && component.short_name !== null) {
                   ip_geoloc_address['country_code'] = component.short_name;
                 }
               }
@@ -60,25 +49,9 @@
       }
 
       function handleLocationError(error) {
-        switch (error.code) {
-          case 1:
-            text = Drupal.t('user declined to share location');
-            break;
-
-          case 2:
-            text = Drupal.t('position unavailable (connection lost?)');
-            break;
-
-          case 3:
-            text = Drupal.t('timeout');
-            break;
-
-          default:
-            text = Drupal.t('unknown error');
-        }
         var data = new Object;
-        data['error'] = Drupal.t('getCurrentPosition() returned error !code: !text. @browser',
-          {'!code': error.code, '!text': text, '@browser': navigator.userAgent});
+        data['error'] = Drupal.t('getCurrentPosition() returned error !code: !text Browser: @browser',
+          {'!code': error.code, '!text': error.message, '@browser': navigator.userAgent});
         // Pass error back to PHP rather than alert();
         callback_php(callback_url, data, false);
       }
@@ -92,8 +65,9 @@
           success: function () {
           },
           error: function (http) {
-            if (http.status > 0 && http.status != 200 && http.status != 404) {
-              // 404 happens when Clean URLs isn't enabled.
+            if (http.status > 0 && http.status !== 200 && http.status !== 404 && http.status !== 503) {
+              // 404 may happen intermittently and when Clean URLs isn't enabled
+              // 503 may happen intermittently, see [#2158847]
               alert(Drupal.t('IPGV&M: an HTTP error @status occurred.', { '@status': http.status }));
             }
           },

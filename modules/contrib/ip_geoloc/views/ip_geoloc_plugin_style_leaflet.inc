@@ -92,14 +92,14 @@ class ip_geoloc_plugin_style_leaflet extends views_plugin_style {
     $form_state['renderer'] = 'leaflet';
     ip_geoloc_plugin_style_bulk_of_form($this, $form, $form_state);
 
-    $desc = t('Optionally enter a special character representing an icon to be superimposed on the marker image. You may copy and paste from <a target="_font_awesome" href="!url1">Font Awesome</a> or any other source, such as <a target="_fsymbols" href="!url2">fsymbols</a>. Copy and paste either the font icon or the unicode, like <strong>&amp;#xf015;</strong>', array(
+    $desc = t('<strong>Leaflet</strong> only: optionally enter a special character representing an icon to be superimposed on the marker image. You may copy and paste from <a target="_font_awesome" href="!url1">Font Awesome</a> (requires installation, see README) or any other source, such as <a target="_fsymbols" href="!url2">fsymbols</a> (no installation required). Copy and paste either the font icon or the unicode, like <strong>&amp;#xf015;</strong>', array(
       '!url1' => url('http://fortawesome.github.io/Font-Awesome/cheatsheet'),
       '!url2' => url('http://fsymbols.com'),
     ));
     $path = drupal_get_path('module', 'ip_geoloc');
     if (!ip_geoloc_get_ccs_library_path('font-awesome')) {
-      $desc .= ' ' . t('Please follow instructions in the <a href="!url">README</a> to install the <em>Font Awesome</em> library.', array(
-        '!url' => url("$path/README.txt"),
+      $desc .= ' ' . t('Please follow instructions in the <a href="@README">README</a> to install the <em>Font Awesome</em> library.', array(
+        '@README' => url("$path/README.txt"),
       ));
     }
     $form['default_marker_special_char'] = array(
@@ -299,6 +299,10 @@ class ip_geoloc_plugin_style_leaflet extends views_plugin_style {
     uasort($locations, '_ip_geoloc_plugin_style_leaflet_compare');
 
     $visitor_location = ip_geoloc_get_visitor_location();
+    if (!isset($visitor_location['latitude'])) {
+      $visitor_location = db_query('SELECT * FROM {ip_geoloc} WHERE ip_address = :ip_address', array(':ip_address' => ip_address()))->fetchAssoc();
+    }
+    
     if ((empty($locations) || $center_option == IP_GEOLOC_MAP_CENTER_ON_VISITOR) && isset($visitor_location['latitude'])) {
       $map['center'] = array(
         'lat' => $visitor_location['latitude'],
@@ -377,18 +381,18 @@ class ip_geoloc_plugin_style_leaflet extends views_plugin_style {
         }
         if (!empty($location->marker_special_char_class)) {
           $feature['specialCharClass'] = $location->marker_special_char_class;
-          if (strpos($feature['specialCharClass'], 'icon-') !== FALSE) {
-            // Load the 20k of CSS that comes with Font Awesome, which in return
-            // tells the browser to fetch either the WOFF (34k), TTF (65k) or
-            // SVG (162k) files that define the font faces.
+          if (strpos($feature['specialCharClass'], 'fa fa-') !== FALSE || strpos($feature['specialCharClass'], 'icon-') !== FALSE /* Font-Awesome v3 */) {
+            // Load the 18k of CSS that comes with Font Awesome, which in return
+            // tells the browser to fetch either the WOFF (44k), TTF (80k) or
+            // SVG (202k) files that define the font faces.
             drupal_add_library('ip_geoloc', 'ip_geoloc_font_awesome');
           }
         }
       }
       elseif (!empty($this->options['default_marker_special_char'])) {
         $feature['specialChar'] = $this->options['default_marker_special_char'];
-        // No UI field, assuming Font Awesome.
-        $feature['specialCharClass'] = 'icon-light';
+        // Assume Font Awesome, add .fa class to make the special char work.
+        $feature['specialCharClass'] = 'fa';
         drupal_add_library('ip_geoloc', 'ip_geoloc_font_awesome');
       }
       if (!empty($location->marker_tooltip)) {

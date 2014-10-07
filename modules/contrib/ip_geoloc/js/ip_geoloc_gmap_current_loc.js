@@ -3,7 +3,7 @@
   Drupal.behaviors.addGMapCurrentLocation = {
     attach: function (context, settings) {
 
-      if (typeof(google) != 'object') {
+      if (typeof(google) !== 'object') {
         // When not connected to Internet.
         return;
       }
@@ -20,11 +20,6 @@
         if (navigator.geolocation) {
           // Note that we use the same function for normal and error behaviours.
           navigator.geolocation.getCurrentPosition(displayMap, displayMap, {enableHighAccuracy: true});
-        }
-        else if (typeof(geo_position_js) == 'object' && geo_position_js.init()) {
-          // Use the geo.js unified API. This covers the W3C Geolocation API
-          // as well as some specific devices like Palm and Blackberry.
-          geo_position_js.getCurrentPosition(displayMap, displayMap, {enableHighAccuracy: true});
         }
         else {
           // Don't pop up annoying alert. Just show blank map of the world.
@@ -77,5 +72,5 @@
         });
       }
     }
-  }
+  };
 })(jQuery);

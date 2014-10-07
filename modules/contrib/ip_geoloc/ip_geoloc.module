@@ -59,7 +59,7 @@ function ip_geoloc_library() {
   $libraries['ip_geoloc_font_awesome'] = array(
     'title' => 'IP Geolocation Views & Maps Font Awesome extension',
     'css' => array(
-      "$css_path/font-awesome.css" => array(
+      "$css_path/font-awesome.min.css" => array(
         'type' => 'file',
         'media' => 'screen',
       ),
@@ -180,7 +180,7 @@ function ip_geoloc_init() {
       else {
         ip_geoloc_debug(t('Smart IP and GeoIP API fallbacks NOT enabled.'));
       }
-      // Clear the 'position_pendinng_since' timer.
+      // Clear the 'position_pending_since' timer.
       _ip_geoloc_set_session_value('position_pending_since', NULL);
     }
     // 2nd condition is to avoid HTTP 503 error.
