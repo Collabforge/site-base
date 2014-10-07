@@ -1,0 +1,5 @@
+name = Quicktabs Extras
+description = Alternatives for standard Quicktabs operations, in particular separation of tabs and content.
+core = 7.x
+configure = admin/structure/quicktabs_xt
+dependencies[] = quicktabs

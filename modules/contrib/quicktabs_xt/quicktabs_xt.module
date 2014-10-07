@@ -1,0 +1,83 @@
+<?php
+
+DEFINE('QUICKTABS_XT_SUFFIX', '_qt_content');
+
+/**
+ * Implements hook_help().
+ */
+function quicktabs_xt_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#quicktabs_xt':
+      $output = t('The Quicktabs XT module allows you to separate your Quicktab tabs from your Quicktab content blocks.');
+      return '<p>' . $output . '</p>';
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function quicktabs_xt_block_info() {
+  $blocks = array();
+  foreach (quicktabs_load_multiple() as $qt_name => $quicktabs) {
+    $blocks[$qt_name . QUICKTABS_XT_SUFFIX]['info'] = 'QT: ' . $quicktabs->title . ' - ' . t('content');
+    $blocks[$qt_name . QUICKTABS_XT_SUFFIX]['cache'] = DRUPAL_NO_CACHE;
+  }
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_info_alter().
+ *
+ * Adds ' - tabs' suffixes to the admin names of altered Quicktab blocks.
+ */
+function quicktabs_xt_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if (!empty($blocks['quicktabs_xt'])) {
+    $quicktabs = quicktabs_load_multiple();
+    foreach ($blocks['quicktabs_xt'] as $delta => $block_info) {
+      if ($delta_orig = quicktabs_xt_orig_qt_block_delta($delta)) {
+        $blocks['quicktabs'][$delta_orig]['info'] = 'QT: ' . $quicktabs[$delta_orig]->title . ' - ' . t('tabs');
+      }
+    }
+  }
+}
+
+/**
+ *  Implements hook_block_view().
+ *
+ *  Near-identical to quicktabs_block_view(), but with tabs removed.
+ */
+function quicktabs_xt_block_view($delta) {
+  $block = array();
+  $delta_orig = quicktabs_xt_orig_qt_block_delta($delta);
+  if ($quicktab = quicktabs_build_quicktabs($delta_orig)) {
+    if (!empty($quicktab['content'])) {
+      $block['content'] = $quicktab['content'];
+      $block['content']['#contextual_links']['quicktabs'] = array('admin/structure/quicktabs/manage', array($delta_orig));
+      $block['subject'] = check_plain($quicktab['#title']);
+      unset($block['content']['content']['tabs']);
+    }
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function quicktabs_xt_block_view_alter(&$data, $block) {
+  // Remove content from Quicktabs blocks that have Quicktabs XT companions.
+  // @todo refine
+  if ($block->module == 'quicktabs') {
+    unset($data['content']['content']['container']);
+  }
+}
+
+/**
+ * Returns the name of the original Quicktabs block, the one holding the tabs.
+ *
+ * @param string $xt_delta
+ * @return string|bool, either the $delta of the orig. block or FALSE
+ */
+function quicktabs_xt_orig_qt_block_delta($xt_delta) {
+  $pos = strrpos($xt_delta, QUICKTABS_XT_SUFFIX);
+  return $pos ? substr($xt_delta, 0, $pos) : FALSE;
+}
