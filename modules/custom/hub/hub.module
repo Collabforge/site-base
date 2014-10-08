@@ -110,7 +110,7 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
           )
           , 'ui-header-menu ui-menu-hub-book' => array(
               'title' => t('WikiBooks')
-              , 'href' => sprintf('node/%s/book', $node->nid)
+              , 'href' => sprintf('node/%s/books', $node->nid)
           )
         );
         $attributes = array('class' => array('nav','nav-tabs'));

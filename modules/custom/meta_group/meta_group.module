@@ -161,6 +161,14 @@ function meta_group_menu() {
 	    'access callback' => '_meta_group_user_access_group',
 	    'access arguments' => array(1)
 	);
+	$items['node/%node/books'] = array(
+	    'title' => 'Books',
+	    'description' => 'Books related to this group',
+	    'page callback' => '_meta_group_books',
+	    'page arguments' => array(1),
+	    'access callback' => '_meta_group_user_access_group',
+	    'access arguments' => array(1)
+	);
 
 	// Functionalities for a Group
 	$items['node/%node/add/member'] = array(
@@ -276,11 +284,15 @@ function _meta_group_page_topics($node) {
 }
 
 function _meta_group_page_library($node) {
-	 return views_embed_view('recent_files', 'library_in_hub', $node->nid);
+  return views_embed_view('recent_files', 'library_in_hub', $node->nid);
 }
 
 function _meta_group_page_members($node) {
-	 return views_embed_view('meta_user_list_by_group', 'members_all', $node->nid);
+  return views_embed_view('meta_user_list_by_group', 'members_all', $node->nid);
+}
+
+function _meta_group_books($node) {
+  return views_embed_view('wikibooks', 'page_1', $node->nid);
 }
 
 function meta_group_theme($existing, $type, $theme, $path) {
