@@ -1,9 +1,9 @@
 (function ($) {
 
   Drupal.behaviors.addGMapMultiLocation = {
-    attach: function (context, mapSettings) {
+    attach: function (context, settings) {
 
-      if (typeof(google) != 'object') {
+      if (typeof(google) !== 'object') {
         // When not connected to Internet.
         return;
       }
@@ -12,29 +12,33 @@
       maps = [];
       var imageExt = '.png';
 
-      for (var m in mapSettings) {
+      $(settings, context).each(function() {
 
-        if (!mapSettings[m] || !mapSettings[m].ip_geoloc_locations) {
+       for (var m in settings) {
+        
+        if (isNaN(m)) {
           continue;
         }
-        // Load the settings for map m.
-        var locations     = mapSettings[m].ip_geoloc_locations;
-        var visitorMarker = mapSettings[m].ip_geoloc_multi_location_visitor_marker;
-        var mapOptions    = mapSettings[m].ip_geoloc_multi_location_map_options;
-        var centerOption  = mapSettings[m].ip_geoloc_multi_location_center_option;
-        var use_gps       = mapSettings[m].ip_geoloc_multi_location_visitor_location_gps;
-        var markerDirname = mapSettings[m].ip_geoloc_multi_location_marker_directory;
-        var markerWidth   = mapSettings[m].ip_geoloc_multi_location_marker_width;
-        var markerHeight  = mapSettings[m].ip_geoloc_multi_location_marker_height;
-        var markerAnchor  = mapSettings[m].ip_geoloc_multi_location_marker_anchor;
-        var markerColor   = mapSettings[m].ip_geoloc_multi_location_marker_default_color;
-
-        if (!mapOptions) {
-          alert(Drupal.t('Syntax error in Google map options.'));
+        var divId = settings[m].ip_geoloc_multi_location_map_div;
+        var mapDiv = document.getElementById(divId);
+        if (!mapDiv) {
+          continue;
         }
-
-        var mapDiv = document.getElementById(mapSettings[m].ip_geoloc_multi_location_map_div);
+        var mapOptions = settings[m].ip_geoloc_multi_location_map_options;
+        if (!mapOptions) {
+          alert(Drupal.t('IPGV&M: syntax error in Google map options.'));
+        }
         maps[m] = new google.maps.Map(mapDiv, mapOptions);
+
+        var locations     = ip_geoloc_locations[divId];
+        var visitorMarker = settings[m].ip_geoloc_multi_location_visitor_marker;
+        var centerOption  = settings[m].ip_geoloc_multi_location_center_option;
+        var use_gps       = settings[m].ip_geoloc_multi_location_visitor_location_gps;
+        var markerDirname = settings[m].ip_geoloc_multi_location_marker_directory;
+        var markerWidth   = settings[m].ip_geoloc_multi_location_marker_width;
+        var markerHeight  = settings[m].ip_geoloc_multi_location_marker_height;
+        var markerAnchor  = settings[m].ip_geoloc_multi_location_marker_anchor;
+        var markerColor   = settings[m].ip_geoloc_multi_location_marker_default_color;
 
         // A map must have a type, a zoom and a center or nothing will show.
         if (!maps[m].getMapTypeId()) {
@@ -52,27 +56,20 @@
             mapOptions.centerLng ? mapOptions.centerLng : 0));
         }
 
-        if (visitorMarker || centerOption === 2) {
+        if (visitorMarker || centerOption === 2 /* center on visitor */) {
           // Retrieve visitor's location, fall back on supplied location, if not found.
-          if (use_gps) {
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(handleMapCenterAndVisitorMarker1, handlePositionError, {enableHighAccuracy: true});
-            }
-            else if (typeof(geo_position_js) == 'object' && geo_position_js.init()) {
-              // Use the unified API.
-              geo_position_js.getCurrentPosition(handleMapCenterAndVisitorMarker1, handlePositionError, {enableHighAccuracy: true});
-            }
+          if (use_gps && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(handleMapCenterAndVisitorMarker1, handlePositionError, {enableHighAccuracy: true});
           }
           else {
             // Use supplied visitor lat/lng to center and set marker.
-            var latLng = mapSettings[m].ip_geoloc_multi_location_center_latlng;
+            var latLng = settings[m].ip_geoloc_multi_location_center_latlng;
             if (latLng) {
               handleMapCenterAndVisitorMarker2(latLng[0], latLng[1]);
             }
           }
         }
 
-        var shadowImage = null;
         var defaultPinImage = !markerColor ? null : new google.maps.MarkerImage(
           markerDirname + '/' + markerColor + imageExt,
           new google.maps.Size(markerWidth, markerHeight),
@@ -82,6 +79,7 @@
           new google.maps.Point((markerWidth / 2), markerAnchor));
 
         var center = null;
+        var bounds = new google.maps.LatLngBounds();
         for (var key in locations) {
           var br = locations[key].balloon_text.indexOf('<br/>');
           var mouseOverText = (br > 0) ? locations[key].balloon_text.substring(0, br) : locations[key].balloon_text.trim();
@@ -90,7 +88,8 @@
           }
 
           var position = new google.maps.LatLng(locations[key].latitude, locations[key].longitude);
-          if (!center && centerOption === 1) {
+          bounds.extend(position);
+          if (!center && centerOption === 1 /* center on 1st location */) {
             // If requested center map on the first location, if any.
             maps[m].setCenter(position);
             center = position;
@@ -105,13 +104,19 @@
               // Anchor.
               new google.maps.Point((markerWidth / 2), markerAnchor));
           }
-          var marker = new google.maps.Marker({ map: maps[m], icon: pinImage, shadow: shadowImage, position: position, title: mouseOverText });
+          var marker = new google.maps.Marker({ map: maps[m], icon: pinImage, /*shadow: shadowImage,*/ position: position, title: mouseOverText });
 
           var balloonText = '<div class="balloon">' + locations[key].balloon_text + '</div>';
 
           addMarkerBalloon(maps[m], marker, balloonText);
         }
-      }
+        if ((centerOption === 2 || centerOption === 3) && locations.length > 0) {
+          // Ensure that all markers are visible.
+      		maps[m].fitBounds(bounds);
+          //maps[m].panToBounds(bounds);
+        }
+       }
+      });
 
       function handleMapCenterAndVisitorMarker1(visitorPosition) {
         handleMapCenterAndVisitorMarker2(visitorPosition.coords.latitude, visitorPosition.coords.longitude);
@@ -121,10 +126,10 @@
       function handleMapCenterAndVisitorMarker2(latitude, longitude) {
         var visitorPosition = new google.maps.LatLng(latitude, longitude);
         for (var m in maps) {
-          if (mapSettings[m].ip_geoloc_multi_location_center_option === 2) {
+          if (settings[m].ip_geoloc_multi_location_center_option === 2) {
             maps[m].setCenter(visitorPosition);
           }
-          if (mapSettings[m].ip_geoloc_multi_location_visitor_marker) {
+          if (settings[m].ip_geoloc_multi_location_visitor_marker) {
             showSpecialMarker(m, visitorPosition, Drupal.t('Your approximate location (' + latitude + ', ' + longitude + ')'));
           }
         }
@@ -143,7 +148,7 @@
 
       function showSpecialMarker(m, position, mouseOverText) {
         var specialMarker;
-        var visitorMarker = mapSettings[m].ip_geoloc_multi_location_visitor_marker;
+        var visitorMarker = settings[m].ip_geoloc_multi_location_visitor_marker;
         if (visitorMarker === true) {
           specialMarker = new google.maps.Marker({ map: maps[m], position: position, title: mouseOverText });
         }
@@ -158,15 +163,15 @@
           // Note: cannot use https: here...
           var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + pinChar + "|" + pinColor + "|" + textColor,
             new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
-          specialMarker = new google.maps.Marker({ map: maps[m], icon: pinImage, shadow: shadowImage, position: position, title: mouseOverText });
+          specialMarker = new google.maps.Marker({ map: maps[m], icon: pinImage, /*shadow: shadowImage,*/ position: position, title: mouseOverText });
         }
         addMarkerBalloon(maps[m], specialMarker, mouseOverText);
       }
 
       // Fall back on IP address lookup, for instance when user declined to share location (error 1)
       function handlePositionError(error) {
-        //alert(Drupal.t('IPGV&M multi-location map: getCurrentPosition() returned error !code', {'!code': error.code}));
-        var latLng = mapSettings[m].ip_geoloc_multi_location_center_latlng;
+        //alert(Drupal.t('IPGV&M multi-location map: getCurrentPosition() returned error: !msg', {'!msg': error.message}));
+        var latLng = settings[0].ip_geoloc_multi_location_center_latlng;
         if (latLng) {
           handleMapCenterAndVisitorMarker2(latLng[0], latLng[1]);
         }

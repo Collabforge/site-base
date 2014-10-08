@@ -8,6 +8,9 @@ new .png image file in the /markers folder.
 The markers in this directory are all 21 pixels wide. If you wish to use
 markers of different dimensions you can do so by specifying an alternative
 marker directory and marker dimensions on the module configuration page.
+One alternative markers directory comes included with the module: /amarkers. Its
+markers are wider (32 pixels), so are more suitable for imposing font icons.
+See the ip_geoloc/README.txt for details.
 
 The anchor point of all marker images is expected to be in the centre of the 
 bottom border of the image.

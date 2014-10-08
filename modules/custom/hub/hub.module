@@ -20,10 +20,10 @@ function hub_theme($existing, $type, $theme, $path) {
 function hub_block_info() {
   $blocks = array();
   $blocks['hub_header'] = array(
-    'info' => t('Header of Hub view page'),
+    'info' => t('Header of Group view page'),
   ); 
   $blocks['create_hub_from_topic'] = array(
-    'info' => t('Create a Hub from this topic'),
+    'info' => t('Create a Group from this topic'),
   );
   
   return $blocks;
@@ -97,7 +97,7 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
               , 'href' => sprintf('node/%s', $node->nid)
           )
           , 'ui-header-menu ui-menu-hub-topics' => array(
-              'title' => t('Topics')
+              'title' => t('Discussions')
               , 'href' => sprintf('node/%s/topics', $node->nid)
           )
           , 'ui-header-menu ui-menu-hub-library' => array(
@@ -107,6 +107,10 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
           , 'ui-header-menu ui-menu-hub-members' => array(
               'title' => 'Members'
               , 'href' => sprintf('node/%s/members', $node->nid)
+          )
+          , 'ui-header-menu ui-menu-hub-book' => array(
+              'title' => t('WikiBooks')
+              , 'href' => sprintf('node/%s/book', $node->nid)
           )
         );
         $attributes = array('class' => array('nav','nav-tabs'));
@@ -133,7 +137,6 @@ function hub_get_members_count($gid) {
       ->fields('og')  
       ->condition('og.entity_type','user','=')
       ->condition('og.gid', $gid, '=')
-      ->condition('og.state', 1, '=')
       ->execute();
     $num_of_results = $result->rowCount();   
     return $num_of_results;

@@ -123,17 +123,17 @@ function ip_geoloc_plugin_style_bulk_of_form($views_plugin_style, &$form, &$form
     $form['default_marker_color']['#attached']['css'] = array("$path/css/$css_file");
   }
 
-  // Add wrapper for differentiator drop-down, association table and buttons.
-  // The id in the prefix must match the AJAX submit handlers below.
-  $desc = t('You may designate one field from your view as a <strong>location differentiator</strong>. Locations that match the same corresponding differentiator value will have the same marker image on the map. Examples of location differentiators are content type and taxonomy term. You can enter numeric and alphabetic <em>ranges</em> too, e.g. price ranges, like 100--125.<br/><strong>Leaflet</strong> only: you may input a special character, eg. from <a target="_fsymbols" href="!url1">fsymbols</a> or <a target="_font_awesome" href="!url2">Font Awesome</a>, to be superimposed as a font-icon on the marker image. For <em>fsymbols</em> copy and paste the desired font-icon into the Special Char field. For <em>Font Awesome</em> icons leave the Special Char field empty. Instead type the <em>Font Awesome</em> icon name in the Special Char CSS Class field, optionally appending a color class. Example: <strong>icon-beer icon-light</strong>. <br/>All this works best with the markers from the <em>/amarkers</em> directory, configurable <a target="_ip_geoloc_config" href="!url3">here</a>.', array(
+  $descr = t('You may designate one field from your view as a <strong>location differentiator</strong>. Locations that match the same corresponding differentiator value will have the same marker image on the map. Examples of location differentiators are content type and taxonomy term. You can enter numeric and alphabetic <em>ranges</em> too, e.g. price ranges, like 100--125.<br/><strong>Leaflet</strong> only: you may input a special character, for example from <a target="_font_awesome" href="!url2">Font Awesome</a> (requires installation, see README) or <a target="_fsymbols" href="!url1">fsymbols</a> (no installation required), to be superimposed as a font-icon on the marker image. For <em>fsymbols</em> copy and paste the desired font-icon into the Special Char field. For <em>Font Awesome</em> icons leave the Special Char field empty. Instead type the <em>Font Awesome</em> icon name in the Special Char CSS Class field. Example: <strong>fa fa-beer</strong>. <br/>All this works best with the markers from the <em>/amarkers</em> directory, configurable <a target="_ip_geoloc_config" href="!url3">here</a>.', array(
     '!url1' => url('http://fsymbols.com'),
     '!url2' => url('http://fortawesome.github.io/Font-Awesome/cheatsheet'),
     '!url3' => url('admin/config/system/ip_geoloc'),
   ));
+  // Add wrapper for differentiator drop-down, association table and buttons.
+  // The id in the prefix must match the AJAX submit handlers below.
   $form['differentiator'] = array(
     '#type' => 'fieldset',
     '#title' => t('Location differentiator and associated markers'),
-    '#description' => $desc,
+    '#description' => $descr,
     '#prefix' => '<div id="differentiator-wrapper">',
     '#suffix' => '</div>',
     '#weight' => 30,
@@ -335,7 +335,7 @@ function ip_geoloc_plugin_style_differentiator_color_associations_submit($form, 
       else {
         // Plain text field or plain taxonomy select.
         $differentiator_value = trim($association[$differentiator]);
-        if (!empty($differentiator_value)) {
+        if (!empty($differentiator_value) || $differentiator_value == 0) {
           $differentiator_color_associations[$display_id][$differentiator][$i]['differentiator_value'] = array($differentiator_value);
           $differentiator_color_associations[$display_id][$differentiator][$i]['color'] = $association['color'];
           $differentiator_color_associations[$display_id][$differentiator][$i]['special char'] = $association['special char'];
@@ -562,6 +562,10 @@ function ip_geoloc_plugin_style_extract_locations($views_plugin_style) {
   $view_id = $view->name;
   $display_id = $views_plugin_style->display->id;
 
+  if ($views_plugin_style->display->handler->is_defaulted('style_options')) {
+    //$display_id = 'default';
+  }
+
   $differentiator = FALSE;
   if (!empty($views_plugin_style->options['differentiator']['differentiator_field'])) {
     $differentiator = $views_plugin_style->options['differentiator']['differentiator_field'];
@@ -669,7 +673,7 @@ function ip_geoloc_plugin_style_extract_locations($views_plugin_style) {
       '@first' => $first_error + 1,
       '%latitude' => $latitude,
     );
-    $msg = ($error_count >= $row_count) ? t('None of the @total result rows in view %view_title had their %latitude lat/lng set. Therefore the map could not be displayed. Is %latitude the correct field name?', $t_args) : t('Out of a total of @total result rows in view %view_title, @error_count rows did not have their %latitude lat/lng set and therefore could not be shown on the map. The first row that could not be located was row #@first. You can improve execution efficiency by using the Views UI to apply an "is not empty" filter criterion to %latitude.', $t_args);
+    $msg = ($error_count >= $row_count) ? t('None of the @total result rows in view %view_title had their %latitude lat/lng set. Therefore those rows could not be displayed as locations on the map. Is %latitude the correct field name?', $t_args) : t('Out of a total of @total result rows in view %view_title, @error_count rows did not have their %latitude lat/lng set and therefore could not be shown on the map. The first row that could not be located was row #@first. You can improve execution efficiency by using the Views UI to apply an "is not empty" filter criterion to %latitude.', $t_args);
 
     $row_contents = t('First error row:') . '<br/>';
     foreach ((array) $view->result[$first_error] as $field_name => $value) {
@@ -873,7 +877,7 @@ function _ip_geoloc_plugin_style_set_marker_color(&$location, $row, $differentia
         $differentiator_value = $view_args[$position];
       }
     }
-    elseif (!empty($row->{$differentiator})) {
+    elseif (isset($row->{$differentiator})) {
       $differentiator_value = $row->{$differentiator};
     }
     elseif (!empty($row->{'field_' . $differentiator})) {
@@ -900,7 +904,7 @@ function _ip_geoloc_plugin_style_set_marker_color(&$location, $row, $differentia
           '%diff' => $differentiator)), 'warning', FALSE);
       }
     }
-    if (!empty($differentiator_value)) {
+    if (!empty($differentiator_value) || $differentiator_value == 0) {
 
       foreach ($differentiator_color_associations as $association) {
         $match = TRUE;
@@ -977,7 +981,6 @@ function ip_geoloc_plugin_style_render_fields($views_plugin_style) {
     return;
   }
   $views_plugin_style->rendered_fields = array();
-  $field_ids = array_keys($views_plugin_style->view->field);
   $differentiator = $views_plugin_style->options['differentiator']['differentiator_field'];
   $latitude = trim($views_plugin_style->options['ip_geoloc_views_plugin_latitude']);
   $longitude = trim($views_plugin_style->options['ip_geoloc_views_plugin_longitude']);
@@ -985,14 +988,16 @@ function ip_geoloc_plugin_style_render_fields($views_plugin_style) {
   foreach ($views_plugin_style->view->result as $i => &$row) {
     // God knows why we need this...
     $views_plugin_style->view->row_index = $i;
-    foreach ($field_ids as $field_id) {
-      $field = $views_plugin_style->view->field[$field_id];
+    foreach ($views_plugin_style->view->field as $field_id => $field) {
       // theme() also renders the tokens that may be used in the balloon fields.
       $field_value = $field->theme($row);
 
       // Add the special 'views_' fields that normally aren't in the results
       // set to the row, if required for the $differentiator or lat/lon that
       // have math expressions applied through the Views UI.
+      // Examples:
+      //  "User: Roles" used as differentiator becomes 'views_rid'
+      //  "Global: View result counter" as differentiator becomes 'views_counter'
       $special_field_id = 'views_' . $field_id;
       if (($special_field_id == $differentiator || $special_field_id == $latitude || $special_field_id == $longitude) && empty($row->{$special_field_id})) {
         $row->{$special_field_id}[] = $field_value;
@@ -1089,9 +1094,15 @@ function ip_geoloc_get_display_fields($view_display, $with_table_prefixes = TRUE
   $fields = array('' => '<' . t('none') . '>');
   $field_handlers = $view_display->get_handlers('field');
   foreach ($field_handlers as $field_id => $field_handler) {
-    if ($with_table_prefixes && ($field_id != 'nid') && ($field_id != 'uid') && strpos($field_id, 'field_') === FALSE) {
-      // Example: 'title' becomes 'node_title'.
-      $field_id = $field_handler->table . "_$field_id";
+    if ($with_table_prefixes) {
+      if ($field_id == 'rid') {
+        // See ip_geoloc_plugin_style_render_fields().
+        $field_id = 'views_rid';
+      }
+      elseif (($field_id != 'nid') && ($field_id != 'uid') && strpos($field_id, 'field_') === FALSE) {
+        // Example: 'title' becomes 'node_title'.
+        $field_id = $field_handler->table . "_$field_id";
+      }
     }
     $fields[$field_id] = $field_handler->ui_name();
   }

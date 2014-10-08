@@ -99,7 +99,7 @@ L.Icon.Tagged = L.Icon.extend({
       // display:block is set implicitly or explictly.
       var specialChar = document.createElement('i');
       specialChar.innerHTML = this._specialChar ? this._specialChar.trim() : '';
-      // Note: for Font Awesome we must have a class starting with "icon-"
+      // Note: for Font Awesome we must have a class starting with "fa fa-".
       if (this.options.specialCharClass) {
         specialChar.setAttribute('class', this.options.specialCharClass);
       }
