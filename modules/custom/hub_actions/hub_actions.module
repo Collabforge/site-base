@@ -84,8 +84,8 @@ function hub_actions_block_view($delta='') {
           if ($node->type == 'hub'  && arg(2)=='book') {  
            /*if ($is_admin || og_user_access('node', $nid, 'create book content')) { */   
             $content = theme('hub_host_a_book_template');
-            /*$block['content'] = $content;*/
-           }
+            /*$block['content'] = $content;
+           }*/
           }   
         break;
   }
