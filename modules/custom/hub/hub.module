@@ -33,34 +33,29 @@ function hub_block_info() {
  * Implements hook_block_view().
  */
 function hub_block_view($delta='') {
-  $block = array();
-  global $base_url, $user;
-  // @TODO: Make sure if there is a better way. 
+  global $user;
 
-   $node = menu_get_object();
-   if (!is_object($node)) {
-       return false;
-   }
- /*
-   $nid = arg(1); 
-   $node = node_load($nid); */
+  $block = array();
+  $node = menu_get_object();
+  $is_books_view = (arg(0) == 'node' && arg(2) == 'books');
      
-  switch($delta) {
-        case 'hub_header':
-          if (!empty($node) and $node->type == 'hub') {
-            $content = theme('hub_header_template');
-            $block['content'] = $content;
-          }   
-        break;
-        case 'create_hub_from_topic':
-          if (!empty($node) and $node->type == 'conversation') {
-              $groups = og_get_entity_groups('node',$node);
-              if (empty($groups) and $node->uid == $user->uid){         
-                  $content = theme('create_hub_from_topic_template');
-                  $block['content'] = $content;
-              }           
-          }   
-        break;
+  switch ($delta) {
+    case 'hub_header':
+      if ($is_books_view || (isset($node) && $node->type == 'hub')) {
+        $content = theme('hub_header_template');
+        $block['content'] = $content;
+      }
+    break;
+
+    case 'create_hub_from_topic':
+      if (isset($node) and $node->type == 'conversation') {
+        $groups = og_get_entity_groups('node',$node);
+        if (empty($groups) and $node->uid == $user->uid) {
+          $content = theme('create_hub_from_topic_template');
+          $block['content'] = $content;
+        }
+      }
+    break;
   }
   return $block;
 }
