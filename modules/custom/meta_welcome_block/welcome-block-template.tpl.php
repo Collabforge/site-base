@@ -29,7 +29,7 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
 </style>
 
     <div class="dashboard">
-        <div class-"row-fluid dashboard_head">
+        <div class="row-fluid dashboard_head">
 
         <div class="welcome span12">
             <h2>Getting started checklist</h2>
@@ -40,34 +40,31 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
               <div class="span4 dashboard_1 first">
                 <h4>Learn About this site</h4>
                     <div class="call_out">
-                        <p>Pellentesque aliquam augue ut dui aliquam consequat.</p>
+                        <p></p>
                         <a class="action" href="<?php print "$base_url/about-this-site"; ?>" title="About this site">Read More</a>
                     </div>
                 </div>
-           <?php } ?>
+              <?php } ?>
 
-            <?php if ($profile_completeness) { ?>
+              <?php if ($profile_completeness) { ?>
                 <div class="span4 dashboard_2">
-                 <h4>Complete your profile</h4>
-                    <div class="call_out">
-
-                        <!-- Progress Bar -->
-
-                       <div class="pcp-wrapper pcp-profile2 pcp-profile">
-                        <div class="percent-bar">
-                        <div class="collabco-percent-bar-wrapper">
-                        <div class="collabco-percent-bar profile2-profile"></div>
-                        </div>
-                        </div>&nbsp;&nbsp; <?php print $current_percent; ?>%
+                  <h4>Complete your profile</h4>
+                  <div class="call_out">
+                     <!-- Progress Bar -->
+                     <div class="pcp-wrapper pcp-profile2 pcp-profile">
+                       <div class="percent-bar">
+                         <div class="collabco-percent-bar-wrapper">
+                           <div class="collabco-percent-bar profile2-profile"></div>
+                         </div>
                        </div>
-
-                        <a class="action" href="<?php print "$base_url/user/$user->uid/edit/profile"; ?>" title="Edit your Profile">Edit Your Profile</a>
-
-                    </div>
+                       &nbsp;&nbsp; <?php print $current_percent; ?>%
+                     </div>
+                     <a class="action" href="<?php print "$base_url/user/$user->uid/edit/profile"; ?>" title="Edit your Profile">Edit Your Profile</a>
+                  </div>
                 </div>
-         <?php } ?>
+              <?php } ?>
 
-        <?php if(!$introduce_yourself) { ?>
+              <?php if(!$introduce_yourself) { ?>
                 <div class="span4 dashboard_3 last">
                  <h4>Introduce Yourself</h4>
                     <div class="call_out">
@@ -79,10 +76,9 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
 
                     </div>
                 </div>
-        <?php } ?>
+              <?php } ?>
 
             </div>
-
     </div>
 </div>
  <?php } ?>
