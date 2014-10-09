@@ -84,9 +84,9 @@ function collabco_forms_form_comment_form_alter(&$form, &$form_state, $form_id) 
   // '#disabled' does not seem to work here
   unset($form['author']['_author']);
 
-  $form['actions']['submit']['#value'] = 
-    in_array('inline_entity_form_trigger_submit', $form['actions']['submit']['#submit'])
-    ? t('Post comment and attachment') : t('Post comment');
+  $form['actions']['submit']['#value'] =
+  /*in_array('inline_entity_form_trigger_submit', $form['actions']['submit']['#submit'])
+    ? t('Post comment and attachment') :*/ t('Post comment');
 
   $form['notify_settings']['notify']['#title'] = t('Notify me via email for...');
   $form['notify_settings']['notify_type']['#options'][COMMENT_NOTIFY_NODE] = t('all new comments');
