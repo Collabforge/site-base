@@ -61,7 +61,7 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
                         </div>&nbsp;&nbsp; <?php print $current_percent; ?>%
                        </div>
 
-                        <a class="action" href="<?php print $base_url/user/$user->uid/edit/profile; ?>" title="Edit your Profile">Edit Your Profile</a>
+                        <a class="action" href="<?php print "$base_url/user/$user->uid/edit/profile"; ?>" title="Edit your Profile">Edit Your Profile</a>
 
                     </div>
                 </div>
