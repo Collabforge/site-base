@@ -19,11 +19,13 @@
 ?>
 
 
-<?php if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
+<?php 
+global $base_url;
+if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
 <?php // note - do not remove, the percentage is a PHP variable, not hardcoded. this is necessary. ?>
 <style type="text/css">
-    .collabco-percent-bar.profile2-profile{ width: <?php print $current_percent; ?>%; }
-    .profile2-profile{ padding-left: 0%; }
+    .collabco-percent-bar.profile2-profile { width: <?php print $current_percent; ?>%; }
+    .profile2-profile { padding-left: 0%; }
 </style>
 
     <div class="dashboard">
@@ -39,7 +41,7 @@
                 <h4>Learn About this site</h4>
                     <div class="call_out">
                         <p>Pellentesque aliquam augue ut dui aliquam consequat.</p>
-                        <a class="action" href="/about-this-site" title="About this site">Read More</a>
+                        <a class="action" href="<?php print "$base_url/about-this-site"; ?>" title="About this site">Read More</a>
                     </div>
                 </div>
            <?php } ?>
@@ -56,10 +58,10 @@
                         <div class="collabco-percent-bar-wrapper">
                         <div class="collabco-percent-bar profile2-profile"></div>
                         </div>
-                        </div>&nbsp;&nbsp; <?php  print $current_percent; ?>%
+                        </div>&nbsp;&nbsp; <?php print $current_percent; ?>%
                        </div>
 
-                        <a class="action" href="user/<?php print $user->uid; ?>/edit/profile" title="Edit your Profile">Edit Your Profile</a>
+                        <a class="action" href="<?php print $base_url/user/$user->uid/edit/profile; ?>" title="Edit your Profile">Edit Your Profile</a>
 
                     </div>
                 </div>
@@ -73,7 +75,7 @@
                         Post a reply to "Introduce Yourself" topic.
                     </p>
 
-                        <a class="action" href="/news-update/welcome-please-introduce-yourself">Go There</a>
+                        <a class="action" href="<?php print "$base_url/news-update/welcome-please-introduce-yourself"; ?>">Go There</a>
 
                     </div>
                 </div>
