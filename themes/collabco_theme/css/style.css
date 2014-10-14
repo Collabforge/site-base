@@ -2757,6 +2757,7 @@ html.js #tabs1-search input.search-query {
 
 
 
-
-
+.book-explorer ul.menu li {
+margin-left: 1em !important;
+}
 

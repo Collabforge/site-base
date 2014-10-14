@@ -34,7 +34,7 @@
 ?>
 <?php if ($tree || $has_links): ?>
   <div id="book-navigation-<?php print $book_id; ?>" class="book-navigation">
-    <?php print $tree; ?>
+    <?php //print $tree; ?>
 
     <?php if ($has_links): ?>
     <div class="page-links clearfix">
