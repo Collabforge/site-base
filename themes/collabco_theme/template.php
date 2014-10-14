@@ -41,7 +41,7 @@ function collabco_theme_preprocess_flag(&$variables) {
  * Implements hook_menu_link
  * Copy of open_framework_menu_link(). just applying it to all menus
  */
-function collabco_theme_menu_link(array $vars) {
+/*function collabco_theme_menu_link(array $vars) {
   $element = $vars['element'];
 
   $link_theming_functions = (array)$element['#theme'];
@@ -96,3 +96,4 @@ function _collabco_theme_menu_is_dropdown($link_theming_functions) {
   return TRUE;
 }
 
+*/
