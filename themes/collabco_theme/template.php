@@ -87,8 +87,12 @@ function collabco_theme_menu_link(array $vars) {
 }
 
 function _collabco_theme_menu_is_dropdown($link_theming_functions) {
-  // @FIXME: it should be decided what menus need this
-  // in_array('menu_link__main_menu', $link_theming_functions);
-  return true;
+  // @FIXME: may need refinement, see open_framework/templates/template.php
+  foreach ($link_theming_functions as $function_name) {
+    if (strpos($function_name, '_book_')) {
+      return FALSE;
+    }
+  }
+  return TRUE;
 }
 
