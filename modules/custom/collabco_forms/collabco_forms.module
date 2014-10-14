@@ -71,6 +71,21 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Implements hook_form_FORMID_alter().
  *
+ * Change the order of the vertical tabs on the book node edit form. 
+ * We want "Revision information" to appear above "Book outline".
+ */
+function collabco_forms_form_book_node_form_alter(&$form, &$form_state) {
+  if (isset($form['book']) && isset($form['revision_information'])) {
+    // 'menu is usually first, with a weight of -2
+    // 'book' typically has a weight of 10
+    // 'revision_information' has weight of 20
+    $form['revision_information']['#weight'] = $form['book']['#weight'] - 1;
+  }
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ *
  * Set up a redirecion handler for the File (aka Knowledge Object) content type.
  */
 function collabco_forms_form_knowledge_object_node_form_alter(&$form, &$form_state) {
