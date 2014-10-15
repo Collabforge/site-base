@@ -230,8 +230,8 @@ function collabco_forms_filter_info_alter(&$info) {
   unset($info['filter_autop']['tips callback']);
   unset($info['filter_html']['tips callback']);
   unset($info['filter_url']['tips callback']);
-  //unset($info['freelinking']['tips callback']); // freelinking.module
-  //unset($info['filter_mentions']['tips callback']); // mentions.module
+  unset($info['freelinking']['tips callback']); // freelinking.module
+  unset($info['filter_mentions']['tips callback']); // mentions.module
 }
 
 /**
