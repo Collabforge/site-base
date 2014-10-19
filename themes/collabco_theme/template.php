@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Impliments hook_field_widget_form_alter().
+ * Implements hook_field_widget_form_alter().
  */
 function collabco_theme_field_widget_form_alter(&$element, &$form_state, $context) {
   if (!empty($element['#field_name'])) {
@@ -22,8 +22,14 @@ function collabco_theme_field_widget_form_alter(&$element, &$form_state, $contex
   }
 }
 
+function collabco_theme_field_widget_file_generic_form_alter(&$element, &$form_state, $context) {
+  return;
+}
+
 /**
- * Impliments hook_form_alter().
+ * Implements hook_form_alter().
+ *
+ * Adds bootstrap CSS classes to common buttons.
  */
 function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['submit']['#attributes']['class'][] = 'form-btn-success';
@@ -34,8 +40,6 @@ function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
 function collabco_theme_preprocess_flag(&$variables) {
   $variables['flag_classes_array'][] ='btn btn-warning';
 }
-
-
 
 /*
  * Implements hook_menu_link
