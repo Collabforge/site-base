@@ -242,7 +242,7 @@ function collabco_forms_field_widget_file_generic_form_alter(&$element, &$form_s
 }
 
 function collabco_forms_file_field_widget_process_multiple($element, &$form_state, $form) {
-  return;
+  return $element;
 }
 
 /**
