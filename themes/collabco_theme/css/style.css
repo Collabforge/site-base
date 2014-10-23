@@ -2758,6 +2758,22 @@ html.js #tabs1-search input.search-query {
 
 
 .book-explorer ul.menu li {
-margin-left: 1em !important;
+  margin-left: 1em !important;
 }
 
+/* Contact form with floatlabel */
+.contact-form .floatlabel-wrapper input {
+  background-color: #fbfbfb;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+.contact-form .floatlabel-wrapper textarea {
+  background-color: #fbfbfb;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
