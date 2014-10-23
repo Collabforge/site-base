@@ -2763,14 +2763,12 @@ html.js #tabs1-search input.search-query {
 
 /* Contact form with floatlabel */
 .contact-form .floatlabel-wrapper input {
-  background-color: #fbfbfb;
   border-radius: 0;
   box-shadow: none;
   margin: 0;
   padding: 0;
 }
 .contact-form .floatlabel-wrapper textarea {
-  background-color: #fbfbfb;
   border-top: 0;
   border-right: 0;
   border-bottom: 0;
