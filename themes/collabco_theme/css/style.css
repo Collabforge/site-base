@@ -2774,4 +2774,6 @@ html.js #tabs1-search input.search-query {
   border-bottom: 0;
   border-radius: 0;
   box-shadow: none;
+  margin: 0;
+  padding: 0;
 }
