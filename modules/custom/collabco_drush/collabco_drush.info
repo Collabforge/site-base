@@ -1,0 +1,3 @@
+name = Collabco Drush
+description = Drush commands for Collabco sitebuilders
+core = 7.x
