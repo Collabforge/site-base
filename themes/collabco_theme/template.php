@@ -114,3 +114,5 @@ function collabco_show_sitewide_notification_message() {
     drupal_set_message($notice, 'warning');
   }
 }
+
+$testingcustomvariable = "test";
