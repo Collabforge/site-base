@@ -15,3 +15,20 @@ function collabco_views_views_api() {
     'path' => drupal_get_path('module', 'collabco_views') . '/views',
   );
 }
+
+/**
+ * Implements hook_preprocess_date_views_pager().
+ *
+ */
+function collabco_views_preprocess_date_views_pager(&$vars) {
+ $granularities= array('month', 'week', 'day');
+ // This is to bypass typo in date/date_views/theme/theme.inc,
+ // function theme_date_nav_title($params).
+ foreach ($granularities as $granularity) {
+   $format_with_year = variable_get('date_views_' . $granularity . '_format_with_year', 'l, F j, Y');
+   $format_without_year = variable_get('date_views_' . $granularity . '_format_without_year', 'l, F j');
+   // Note the missing underscore after $granularity
+   variable_set('date_views_' . $granularity . 'format_with_year', $format_with_year);
+   variable_set('date_views_' . $granularity . 'format_without_year', $format_without_year);
+ }
+}
