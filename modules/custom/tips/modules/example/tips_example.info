@@ -1,0 +1,6 @@
+name = Example Tips
+description = Provides Tips hook examples.
+core = 7.x
+package = Tips
+
+dependencies[] = tips
