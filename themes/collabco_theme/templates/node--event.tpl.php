@@ -82,41 +82,43 @@
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
     <div class="nodewrapper">
-      <div class="templatedtitlestyle">
-        <?php print render($title_prefix); ?>
-        <?php if (!$page): ?>
-          <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-        <?php endif; ?>
-        <?php print render($title_suffix); ?>
-      </div>
 
       <div class="clearfix"></div>
 
       <div class="contentarticle clearfix"<?php print $content_attributes; ?>>
-        <?php
-          // We hide the comments and links now so that we can render them below.
-          hide($content['comments']);
-          hide($content['links']);
-          print render($content);
-        ?>
+        <div class="event-image-and-details">
+          <div class="event-image" style="float: left; width: 200px;">
+            <?php
+              print render($content['field_featured_image']);
+            ?>
+          </div>
+          <div class="event-details" style="float: left;">
+            <?php
+              // We hide the comments and links now so that we can render them below.
+              //hide($content['comments']);
+              //hide($content['links']);
+            ?>
+
+            <div class="templatedtitlestyle">
+              <?php print render($title_prefix); ?>
+              <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
+              <?php print render($title_suffix); ?>
+            </div>
+
+            <?php
+              print render($content['field_location']);
+              print render($content['field_date']);
+              print '<br/>Posted by ' . $name . $user_picture;
+            ?>
+          </div>
+        </div>
+        <div class="event-info" style="clear: both">
+          <?php print render($content['body']); ?>
+        </div>
       </div>
 
       <?php print render($content['links']); ?>
       <?php print render($content['comments']); ?>
-      <br><br>
-
-      <div class="row-fluid" style="clear:both;">
-        <div class="span1">
-          <div class="user-picture-small">
-            <?php print $user_picture; ?>
-          </div>
-        </div>
-        <div class="activity-details span11">
-          <h2><?php print ' Posted by ' . $name; ?></h2>
-          <p><?php print ' on ' . $date; ?></p>
-          
-        </div>
-      </div>
     </div>
   </article>
 <?php endif; ?>
