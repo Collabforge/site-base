@@ -87,7 +87,7 @@
 
       <div class="contentarticle clearfix"<?php print $content_attributes; ?>>
         <div class="event-image-and-details">
-          <div class="event-image" style="float: left; width: 200px;">
+          <div class="event-image">
             <?php
               print render($content['field_featured_image']);
             ?>
