@@ -110,13 +110,13 @@
             </div>
         <div class="event-location">
             <?php
-              echo "Location:";
+              echo "<h5>Where</h5>";
               print render($content['field_location']);
             ?></div>
               
         <div class="event-date">
               <?php
-              echo "Time:";
+              echo "<h5>When</h5>";
               print render($content['field_date']);
             ?></div>
           </div>
