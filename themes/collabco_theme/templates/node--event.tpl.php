@@ -92,7 +92,7 @@
               print render($content['field_featured_image']);
             ?>
           </div>
-          <div class="event-details" style="float: left;">
+          <div class="event-details">
             <?php
               // We hide the comments and links now so that we can render them below.
               //hide($content['comments']);
