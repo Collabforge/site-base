@@ -1,0 +1,520 @@
+<?php
+/**
+ * @file
+ * Drupal's mail API.
+ */
+
+define('META_EMAIL_DEBUG', FALSE);
+
+
+/**
+ * Implements hook_mail_alter
+ */
+function meta_email_mail_alter(&$message) {
+  if (META_EMAIL_DEBUG) {
+    $message->send = false;
+  }
+}
+
+
+
+
+
+
+function _meta_email_settings_default($key) {
+  // you can change it by case
+  return true;
+}
+
+function _meta_email_settings_get($key=null, $account=null) {
+  if (!isset($account)) {
+    global $user;
+    $account = user_load($user->uid);
+  }
+  $data = $account->data['meta_email'];
+  if (!isset($key)) {
+    return $data;
+  }
+  if (isset($data[$key])) {
+    return $data[$key];
+  }
+  return _meta_email_settings_default($key);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function meta_email_form_alter(&$form, &$form_state, $form_id) {
+  if (!in_array($form_id, array('user_register_form', 'user_profile_form'))) {
+    return;
+  }
+  if ($form['#user_category'] != 'account') {
+    return;
+  }
+  $account = $form['#user'];
+  $form['meta_user_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Notification settings'),
+    '#weight' => 2,
+    '#collapsible' => true,
+    '#access' => true,
+  );
+  $config = _meta_email_settings_config();
+  foreach ($config as $config_key=>$config_item) {
+    $values = array();
+    foreach ($config_item['keys'] as $_key=>$_title) {
+      if (_meta_email_settings_get($_key)) {
+        $values[$_key] = $_key;
+      }
+    }
+    $form['meta_user_settings']['meta_email']['meta_email_' . $config_key] = array(
+      '#type' => 'checkboxes'
+      , '#title' => $config_item['label']
+      , '#default_value' => $values
+      , '#options' => $config_item['keys']
+      , '#access' => true
+    );
+  }
+}
+
+function _meta_email_settings_config() {
+  return array(
+    'topic_hostedby' => array(
+      'label' => t('For Topics I host, email me when')
+      , 'keys' => array(
+        'comment_replied__to_topic_owner' => t('Someone replies to my comment')
+        , 'comment_added__to_topic_owner' => t('New comments are added')
+      )
+    )
+    , 'topic_followedby' => array(
+      'label' => t('For Topics I follow, email me when')
+      , 'keys' => array(
+        'comment_replied__to_topic_followers' => t('Someone replies to my comment')
+        , 'comment_added__to_topic_followers' => t('New comments are added')
+      )
+    )
+    , 'group_hostedby' => array(
+      'label' => t('For group I host, email me when')
+      , 'keys' => array(
+        'member_joined__to_group_owner' => t('A new member joins')
+        , 'group_topic_added__to_group_owner' => t('A topic is added')
+        , 'group_resource_added__to_group_owner' => t('A library file is added')
+      )
+    )
+    , 'group_memberof' => array(
+      'label' => t('For group I belong to, email me when')
+      , 'keys' => array(
+        'member_joined__to_group_members' => t('A new member joins')
+        , 'group_topic_added__to_group_members' => t('A topic is added')
+        , 'group_resource_added__to_group_members' => t('A library file is added')
+      )
+    )
+  );
+}
+
+/**
+ * Implements hook_user_presave().
+ */
+function meta_email_user_presave(&$edit, $account, $category) {
+  $data = array();
+  $config = _meta_email_settings_config();
+  foreach (array_keys($config) as $config_key) {
+    $data = array_merge($data, $edit['meta_email_' . $config_key]);
+  }
+  $edit['data']['meta_email'] = $data;
+}
+
+
+
+
+
+
+
+/**
+ * Sends an email when a user has requested a Draft Hub to be revised
+ */
+function meta_email_send_send_for_revision($gid, $uid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  $group_owner = user_load($gid);
+  if (!$user = user_load($uid)) {
+    return false;
+  }
+  $admins = meta_group_get_admins();
+  
+  $vars = array (
+  '!group_name' => $group->title,
+  '!group_owner' => $group_owner->name,
+  '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+  );
+  meta_email_send('group_waiting_approval__to_requester', null, array($user), $vars);
+  meta_email_send('group_waiting_approval__to_admins', null, $admins, $vars);
+}
+
+
+/**
+ * Sends appropriate emails when a Group is published
+ */
+function meta_email_send_group_published($gid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  $owner = user_load($group->uid);
+  $vars = array (
+    '!group_name' => $group->title,
+    '!group_link' => url('node/'. $group->nid,array(absolute=>true))
+  );
+  meta_email_send('group_published__to_group_owner', null, array($owner), $vars);
+}
+
+
+/**
+ * Sends appropriate emails when a Topic is added to a Group
+ */
+function meta_email_callback_group_content_added($gid, $nid) {
+  
+    
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  $node =node_load($nid);
+   if (empty($node)) {
+     return false;
+    }
+  $owner = user_load($group->uid);
+  $members = meta_group_get_group_members($gid);
+  
+  $members_excluded = array(); 
+  foreach ($members as $member) {
+     
+      if ($member->uid == $owner->uid){        
+          continue;
+      }
+      /* Do not send to the coowner if he has created the topic */
+      if ($member->uid == $node->uid){
+          continue;
+      }
+          
+      $members_excluded[] = $member;
+  }
+ 
+  $topic_owner = user_load($node->uid);
+  $vars = array(
+    '!topic_title' => $node->title
+    ,'!group_name' => $group->title
+    ,'!topic_owner' => $topic_owner->name
+    ,'!topic_link' => url('node/' . $node->nid,array(absolute=>true))
+  );
+  if ($node->type == 'conversation') { 
+      if ($owner->uid != $node->uid){  // Don't send a mail to group owner ,if the he created a topic (self mail not required)  
+        meta_email_send('group_topic_added__to_group_owner', null, array($owner), $vars);
+      }
+        meta_email_send('group_topic_added__to_group_members', null, $members_excluded, $vars);
+  }
+  else {
+      if ($owner->uid != $node->uid){
+        meta_email_send('group_resource_added__to_group_owner', null, array($owner), $vars);
+      }
+      meta_email_send('group_resource_added__to_group_members', null, $members_excluded, $vars);
+  }
+      
+}
+
+
+/**
+ * Sends appropriate emails when a User is joined a Group
+ */
+function meta_email_callback_user_joined($gid, $uid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return false;
+  }
+  if (!$user = user_load($uid)) {
+    return false;
+  }
+  
+  $owner = user_load($group->uid);
+  $members = meta_group_get_group_members($gid);
+  $members_excluded = array(); 
+  foreach ($members as $member) {
+      
+      
+      if ($member->uid == $user->uid) {         
+          continue;
+      }
+      if ($member->uid == $owner->uid){        
+          continue;
+      }
+      $members_excluded[] = $member;
+  }
+
+  $vars = array(
+    '!group_name' => $group->title
+    ,'!joining_member' => $user->name
+    ,'!group_link' => url('node/'.$gid,array(absolute=>true))   
+  );
+  
+  
+  if ($user->uid !=$group->uid ){
+       meta_email_send('member_joined__to_new_member', null, array($user), $vars);
+       meta_email_send('member_joined__to_group_owner', null, array($owner), $vars);
+  }
+  meta_email_send('member_joined__to_group_members', null, $members_excluded, $vars);
+} 
+
+
+
+function meta_email_callback_comment_added($comment) {
+
+  $node = node_load($comment->nid);
+
+  // @TODO: should not be hardcoded. Use variables
+  if ($node->type != 'conversation') {
+    return;
+  }
+
+  $owner = user_load($node->uid);
+  $commentator = user_load($comment->uid);
+  $followers = meta_follow_get_followers($node->nid);
+  
+ // drupal_set_message(print_r($followers,true));
+  
+  $follower_included = array(); 
+  foreach ($followers as $follower) {
+      
+      if ($follower->uid == $commentator->uid) {         
+          continue;
+      }   
+      if ($follower->uid == $owner->uid){
+          continue;
+      }
+      $follower_included[] = $follower;
+  }
+    
+ // drupal_set_message(print_r($follower_included,true));
+  
+  $vars = array(
+    '#comment' => sprintf('%s %s', $comment->subject, $comment->comment)
+    , '!commenting_member' => $commentator->realname
+    , '!topic_title ' => $node->title
+    , '!topic_link' => url('node/' . $node->nid,array(absolute=>true))
+  );
+
+  if (!empty($comment->pid)) {
+ //    drupal_set_message("Comment replied loop");
+    $comment_parent = comment_load($comment->pid);
+    $vars['#comment_parent'] = sprintf('%s %s', $comment_parent->subject, $comment_parent->comment);
+    meta_email_send('comment_replied__to_topic_followers', $commentator, $follower_included, $vars);
+    if ($commentator->uid !=$owner->uid) {
+        meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
+    }
+  } else {
+  //  drupal_set_message("Comment Added loop");
+    meta_email_send('comment_added__to_topic_followers', $commentator, $follower_included, $vars);
+    if ($commentator->uid !=$owner->uid) {
+         meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
+    }
+  }
+
+  if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
+    drupal_set_message(t('DEBUG: PLACEHOLDER for email: Comment #comment has added to #topic', array(
+      '#comment' => $comment->subject . ' ' . $comment->comment
+      , '#topic' => $node->title
+    )));
+  }
+}
+
+
+
+/**
+ * Sends an e-mail.
+ *
+ * @param string $key
+ *   Mail key
+ * @param integer $from_user
+ * @param array $to_users
+ *   Array of integers
+ */
+function meta_email_send($key, $from_user, $to_users, $vars) {
+  $from = null; //let drupal set it by default
+  if (isset($from_user->mail)) {
+    $from = $from_user->mail;
+  }
+
+  if (META_EMAIL_DEBUG) {
+    $_to_emails = array();
+    foreach ($to_users as $_to_user) {
+      $_to_emails[] = $_to_user->mail;
+    }
+    drupal_set_message(t('Email #key is being sent from #from to #to_users with variables: #vars', array(
+      '#key' => $key
+      , '#from' => $from
+      , '#to' => print_r($_to_emails, true)
+      , '#vars' => print_r($vars, true)
+    )));
+  }
+  foreach ($to_users as $to_user) {
+    // Integration with module meta_user_settings
+    if (_meta_email_settings_get($key, $to_user)) {
+      $vars['!receiver_name'] = $to_user->realname;
+      $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
+      if ($result['result'] == TRUE) {
+        //drupal_set_message(t('Your message has been sent.'));
+      } else {
+        drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+      }
+    } else {
+      if (META_EMAIL_DEBUG) {
+        drupal_set_message(t('Not sent to #user because of their profile settings.', array('#user' => $to_user->mail)), 'warning');
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_mail().
+ */
+function meta_email_mail($key, &$message, $params) {
+  global $user;
+ // drupal_set_message("In the meta email mail");
+  $options = array(
+    'langcode' => $message['language']->language,
+  );
+ // drupal_set_message("The initial params are:".print_r($params,true));
+  $params = array_merge(array(
+    '!site_name' => variable_get('site_name', '')
+    , '!site_url' => url('<front>',array('absolute'=>true))
+    ,'!site_email' => variable_get('site_mail','')
+  ), $params);
+ // drupal_set_message("After alteration params are:".print_r($params,true));
+ // drupal_set_message("key:".$key); 
+  switch ($key) {
+    case 'comment_replied__to_topic_followers':
+      $message['subject'] = t('!site_name - !commenting_member has replied to a comment', $params, $options);
+      $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !commenting_member has replied to a comment in !topic_title  on !site_name. <br>&nbsp;<br> You can view the reply <a href="!topic_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'comment_replied__to_topic_owner':
+     $message['subject'] = t('!site_name - !commenting_member has replied to a comment on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !commenting_member has replied to a comment in !topic_title   on !site_name. <br>&nbsp;<br> You can view the reply <a href="!topic_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'comment_added__to_topic_followers':
+     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !commenting_member has made a comment in !topic_title  on !site_name. <br>&nbsp;<br> You can view the comment <a href="!topic_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'comment_added__to_topic_owner':
+     $message['subject'] = t('!site_name - !commenting_member has commented on !topic_title ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name,
+      <br>&nbsp;<br>!commenting_member has made a comment in your post !topic_title  on !site_name.
+      <br>&nbsp;<br>You can view the comment <a href="!topic_link">here</a>.
+      <br>&nbsp;<br>Kind Regards,<br>!site_name.
+      <br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'group_published__to_group_owner':
+     $message['subject'] = t('!site_name - !group_name has been published', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> Your group !group_name has been published on !site_name. <br>&nbsp;<br> You can view the group  <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+    break;
+    case 'member_joined__to_new_member':
+     $message['subject'] = t('!site_name - welcome to !group_name .', $params,$options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> You are now a member of !group_name on !site_name. <br>&nbsp;<br> You can view the group <a href="!group_link">here</a>.<br>&nbsp;<br> Kind Regards,<br> !site_name.', $params, $options);
+    break;
+    case 'member_joined__to_group_owner':   
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name ',$params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !joining_member has joined <a href="!group_link">!group_name</a>.<br>&nbsp;<br> Kind Regards,<br>!site_name.<br>&nbsp;<br> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    // $message['subject'] = "This is the subject";
+    // $message['body'][] = "This is the body";
+    break;
+    case 'member_joined__to_group_members':
+     $message['subject'] = t('!site_name - !joining_member has joined !group_name ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !joining_member has joined <a href="!group_link">!group_name</a>.<br>&nbsp;<br> Kind Regards,<br> !site_name.<br>&nbsp;<br> You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
+    break;
+    case 'group_waiting_approval__to_requester':
+     $message['subject'] = t('!site_name - !group_name has been sent for approval', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br><a href="!group_link">!group_name</a> has been sent for approval by !site_name community managers. The group will be reviewed and approved or you will be contacted by email. If you have not been contacted and the group has not been approved within 4 working days, please contact us at !site_email.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+    break;
+    case 'group_waiting_approval__to_admins':
+     $message['subject'] = t('!site_name - !group_name is waiting for approval', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br>A new hub has been created and is in draft state, pending your approval.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+    break;
+    case 'group_topic_added__to_group_owner':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'group_topic_added__to_group_members':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'group_resource_added__to_group_owner':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+    case 'group_resource_added__to_group_members':
+     $message['subject'] = t('!site_name - !topic_title has been added to !group_name ', $params, $options);
+     $message['body'][] = t('Hi !receiver_name, <br>&nbsp;<br> !topic_owner has created !topic_title in !group_name. Click <a href="!topic_link">here</a> to view and comment.<br>&nbsp;<br>Kind Regards,<br> !site_name .<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
+    break;
+
+
+    case 'PLACEHOLDER':
+     $message['subject'] = t('PLACEHOLDER', $params, $options);
+     $message['body'][] = t('PLACEHOLDER', $params, $options);
+    break;
+    default:
+       $params = array( '!key' => $key );
+     
+      //  drupal_set_message("In the default ");
+       $message['subject'] = "hello";
+       $message['body'][] = "This is mail body";
+  }
+ // $signature = "\n" . t("Kind Regards \n The META members community", array(), $options) . "\n";
+ // $message['body'][] = $signature;
+
+  if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
+    drupal_set_message(t('Key: !key <br>Subject: !subject <br>Body: !body<br>', array(
+      '!key' => $key
+      , '!subject' => $message['subject']
+      , '!body' => $message['body'][0]
+    )), 'warning');
+  }
+
+}
+
+/**
+for help
+
+    case 'user_added_to_hub':
+         $config['message'] = t("Hi @username \n
+          @from has added you to the Continuous Collaboration Hub called @title \n
+          You will be able to join the discussion in the Hub Topics and contribute useful files in the Hub Library \n
+          If you don't want updates in your Activity Feed from the Hub, simply visit Your Hubs @url , find the Hub you've been added to, and click Unsubscribe",$values);
+        break;
+    case 'send_for_revision' :
+       // $to = variable_get('site_mail', 'admin@example.com');
+        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail ); 
+        $config['message'] = t("Hi META admin, \n
+         A new Hub requires your attention. @from has submitted their hub '@title' for you to review.
+         Member name: @from    
+         Member email: @from_email "
+          ,$values);
+        break;  
+    case 'join_hub' :
+        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail, '@to' => $to_user->name ); 
+        $config['message'] = t("Hi @to, \n
+         A member has joined your hub, '@title'. 
+         Name: @from "
+          ,$values);
+        break;  
+    case 'hub_published' :
+        $url = url('hubs', array('absolute' => TRUE));
+        $values = array( '@title' => $hub->title, '@from' => $from_user->name, '@from_email' => $from_user->mail, '@to' => $to_user->name, '@url' => $url ); 
+        $config['message'] = t("Hi @to, \n
+         Your hub, @title, has been approved and published by the META Administrator.
+         Click here to view your hub @url "
+          ,$values);  
+       break;   
+
+
+
+*/
+
+
+

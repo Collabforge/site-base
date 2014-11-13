@@ -1,0 +1,6 @@
+name = Opentip Tips
+description = Integrates the Opentip library with Drupal.
+core = 7.x
+package = Tips
+
+dependencies[] = tips
