@@ -105,11 +105,17 @@
                  <div class="posted-by-move-up"><?php print '<br/>Posted by ' . $name . $user_picture;?></div>
               <?php print render($title_suffix); ?>
             </div>
-
+        <div class="event-location">
             <?php
+              echo "Location:";
               print render($content['field_location']);
+            ?></div>
+              
+        <div class="event-date">
+              <?php
+              echo "Time:";
               print render($content['field_date']);
-            ?>
+            ?></div>
           </div>
         </div>
         <div class="event-info" style="clear: both">
