@@ -87,11 +87,6 @@
 
       <div class="contentarticle clearfix"<?php print $content_attributes; ?>>
         <div class="event-image-and-details">
-          <div class="event-image">
-            <?php
-              print render($content['field_featured_image']);
-            ?>
-          </div>
           <div class="event-details">
             <?php
               // We hide the comments and links now so that we can render them below.
@@ -99,7 +94,13 @@
               //hide($content['links']);
             ?>
 
-            <div class="templatedtitlestyle">
+            
+        <div class="event-image">
+            <?php
+              print render($content['field_featured_image']);
+            ?>
+          </div>
+              <div class="templatedtitlestyle">
               <?php print render($title_prefix); ?>
               <h1<?php print $title_attributes; ?>><?php print $title; ?></h1>
                  <div class="posted-by-move-up"><?php print '<br/>Posted by ' . $name . $user_picture;?></div>
