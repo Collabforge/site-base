@@ -14,12 +14,12 @@ function meta_structure_views_api() {
 
 function meta_structure_menu() {
   $items['topics'] = array(
-    'page callback' => '_meta_structure_page_topics'
-    , 'access callback' => true
+    'page callback' => '_meta_structure_page_topics',
+    'access callback' => 'user_is_logged_in',
   );
   $items['hubs'] = array(
-    'page callback' => '_meta_structure_page_hubs'
-    , 'access callback' => true
+    'page callback' => '_meta_structure_page_hubs',
+    'access callback' => TRUE,
   );
   return $items;
 }
