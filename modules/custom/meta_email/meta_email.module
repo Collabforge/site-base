@@ -183,8 +183,8 @@ function meta_email_callback_group_content_added($gid, $nid) {
  
   $topic_owner = user_load($node->uid);
   $vars = array(
-    '!topic_title' => $node->title,
     '!group_name' => $group->title,
+    '!topic_title' => $node->title,
     '!topic_owner' => $topic_owner->name,
     '!topic_link' => url('node/' . $node->nid, array('absolute' => TRUE)),
   );
@@ -262,17 +262,19 @@ function meta_email_callback_comment_added($comment) {
   $follower_included = array(); 
   foreach ($followers as $follower) {    
     if ($follower->uid == $commentator->uid) {         
-        continue;
+      continue;
     }   
     if ($follower->uid == $owner->uid){
-        continue;
+      continue;
     }
     $follower_included[] = $follower;
   }
   $vars = array(
-    '#comment' => sprintf('%s %s', $comment->subject, $comment->comment),
+    // #comment used for debug only
+    '#comment' => $comment->subject,
     '!commenting_member' => $commentator->realname,
-    '!topic_title ' => $node->title,
+    '!topic_title' => $node->title,
+    '!topic_owner' => $owner->name,
     '!topic_link' => url('node/' . $node->nid, array('absolute' => TRUE)),
   );
 
@@ -292,9 +294,9 @@ function meta_email_callback_comment_added($comment) {
   }
 
   if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
-    drupal_set_message(t('DEBUG: PLACEHOLDER for email: Comment #comment has added to #topic', array(
-      '#comment' => $comment->subject . ' ' . $comment->comment
-      , '#topic' => $node->title
+    drupal_set_message(t('DEBUG: PLACEHOLDER for email: Comment #comment was added to #topic', array(
+      '#comment' => $comment->subject,
+      '#topic' => $node->title
     )));
   }
 }
