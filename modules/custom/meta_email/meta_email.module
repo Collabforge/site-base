@@ -282,18 +282,18 @@ function meta_email_callback_comment_added($comment) {
     $comment_parent = comment_load($comment->pid);
     $vars['#comment_parent'] = sprintf('%s %s', $comment_parent->subject, $comment_parent->comment);
     meta_email_send('comment_replied__to_topic_followers', $commentator, $follower_included, $vars);
-    if ($commentator->uid !=$owner->uid) {
+    if ($commentator->uid != $owner->uid) {
       meta_email_send('comment_replied__to_topic_owner', $commentator, array($owner), $vars);
     }
   }
   else {
     meta_email_send('comment_added__to_topic_followers', $commentator, $follower_included, $vars);
-    if ($commentator->uid !=$owner->uid) {
+    if ($commentator->uid != $owner->uid) {
       meta_email_send('comment_added__to_topic_owner', $commentator, array($owner), $vars);
     }
   }
 
-  if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {
+  if (defined('META_EMAIL_DEBUG') && META_EMAIL_DEBUG) {
     drupal_set_message(t('DEBUG: PLACEHOLDER for email: Comment #comment was added to #topic', array(
       '#comment' => $comment->subject,
       '#topic' => $node->title
@@ -331,9 +331,20 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
   foreach ($to_users as $to_user) {
     // Integration with module meta_user_settings
     if (_meta_email_settings_get($key, $to_user)) {
+      // Hmm.... this assumes 
       $vars['!receiver_name'] = $to_user->realname;
-      $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
-      if ($result['result'] == TRUE) {
+      // If possible avoid the DefaultMailSystem implementation as it takes
+      // hyperlinks out of the message body to put them in the footer. Ugly.
+      if (module_exists('mimemail')) {
+        $mail_module = 'mimemail';
+        // function mimemail_mail() requires 'context' array. It may be empty.
+        $vars['context'] = array();
+      }
+      else {
+        $mail_module = 'default-system';
+      }
+      $result = drupal_mail($mail_module, $key, $to_user->mail, language_default(), $vars, $from);
+      if ($result['result']) {
         //drupal_set_message(t('Your message has been sent.'));
       }
       else {
