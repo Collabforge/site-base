@@ -29,70 +29,77 @@ function collabco_profile_block_block_info() {
 /**
  * Implements hook_block_view().
  */
-function collabco_profile_block_block_view($delta = '') {
+function collabco_profile_block_block_view($delta='') {
   $block = array();
-  global $base_url, $user;
-
+  global $user;
+          global $base_url;
+          if (user_is_logged_in()) {
+            if (!property_exists($user, 'realname')) {
+              $user = user_load($user->uid);
+            }
+          }
   switch($delta) {
     case 'collabco_profile_block' :
+      $entity_type = 'node';
+      $field = 'title';
+      $groups_output = '';
       $groups = og_get_groups_by_user($user);
       if (!empty($groups)) {
-        foreach ($groups['node'] as $gid) {
+        foreach ($groups['node'] as $key => $gid) {
           $node = node_load($gid);
-          $group_links = '<a href="'. $base_url . '/node/' . $node->nid . '">' . $node->title . '</a>';
+          $group_links = '<a href="'.$base_url.'/node/' . $node->nid . '">' . $node->title . '</a>';
         }
         // DISABLED BY MATT FOR META DEMO. I only disabled the output obviously. Re-enable by removing comment-out.
         /*$groups_output = '<div><h6>Your Groups:</h6><div>' . $group_links . '</div></div>';*/
       }
-      $links = array(
-        'ui-navigation-menu ui-activity-feed leaf' => array(
-          'title' => '<i class="icon-rss" style="text-decoration:none !important;">&nbsp;</i> Activity Feed',
-          'href' => $base_url . '/dashboard',
-          'html' => TRUE,
-        ),
-        'ui-navigation-menu ui-my-profile leaf' => array(
-          'title' => '<i class="icon-user">&nbsp;</i> ' . t('My Profile'),
-          'href' => $base_url . '/user',
-          'html' => TRUE,
-        ),
-        'ui-navigation-menu ui-your-topics leaf' => array(
-          'title' => '<i class="icon-list">&nbsp;</i> ' . t('My Topics'),
-          'href' => $base_url . '/your-topics',
-          'html' => TRUE,
-        ),
-        'ui-navigation-menu ui-your-hubs leaf' => array(
-          'title' => '<i class="icon-globe">&nbsp;</i> ' . t('My Hubs'),
-          'href' => $base_url . '/your-hubs',
-          'html' => TRUE,
-        ),
-        'ui-navigation-menu ui-your-library leaf' => array(
-          'title' => '<i class="icon-folder-close-alt">&nbsp;</i> ' . t('My Library'),
-          'href' => $base_url . '/my-library',
-          'html' => TRUE,
-        ),
-      );
-      $attributes = array('class' => array('menu nav user-navigation'));
-
-      $navigation_links = theme('links', array('links' => $links, 'attributes' => $attributes));
       
-      $block['content'] =
-        '<div id="iin-profile-content" class="row-fluid">'
-          . '<div id="iin-profile-picture" >' . theme('user_picture', array('account' => $user)) . '</div>'
-          . '<div>' . $user->realname . '</div>' .
-        '</div>' .
-        '<br>'. $navigation_links;
-    break;
-
-    case 'header_user_profile_block' :
-      if (user_is_logged_in()) {
-        if (!property_exists($user, 'realname')) {
-          $user = user_load($user->uid);
-        }
-      }
-      $data = array('user_name' => $user->realname);
-      $content = theme('header_user_profile_template', $data);
-      $block['content'] = $content;
-    break;
+      $links = array(
+          'ui-navigation-menu ui-activity-feed  first leaf' => array(
+              'title' => '<i class="icon-rss" style="text-decoration:none !important;">&nbsp;</i> Activity Feed'
+              , 'href' => sprintf('<front>')             
+    		
+            , 'html' => TRUE
+          )
+         , 'ui-navigation-menu ui-my-profile leaf' => array(
+              'title' => '<i class="icon-user">&nbsp;</i> ' . t('My Profile')
+              , 'href' => sprintf('user')  	    
+            , 'html' => TRUE
+          )
+        
+          , 'ui-navigation-menu ui-your-topics leaf' => array(
+              'title' => '<i class="icon-list">&nbsp;</i> ' . t('My Topics')
+              , 'href' => sprintf('your-topics')
+          
+            , 'html' => TRUE
+          )
+          , 'ui-navigation-menu ui-your-hubs leaf' => array(
+              'title' => '<i class="icon-globe">&nbsp;</i> ' . t('My Hubs')
+              , 'href' => sprintf('your-hubs')
+              , 'html' => TRUE
+          )                  
+        );
+        $attributes = array('class' => array('menu nav user-navigation'));
+  
+        $navigation_links= theme('links', array(
+          'links' => $links, 'attributes' => $attributes
+        ));
+      
+      
+      $block['content'] = '<div id="iin-profile-content" class="row-fluid"><div id="iin-profile-picture" >'.theme('user_picture', array('account' => $user)).'</div>
+<div>'.$user->realname.'</div></div><br>'. $navigation_links; 
+      break;
+     case 'header_user_profile_block' :
+ 
+            $data = array();
+            $data['user_name'] = $user->realname;
+            //print($data['user_name']);
+ 
+          //  print($picture);
+            $content = theme('header_user_profile_template',$data);
+            $block['content'] = $content;
+       break;
+ 
+ 
   }
   return $block;
 }

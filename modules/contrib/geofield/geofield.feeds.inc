@@ -67,8 +67,10 @@ function geofield_feeds_combined_source($source, FeedsParserResult $result, $key
 /**
  * Implements hook_feeds_node_processor_targets_alter().
  */
-function geofield_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
-  foreach (field_info_instances($entity_type, $bundle_name) as $name => $instance) {
+function geofield_feeds_processor_targets_alter(&$targets, $entity_type,
+  $bundle_name) {
+    foreach (field_info_instances($entity_type, $bundle_name) as
+      $name => $instance) {
     $info = field_info_field($name);
     if ($info['type'] == 'geofield') {
       $targets[$info['field_name'] . ':wkt'] = array(
@@ -124,25 +126,13 @@ function geofield_feeds_processor_targets_alter(&$targets, $entity_type, $bundle
  *   An entity object, for instance a node object.
  * @param $target
  *   A string identifying the target on the node.
- * @param $values
- *   The values to populate the target with.
+ * @param $value
+ *   The value to populate the target with.
  *
  */
-function geofield_set_target_simple($source, $entity, $target, $values) {
+function geofield_set_target_simple($source, $entity, $target, $value) {
   list($field_name, $sub_field) = explode(':', $target, 2);
-
-  if (!is_array($values)) {
-    $values = array($values);
-  }
-
-  $field = isset($entity->$field_name) ? $entity->$field_name : array('und' => array());
-  $delta = 0;
-  foreach ($values as $value) {
-    $field['und'][$delta][$sub_field] = $value;
-    $delta++;
-  }
-
-  $entity->$field_name = $field;
+  $entity->{$field_name}['und'][0][$sub_field] = $value;
 }
 
 /**
@@ -156,29 +146,30 @@ function geofield_set_target_simple($source, $entity, $target, $values) {
  *   An entity object, for instance a node object.
  * @param $target
  *   A string identifying the target on the node.
- * @param $values
- *   The values to populate the target with.
+ * @param $value
+ *   The value to populate the target with.
  *
  */
-function geofield_set_target_combined($source, $entity, $target, $values) {
+function geofield_set_target_combined($source, $entity, $target, $value) {
   $field_name = substr($target, 0, strpos($target, ':'));
-  _geofield_set_target($source, $entity, $field_name, $values);
+  _geofield_set_target($source, $entity, $field_name, $value);
 }
 
 /**
  * Feeds processor target callback for WKT source.
  */
-function geofield_set_target_wkt($source, $entity, $target, $values) {
+function geofield_set_target_wkt($source, $entity, $target, $value) {
   $field_name = substr($target, 0, strpos($target, ':'));
-
-  if (!is_array($values)) {
-    $values = array($values);
-  }
-
   $geofield_values = array();
 
-  foreach ($values as $wkt) {
-    $field = array('geom' => $wkt);
+  if (is_array($value)) {
+    foreach ($value as $key => $wkt) {
+      $field = array('wkt' => $wkt);
+      $geofield_values[] = geofield_compute_values($field, 'wkt');
+    }
+  }
+  else {
+    $field = array('wkt' => $value);
     $geofield_values[] = geofield_compute_values($field, 'wkt');
   }
 
@@ -196,28 +187,31 @@ function geofield_set_target_wkt($source, $entity, $target, $values) {
  *   The entity to map to.
  * @param $target
  *   The target key on $entity to map to.
- * @param $values
+ * @param $value
  *   The value to map. MUST be an array.
  */
-function _geofield_set_target($source, $entity, $target, $values) {
-  if (empty($values)) {
+function _geofield_set_target($source, $entity, $target, $value) {
+  if (empty($value)) {
     return;
   }
 
+  $info = field_info_field($target);
+
   // Iterate over all values.
   $i = 0;
-
-  $field = isset($entity->$target) ? $entity->$target : array('und' => array());
-  foreach ($values as $value) {
+  $field = isset($entity->$target) ? $entity->$target : array();
+  foreach ($value as $v) {
     // Check if field value is empty.
-    if(empty($value)){
+    if(empty($v)){
       continue;
     }
-    if (is_array($value) || is_object($value)) {
-      $field['und'][$i] = $value;
+    if (is_array($v) || is_object($v)) {
+      $field['und'][$i] = $v;
+    }
+    if ($info['cardinality'] == 1) {
+      break;
     }
     $i++;
   }
-
   $entity->{$target} = $field;
 }

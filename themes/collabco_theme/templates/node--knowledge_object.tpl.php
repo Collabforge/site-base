@@ -77,9 +77,7 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-
 ?>
-<a href="/library">Library</a> > <?php print $title; ?>
 
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>

@@ -1,8 +1,0 @@
-name = Smallipop Tips
-description = Integrates the Smallipop library with Drupal.
-core = 7.x
-package = Tips
-
-dependencies[] = tips
-
-

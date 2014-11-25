@@ -19,17 +19,15 @@
 ?>
 
 
-<?php 
-global $base_url;
-if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
+<?php if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
 <?php // note - do not remove, the percentage is a PHP variable, not hardcoded. this is necessary. ?>
 <style type="text/css">
-    .collabco-percent-bar.profile2-profile { width: <?php print $current_percent; ?>%; }
-    .profile2-profile { padding-left: 0%; }
+    .collabco-percent-bar.profile2-profile{ width: <?php print $current_percent; ?>%; }
+    .profile2-profile{ padding-left: 0%; }
 </style>
 
     <div class="dashboard">
-        <div class="row-fluid dashboard_head">
+        <div class-"row-fluid dashboard_head">
 
         <div class="welcome span12">
             <h2>Getting started checklist</h2>
@@ -40,31 +38,34 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
               <div class="span4 dashboard_1 first">
                 <h4>Learn About this site</h4>
                     <div class="call_out">
-                        <p></p>
-                        <a class="action" href="<?php print "$base_url/about-this-site"; ?>" title="About this site">Read More</a>
+                        <p>Pellentesque aliquam augue ut dui aliquam consequat.</p>
+                        <a class="action" href="/about-this-site" title="About this site">Read More</a>
                     </div>
                 </div>
-              <?php } ?>
+           <?php } ?>
 
-              <?php if ($profile_completeness) { ?>
+            <?php if ($profile_completeness) { ?>
                 <div class="span4 dashboard_2">
-                  <h4>Complete your profile</h4>
-                  <div class="call_out">
-                     <!-- Progress Bar -->
-                     <div class="pcp-wrapper pcp-profile2 pcp-profile">
-                       <div class="percent-bar">
-                         <div class="collabco-percent-bar-wrapper">
-                           <div class="collabco-percent-bar profile2-profile"></div>
-                         </div>
-                       </div>
-                       &nbsp;&nbsp; <?php print $current_percent; ?>%
-                     </div>
-                     <a class="action" href="<?php print "$base_url/user/$user->uid/edit/profile"; ?>" title="Edit your Profile">Edit Your Profile</a>
-                  </div>
-                </div>
-              <?php } ?>
+                 <h4>Complete your profile</h4>
+                    <div class="call_out">
 
-              <?php if(!$introduce_yourself) { ?>
+                        <!-- Progress Bar -->
+
+                       <div class="pcp-wrapper pcp-profile2 pcp-profile">
+                        <div class="percent-bar">
+                        <div class="collabco-percent-bar-wrapper">
+                        <div class="collabco-percent-bar profile2-profile"></div>
+                        </div>
+                        </div>&nbsp;&nbsp; <?php  print $current_percent; ?>%
+                       </div>
+
+                        <a class="action" href="user/<?php print $user->uid; ?>/edit/profile" title="Edit your Profile">Edit Your Profile</a>
+
+                    </div>
+                </div>
+         <?php } ?>
+
+        <?php if(!$introduce_yourself) { ?>
                 <div class="span4 dashboard_3 last">
                  <h4>Introduce Yourself</h4>
                     <div class="call_out">
@@ -72,13 +73,14 @@ if ($first_time_user || $profile_completeness || !$introduce_yourself) { ?>
                         Post a reply to "Introduce Yourself" topic.
                     </p>
 
-                        <a class="action" href="<?php print "$base_url/news-update/welcome-please-introduce-yourself"; ?>">Go There</a>
+                        <a class="action" href="/news-update/welcome-please-introduce-yourself">Go There</a>
 
                     </div>
                 </div>
-              <?php } ?>
+        <?php } ?>
 
             </div>
+
     </div>
 </div>
  <?php } ?>

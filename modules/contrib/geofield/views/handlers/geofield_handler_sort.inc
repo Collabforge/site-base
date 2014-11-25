@@ -34,11 +34,10 @@ class geofield_handler_sort extends views_handler_sort {
     
     $proximityHandlers = module_invoke_all('proximity_views_handlers');
     foreach ($proximityHandlers as $key => $handler) {
-      if (class_exists($handler['class'])) {
-        $proximityPlugin = new $handler['class']();
-        $proximityPlugin->option_definition($options, $this);
-      }
-    }
+      $proximityPlugin = new $handler['class']();
+      $proximityPlugin->option_definition($options, $this);
+    } 
+    
     return $options;
   }
 
@@ -61,10 +60,9 @@ class geofield_handler_sort extends views_handler_sort {
     $proximityHandlers = module_invoke_all('proximity_views_handlers');
     foreach ($proximityHandlers as $key => $handler) {
       $form['source']['#options'][$key] = $handler['name'];
-      if (class_exists($handler['class'])) {
-        $proximityPlugin = new $handler['class']();
-        $proximityPlugin->options_form($form, $form_state, $this);
-      }
+
+      $proximityPlugin = new $handler['class']();
+      $proximityPlugin->options_form($form, $form_state, $this);
     }
   }
 

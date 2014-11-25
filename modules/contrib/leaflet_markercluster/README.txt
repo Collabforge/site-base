@@ -6,8 +6,9 @@ installed before you can use Leaflet MarkerCluster.
 
 Then download the MarkerCluster library from:
 https://github.com/danzel/Leaflet.markercluster
-Rename the downloaded directory to leaflet_markercluster (lowercase), so that
-the path to the essential javascript file becomes
+The core part of the zip file is a directory named 'dist'. Make sure this
+directory ends up in sites/all/libraries/leaflet_markercluster, so that the path
+to the essential javascript file becomes
 sites/all/libraries/leaflet_markercluster/dist/leaflet.markercluster.js
 
 Visit the Status Report page, admin/reports/status, to check all's ok.
@@ -46,7 +47,6 @@ The following MarkerCluster parameters may be configured this way:
   skipDuplicateAddTesting (FALSE)
   spiderfyOnMaxZoom (TRUE)
   zoomToBoundsOnClick (TRUE)
-  addRegionToolTips (FALSE)
 
 See the bottom reference for an explanation of these parameters.
 

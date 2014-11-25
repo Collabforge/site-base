@@ -23,8 +23,6 @@ class geofield_map_plugin_style_map extends views_plugin_style {
     $options['geofield_map_width'] = array('default' => '100%');
     $options['geofield_map_height'] = array('default' => '300px');
     $options['geofield_map_zoom'] = array('default' => '8');
-    $options['geofield_map_min_zoom'] = array('default' => 0);
-    $options['geofield_map_max_zoom'] = array('default' => 0);
     $options['geofield_map_controltype'] = array('default' => 'default');
     $options['geofield_map_mtc'] = array('default' => 'standard');
     $options['geofield_map_pancontrol'] = array('default' => 1);
@@ -39,7 +37,6 @@ class geofield_map_plugin_style_map extends views_plugin_style {
     $options['geofield_map_scrollwheel'] = array('default' => 0);
     $options['geofield_map_draggable'] = array('default' => 0);
     $options['geofield_map_streetview_show'] = array('default' => 0);
-    $options['geofield_map_center'] = array('default' => '0,0');
     $options['icon'] = array('default' => '');
     return $options;
   }
@@ -118,7 +115,7 @@ class geofield_map_plugin_style_map extends views_plugin_style {
         $geofield_handler = $this->view->field[$style_options['data_source']];
         $geofield = $geofield_handler->get_value($result);
 
-        if (!empty($geofield[0]['geom'])) {
+        if (!empty($geofield)) {
           $description = ($popup_data ? $this->rendered_fields[$id][$popup_data] : '');
           $geometry = geoPHP::load($geofield[0]['geom']);
           $datum = json_decode($geometry->out('json'));
@@ -129,9 +126,6 @@ class geofield_map_plugin_style_map extends views_plugin_style {
         }
       }
 
-      if(!$data && !$style_options['geofield_map_center']){
-        return;
-      }
       if (count($data) == 1) {
         $data = $data[0];
       }

@@ -1,8 +1,0 @@
-name = Tooltipster Tips
-description = Integrates the Tooltipster library with Drupal.
-core = 7.x
-package = Tips
-
-dependencies[] = tips
-
-

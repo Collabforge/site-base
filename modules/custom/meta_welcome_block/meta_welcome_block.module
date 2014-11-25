@@ -29,10 +29,10 @@ function meta_welcome_block_block_info() {
 function meta_welcome_block_block_view($delta='') {
   $block = array();
   switch($delta) {
-    case 'meta_welcome_block' :
-      $content = theme('welcome_block_template');
-      $block['content'] = $content;
-    break;
+      case 'meta_welcome_block' :
+            $content = theme('welcome_block_template');
+            $block['content'] = $content;
+      break;
   }
   return $block;
 }

@@ -45,8 +45,6 @@
 
           var myOptions = {
             zoom: parseInt(map_settings.zoom),
-            minZoom: parseInt(map_settings.min_zoom),
-            maxZoom: parseInt(map_settings.max_zoom),
             mapTypeId: maptype,
             mapTypeControl: (mtc ? true : false),
             mapTypeControlOptions: {style: mtc},
@@ -93,16 +91,10 @@
             }
           }
 
-         for (first in features) break;
-         if (first!='type') {
-            if (resetZoom) {
-              map.fitBounds(range);
-            } else {
-              map.setCenter(range.getCenter());
-            }
+          if (resetZoom) {
+            map.fitBounds(range);
           } else {
-            var center = map_settings.center;
-            map.setCenter(new google.maps.LatLng(center.lat, center.lon));
+            map.setCenter(range.getCenter());
           }
         }
         

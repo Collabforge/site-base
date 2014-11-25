@@ -3,7 +3,7 @@
   $full_name = $user_profile['field_first_name']['#object']->name;
   $account = $elements['#account'];
   $is_contactable = _contact_personal_tab_access($account);
-  global $base_url;
+  global $base_path, $base_root;
 ?>
 
 <div class="user-profile">
@@ -21,7 +21,7 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			  <a href="<?php echo "$base_url/user/$account->uid/edit/profile"; ?>"><i class="icon-edit"></i> Edit your profile</a>
+			  <a href="<?php echo "$base_root/user/" . $account->uid; ?>/edit/profile"><i class="icon-edit"></i> Edit your profile</a>
 			<?php } ?>
 		</div>
 	</div>
@@ -29,15 +29,15 @@
 	
 	<div class="span7 first">
 		<div class="profile-page-user-position">
-			<?php print render($fields['field_business_position']); ?>
+			<?php print render ($fields['field_business_position']); ?>
 		</div>
 		<br>
 		<div class="profile-page-user-bio">
-			<?php print render($fields['field_personal_bio']); ?>
+			<?php print render ($fields['field_personal_bio']); ?>
 		</div>
-    <br>
+                <br>
 		<div class="profile-page-user-organisation">
-			<?php print render($fields['field_organisation_ref']); ?>
+			<?php print render ($fields['field_organisation_ref']); ?>
 		</div>
 	</div>
 
@@ -51,13 +51,11 @@
         </div>
         <?php if ($is_contactable): ?>
         	<br/>
-          <div class="profile-page-user-contact">
-            <div class="field-label">
-              <b>Send <?php print($full_name); ?> an email</b>
-            </div>
-            <div class="field-item">
-              <a href="<?php print "$base_url/user/$account->uid/contact"; ?>">Send a message</a>
-            </div>
+		<div class="profile-page-user-contact">
+          <div class="field-label"><b>Send <?php print($full_name); ?> an email</b></div>
+          <div class="field-item">
+		      <a href="/user/<?php print $account->uid; ?>/contact">Send a message</a>
+          </div>
         </div>
         <?php endif; ?>
 	</div>

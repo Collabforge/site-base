@@ -20,6 +20,16 @@ class FeedsResult {}
 abstract class FeedsPlugin extends FeedsConfigurable implements FeedsSourceInterface {
 
   /**
+   * Constructor.
+   *
+   * Initialize class variables.
+   */
+  protected function __construct($id) {
+    parent::__construct($id);
+    $this->source_config = $this->sourceDefaults();
+  }
+
+  /**
    * Returns the type of plugin.
    *
    * @return string

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements hook_field_widget_form_alter().
+ * Impliments hook_field_widget_form_alter().
  */
 function collabco_theme_field_widget_form_alter(&$element, &$form_state, $context) {
   if (!empty($element['#field_name'])) {
@@ -22,14 +22,8 @@ function collabco_theme_field_widget_form_alter(&$element, &$form_state, $contex
   }
 }
 
-function collabco_theme_field_widget_file_generic_form_alter(&$element, &$form_state, $context) {
-  return;
-}
-
 /**
- * Implements hook_form_alter().
- *
- * Adds bootstrap CSS classes to common buttons.
+ * Impliments hook_form_alter().
  */
 function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['submit']['#attributes']['class'][] = 'form-btn-success';
@@ -41,11 +35,13 @@ function collabco_theme_preprocess_flag(&$variables) {
   $variables['flag_classes_array'][] ='btn btn-warning';
 }
 
+
+
 /*
  * Implements hook_menu_link
  * Copy of open_framework_menu_link(). just applying it to all menus
  */
-/*function collabco_theme_menu_link(array $vars) {
+function collabco_theme_menu_link(array $vars) {
   $element = $vars['element'];
 
   $link_theming_functions = (array)$element['#theme'];
@@ -91,28 +87,8 @@ function collabco_theme_preprocess_flag(&$variables) {
 }
 
 function _collabco_theme_menu_is_dropdown($link_theming_functions) {
-  // @FIXME: may need refinement, see open_framework/templates/template.php
-  foreach ($link_theming_functions as $function_name) {
-    if (strpos($function_name, '_book_')) {
-      return FALSE;
-    }
-  }
-  return TRUE;
+  // @FIXME: it should be decided what menus need this
+  // in_array('menu_link__main_menu', $link_theming_functions);
+  return true;
 }
 
-*/
-
-// in template.php for your theme directory.
- 
-// Show a message on every page.
-collabco_show_sitewide_notification_message();
- 
-// The message is pulled from a custom defined variable.
-function collabco_show_sitewide_notification_message() {
-  $notice = variable_get('collabco_sitewide_notification', '');
-  if ($notice != '') {
-    drupal_set_message($notice, 'warning');
-  }
-}
-
-$testingcustomvariable = "test";

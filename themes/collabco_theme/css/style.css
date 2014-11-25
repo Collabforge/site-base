@@ -299,11 +299,6 @@ p {
   font-size: 0.875em;
 }
 
-.node-type-book #page-title {
-  /* Page title provided by node--book.tpl.php */
-  display: none;
-}
-
 /* Icon overrides ---------------------------*/
 
 [class^="icon-"], [class*=" icon-"]{ /*NB this can be removed if the fontawesome css is inherited after bootstrap*/
@@ -2757,23 +2752,6 @@ html.js #tabs1-search input.search-query {
 
 
 
-.book-explorer ul.menu li {
-  margin-left: 1em !important;
-}
 
-/* Contact form with floatlabel */
-.contact-form .floatlabel-wrapper input {
-  border-radius: 0;
-  box-shadow: none;
-  margin: 0;
-  padding: 0;
-}
-.contact-form .floatlabel-wrapper textarea {
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 0;
-  border-radius: 0;
-  box-shadow: none;
-  margin: 0;
-  padding: 0;
-}
+
+

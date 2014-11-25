@@ -1,5 +1,0 @@
-name = Quicktabs Extras
-description = Splits off selected Quicktabs tabs from their associated content for more flexible layouts and styling.
-core = 7.x
-configure = admin/structure/quicktabs
-dependencies[] = quicktabs
