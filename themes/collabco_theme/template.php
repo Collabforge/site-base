@@ -105,14 +105,14 @@ function _collabco_theme_menu_is_dropdown($link_theming_functions) {
 // in template.php for your theme directory.
  
 // Show a message on every page.
-collabco_show_sitewide_notification_message();
+//collabco_show_sitewide_notification_message();
  
 // The message is pulled from a custom defined variable.
-function collabco_show_sitewide_notification_message() {
+/*function collabco_show_sitewide_notification_message() {
   $notice = variable_get('collabco_sitewide_notification', '');
   if ($notice != '') {
     drupal_set_message($notice, 'warning');
   }
 }
-
-$testingcustomvariable = "test";
+*/
+//$testingcustomvariable = "test";
