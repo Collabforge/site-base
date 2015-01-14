@@ -292,7 +292,7 @@ function _meta_group_page_members($node) {
 }
 
 function _meta_group_books($node) {
-  return views_embed_view('wikibooks', 'page_1', $node->nid);
+  return views_embed_view('wikibooks', 'books_of_hub', $node->nid);
 }
 
 function meta_group_theme($existing, $type, $theme, $path) {
