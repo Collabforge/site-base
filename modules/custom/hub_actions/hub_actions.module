@@ -154,13 +154,19 @@ function hub_actions_form_knowledge_object_node_form_submit($form, &$form_state)
 
 function hub_actions_form_book_node_form_alter(&$form, &$form_state) {
    
-    $gid = intval(arg(3));
+    $gid = intval(arg(3)); 
+    $group_ref = $_GET['og_group_ref'];
+
   if (!empty($gid)) {    
     $lang = LANGUAGE_NONE;
     $form['og_group_ref'][$lang]['#default_value'][] = $gid;    
+  }else if (!empty($group_ref)) {
+    $lang = LANGUAGE_NONE;
+    $form['og_group_ref'][$lang]['#default_value'][] = $group_ref;
   }
+
    $form['og_group_ref']['#access'] = false;
- 
+  
    array_unshift($form['#submit'], 'hub_actions_form_book_node_form_submit');
 }
  
@@ -168,10 +174,14 @@ function hub_actions_form_book_node_form_alter(&$form, &$form_state) {
 function hub_actions_form_book_node_form_submit($form, &$form_state) {
 //    x($form_state['values']);
   $gid = intval(arg(3));
+  $group_ref = $_GET['og_group_ref'];
   if (!empty($gid)) {
     $form_state['values']['og_group_ref'][LANGUAGE_NONE][0]['target_id'] = $gid;
+  }else if (!empty($group_ref)) { 
+    $form_state['values']['og_group_ref'][LANGUAGE_NONE][0]['target_id'] = $group_ref;
   }
 }
+
 
 function hub_actions_node_insert($node)
 {
