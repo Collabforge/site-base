@@ -5,7 +5,6 @@
         attach: function (context, settings) {
             // Make sure colorbox exists.
             if (!$.isFunction($.colorbox)) {
-                alert(Drupal.t('Colorbox Library is not loaded.'));
                 return;
             }
 
@@ -35,9 +34,7 @@
     // Bind our colorbox node functionality to an anchor
     $.fn.colorboxNode = function (options) {
         var settings = {
-            'launch': true,
-            'width': Drupal.settings.colorbox_node.width,
-            'height': Drupal.settings.colorbox_node.height
+            'launch': true
         };
 
         $.extend(settings, options);
@@ -49,11 +46,6 @@
         // Create an element so we can parse our a URL no matter if its internal or external.
         var parse = document.createElement('a');
         parse.href = href;
-
-        if(!href) {
-            alert(Drupal.t('No url found on element'));
-        }
-
         // Lets add our colorbox link after the base path if necessary.
         var base_path = Drupal.settings.basePath;
         var pathname = parse.pathname;
@@ -70,6 +62,7 @@
             if (url != '') {
                 var link = pathname.replace(base_path, base_path + '?q=colorbox/') + url;
             } else {
+                console.log('check2');
                 var link = pathname.replace(base_path, base_path + 'colorbox/') + parse.search;
             }
         } else {
@@ -94,7 +87,7 @@
         }
 
         $(this).click(function () {
-            var $this = $(this).clone();
+            $this = $(this).clone();
 
             // Clear out the rel to prevent any confusion if not using the gallery class.
             if(!$this.hasClass('colorbox-node-gallery')) {
@@ -109,10 +102,6 @@
             } else {
                 var params = $.urlParams(href);
             }
-
-            // If we did not find a width or height, lets use the default.
-            if (params.innerHeight == undefined) params.innerHeight = settings.height;
-            if (params.innerWidth == undefined) params.innerWidth = settings.width;
 
             params.html = '<div id="colorboxNodeLoading"></div>';
             params.onComplete = function () {
@@ -151,13 +140,13 @@
                 // appear as one item in the gallery only
                 var $related_unique = [];
                 $related.each(function() {
-                    $.findHref($related_unique, this.href);
-                    if (!$.findHref($related_unique, this.href).length) {
+                    findHref($related_unique, this.href);
+                    if (!findHref($related_unique, this.href).length) {
                         $related_unique.push(this);
                     }
                 });
                 // we have to get the actual used element from the filtered list in order to get it's relative index
-                var current = $.findHref($related_unique, $this.get(0).href);
+                var current = findHref($related_unique, $this.get(0).href);
                 $related = $($related_unique);
                 var idx = $related.index($(current));
                 var tot = $related.length;
@@ -175,8 +164,6 @@
 
                 // Setup our current HTML
                 $('#cboxCurrent').html(Drupal.settings.colorbox.current.replace('{current}', idx + 1).replace('{total}', tot)).show();
-                $('#cboxNext').html(Drupal.settings.colorbox.next).show();
-                $('#cboxPrevious').html(Drupal.settings.colorbox.previous).show();
 
                 var prefix = 'colorbox';
                 // Remove Bindings and re-add
@@ -204,15 +191,14 @@
                 return (newIndex < 0) ? max + newIndex : newIndex;
             }
 
+            // Find a colorbox link by href in an array
+            function findHref(items, href){
+                return $.grep(items, function(n, i){
+                    return n.href == href;
+                });
+            };
         }
     }
-
-    // Find a colorbox link by href in an array
-    $.findHref = function(items, href) {
-        return $.grep(items, function(n, i){
-            return n.href == href;
-        });
-    };
 
     // Utility function to parse out our width/height from our url params
     $.urlParams = function (url) {

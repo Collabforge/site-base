@@ -6,17 +6,9 @@ core = 7.x
 test_dependencies[] = entity
 hidden = TRUE
 
-<<<<<<< HEAD
 ; Information added by Drupal.org packaging script on 2014-10-14
 version = "7.x-2.0-alpha8+56-dev"
 core = "7.x"
 project = "feeds"
 datestamp = "1413323032"
-=======
-; Information added by Drupal.org packaging script on 2014-12-23
-version = "7.x-2.0-alpha8+70-dev"
-core = "7.x"
-project = "feeds"
-datestamp = "1419371884"
->>>>>>> all modules now enabled
 

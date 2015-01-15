@@ -5,14 +5,6 @@
  */
 
 /**
- * Implements hook_enable().
- */
-function rules_enable() {
-  // Enable evaluation of Rules right after enabling the module.
-  rules_event_invocation_enabled(TRUE);
-}
-
-/**
  * Implements hook_install().
  */
 function rules_install() {

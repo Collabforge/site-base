@@ -224,14 +224,4 @@ class FeedsTermProcessor extends FeedsProcessor {
     }
     throw new Exception(t('No vocabulary defined for Taxonomy Term processor.'));
   }
-
-  /**
-   * Overrides FeedsProcessor::dependencies().
-   */
-  public function dependencies() {
-    $dependencies = parent::dependencies();
-    $dependencies['taxonomy'] = 'taxonomy';
-    return $dependencies;
-  }
-
 }

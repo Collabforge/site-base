@@ -89,12 +89,10 @@
                 dataType: 'json',
                 data: ({
                   latitude:  latitude,
-                  longitude: longitude
+                  longitude: latitude
                 })
               });
-              if (window.console) {
-                console.log('Geocoder failed due to: ' + status);
-              }
+              console.log('Geocoder failed due to: ' + status);
             }
           });
         }

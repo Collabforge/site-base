@@ -39,40 +39,13 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'field_bef_test_body'
-  $field_bases['field_bef_test_body'] = array(
+  // Exported field_base: 'field_date'
+  $field_bases['field_date'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_body',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_with_summary',
-  );
-
-  // Exported field_base: 'field_bef_test_date'
-  $field_bases['field_bef_test_date'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_bef_test_date',
+    'field_name' => 'field_date',
     'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
@@ -96,13 +69,13 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'field_bef_test_integer'
-  $field_bases['field_bef_test_integer'] = array(
+  // Exported field_base: 'field_integer'
+  $field_bases['field_integer'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_integer',
+    'field_name' => 'field_integer',
     'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
@@ -112,13 +85,13 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_bef_test_letters'
-  $field_bases['field_bef_test_letters'] = array(
+  // Exported field_base: 'field_letters'
+  $field_bases['field_letters'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_letters',
+    'field_name' => 'field_letters',
     'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
@@ -135,8 +108,6 @@ function bef_test_content_field_default_field_bases() {
         'd' => 'Devil, Tasmanian',
         'e' => 'Elephant',
         'f' => 'Frigatebird',
-        'g' => 'Giraffe',
-        'h' => 'Horse',
       ),
       'allowed_values_function' => '',
     ),
@@ -144,13 +115,13 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_bef_test_location'
-  $field_bases['field_bef_test_location'] = array(
+  // Exported field_base: 'field_location'
+  $field_bases['field_location'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_location',
+    'field_name' => 'field_location',
     'foreign keys' => array(
       'tid' => array(
         'columns' => array(
@@ -178,13 +149,13 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_bef_test_numbers'
-  $field_bases['field_bef_test_numbers'] = array(
+  // Exported field_base: 'field_numbers'
+  $field_bases['field_numbers'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_numbers',
+    'field_name' => 'field_numbers',
     'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
@@ -212,22 +183,20 @@ function bef_test_content_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_bef_test_price'
-  $field_bases['field_bef_test_price'] = array(
+  // Exported field_base: 'field_price'
+  $field_bases['field_price'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_bef_test_price',
+    'field_name' => 'field_price',
     'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
+    'settings' => array(),
     'translatable' => 0,
-    'type' => 'number_float',
+    'type' => 'number_integer',
   );
 
   return $field_bases;

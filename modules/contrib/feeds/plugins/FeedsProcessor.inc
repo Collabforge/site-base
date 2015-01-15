@@ -1012,21 +1012,6 @@ abstract class FeedsProcessor extends FeedsPlugin {
     return $message;
   }
 
-  /**
-   * Overrides FeedsPlugin::dependencies().
-   */
-  public function dependencies() {
-    $dependencies = parent::dependencies();
-
-    // Find out which module defined the entity type.
-    $info = $this->entityInfo();
-    if (isset($info['module'])) {
-      $dependencies[$info['module']] = $info['module'];
-    }
-
-    return $dependencies;
-  }
-
 }
 
 class FeedsProcessorBundleNotDefined extends Exception {}

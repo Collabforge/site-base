@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Collabco_image_styles feature.
+ */
+
+include_once 'collabco_image_styles.features.inc';

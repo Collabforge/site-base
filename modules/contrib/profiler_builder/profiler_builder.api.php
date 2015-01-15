@@ -7,17 +7,12 @@
 /**
  * Implements hook_profiler_builder_defined_libraries().
  *
- * drush make format:
- *  - [download][url] is defined as [download_url]
- *  - [download][type] is defined as [download_type]
- *  - [download][file_type] is defined as [download_file_type]
- *  - [download][post_data] is defined as [download_post_data]
- *  - [_name] human readable library name for the drush file
- *  - [_local] boolean to determine local or d.o. make file
- * The assumed state is that it is cleared by d.o. packaging white-list.
- *
- * @return $defined_libs
- *   array of libraries that we are aware of.
+ * return an array of library definitions in the following drush make format
+ * [download][url] is defined as [download_url]
+ * [download][type] is defined as [download_type]
+ * [_name] allows for a human readable name of the library when written to the drush file
+ * [_local] boolean to determine if this should be included in the local or d.o. make file
+ *          the assumed state is that it is cleared by d.o. packaging white-list
  */
 function hook_profiler_builder_defined_libraries() {
   $defined_libs = array();
@@ -109,15 +104,11 @@ function hook_profiler_builder_variables_alter(&$variables) {
 
 /**
  * Implements hook_profiler_builder_info_include().
- *
- * Format of the info include array is:
- *  - keyname needs to be unique
- *  - name is a human readable name for this component
- *  - callback is a function that will return text to place in the file
+ *  key name needs to be unique
+ *  name is a human readable name for this component
+ *  callback is a function that will return text to place in the file
  * Items added must be available through the profiler API
  * If they aren't you can still add them but they won't do anything
- * @return $includes
- *   an array of types of items to include in packaging.
  */
 function hook_profiler_builder_info_include() {
   $includes = array(
@@ -136,7 +127,7 @@ function hook_profiler_builder_info_include() {
 /**
  * Implements hook_profiler_builder_info_include_alter().
  */
-function hook_profiler_builder_info_include_alter(&$includes) {
+function hook_profiler_builder_info_include(&$includes) {
   $includes['modules']['callback'] = 'my_new_callback_to_handle_modules';
 }
 
@@ -163,59 +154,4 @@ function hook_profiler_builder_patch_locations_alter(&$locations) {
       unset($locations[$key]);
     }
   }
-}
-
-/**
- * Implements hook_profiler_builder_install_file_alter().
- *
- * modify the .install file after profiler builder has assembled it.
- *
- * @param  [string] $output       text of the php file to be created
- * @param  [string] $machine_name Machine name of the profile being requested.
- * @return [null]                 No returned data is expected.
- */
-function hook_profiler_builder_install_file_alter($output, $machine_name) {
-  // see the profiler_builder_extras module for example usage.
-}
-
-/**
- * Implements hook_profiler_builder_profile_prebuild().
- *
- * Allow developers to act just prior to a profile being created.
- *
- * @param  [string] $name                     name of the profile
- * @param  [string] $machine_name             machine name to build
- * @param  [string] $description              description of what's written
- * @param  [bool] $exclusive                  if the profile is exclusive
- * @param  [bool] $profiler                   if we should use profiler library
- * @param  [array] $profiler_includes         whats being included modules, variables, etc
- * @param  [bool] $standard_profile_default   if to use standard profile defaults
- * @param  [bool] $create_admin               if to auto create admin role
- * @param  [array] $libraries                 what libraries to include
- * @param  [array] $patches                   what patches to apply
- * @return [null]                           no return is expected
- */
-function hook_profiler_builder_profile_prebuild($name, $machine_name, $description, $exclusive, $profiler, $profiler_includes, $standard_profile_default, $create_admin, $libraries, $patches) {
-  // you can act on a profile about to be built. see extras for an example
-}
-
-/**
- * Implements hook_profiler_builder_profile_postbuild().
- *
- * Allow developers to act just prior to a profile being delivered to user.
- *
- * @param  [string] $name                     name of the profile
- * @param  [string] $machine_name             machine name to build
- * @param  [string] $description              description of what's written
- * @param  [bool] $exclusive                  if the profile is exclusive
- * @param  [bool] $profiler                   if we should use profiler library
- * @param  [array] $profiler_includes         whats being included modules, variables, etc
- * @param  [bool] $standard_profile_default   if to use standard profile defaults
- * @param  [bool] $create_admin               if to auto create admin role
- * @param  [array] $libraries                 what libraries to include
- * @param  [array] $patches                   what patches to apply
- * @return [null]                           no return is expected
- */
-function hook_profiler_builder_profile_postbuild($name, $machine_name, $description, $exclusive, $profiler, $profiler_includes, $standard_profile_default, $create_admin, $libraries, $patches) {
-  // you can act on a profile that is about to be delivered to the user / drush
 }

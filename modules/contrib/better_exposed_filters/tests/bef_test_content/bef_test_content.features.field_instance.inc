@@ -10,38 +10,40 @@
 function bef_test_content_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_body'
-  $field_instances['node-bef_test-field_bef_test_body'] = array(
+  // Exported field_instance: 'node-bef_test-body'
+  $field_instances['node-bef_test-body'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 0,
       ),
       'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 600,
+        ),
+        'type' => 'text_summary_or_trimmed',
         'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_body',
+    'field_name' => 'body',
     'label' => 'Body',
-    'required' => 0,
+    'required' => FALSE,
     'settings' => array(
-      'display_summary' => 0,
+      'display_summary' => TRUE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 1,
       'module' => 'text',
       'settings' => array(
         'rows' => 20,
@@ -52,8 +54,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_date'
-  $field_instances['node-bef_test-field_bef_test_date'] = array(
+  // Exported field_instance: 'node-bef_test-field_date'
+  $field_instances['node-bef_test-field_date'] = array(
     'bundle' => 'bef_test',
     'deleted' => 0,
     'description' => '',
@@ -69,7 +71,7 @@ function bef_test_content_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 11,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -79,8 +81,8 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_date',
-    'label' => 'Date',
+    'field_name' => 'field_date',
+    'label' => 'date',
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
@@ -105,8 +107,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_integer'
-  $field_instances['node-bef_test-field_bef_test_integer'] = array(
+  // Exported field_instance: 'node-bef_test-field_integer'
+  $field_instances['node-bef_test-field_integer'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
@@ -122,7 +124,7 @@ function bef_test_content_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 10,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -132,7 +134,7 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_integer',
+    'field_name' => 'field_integer',
     'label' => 'Integer',
     'required' => 0,
     'settings' => array(
@@ -151,8 +153,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_letters'
-  $field_instances['node-bef_test-field_bef_test_letters'] = array(
+  // Exported field_instance: 'node-bef_test-field_letters'
+  $field_instances['node-bef_test-field_letters'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
@@ -163,7 +165,7 @@ function bef_test_content_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 7,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -173,7 +175,7 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_letters',
+    'field_name' => 'field_letters',
     'label' => 'Letters',
     'required' => 0,
     'settings' => array(
@@ -188,8 +190,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_location'
-  $field_instances['node-bef_test-field_bef_test_location'] = array(
+  // Exported field_instance: 'node-bef_test-field_location'
+  $field_instances['node-bef_test-field_location'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
@@ -200,7 +202,7 @@ function bef_test_content_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 9,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -210,7 +212,7 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_location',
+    'field_name' => 'field_location',
     'label' => 'Location',
     'required' => 0,
     'settings' => array(
@@ -225,8 +227,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_numbers'
-  $field_instances['node-bef_test-field_bef_test_numbers'] = array(
+  // Exported field_instance: 'node-bef_test-field_numbers'
+  $field_instances['node-bef_test-field_numbers'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
@@ -237,7 +239,7 @@ function bef_test_content_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 8,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -247,7 +249,7 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_numbers',
+    'field_name' => 'field_numbers',
     'label' => 'Numbers',
     'required' => 0,
     'settings' => array(
@@ -262,8 +264,8 @@ function bef_test_content_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-bef_test-field_bef_test_price'
-  $field_instances['node-bef_test-field_bef_test_price'] = array(
+  // Exported field_instance: 'node-bef_test-field_price'
+  $field_instances['node-bef_test-field_price'] = array(
     'bundle' => 'bef_test',
     'default_value' => NULL,
     'deleted' => 0,
@@ -275,11 +277,11 @@ function bef_test_content_field_default_field_instances() {
         'settings' => array(
           'decimal_separator' => '.',
           'prefix_suffix' => TRUE,
-          'scale' => 2,
+          'scale' => 0,
           'thousand_separator' => ' ',
         ),
-        'type' => 'number_decimal',
-        'weight' => 13,
+        'type' => 'number_integer',
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -289,7 +291,7 @@ function bef_test_content_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_bef_test_price',
+    'field_name' => 'field_price',
     'label' => 'Price',
     'required' => 0,
     'settings' => array(
@@ -311,12 +313,12 @@ function bef_test_content_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
-  t('Date');
   t('Integer');
   t('Letters');
   t('Location');
   t('Numbers');
   t('Price');
+  t('date');
 
   return $field_instances;
 }

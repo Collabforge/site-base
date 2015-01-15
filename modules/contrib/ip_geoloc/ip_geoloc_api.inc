@@ -7,8 +7,11 @@
  * Reusable functions that may be called from other modules.
  */
 
+// Google's gears_init.js is now included at the top of geo.js
+//define('IP_GEOLOC_GEO_JS', 'https://geo-location-javascript.googlecode.com/svn/trunk/js/geo.js');
+
 // Note: secure http was chosen, as plain http may cause warnings popping up in
-// environments using certificates. Alternatively headless may work?
+// environments using certificates.
 // Size 5k.
 define('IP_GEOLOC_GOOGLE_MAPS', 'https://maps.googleapis.com/maps/api/js?sensor=false');
 // Size 5k.
@@ -272,9 +275,11 @@ function ip_geoloc_output_map_multi_location($locations, $div_id = 'ip-geoloc-ma
   if (!isset($map_options)) {
     $map_options = IP_GEOLOC_RECENT_VISITORS_MAP_OPTIONS;
   }
-  $marker_directory = file_create_url(ip_geoloc_marker_directory());
 
-  $marker_dimensions = explode('x', ip_geoloc_marker_dimensions());
+  $marker_directory = variable_get('ip_geoloc_marker_directory', drupal_get_path('module', 'ip_geoloc') . '/markers');
+  $marker_directory = file_create_url($marker_directory);
+
+  $marker_dimensions = explode('x', variable_get('ip_geoloc_marker_dimensions', '21 x 34'));
   $marker_width  = (int) $marker_dimensions[0];
   $marker_height = (int) $marker_dimensions[1];
   switch (variable_get('ip_geoloc_marker_anchor_pos', 'bottom')) {
@@ -310,16 +315,12 @@ function ip_geoloc_output_map_multi_location($locations, $div_id = 'ip-geoloc-ma
   print "ip_geoloc_locations['$div_id'] = [\n";
 
   foreach ($locations as $location) {
-    if (isset($location->type) && $location->type != 'point') {
-      continue;
-    }
-    $balloon_text = isset($location->balloon_text) ? addslashes(str_replace("\n", '', $location->balloon_text)) : '';
+    $balloon_text = isset($location->balloon_text) ? str_replace("\n", '', $location->balloon_text) : '';
     print '{ "type":"point"' .
-      (empty($location->marker_color) ? '' : ',"marker_color":"' . $location->marker_color . '"') .
-      (empty($location->open) ? '' : ',"open":1') .
-      ',"latitude":' . $location->latitude .
-      ',"longitude":' . $location->longitude .
-      ',"balloon_text":\'' . $balloon_text . '\'},';
+      (empty($location->marker_color) ? '' : ', "marker_color":"' . $location->marker_color . '"') .
+      ', "latitude":' . $location->latitude .
+      ', "longitude":' . $location->longitude .
+      ', "balloon_text":\'' . $balloon_text . '\'},';
 
     $color = empty($location->marker_color) ? t('default') . " [$marker_color]" : $location->marker_color;
     $coords = isset($location->latitude) ? $location->latitude . ', ' . $location->longitude : '';
@@ -367,9 +368,6 @@ function ip_geoloc_output_map_multi_location($locations, $div_id = 'ip-geoloc-ma
  *       as in maintenance mode menu items are not available.
  */
 function ip_geoloc_get_current_location($menu_callback = 'js/ip_geoloc/current_location') {
-  ip_geoloc_debug(t('IPGV&M: initiating service to locate current position and reverse-geocode to address...'));
-  _ip_geoloc_set_session_value('position_pending_since', microtime(TRUE));
-
   drupal_add_js(IP_GEOLOC_GOOGLE_MAPS_GPS, array('group' => JS_LIBRARY));
   drupal_add_js(drupal_get_path('module', 'ip_geoloc') . '/js/ip_geoloc_current_location.js');
 
@@ -415,7 +413,7 @@ function ip_geoloc_get_location_by_ip($ip_address, $resample = FALSE, $store = F
     $location = array('ip_address' => $ip_address);
     if (ip_geoloc_use_smart_ip_if_enabled($location) || ip_geoloc_use_geoip_api_if_enabled($location)) {
       if (!isset($reverse_geocode)) {
-        $reverse_geocode = variable_get('ip_geoloc_google_to_reverse_geocode', FALSE);
+        $reverse_geocode = variable_get('ip_geoloc_google_to_reverse_geocode', TRUE);
       }
       if ($reverse_geocode && isset($location['latitude']) && isset($location['longitude'])) {
         if ($google_address = ip_geoloc_reverse_geocode($location['latitude'], $location['longitude'])) {
@@ -445,16 +443,15 @@ function ip_geoloc_get_location_by_ip($ip_address, $resample = FALSE, $store = F
  *
  * @param string|double $latitude
  *   e.g. "-37.87" or -37.87
+ *
  * @param string|double $longitude
  *   e.g. "144.98" or 144.98
- * @param string $lang
- *   optional language specification as a two-letter code, e.g. 'ja' (Japanese).
  *
  * @return string
  *   Formatted address component as received from Google or empty string.
  */
-function ip_geoloc_get_address($latitude, $longitude, $lang = NULL) {
-  return $google_address = ip_geoloc_reverse_geocode($latitude, $longitude, $lang) ? $google_address['formatted_address'] : '';
+function ip_geoloc_get_address($latitude, $longitude) {
+  return $google_address = ip_geoloc_reverse_geocode($latitidue, $longitude) ? $google_address['formatted_address'] : '';
 }
 
 /**
@@ -471,24 +468,20 @@ function ip_geoloc_get_address($latitude, $longitude, $lang = NULL) {
  *
  * @param string|double $latitude
  *   e.g. "-37.87" or -37.87
+ *
  * @param string|double $longitude
  *   e.g. "144.98" or 144.98
- * @param string $lang
- *   optional language specification as a two-letter code, e.g. 'ja' (Japanese).
  *
  * @return array|bool
  *   Array of address components as received from Google or FALSE.
  */
-function ip_geoloc_reverse_geocode($latitude, $longitude, $lang = NULL) {
+function ip_geoloc_reverse_geocode($latitude, $longitude) {
   if (empty($latitude) || empty($latitude)) {
     drupal_set_message(t('IPGV&M: cannot reverse-geocode to address as no lat/long was specified.'), 'warning');
     return FALSE;
   }
   $query_start = microtime(TRUE);
   $url = IP_GEOLOC_GOOGLE_MAPS_SERVER . "&latlng=$latitude,$longitude";
-  if (!empty($lang)) {
-    $url .= "&language=$lang";
-  }
   $response = drupal_http_request($url);
   if (!empty($response->error)) {
     $msg_args = array(
@@ -572,7 +565,7 @@ function ip_geoloc_get_visitor_location() {
  */
 function ip_geoloc_center_of_locations($locations, $center_of_gravity = FALSE) {
   if (empty($locations)) {
-    return array(NULL, NULL);
+    return array(0.0, 0.0);
   }
   if ($center_of_gravity) {
     // Because longitude turns back on itself, cannot simply average coords.
@@ -606,8 +599,10 @@ function ip_geoloc_center_of_locations($locations, $center_of_gravity = FALSE) {
     return array(rad2deg($center_lat), rad2deg($center_lng));
   }
   // Alternative method based on top & bottom lat and left & right lon.
-  $top = $bottom = $left = $right = NULL;
-  foreach ($locations as $location) {
+  $location = reset($locations);
+  $top = $bottom = isset($location->lat) ? $location->lat : $location->latitude;
+  $left = $right = isset($location->lon) ? $location->lon : $location->longitude;
+  while ($location = next($locations)) {
     if (isset($location->lon)) {
       $lng = $location->lon;
       $lat = $location->lat;
@@ -619,21 +614,18 @@ function ip_geoloc_center_of_locations($locations, $center_of_gravity = FALSE) {
     else {
       continue;
     }
-    if (!isset($top) || $lat > $top) {
+    if ($lat > $top) {
       $top = $lat;
     }
-    if (!isset($bottom) || $lat < $bottom) {
+    elseif ($lat < $bottom) {
       $bottom = $lat;
     }
-    if (!isset($left) || $lng < $left) {
+    if ($lng < $left) {
       $left = $lng;
     }
-    if (!isset($right) || $lng > $right) {
+    elseif ($lng > $right) {
       $right = $lng;
     }
-  }
-  if (!isset($top) || !isset($left)) {
-    return array(NULL, NULL);
   }
   $center_lat = 0.5 * ($top + $bottom);
   $center_lng = 0.5 * ($left + $right);

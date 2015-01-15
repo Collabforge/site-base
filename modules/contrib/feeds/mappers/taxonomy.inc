@@ -136,14 +136,7 @@ function taxonomy_feeds_set_target($source, $entity, $target, array $terms, $map
           $term = trim($term);
           $name_query = clone $query;
           if (strlen($term) && $tids = $name_query->propertyCondition('name', $term)->execute()) {
-
-            // Find the first allowed term.
-            foreach ($tids['taxonomy_term'] as $possible_term) {
-              if (isset($cache['allowed_values'][$target][$possible_term->tid])) {
-                $tid = $possible_term->tid;
-                break;
-              }
-            }
+            $tid = key($tids['taxonomy_term']);
           }
           elseif ($mapping['autocreate'] && strlen($term)) {
             $term = (object) array(
@@ -161,7 +154,7 @@ function taxonomy_feeds_set_target($source, $entity, $target, array $terms, $map
         // Lookup by tid.
         case FEEDS_TAXONOMY_SEARCH_TERM_ID:
           if (is_numeric($term)) {
-            $tid = (int) $term;
+            $tid = $term;
           }
           break;
 

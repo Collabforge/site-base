@@ -57,9 +57,7 @@ function nodequeue_init() {
  */
 function nodequeue_menu() {
   $items = array();
-
   $admin_access = array('administer nodequeue');
-  $access = array('manipulate queues');
 
   // administrative items
   $items['admin/structure/nodequeue'] = array(
@@ -89,7 +87,7 @@ function nodequeue_menu() {
   $items['nodequeue/autocomplete'] = array(
     'title' => 'Autocomplete',
     'page callback' => 'nodequeue_autocomplete',
-    'access arguments' => $access,
+    'access callback' => '_nodequeue_access_admin_or_manipulate',
     'file' => 'includes/nodequeue.admin.inc',
     'type' => MENU_CALLBACK
   );
@@ -375,9 +373,9 @@ function nodequeue_form_apachesolr_search_bias_form_alter(&$form, &$form_state, 
 }
 
 /**
- * Implements hook_apachesolr_update_index().
+ * Implements hook_apachesolr_index_document_ENTITY_TYPE().
  */
-function nodequeue_apachesolr_update_index(&$document, $node) {
+function nodequeue_apachesolr_index_document_node($document, $node, $env_id) {
   if (empty($document)) {
     return;
   }
@@ -612,7 +610,7 @@ function nodequeue_load_queues($qids = array(), $bypass_cache = FALSE) {
   }
 
   if (!empty($to_load)) {
-    $result = db_query("SELECT q.*, COUNT(s.sqid) AS subqueues FROM {nodequeue_queue} q LEFT JOIN {nodequeue_subqueue} s ON q.qid = s.qid WHERE q.qid IN (:to_load) GROUP BY q.qid", array(':to_load' => $to_load));
+    $result = db_query("SELECT q.*, (SELECT count(*) FROM {nodequeue_subqueue} s WHERE q.qid = s.qid) AS subqueues FROM {nodequeue_queue} q WHERE q.qid IN (:to_load)", array(':to_load' => $to_load));
 
     foreach ($result as $queue) {
       $loaded[$queue->qid] = $queue;
@@ -699,7 +697,7 @@ function nodequeue_load_subqueues($sqids, $bypass_cache = FALSE) {
   }
 
   if (!empty($to_load)) {
-    $result = db_query("SELECT s.*, COUNT(n.position) AS count FROM {nodequeue_subqueue} s LEFT JOIN {nodequeue_nodes} n ON n.sqid = s.sqid WHERE s.sqid IN (:to_load) GROUP BY s.sqid", array(':to_load' => $to_load));
+    $result = db_query("SELECT s.*, (SELECT count(*) FROM {nodequeue_nodes} n WHERE n.sqid = s.sqid) AS count FROM {nodequeue_subqueue} s WHERE s.sqid IN (:to_load)", array(':to_load' => $to_load));
     foreach ($result as $obj) {
       // Sometimes we want to get to subqueues by reference, sometimes by sqid.
       // sqid is always unique, but reference is sometimes more readily available.
@@ -752,8 +750,7 @@ function nodequeue_load_subqueues_by_queue($qids, $page_size = 0) {
     return array();
   }
 
-  $query = "SELECT s.*, COUNT(n.position) AS count FROM {nodequeue_subqueue} s
-  LEFT JOIN {nodequeue_nodes} n ON n.sqid = s.sqid WHERE s.qid IN (:qids) GROUP BY s.sqid";
+  $query = "SELECT s.*, (SELECT count(*) FROM {nodequeue_nodes} n WHERE n.sqid = s.sqid) AS count FROM {nodequeue_subqueue} s WHERE s.qid IN (:qids)";
   $result = db_query($query, array(':qids' => $qids));
 
   $subqueues = array();
@@ -955,6 +952,9 @@ function nodequeue_delete($qid) {
   db_delete('nodequeue_subqueue')
     ->condition('qid', $qid)
     ->execute();
+
+  // Invoke a hook to notify other modules that a nodequeue has been deleted.
+  module_invoke_all('nodequeue_delete', $qid);
 }
 
 /**
@@ -1037,11 +1037,23 @@ function nodequeue_remove_subqueue($sqid) {
  * @param $subqueue
  *   The subqueue to add the node to.
  * @param $nid
- *   The node ID
+ *   The node ID. Defaults to NULL.
  */
-function nodequeue_subqueue_add($queue, &$subqueue, $nid) {
+function nodequeue_subqueue_add($queue, &$subqueue, $nid = NULL) {
   if (!empty($nid)) {
-    db_query("INSERT INTO {nodequeue_nodes} (sqid, qid, nid, position, timestamp) VALUES (:sqid, :qid, :nid, IFNULL((SELECT MAX(position)+1 FROM (SELECT * from {nodequeue_nodes} WHERE sqid = :sqid) as nn), 1), :time)", array(':sqid' => $subqueue->sqid, ':qid' => $queue->qid, ':nid' => $nid, ':time' => REQUEST_TIME));
+    $transaction = db_transaction();
+    try {
+      $position = db_query("SELECT MAX(position) + 1 FROM (SELECT * FROM {nodequeue_nodes} WHERE sqid = :sqid) as nn", array(':sqid' => $subqueue->sqid))->fetchField();
+      $position = !empty($position) ? $position : 1;
+      db_query("INSERT INTO {nodequeue_nodes} (sqid, qid, nid, position, timestamp) VALUES (:sqid, :qid, :nid, :position, :time)", array(':sqid' => $subqueue->sqid, ':qid' => $queue->qid, ':nid' => $nid, ':position' => $position,':time' => REQUEST_TIME));
+    }
+    catch (Exception $e) {
+      $transaction->rollback();
+      watchdog_exception('nodequeue', $e);
+
+      throw $e;
+    }
+
     $subqueue->count = db_query("SELECT COUNT(nid) FROM {nodequeue_nodes} WHERE sqid = :sqid", array(':sqid' => $subqueue->sqid))->fetchField();
     // If adding this would make the queue too big, pop the front node
     // (or nodes) out.
@@ -1050,7 +1062,7 @@ function nodequeue_subqueue_add($queue, &$subqueue, $nid) {
       nodequeue_check_subqueue_size($queue, $subqueue, $queue->size);
     }
     if (module_exists('apachesolr')) {
-      apachesolr_mark_node($nid);
+      apachesolr_mark_entity('node', $nid);
     }
     // Invoke the hook to notify other modules of the node addition.
     module_invoke_all('nodequeue_add', $subqueue->sqid, $nid);
@@ -1071,7 +1083,7 @@ function nodequeue_subqueue_remove_node($sqid, $nid) {
   if ($pos = nodequeue_get_subqueue_position($sqid, $nid)) {
     nodequeue_subqueue_remove($sqid, $pos);
     if (module_exists('apachesolr')) {
-      apachesolr_mark_node($nid);
+      apachesolr_mark_entity('node', $nid);
     }
   }
 }
@@ -1921,7 +1933,7 @@ function nodequeue_check_token($seed) {
  * @return boolean
  */
 function _nodequeue_access_admin_or_manipulate() {
-  return user_access('administer nodequeue') || user_access('manipulate queues');
+  return user_access('administer nodequeue') || user_access('manipulate queues') || user_access('manipulate all queues');
 }
 
 /**

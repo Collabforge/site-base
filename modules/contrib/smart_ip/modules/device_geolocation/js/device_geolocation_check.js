@@ -1,9 +1,8 @@
 (function ($) {
   Drupal.behaviors.deviceGeolocationCheck = {
     attach: function (context, settings) {
-      var uri = location.pathname.substring(1, location.pathname.length);
       $.ajax({
-        url:  settings.basePath + '?q=check-geolocation-attempt&uri=' + uri,
+        url:  settings.basePath + '?q=check-geolocation-attempt',
         type: 'POST',
         dataType: 'json',
         success: function(data) {

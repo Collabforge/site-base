@@ -257,10 +257,8 @@ function my_source_get_source(FeedsSource $source, FeedsParserResult $result, $k
 }
 
 /**
- * Alters mapping targets for processors.
- *
- * This hook allows additional target options to be added to the processors
- * mapping form.
+ * Alter mapping targets for entities. Use this hook to add additional target
+ * options to the mapping form of Node processors.
  *
  * If the key in $targets[] does not correspond to the actual key on the node
  * object ($node->key), real_target MUST be specified. See mappers/link.inc
@@ -397,7 +395,7 @@ function my_module_form_callback($mapping, $target, $form, $form_state) {
  *   The unique values to be checked.
  *
  * @return int
- *   The existing entity id, or NULL if no existing entity is found.
+ *   The existing entity id, or 0 if not found.
  *
  * @see hook_feeds_processor_targets_alter()
  * @see FeedsProcessor::existingEntityId()

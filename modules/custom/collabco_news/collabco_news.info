@@ -3,6 +3,7 @@ description = Captures the News configurations
 core = 7.x
 package = Collabco
 version = 7.x-1.0
+project = collabco_news
 dependencies[] = collabco_core
 dependencies[] = node
 dependencies[] = og_context

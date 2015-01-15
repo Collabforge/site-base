@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Administrative form / function processing to make profile package
@@ -54,7 +55,7 @@ function _profiler_builder_settings() {
   }
   // This is set to display if libraries exists and profiler doesn't or if libraries doesn't exist
   $form['profile_info']['profiler'] = array(
-    '#title' => t('Include profiler'),
+    '#title' => t('Include Profiler'),
     '#description' => t('Include the <a href="http://drupal.org/project/profiler">@profiler</a>.', array('@profiler' => 'profiler module')),
     '#type' => 'checkbox',
     '#default_value' => FALSE,
@@ -255,8 +256,6 @@ function _profiler_builder_settings_form_submit($form, &$form_state) {
  * Helper to build a profile
  */
 function _profiler_builder_build_profile($name, $machine_name, $description, $exclusive, $profiler, $profiler_includes, $standard_profile_default, $create_admin, $libraries, $patches) {
-  // allow operations to be triggered just prior to us building a profile / distro
-  module_invoke_all('profiler_builder_profile_prebuild', $name, $machine_name, $description, $exclusive, $profiler, $profiler_includes, $standard_profile_default, $create_admin, $libraries, $patches);
   // assemble profiler components
   $features = _profiler_builder_list_features();
   // build initial info file
@@ -285,7 +284,7 @@ function _profiler_builder_build_profile($name, $machine_name, $description, $ex
   $drush_file = _profiler_builder_drush_file($machine_name, FALSE, $libraries, $patches);
   // build sub-file for local dev
   $local_file = _profiler_builder_drush_file($machine_name, TRUE, $libraries, $patches);
-
+  
   // build files array
   $files = array(
     $machine_name . '.info' => $info_file,
@@ -294,8 +293,6 @@ function _profiler_builder_build_profile($name, $machine_name, $description, $ex
     $drush_file_name => $drush_file,
     $local_file_name => $local_file,
   );
-  // allow for other projects to integrate with modification of the file repo
-  drupal_alter('profiler_builder_build_files', $files);
   // Generate download file name
   $filename =  $machine_name . '.tar';
   // Clear out output buffer to remove any garbage from tar output.
@@ -314,8 +311,6 @@ function _profiler_builder_build_profile($name, $machine_name, $description, $ex
     // write file to tar package
     $output .= profiler_builder_tar_create("{$machine_name}/{$file_name}", $file_contents);
   }
-  // allow operations to be triggered just after we build a profile / distro
-  module_invoke_all('profiler_builder_profile_postbuild', $name, $machine_name, $description, $exclusive, $profiler, $profiler_includes, $standard_profile_default, $create_admin, $libraries, $patches);
   // end tar file output
   $output .= pack("a1024", "");
   if (!function_exists('drush_main')) {
@@ -371,7 +366,6 @@ function ' . $machine_name . '_install() {
     ->condition(\'type\', \'theme\')
     ->condition(\'name\', $admin_theme)
     ->execute();
-  variable_set(\'theme_default\', $default_theme);
   variable_set(\'admin_theme\', $admin_theme);
   // activate admin theme when editing a node
   variable_set(\'node_admin_theme\', \'1\');
@@ -470,7 +464,6 @@ function ' . $machine_name . '_install() {
   // ignore any other install messages
   drupal_get_messages();
 }';
-  drupal_alter('profiler_builder_install_file', $output, $machine_name);
   return $output;
 }
 
@@ -533,7 +526,7 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
     $output .= "api = \"2\"\n\n";
     $output .= "projects[drupal][version] = \"$active_core.x\"\n";
     $output .= "; include the d.o. profile base\n";
-    $output .= 'includes[] = "drupal-org.make"' . "\n\n";
+    $output .= 'includes[] = "drupal-org.make"'."\n\n";
   }
   else {
     $output = "; $machine_name make file for d.o. usage\n";
@@ -600,9 +593,9 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
         }
       }
       else {
-        // @todo this is a poor assumption, fservers exist
+        // TODO: this is a poor assumption, fservers exist
         // need way of determining that this is a d.o. version
-        // guess its better then nothing but could cause packaging errors
+        // guess is better then nothing but could cause packaging errors
         if (!$local) {
           $version = _profiler_builder_get_version($version);
           $module_output .= "projects[$project][version] = \"$version\"\n";
@@ -663,9 +656,9 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
       }
     }
     else {
-      // @todo this is a poor assumption, fservers exist
+      // TODO: this is a poor assumption, fservers exist
       // need way of determining that this is a d.o. version
-      // guess its better then nothing but could cause packaging errors
+      // guess is better then nothing but could cause packaging errors
       if (!$local) {
         $theme_output .= "; $project_name\n";
         $theme_output .= "projects[$project_name][type] = \"theme\"\n";
@@ -682,7 +675,7 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
   // add libraries
   $lib_output = '';
   // allow for modification of current list
-
+  
   drupal_alter('profiler_builder_libraries_list', $libraries, $local, $machine_name);
   foreach ($libraries as $key => $lib) {
     // check if we have an array to define the library
@@ -703,8 +696,6 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
       $destination = isset($lib['destination']) ? $lib['destination'] : 'libraries';
       $downtype = isset($lib['download_type']) ? $lib['download_type'] : 'get';
       $downurl = isset($lib['download_url']) ? $lib['download_url'] : '';
-      $downpostdata = isset($lib['download_post_data']) ? $lib['download_post_data'] : '';
-      $downfiletype = isset($lib['download_file_type']) ? $lib['download_file_type'] : '';
     }
     // no url should only go to local library listing, otherwise test
     if ($local || (!empty($downurl) && !$local)) {
@@ -725,14 +716,7 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
       if (empty($downurl)) {
         $lib_output .= " ; TODO add download URI";
       }
-      $lib_output .= "\n";
-      if (!empty($downpostdata)) {
-        $lib_output .= "libraries[$key][download][post_data] = \"$downpostdata\"\n";
-      }
-      if (!empty($downfiletype)) {
-        $lib_output .= "libraries[$key][download][file_type] = \"$downfiletype\"\n";
-      }
-      $lib_output .= "\n";
+      $lib_output .= "\n\n";
     }
   }
   // only add if there were libraries detected
@@ -831,9 +815,9 @@ function _profiler_builder_drush_file($machine_name, $local, $libraries, $patche
 function _profiler_builder_standard_profile_default() {
   // make sure these modules are enabled that make this possible
   if (
-    module_exists('menu') &&
-    module_exists('rdf') &&
-    module_exists('taxonomy') &&
+    module_exists('menu') && 
+    module_exists('rdf') && 
+    module_exists('taxonomy') && 
     module_exists('field') &&
     module_exists('image')) {
   $output = '
