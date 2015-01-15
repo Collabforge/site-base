@@ -10,24 +10,29 @@
  */
 function ip_geoloc_admin_configure() {
 
+  global $base_url;
+
   $form['markers'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
     '#title' => t('Alternative markers'),
   );
-  // @todo: cater for case where the module directory has been renamed?
-  $marker_path = drupal_get_path('module', 'ip_geoloc');
+  $markers_path = drupal_get_path('module', 'ip_geoloc');
   $form['markers']['ip_geoloc_marker_directory'] = array(
     '#type' => 'textfield',
-    '#title' => t('<strong>Google Maps, Leaflet</strong>: path to set of marker images'),
-    '#default_value' => variable_get('ip_geoloc_marker_directory', "$marker_path/markers"),
-    '#description' => t('Should normally NOT start with a slash. All marker images in this directory must be .png files.'),
+    '#title' => t('<strong>Google Maps, Leaflet</strong>: path to marker images'),
+    '#field_prefix' => "$base_url/",
+    '#default_value' => ip_geoloc_marker_directory(),
+    '#description' => t('Marker sets included with the module reside in %set1 and %set2. All marker images must be .png files.', array(
+      '%set1' => "$markers_path/markers",
+      '%set2' => "$markers_path/amarkers",
+    )),
   );
   $form['markers']['ip_geoloc_marker_dimensions'] = array(
     '#type' => 'textfield',
     '#title' => t('<strong>Google Maps, Leaflet</strong>: marker image width and height'),
-    '#default_value' => variable_get('ip_geoloc_marker_dimensions', '21 x 34'),
+    '#default_value' => ip_geoloc_marker_dimensions(),
     '#field_suffix' => t('px'),
     '#description' => t('These dimensions apply to all markers in the set. The default marker size is 21 x 34 for the <em>/markers</em> directory and 32 x 42 for the <em>/amarkers</em> directory.'),
   );
@@ -48,6 +53,36 @@ function ip_geoloc_admin_configure() {
     '#default_value' => variable_get('ip_geoloc_num_location_marker_layers', IP_GEOLOC_DEF_NUM_MARKER_LAYERS),
     '#description' => t('Only relevant when you have selected "differentiator" fields in your view.'),
   );
+
+  $form['font_icons'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#title' => t('Font icons (Leaflet only)'),
+    '#description' => t('Some of the benefits of font icons are explained <a target="flink" href="!url_flink">here</a>. <br/>If you decide to use them, a good spot to put the font icon libraries you choose to download is in subdirectories of %url_libs.<br/>Each font icon library normally contains a CSS file through which other files in the library are referred. Type the filespec of those CSS files below, one per library. After you have saved the configuration, check the <a target="status" href="!url_status">status report</a> page for errors.<br/><strong>Example 1</strong>, <a target="fontawesome" href="!url_fontawesome">Font Awesome</a>: %css_file1 <br/><strong>Example 2</strong>, <a target="flaticon" href="!url_flaticon">flaticon</a>: %css_file2', array(
+      '!url_flink' => url('http://flink.com.au/ramblings/spruce-your-map-markers-font-icons'),
+      '%url_libs' => '/sites/all/libraries',
+      '!url_fontawesome' => url('http://fortawesome.github.io/Font-Awesome'),
+      '%css_file1' => 'sites/all/libraries/font-awesome/css/font-awesome.min.css',
+      '!url_flaticon' => url('http://flaticon.com'),
+      '%css_file2' => 'sites/all/libraries/flaticon/food-icons/flaticon.css',
+      '!url_status' => url('admin/reports/status'),
+    )),
+  );
+  $libs = ip_geoloc_get_font_icon_libs();
+  $count = max(2, min(count($libs) + 1, IP_GEOLOC_MAX_NUM_FONT_ICON_LIBS));
+  for ($i = 1; $i <= $count; $i++) {
+    $form['font_icons']["ip_geoloc_font_icon_lib$i"] = array(
+      '#type' => 'textfield',
+      '#field_prefix' => "$base_url/",
+      '#title' => t('Main CSS file belonging to font icon library #@i', array('@i' => $i)),
+      '#default_value' => empty($libs[$i]) ? '' : $libs[$i],
+    );
+  }
+  $form['font_icons']["ip_geoloc_font_icon_lib$count"]['#description']
+    = t('<strong>Note:</strong> as explained in this <a target="issue" href="!url_issue">issue</a>, you cannot have identical leaf names amongst the CSS filespecs. Rename .css files if there are clashes.', array(
+      '!url_issue' => url('http://drupal.org/node/1885838'),
+    ));
 
   if (ip_geoloc_diagnose() > 0) {
     // Form for sync-ing the geolocation table with the system accesslog.
@@ -80,9 +115,9 @@ function ip_geoloc_admin_configure() {
   );
   $form['ip_geoloc_data_collection_options']['ip_geoloc_google_to_reverse_geocode'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Employ the Google Maps API to reverse-geocode HTML5 visitor locations to street addresses'),
-    '#default_value' => variable_get('ip_geoloc_google_to_reverse_geocode', TRUE),
-    '#description' => t('For present and future visitors this is done via the Javascript version of the Maps API and the HTML5 way of obtaining a visitor\'s location. This involves them being prompted to accept sharing of their location. For the upload of historic visitor location data the server-side version of the Google Maps API is used. The latter is subject to a Google-imposed daily limit on the number of calls coming from the same server. <br/>If you are using IPGV&M only for one of the Views formats <strong>Map (..., via IPGV&M)</strong>, then you can safely untick this box.<br/>This option requires <a href="!url">Clean URLs</a> to be enabled.', array(
+    '#title' => t('Employ the free Google service to reverse-geocode HTML5 visitor locations to street addresses before storing these on the database'),
+    '#default_value' => variable_get('ip_geoloc_google_to_reverse_geocode', FALSE),
+    '#description' => t('If you are using this module mainly for its mapping features, then you can safely untick this box.<br/>Reverse-geocoding takes place via the Javascript version of the Google Maps API and the HTML5 way of obtaining a visitor\'s location. This involves visitors being prompted to accept sharing of their location.<br/>For the upload of historic visitor location data the server-side version of the Google Maps API is used. The latter is subject to a Google-imposed daily limit on the number of calls coming from the same server. <br/>This option requires <a href="!url">Clean URLs</a> to be enabled.', array(
       '!url' => url('admin/config/search/clean-urls'))
     ),
   );
@@ -111,8 +146,8 @@ function ip_geoloc_admin_configure() {
   $form['ip_geoloc_data_collection_options']['ip_geoloc_smart_ip_as_backup'] = array(
     '#type' => 'checkbox',
     '#title' => t('Employ Smart IP as a backup to the Google Maps JS API as well as declined or failed HTML5 location retrievals in Views'),
-    '#default_value' => variable_get('ip_geoloc_smart_ip_as_backup', TRUE),
-    '#description' => t('This refers to situations where the lat/long coords could not be established (e.g. because the browser/device is not supported or the user declined to share their location) or the Google Maps API reverse-geocode function failed or was not employed through the tick box above. Smart IP lookups tend to be less detailed than the Google Maps reverse-geocoded results.<br/>If this box is <strong>not</strong> ticked, but the <a href="@geoip">GeoIP API module</a> is enabled, then GeoIP will be used as the Google Maps API fallback and to load historic lat/long coordinates.', array(
+    '#default_value' => variable_get('ip_geoloc_smart_ip_as_backup', FALSE),
+    '#description' => t('This refers to situations where the lat/long coords could not be established. An example is the user declining to share their location. Another is when the Google Maps API reverse-geocode function fails or is not enabled through the tick box at the top of this section.<br/>Smart IP lookups tend to be less detailed than the Google Maps reverse-geocoded results.<br/>If this box is <strong>not</strong> ticked, but the <a href="@geoip">GeoIP API module</a> is enabled, then GeoIP will be used as the Google Maps API fallback and to load historic lat/long coordinates.', array(
       '@geoip' => url('http://drupal.org/project/geoip'),
     )),
   );
@@ -141,7 +176,7 @@ function ip_geoloc_admin_configure() {
     '#type' => 'textfield',
     '#title' => t('Detail execution progress with status messages'),
     '#default_value' => variable_get('ip_geoloc_debug'),
-    '#description' => t('Enter a comma-separated list of names of users that should see status messages coming from this module, e.g. for debugging purposes. Use <strong>anon</strong> for the anonymous user.'),
+    '#description' => t('Enter a comma-separated list of names of users that should see status messages coming from this module, e.g., for debugging purposes. Use <strong>anon</strong> for the anonymous user.'),
   );
   $form['ip_geoloc_advanced']['ip_geoloc_erase_session'] = array(
     '#type' => 'submit',
@@ -222,8 +257,8 @@ function ip_geoloc_sync_with_accesslog() {
   // Wipe previous message to avoid confusion.
   drupal_get_messages();
 
-  $use_smart_ip = variable_get('ip_geoloc_smart_ip_as_backup', TRUE) && module_exists('smart_ip');
-  $use_google_to_reverse_geocode = variable_get('ip_geoloc_google_to_reverse_geocode', TRUE);
+  $use_smart_ip = variable_get('ip_geoloc_smart_ip_as_backup', FALSE) && module_exists('smart_ip');
+  $use_google_to_reverse_geocode = variable_get('ip_geoloc_google_to_reverse_geocode', FALSE);
 
   // From Configuration >> IP Geolocation form.
   $batch_size = check_plain($_POST['ip_geoloc_sync_batch_size']);
@@ -283,7 +318,7 @@ function ip_geoloc_erase_session() {
 function ip_geoloc_erase_db() {
   // Wipe previous messages to avoid confusion.
   drupal_get_messages();
-  $result = db_delete('ip_geoloc')->execute();
+  db_delete('ip_geoloc')->execute();
 }
 
 /**

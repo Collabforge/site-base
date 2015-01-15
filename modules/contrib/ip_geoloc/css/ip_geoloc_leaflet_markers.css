@@ -4,13 +4,13 @@
    name of your marker directory is)
 */
 
-.leaflet-tagged-marker div, /* element used for marker tags */
+/* div is the element used for marker tags, i for font icons */
+.leaflet-tagged-marker div,
 .leaflet-tagged-marker i {
-  /* element used for the special font-icon chars */
   position: relative;
-  top: -35px;
-  left: -41px;
-  min-width: 80px; /* -2x left */
+  top: -37px;
+  left: -40px;
+  min-width: 80px; /* -2 times left */
   text-align: center;
   height: 0;  /* to avoid marker position shifting */
 }
@@ -23,7 +23,38 @@
   display: block; /* block and zero width to avoid marker position shifting */
   width: 0;
 }
-/* adjust for the Google-style markers that live in the /markers directory */
+
+.leaflet-tagged-marker i.light {
+  color: seashell;
+}
+.leaflet-tagged-marker i.dark {
+  color: darkslategrey;
+}
+.leaflet-tagged-marker i.green {
+  color: green;
+}
+.leaflet-tagged-marker i.red {
+  color: red;
+}
+
+/* For http://www.flaticon.com, tested for /amarkers (32 x 42px) */
+.leaflet-tagged-marker i[class^="flaticon-"]:before,
+.leaflet-tagged-marker i[class*=" flaticon-"]:before {
+  font-size: 14px;
+  position: relative;
+  top: -4px;
+  left: -10px;
+}
+
+/* For http://fontello.com */
+.leaflet-tagged-marker i[class^="icon-"]:before,
+.leaflet-tagged-marker i[class*=" icon-"]:before {
+  position: relative;
+  top: -2px;
+  let: 1px;
+}
+
+/* Adjust for the Google-style markers that live in the /markers directory */
 .markers .leaflet-tagged-marker i {
   font-size: 11px;
   top: -30px;

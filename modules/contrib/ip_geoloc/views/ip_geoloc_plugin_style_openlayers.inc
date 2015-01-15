@@ -85,6 +85,8 @@ class ip_geoloc_plugin_style_openlayers extends views_plugin_style {
    */
   public function render() {
 
+    $render_start = microtime(TRUE);
+
     // This somewhat mimics function openlayers_render_map_data() and class
     // openlayers_views_style_map, function render()
     $map = openlayers_map_load(isset($this->options['map']) ? $this->options['map'] : variable_get('openlayers_default_map', 'default'));
@@ -195,6 +197,8 @@ class ip_geoloc_plugin_style_openlayers extends views_plugin_style {
     else {
       $output = implode('<br/>', $map['errors']);
     }
+    ip_geoloc_debug(t('-- Openlayers map preparation time: %sec s', array('%sec' => number_format(microtime(TRUE) - $render_start, 2))));
+
     return $output;
   }
 }

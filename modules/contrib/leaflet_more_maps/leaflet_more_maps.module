@@ -81,18 +81,20 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // Bing uses the quadtree system whereby x, y and z are encoded in a sequence
   // of digits in the range 0..3. See leaflet_more_maps.js for the conversion
   // algorithm.
+  // The Bing layers are non-transparent, so are entered as base_layers, which
+  // is the leaflet.drupal.js default.
   $attr_bing = 'Tiles <a target="attr" href="http://www.bing.com/maps">Bing</a> &copy; Microsoft and suppliers';
   $map_info['bing'] = array(
     'label' => 'Bing road & satellite & hybrid (zoom 1..18)',
     'description' => t('Bing road, satellite and hybrid layers'),
     'settings' => array('minZoom' => 1, 'layerControl' => TRUE) + $default_settings,
     'layers' => array(
-      'hybrid layer' => array(
+      'road layer' => array(
         'type' => 'quad',
-        'urlTemplate' => $prot . 'ak.dynamic.t{s}.tiles.virtualearth.net/comp/ch/{q}?it=A,G,L&shading=hill',
+        'urlTemplate' => $prot . 'ecn.t{s}.tiles.virtualearth.net/tiles/r{q}?g=1236',
         'options' => array(
           'attribution' => $attr_bing,
-          'subdomains' => array(0, 1, 2, 3),
+          'subdomains' => array(0, 1, 2, 3, 4, 5, 6, 7),
         ),
       ),
       'satellite layer' => array(
@@ -103,12 +105,12 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
           'subdomains' => array(0, 1, 2, 3),
         ),
       ),
-      'road layer' => array(
+      'hybrid layer' => array(
         'type' => 'quad',
-        'urlTemplate' => $prot . 'ecn.t{s}.tiles.virtualearth.net/tiles/r{q}?g=1236',
+        'urlTemplate' => $prot . 'ak.dynamic.t{s}.tiles.virtualearth.net/comp/ch/{q}?it=A,G,L&shading=hill',
         'options' => array(
           'attribution' => $attr_bing,
-          'subdomains' => array(0, 1, 2, 3, 4, 5, 6, 7),
+          'subdomains' => array(0, 1, 2, 3),
         ),
       ),
     ),
@@ -134,9 +136,10 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
     'World Street Map',
   );
   $settings = $default_settings;
+  $esri_base = 'services.arcgisonline.com/ArcGIS/rest/services';
   foreach ($esri_names as $esri_name) {
     $code = str_replace(' ', '_', $esri_name);
-    $url_template = $prot . "server.arcgisonline.com/ArcGIS/rest/services/$code/MapServer/tile/$zyx";
+    $url_template = $prot . "$esri_base/$code/MapServer/tile/$zyx";
     switch ($esri_name) {
       case 'NatGeo World Map':
         $label = t('Esri National Geographic (zoom 0..12)');
@@ -186,21 +189,21 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   }
 
   $attr_google = 'Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>';
-  $map_info['google-hybrid'] = array(
-    'label' => 'Google hybrid (zoom 0..18)',
-    'description' => t('Google hybrid'),
-    'settings' => $default_settings,
+  $map_info['google-satellite'] = array(
+    'label' => 'Google satellite (zoom 0..18)',
+    'description' => t('Google satellite'),
+    'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
-      'layer' => array(
+      'satellite' => array(
         'type' => 'google',
         'urlTemplate' => $prot . 'khm{s}.googleapis.com/kh?v=142&x={x}&y={y}&z={z}',
         'options' => array(
           'attribution' => $attr_google,
-          // 'detectRetina' => TRUE,
-          'subdomains' => array(0, 1, 2, 3),
+          // 'detectRetina' => TRUE, // has bad effect
+          'subdomains' => array(0, 1, 2, 3)
         ),
       ),
-      'overlay' => array(
+      'road overlay' => array(
         'type' => 'google',
         // Note 'lyrs=h' for transparent overlay.
         'urlTemplate' => $prot . 'mt{s}.googleapis.com/vt?lyrs=h&x={x}&y={y}&z={z}',
@@ -209,21 +212,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
           'detectRetina' => TRUE,
           'subdomains' => array(0, 1, 2, 3),
         ),
-      ),
-    ),
-  );
-  $map_info['google-satellite'] = array(
-    'label' => 'Google satellite (zoom 0..18)',
-    'description' => t('Google satellite'),
-    'settings' => $default_settings,
-    'layers' => array(
-      'layer' => array(
-        'type' => 'google',
-        'urlTemplate' => $prot . 'khm{s}.googleapis.com/kh?v=142&x={x}&y={y}&z={z}',
-        'options' => array(
-          'attribution' => $attr_google,
-          // 'detectRetina' => TRUE,
-          'subdomains' => array(0, 1, 2, 3)),
+        'layer_type' => 'overlay',
       ),
     ),
   );
@@ -243,20 +232,12 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
       ),
     ),
   );
+  // Two non-transparent layers, so entered as base_layers.
   $map_info['google-high-res'] = array(
     'label' => 'Google high-res road & terrain (zoom 0..18)',
     'description' => t('Google road & terrain layers, with high-res (Retina) support'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
-      'terrain' => array(
-        'type' => 'google',
-        'urlTemplate' => $prot . 'mt{s}.googleapis.com/vt?lyrs=t,r&x={x}&y={y}&z={z}',
-        'options' => array(
-          'attribution' => $attr_google,
-          'detectRetina' => TRUE,
-          'subdomains' => array(0, 1, 2, 3),
-        ),
-      ),
       'roadmap' => array(
         'type' => 'google',
         // For retina displays we append '&style=high_dpi&w=512',
@@ -267,6 +248,17 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
           'detectRetina' => TRUE,
           'subdomains' => array(0, 1, 2, 3),
         ),
+        'layer_type' => 'base',
+      ),
+      'terrain' => array(
+        'type' => 'google',
+        'urlTemplate' => $prot . 'mt{s}.googleapis.com/vt?lyrs=t,r&x={x}&y={y}&z={z}',
+        'options' => array(
+          'attribution' => $attr_google,
+          'detectRetina' => TRUE,
+          'subdomains' => array(0, 1, 2, 3),
+        ),
+        'layer_type' => 'base',
       ),
     ),
   );
@@ -306,49 +298,28 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // OpenStreetMap OSM Mapnik classic map is available via leaflet.module
   $attr_osm = 'Map data &copy; <a target="attr" href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-  // MapQuest OSM.
+  // MapQuest OSM. Two non-transparent layers.
   $attr_mapquest = 'Tiles by <a target="attr" href="http://mapquest.com">MapQuest</a>. ' . $attr_osm;
-  $map_info['mapquest-hybrid'] = array(
-    'label' => 'MapQuest Hybrid (zoom 0..18)',
-    'description' => t('MapQuest Hybrid'),
-    'settings' => $default_settings,
-    'layers' => array(
-      'base' => array(
-        'urlTemplate' => $prot . "mtile0{s}.mqcdn.com/tiles/1.0.0/vy/sat/$zxy",
-        'options' => array(
-          'attribution' => $attr_mapquest,
-          'subdomains' => array(1, 2, 3, 4),
-        ),
-      ),
-      'overlay' => array(
-        'urlTemplate' => $prot . "mtile0{s}.mqcdn.com/tiles/1.0.0/vy/hyb/$zxy",
-        'options' => array(
-          'attribution' => $attr_mapquest,
-          'subdomains' => array(1, 2, 3, 4),
-        ),
-      ),
-    ),
-  );
   $map_info['mapquest'] = array(
     'label' => 'MapQuest OSM & Aerial (zoom 0..18)',
     'description' => t('MapQuest rendering of OpenStreetMap, as well as Aerial layer'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
-      'aerial layer' => array(
-        // 'urlTemplate' => $prot . "oatile{s}.mqcdn.com/naip/$zxy",
-        'urlTemplate' => $prot . "mtile0{s}.mqcdn.com/tiles/1.0.0/vy/sat/$zxy",
-        'options' => array(
-          'attribution' => $attr_mapquest,
-          'subdomains' => array(1, 2, 3, 4),
-        ),
-      ),
       'road layer' => array(
-        // 'urlTemplate' => $prot .  "otile{s}.mqcdn.com/tiles/1.0.0/osm/$zxy",
-        'urlTemplate' => $prot . "mtile0{s}.mqcdn.com/tiles/1.0.0/vy/map/$zxy",
+        'urlTemplate' => $prot . "otile{s}.mqcdn.com/tiles/1.0.0/map/$zxy",
         'options' => array(
           'attribution' => $attr_mapquest,
           'subdomains' => array(1, 2, 3, 4),
         ),
+        'layer_type' => 'base',
+      ),
+      'aerial layer' => array(
+        'urlTemplate' => $prot . "otile{s}.mqcdn.com/tiles/1.0.0/sat/$zxy",
+        'options' => array(
+          'attribution' => $attr_mapquest,
+          'subdomains' => array(1, 2, 3, 4),
+        ),
+        'layer_type' => 'base',
       ),
     ),
   );
@@ -393,37 +364,42 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   $map_info['osm-piste'] = array(
     'label' => 'OSM OpenPisteMap (zoom 0..18)',
     'description' => t('OpenStreetMap for skiers with 3 layers'),
-    'settings' => $default_settings,
+    'settings' =>  array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
       'base' => array(
         'urlTemplate' => $prot . "{s}.tile.openstreetmap.org/$zxy",
         'options' => array('attribution' => $attr_piste),
+        'layer_type' => 'base',
       ),
       'relief shading' => array(
         // Or tiles2?
         'urlTemplate' => $prot . "tiles.openpistemap.org/landshaded/$zxy",
         'options' => array('attribution' => $attr_piste),
+        'layer_type' => 'overlay',
       ),
-      'piste layer' => array(
+      'pistes' => array(
         'urlTemplate' => $prot . "tiles.openpistemap.org/nocontours/$zxy",
         'options' => array('attribution' => $attr_piste),
+        'layer_type' => 'overlay',
       ),
     ),
   );
   // OpenSeeMap http://openseamap.org
-  $attr_owm = 'OpenSeaMap. ' . $attr_osm;
+  $attr_ocm = 'OpenSeaMap. ' . $attr_osm;
   $map_info['osm-sea'] = array(
     'label' => 'OSM OpenSeaMap (zoom 0..18)',
     'description' => t('OpenStreetMap with sea marks overlay'),
-    'settings' => $default_settings,
+    'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
       'base' => array(
         'urlTemplate' => $prot . "{s}.tile.openstreetmap.org/$zxy",
-        'options' => array('attribution' => $attr_owm),
+        'options' => array('attribution' => $attr_ocm),
+        'layer_type' => 'base',
       ),
       'sea marks' => array(
         'urlTemplate' => $prot . "tiles.openseamap.org/seamark/$zxy",
-        'options' => array('attribution' => $attr_owm),
+        'options' => array('attribution' => $attr_ocm),
+        'layer_type' => 'overlay',
       ),
     ),
   );
@@ -433,19 +409,22 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   $map_info['osm-weather'] = array(
     'label' => 'OSM OpenWeatherMap (zoom 0..18)',
     'description' => t('Precipitation with pressure contours'),
-    'settings' => $default_settings,
+    'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
       'base' => array(
         'urlTemplate' => $prot . "{s}.tile.openstreetmap.org/$zxy",
         'options' => array('attribution' => $attr_owm),
+        'layer_type' => 'base',
       ),
       'precipitation' => array(
         'urlTemplate' => $prot . "{s}.tile.openweathermap.org/map/precipitation/$zxy",
         'options' => array('attribution' => $attr_owm),
+        'layer_type' => 'overlay',
       ),
       'pressure' => array(
         'urlTemplate' => $prot . "{s}.tile.openweathermap.org/map/pressure_cntr/$zxy",
         'options' => array('attribution' => $attr_owm),
+        'layer_type' => 'overlay',
       ),
     ),
   );
@@ -513,6 +492,13 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
     'description' => t('Yandex roadmap'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
+      'people layer' => array(
+        'urlTemplate' => $prot . '0{s}.pvec.maps.yandex.net/tiles?l=pmap&x={x}&y={y}&z={z}',
+        'options' => array(
+          'attribution' => $attr_yandex,
+          'subdomains' => array(0, 1, 2, 3),
+        ),
+      ),
       'satellite layer' => array(
         'urlTemplate' => $prot . 'sat0{s}.maps.yandex.net/tiles?l=sat&x={x}&y={y}&z={z}',
         'options' => array(
@@ -522,13 +508,6 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
       ),
       'road layer' => array(
         'urlTemplate' => $prot . 'vec0{s}.maps.yandex.net/tiles?l=map&x={x}&y={y}&z={z}',
-        'options' => array(
-          'attribution' => $attr_yandex,
-          'subdomains' => array(0, 1, 2, 3),
-        ),
-      ),
-      'people layer' => array(
-        'urlTemplate' => $prot . '0{s}.pvec.maps.yandex.net/tiles?l=pmap&x={x}&y={y}&z={z}',
         'options' => array(
           'attribution' => $attr_yandex,
           'subdomains' => array(0, 1, 2, 3),
@@ -558,8 +537,8 @@ function _leaflet_more_maps_assemble_custom_map_info($custom_map_key, $selected_
       // Unique.
       $custom_layer_key = "$map_key $layer_key";
       if (in_array($custom_layer_key, $selected_layer_keys)) {
-        $layer_switcher_key = t('layer') . " #$i";
-        $map_info["~$custom_map_key"]['layers'][$layer_switcher_key] = $layer;
+        //$layer_switcher_key = t('layer') . " #$i";
+        $map_info["~$custom_map_key"]['layers'][$custom_layer_key] = $layer;
         $i = $reverse_order ? $i - 1 : $i + 1;
       }
     }

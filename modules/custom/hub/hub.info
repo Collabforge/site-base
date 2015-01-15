@@ -1,6 +1,2 @@
-name = Custom: Hub view page
+name = Hub
 description = Custom module for handling hub view page
-version = 1.0
-core = 7.x
-package = hub
-project = "Custom hub"

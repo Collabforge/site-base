@@ -9,15 +9,16 @@
 
   Drupal.behaviors.leaflet = { // overrides same behavior in leaflet/leaflet.drupal.js
     attach: function(context, settings) {
+      var start = (new Date()).getTime();
 
       $(settings.leaflet).each(function () {
-        // bail if the map already exists
+        // skip to the next iteration if the map already exists
         var container = L.DomUtil.get(this.mapId);
         if (!container || container._leaflet) {
           return false;
         }
 
-        // load a settings object with all of our map and markercluster settings
+        // load a settings object with all of our map settings
         var settings = {};
         for (var setting in this.map.settings) {
           settings[setting] = this.map.settings[setting];
@@ -36,12 +37,47 @@
 
           layers[key] = map_layer;
 
-          // add the layer to the map
-          if (i >= 0) {
-            lMap.addLayer(map_layer);
+          // keep the reference of first layer
+          // Distinguish between "base layers" and "overlays", fallback to "base"
+          // in case "layer_type" has not been defined in hook_leaflet_map_info()
+          layer.layer_type = (typeof layer.layer_type === 'undefined') ? 'base' : layer.layer_type;
+          // as written in the doc (http://leafletjs.com/examples/layers-control.html)
+          // Always add overlays layers when instantiate, and keep track of
+          // them for Control.Layers.
+          // Only add the very first "base layer" when instantiating the map
+          // if we have map controls enabled
+          switch (layer.layer_type) {
+            case 'overlay':
+              lMap.addLayer(map_layer);
+              overlays[key] = map_layer;
+              break;
+            default:
+              if (i === 0 || !this.map.settings.layerControl) {
+                lMap.addLayer(map_layer);
+                i++;
+              }
+              layers[key] = map_layer;
+              break;
           }
           i++;
         }
+        // We loop through the layers once they have all been created to connect them to their switchlayer if necessary.
+        var switchEnable = false;
+        for (var key in layers) {
+          if (layers[key].options.switchLayer) {
+            layers[key].setSwitchLayer(layers[layers[key].options.switchLayer]);
+            switchEnable = true;
+          }
+        }
+        if (switchEnable) {
+          switchManager = new SwitchLayerManager(lMap, {baseLayers: layers});
+        }
+
+        // keep an instance of leaflet layers
+        this.map.lLayers = layers;
+
+        // keep an instance of map_id
+        this.map.map_id = this.mapId;
 
         // @RdB create marker cluster layers if leaflet.markercluster.js is included
         // There will be one cluster layer for each "clusterGroup".
@@ -128,7 +164,7 @@
               lMap.addLayer(lFeature);
             }
             if (feature.popup) {
-              lFeature.bindPopup(feature.popup, {autoPanPadding: L.point(25,25)});
+              lFeature.bindPopup(feature.popup/*, {autoPanPadding: L.point(25,25)}*/);
             }
           }
 
@@ -142,18 +178,17 @@
         }
 
         // center the map
-        if (this.map.center) {
-          lMap.setView(new L.LatLng(this.map.center.lat, this.map.center.lon), this.map.settings.zoom);
+        var zoom = this.map.settings.zoom ? this.map.settings.zoom : this.map.settings.zoomDefault;
+        if (this.map.center && (this.map.center.force || this.features.length === 0)) {
+          lMap.setView(new L.LatLng(this.map.center.lat, this.map.center.lon), zoom);
         }
-        // if we have provided a zoom level, then use it after fitting bounds
-        else if (this.map.settings.zoom && this.features.length > 0) {
+        else if (this.features.length > 0) {
           Drupal.leaflet.fitbounds(lMap);
-          lMap.setZoom(this.map.settings.zoom);
+          if (this.map.settings.zoom) { // or: if (zoom) ?
+            lMap.setZoom(zoom);
+          }
         }
-        // fit to bounds
-        else {
-          Drupal.leaflet.fitbounds(lMap);
-        }
+
         // associate the center and zoom level proprerties to the built lMap.
         // useful for post-interaction with it
         lMap.center = lMap.getCenter();
@@ -218,6 +253,10 @@
         return lFeature;
       }
 
+      if (console) {
+        //var renderTime = (new Date()).getTime() - start;
+        //console.log('leaflet_markercluster.drupal.js render time: ' + renderTime/1000 + ' s');
+      }
     }
   };
 

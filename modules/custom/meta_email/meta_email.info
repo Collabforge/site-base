@@ -1,6 +1,5 @@
 name = Custom Email for Meta
-description = Meta's e-mail APIs.
-
+description = Metas e-mail APIs.
 core = 7.x
 
 

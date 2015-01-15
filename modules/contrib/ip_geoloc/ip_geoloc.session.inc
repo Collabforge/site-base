@@ -22,6 +22,10 @@
  */
 function _ip_geoloc_set_session_value($name, $value = NULL) {
 
+  if (module_exists('context_session') && $name == 'location') {
+    _ip_geoloc_set_location_on_context_session($value);
+  }
+
   if (!module_exists('session_cache')) {
     if ($name === FALSE) {
       unset($_SESSION['ip_geoloc']);
@@ -48,6 +52,32 @@ function _ip_geoloc_set_session_value($name, $value = NULL) {
     session_cache_set('ip_geoloc', $variables);
   }
   return $variables;
+}
+
+/**
+ * Copy attributes from the supplied location to the context session.
+ *
+ * @param array $location
+ *   Array containing country_code, locality, postal_code and possibly more
+ */
+function _ip_geoloc_set_location_on_context_session($location) {
+  // context_session does not support session_cache, can only use $_SESSION.
+  // Note that context_session only offers boolean support: it sets a
+  // context based on the fact whether a key is present or not. So we have
+  // to fake name|value pairs.
+  foreach (array('country_code', 'administrative_area_level_1', 'locality', 'postal_code') as $key) {
+    // Clear out old values
+    foreach ($_SESSION as $session_key => $val) {
+      if (strpos($session_key, "ip_geoloc:location.$key=") === 0) {
+        unset($_SESSION[$session_key]);
+      }
+    }
+    if (!empty($location[$key])) {
+      $_SESSION["ip_geoloc:location.$key=" . $location[$key]] = TRUE;
+      // If and when Context Session accepts name|value pairs we can go:
+      //$_SESSION["ip_geoloc:location.$key"] = $val;
+    }
+  }
 }
 
 /**

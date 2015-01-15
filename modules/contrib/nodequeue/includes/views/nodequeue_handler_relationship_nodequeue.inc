@@ -16,9 +16,7 @@ class nodequeue_handler_relationship_nodequeue extends views_handler_relationshi
     if (!empty($options['qids'])) {
       $map = array_flip(nodequeue_get_qid_map());
       foreach ($options['qids'] as $key => $value) {
-        if ($value) {
-          $this->options['names'][$map[$key]] = ($value) ? $map[$key] : 0;
-        }
+        $this->options['names'][$map[$key]] = ($value) ? $map[$key] : 0;
       }
       unset($this->options['qids']);
     }
@@ -61,19 +59,6 @@ class nodequeue_handler_relationship_nodequeue extends views_handler_relationshi
       '#process' => array('form_process_checkboxes', 'ctools_dependent_process'),
       '#dependency' => array('edit-options-limit' => array(TRUE)),
     );
-  }
-
-  /**
-   * Validate the options form.
-   */
-  function options_validate(&$form, &$form_state) {
-    parent::options_validate($form, $form_state);
-
-    // Check that at least on queue has been selected.
-    $options = $form_state['values']['options'];
-    if($options['limit'] && empty($options['names'])) {
-      form_set_error('names', t('You must check at least one queue.'));
-    }
   }
 
   /**

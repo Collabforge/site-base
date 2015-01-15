@@ -21,7 +21,7 @@ function leaflet_more_maps_admin_configure() {
     '#type' => 'textfield',
     '#title' => t('<a href="@url" target="skobbler">Skobbler</a> API key', array('@url' => 'http://maps.skobbler.com')),
     '#default_value' => $skobbler_key,
-    '#description' => t('<a href="@url" target="skobbler">Generate Skobbler API key</a>. Make sure to add your Skobbler referrers when you generate your API key. If you are on a subdomain, make sure you add the root domain as well.', array('@url' => 'http://developer.skobbler.com/web-tiles/api-key')),
+    '#description' => t('<a href="@url" target="skobbler">Generate Skobbler API key</a>.', array('@url' => 'http://developer.skobbler.com/web-tiles/api-key')),
   );
 
   $map_info = array();
@@ -70,7 +70,7 @@ function leaflet_more_maps_admin_configure() {
       '#type' => 'checkbox',
       '#title' => t('Reverse order in layer switcher'),
       '#default_value' => $custom_map_layers[$i]['reverse-order'],
-      '#description' => t('The last layer in the switcher will be the default.'),
+      '#description' => t('The first layer in the switcher will be the default.'),
     );
     // Organise the $form_state['values'] structure available after submission.
     $form['map'][$i]['map-key']['#parents'] = array(
