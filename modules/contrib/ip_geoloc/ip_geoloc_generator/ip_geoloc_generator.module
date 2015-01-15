@@ -39,7 +39,8 @@ function ip_geoloc_generator_ip_geoloc_marker_locations_alter(&$marker_locations
   $range_lat = variable_get('ip_geoloc_generator_range_lat', 0.02);
   $range_lon = variable_get('ip_geoloc_generator_range_lon', 0.12);
 
-  $no_points  = variable_get('ip_geoloc_generator_no_points', 10);
+  $no_points = variable_get('ip_geoloc_generator_no_points', 10);
+  $separator = variable_get('ip_geoloc_balloon_separator', '<br/>');
   for ($i = 1; $i <= $no_points; $i++) {
     $marker = new stdClass();
     //$marker->id = $i;
@@ -47,7 +48,7 @@ function ip_geoloc_generator_ip_geoloc_marker_locations_alter(&$marker_locations
     //$marker->marker_color = 'yellow';
     $marker->latitude  = $center_lat + $range_lat * (mt_rand() / mt_getrandmax() - 0.5);
     $marker->longitude = $center_lon + $range_lon * (mt_rand() / mt_getrandmax() - 0.5);
-    $marker->balloon_text = "Random #$i <br/>(" . $marker->latitude . ', ' . $marker->longitude . ')';
+    $marker->balloon_text = "Random #$i$separator(" . $marker->latitude . ', ' . $marker->longitude . ')';
     $marker_locations[] = $marker;
   }
 }

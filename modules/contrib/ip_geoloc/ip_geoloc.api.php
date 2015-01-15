@@ -51,7 +51,7 @@ function hook_ip_geoloc_marker_locations_alter(&$marker_locations, &$view) {
   // Because the marker is added at the front of the location array, the map can
   // be centered on it. Or you can choose one of the other centering options, as
   // per normal.
-
+  //
   // Machine name of your view goes in the line below.
   if ($view->name == 'my_beautiful_view') {
     if (count($marker_locations) >= 2) {
@@ -63,7 +63,7 @@ function hook_ip_geoloc_marker_locations_alter(&$marker_locations, &$view) {
     $observatory->longitude = -0.0015;
     $observatory->balloon_text = t('The zero-meridian passes through the courtyard of the <strong>Greenwich</strong> observatory.');
     $observatory->marker_color = 'white';
-    
+
     array_unshift($marker_locations, $observatory);
   }
 }

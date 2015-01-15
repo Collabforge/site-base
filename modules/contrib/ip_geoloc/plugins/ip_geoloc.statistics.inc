@@ -323,7 +323,7 @@ function _ip_geoloc_get_field_value($db_field_name) {
       require_once DRUPAL_ROOT . '/' . $list['ip_geoloc']->filename;
       // If 'Smart IP' module is enabled and set up as backup, include its
       // module file.
-      if (variable_get('ip_geoloc_smart_ip_as_backup', TRUE) && isset($list['smart_ip'])) {
+      if (variable_get('ip_geoloc_smart_ip_as_backup', FALSE) && isset($list['smart_ip'])) {
         require_once DRUPAL_ROOT . '/' . $list['smart_ip']->filename;
       }
       // If 'GeoIP API' module is enabled, include its module file.
@@ -334,7 +334,7 @@ function _ip_geoloc_get_field_value($db_field_name) {
       // ip_geoloc_get_location_by_ip() will either fetch a stored geolocation
       // from {ip_geoloc}, or manage conversation with backup modules to
       // retrieve the information and store back to {ip_geoloc}.
-      $geoloc = ip_geoloc_get_location_by_ip(ip_address(), $resample = FALSE, $store = TRUE, $reverse_geocode = FALSE);
+      $geoloc = ip_geoloc_get_location_by_ip(ip_address(), FALSE, TRUE, FALSE);
       if (!empty($geoloc) and (!isset($geoloc['provider']) or empty($geoloc['provider']))) {
         $geoloc['provider'] = 'ip_geoloc';
       }
@@ -435,7 +435,7 @@ function _ip_geoloc_statistics_backfill($from_timestamp, $location) {
   // Builds the db fields and values required for the update. Only collects
   // the values for fields currently active in {accesslog}.
   $db_fields = array();
-  foreach ($ip_geoloc_db_fields as $i => $db_field_name) {
+  foreach ($ip_geoloc_db_fields as $db_field_name) {
     if (isset($accesslog_db_fields[$db_field_name])) {
       $db_fields[$db_field_name] = _ip_geoloc_get_location_field_value($db_field_name, $location);
     }
@@ -445,7 +445,7 @@ function _ip_geoloc_statistics_backfill($from_timestamp, $location) {
   // requesting location services, is included.
   if (!empty($db_fields)) {
     try {
-      $num_updated = db_update('accesslog')
+      db_update('accesslog')
         ->fields($db_fields)
         ->condition('timestamp', $from_timestamp - 1, '>=')
         ->condition('sid', session_id(), '=')

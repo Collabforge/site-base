@@ -19,9 +19,17 @@ features[views_view][] = feeds_defaults_feed_items
 files[] = feeds_news.module
 files[] = feeds_news.test
 
+<<<<<<< HEAD
 ; Information added by Drupal.org packaging script on 2014-10-14
 version = "7.x-2.0-alpha8+56-dev"
 core = "7.x"
 project = "feeds"
 datestamp = "1413323032"
+=======
+; Information added by Drupal.org packaging script on 2014-12-23
+version = "7.x-2.0-alpha8+70-dev"
+core = "7.x"
+project = "feeds"
+datestamp = "1419371884"
+>>>>>>> all modules now enabled
 

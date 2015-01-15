@@ -9,7 +9,7 @@
  * Implments hook_enable().
  */
 function ip_geoloc_enable() {
-  drupal_set_message(t('IP Geolocation Views & Maps is now enabled. Please note that some of the canned Views that come with this module require the <a target="project_page" href="!views_php">Views PHP</a> module. The "Refine your location" block requires <a target="project_page" href="!geocoder">Geocoder</a>. <br/>Modules <a target="project_page" href="!session_cache">Session Cache API</a> and <a target="project_page" href="!js">High-performance JS Callback Handler</a> are optional and recommended.', array(
+  drupal_set_message(t('IP Geolocation Views & Maps is now enabled. Please note that some of the canned Views that come with this module require the <a target="project_page" href="!views_php">Views PHP</a> module. The "Set my location" block requires <a target="project_page" href="!geocoder">Geocoder</a>. <br/>Modules <a target="project_page" href="!session_cache">Session Cache API</a> and <a target="project_page" href="!js">High-performance JS Callback Handler</a> are optional and recommended.', array(
     '!views_php' => url('http://drupal.org/project/views_php'),
     '!geocoder' => url('http://drupal.org/project/geocoder'),
     '!session_cache' => url('http://drupal.org/project/session_cache'),
@@ -33,10 +33,10 @@ function ip_geoloc_requirements($phase) {
   $t = get_t();
 
   $geolocation_methods = array();
-  if (variable_get('ip_geoloc_google_to_reverse_geocode', TRUE)) {
+  if (variable_get('ip_geoloc_google_to_reverse_geocode', FALSE)) {
     $geolocation_methods[] = $t('Google Maps reverse-geocode');
   }
-  if (variable_get('ip_geoloc_smart_ip_as_backup', TRUE)) {
+  if (variable_get('ip_geoloc_smart_ip_as_backup', FALSE)) {
     if (module_exists('smart_ip')) {
       $geolocation_methods[] = 'Smart IP';
     }
@@ -50,36 +50,68 @@ function ip_geoloc_requirements($phase) {
   }
   $geolocation_methods = array_merge($geolocation_methods, module_implements('get_ip_geolocation_alter'));
 
-  $requirements['ip_geoloc_lbs']['title'] = $t('IP Geolocation Views & Maps data collection methods employed');
+  $requirements['ip_geoloc_lbs']['title'] = $t('IP Geolocation Views & Maps,<br/>data collection methods employed');
   $requirements['ip_geoloc_lbs']['value'] = implode(', ', $geolocation_methods);
   if (empty($geolocation_methods)) {
     $warning = $t('You currently have no data collection methods enabled. Therefore no new address information can be added to the IP geolocation database.');
     if (empty($requirements['ip_geoloc']['description'])) {
-      $requirements['ip_geoloc_lbs']['severity'] = REQUIREMENT_WARNING;
+      $requirements['ip_geoloc_lbs']['severity'] = REQUIREMENT_INFO;
       $requirements['ip_geoloc_lbs']['description'] = $warning;
     }
     else {
       $requirements['ip_geoloc_lbs']['description'] .= ' ' . $warning;
     }
   }
-  $css_file = FALSE;
-  $requirements['ip_geoloc_font_awesome']['title'] = $t('IP Geolocation Views & Maps <em>Font Awesome</em> extension');
-  if ($css_path = ip_geoloc_get_ccs_library_path('font-awesome')) {
-    $css_file = "$css_path/font-awesome.min.css";
+
+  $library = drupal_get_library('leaflet_markercluster', 'leaflet_markercluster');
+  if (isset($library['js'][0]['data'])) {
+    $requirements['ip_geoloc_markercluster']['title'] = t('IP Geolocation Views & Maps; Leaflet MarkerCluster library');
+    if (strpos($library['js'][0]['data'], IP_GEOLOC_LEAFLET_MARKERCLUSTER_REGIONBOUND_JS)) {
+      $requirements['ip_geoloc_markercluster']['value'] = t('Installed with RegionBound extension');
+      $requirements['ip_geoloc_markercluster']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['ip_geoloc_markercluster']['value'] = t('Using basic version');
+      $requirements['ip_geoloc_markercluster']['severity'] = REQUIREMENT_INFO;
+      $requirements['ip_geoloc_markercluster']['description'] = t('Leaflet MarkerCluster installed without region-aware extension. You are not making the most of your clustering. We suggest you obtain the <a href="http://regionbound.com">RegionBound</a> marker cluster .js file and drop it in %directory for superior clustering.', array(
+        '%directory' => leaflet_markercluster_get_library_path(),
+      ));
+    }
   }
-  if (file_exists($css_file)) {
-    $requirements['ip_geoloc_font_awesome']['value'] = $t('Font library installed at %css_file', array('%css_file' => $css_file));
-    $requirements['ip_geoloc_font_awesome']['severity'] = REQUIREMENT_OK;
+
+  $requirements['ip_geoloc_font_libs']['title'] = $t('IP Geolocation Views & Maps,<br/>font icon libraries');
+  $requirements['ip_geoloc_font_libs']['severity'] = REQUIREMENT_OK;
+  $requirements['ip_geoloc_font_libs']['description'] = $t('When using Leafet you may superimpose font icons on your markers. <a target="fsymbols" href="!url_fsymbols">fsymbols</a> do not require any files to be downloaded. Other font icons like those from <a target="fontello" href="!url_fontello">Fontello</a> do. See the <a target="readme" href="!url_readme">README</a> for more details on font icon repositories.', array(
+    '!url_fsymbols' => url('http://text-symbols.com'),
+    '!url_fontello' => url('http://fontello.com'),
+    '!url_readme' => url(drupal_get_path('module', 'ip_geoloc') . '/README.txt'),
+  ));
+  $requirements['ip_geoloc_font_libs']['value'] = '';
+  $num_font_libs = 0;
+  foreach (ip_geoloc_get_font_icon_libs() as $i => $css_file) {
+    $css_file = trim($css_file);
+    if (!empty($css_file)) {
+      if (file_exists($css_file)) {
+        $msg = $t('Font icon library #@i found at %css_file', array(
+          '@i' => $i,
+          '%css_file' => $css_file,
+        ));
+        $num_font_libs++;
+      }
+      else {
+        $msg = $t('File %file was entered on the <a target="config" href="!url_config">configuration page</a> but not found.', array(
+          '%file' => $css_file,
+          '!url_config' => url('admin/config/system/ip_geoloc'),
+        ));
+        $requirements['ip_geoloc_font_libs']['severity'] = REQUIREMENT_WARNING;
+      }
+      $requirements['ip_geoloc_font_libs']['value'] .= $msg . '<br/>';
+    }
   }
-  else {
-    $s1 = $t('%dir found, but required .css file not present: %file', array(
-      '%dir' => $css_path, '%file' => $css_file)
-    );
-    $s2 = $t('The optional <em>font-awesome</em> library directory was not found, so you will not be able to superimpose any Font Awesome symbols on top of your markers. See the <a href="@README">README</a> for instructions on downloading the Font Awesome library.', array(
-      '@README' => url(drupal_get_path('module', 'ip_geoloc') . '/README.txt'))
-    );
-    $requirements['ip_geoloc_font_awesome']['value'] = $css_path ? $s1 : $s2;
-    $requirements['ip_geoloc_font_awesome']['severity'] = REQUIREMENT_WARNING;
+  if ($num_font_libs == 0) {
+    $requirements['ip_geoloc_font_libs']['value'] .= $t('No font icon libraries found. However you can still copy and paste font icons from <a target="fsybmols" href="!url_fsymbols">fsymbols</a>.', array(
+      '!url_fsymbols' => url('http://text-symbols.com'),
+    ));
   }
   return $requirements;
 }
@@ -137,7 +169,7 @@ function ip_geoloc_schema() {
       'ip_address' => array(
         'description' => 'IP address',
         'type'        => 'varchar',
-        // Support IPv6 as well as standard IPv4 addresses, e.g. 
+        // Support IPv6 as well as standard IPv4 addresses, e.g.
         // 2001:0db8:0000:0000:0000:ff00:0042:8329
         // http://en.wikipedia.org/wiki/IPv6
         'length'      => '64',
@@ -244,6 +276,6 @@ function ip_geoloc_update_7125() {
   );
   $index = array('indexes' => array('ip_address' => array('ip_address')));
   db_change_field('ip_geoloc', 'ip_address', 'ip_address', $spec, $index);
-  //db_add_index('ip_geoloc', 'ip_address', array('ip_address'));
+  // db_add_index('ip_geoloc', 'ip_address', array('ip_address'));
   return t('ip_address column updated.');
 }

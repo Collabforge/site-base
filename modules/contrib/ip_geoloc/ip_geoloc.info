@@ -9,6 +9,8 @@ files[] = views/ip_geoloc_plugin_style_leaflet.inc
 files[] = views/ip_geoloc_plugin_style_openlayers.inc
 files[] = views/ip_geoloc_plugin_argument_default_ip_geoloc.inc
 
+files[] = views/proximity_plugins/geofieldProximityGeocoderWithHTML5.inc
+
 dependencies[] = libraries
 ; The following aren't dependencies but are highly recommended to realise a
 ; rich feature set:
@@ -21,9 +23,9 @@ dependencies[] = libraries
 ; Naturally to use OpenLayers or Leaflet maps, you'll need the OpenLayers and/or
 ; Leaflet modules.
 
-; Information added by Drupal.org packaging script on 2014-03-30
-version = "7.x-1.25"
+; Information added by Drupal.org packaging script on 2014-11-13
+version = "7.x-1.26"
 core = "7.x"
 project = "ip_geoloc"
-datestamp = "1396180746"
+datestamp = "1415869104"
 

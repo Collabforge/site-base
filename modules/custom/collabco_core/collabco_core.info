@@ -3,7 +3,6 @@ description = Core feature
 core = 7.x
 package = Collabco
 version = 7.x-1.0
-project = collabco_core
 dependencies[] = admin_menu
 dependencies[] = admin_menu_toolbar
 dependencies[] = better_exposed_filters

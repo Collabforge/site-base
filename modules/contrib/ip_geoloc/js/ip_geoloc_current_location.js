@@ -10,6 +10,7 @@
         navigator.geolocation.getCurrentPosition(getLocation, handleLocationError, {enableHighAccuracy: true, timeout: 20000});
       }
       else {
+        var data = new Object;
         data['error'] = Drupal.t('IPGV&M: device does not support W3C API.');
         callback_php(callback_url, data, false);
         return;
@@ -40,7 +41,8 @@
             }
           }
           else {
-            ip_geoloc_address['error'] = Drupal.t('getLocation(): Google address lookup failed with status code !code.', { '!code': status });
+            //alert(Drupal.t('IPGV&M: Google Geocoder returned error !code.', { '!code': status }));
+            ip_geoloc_address['error'] = Drupal.t('getLocation(): Google Geocoder address lookup failed with status code !code.', { '!code': status });
             refresh_page = false;
           }
           // Pass lat/long, accuracy and address back to Drupal
@@ -80,5 +82,5 @@
       }
 
     }
-  }
+  };
 })(jQuery);

@@ -209,6 +209,18 @@ function smart_ip_update_7004() {
 }
 
 /**
+ * Move content of device_geolocation_allowed_pages
+ * variable to smart_ip_allowed_pages variable
+ */
+function smart_ip_update_7005() {
+  $device_geolocation_allowed_pages = variable_get('device_geolocation_allowed_pages', '');
+  if (!empty($device_geolocation_allowed_pages)) {
+    variable_set('smart_ip_allowed_pages', $device_geolocation_allowed_pages);
+  }
+  variable_del('device_geolocation_allowed_pages');
+}
+
+/**
  * Implements hook_uninstall().
  *
  * Removes all tables and variables inserted into the
@@ -236,6 +248,7 @@ function smart_ip_uninstall() {
   variable_del('smart_ip_last_update');
   variable_del('smart_ip_debug');
   variable_del('smart_ip_test_ip_address');
+  variable_del('smart_ip_allowed_pages');
   variable_del('smart_ip_save_user_location_creation');
   variable_del('smart_ip_roles_to_geolocate');
   variable_del('smart_ip_maxmind_bin_db_last_update');
