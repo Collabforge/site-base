@@ -1,3 +1,4 @@
 name = Collabco Profile Block
 description = provides a profile block with user pic and links to user profile for front page of site
 package = Collabco
+core = 7.x
