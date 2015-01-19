@@ -32,6 +32,12 @@ function collabco_profile_block_block_info() {
 function collabco_profile_block_block_view($delta = '') {
   $block = array();
   global $base_url, $user;
+  $display_name;
+  if (empty($user->realname)){
+    $display_name = $user->name;
+  }else {
+    $display_name = $user->realname;
+  }
 
   switch($delta) {
     case 'collabco_profile_block' :
@@ -78,18 +84,16 @@ function collabco_profile_block_block_view($delta = '') {
       $block['content'] =
         '<div id="iin-profile-content" class="row-fluid">'
           . '<div id="iin-profile-picture" >' . theme('user_picture', array('account' => $user)) . '</div>'
-          . '<div>' . $user->realname . '</div>' .
+          . '<div>' . $display_name. '</div>' .
         '</div>' .
         '<br>'. $navigation_links;
     break;
 
     case 'header_user_profile_block' :
       if (user_is_logged_in()) {
-        if (!property_exists($user, 'realname')) {
           $user = user_load($user->uid);
-        }
       }
-      $data = array('user_name' => $user->realname);
+      $data = array('user_name' => $display_name);
       $content = theme('header_user_profile_template', $data);
       $block['content'] = $content;
     break;
