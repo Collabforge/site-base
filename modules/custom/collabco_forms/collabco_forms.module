@@ -177,7 +177,8 @@ function collabco_forms_form_user_register_form_alter(&$form, &$form_state) {
  * Implements hook_form_FORMID_alter().
  */
 function collabco_forms_form_user_login_alter(&$form, &$form_state) {
-  $form['name']['#description']= t('You may login with either your username or your e-mail address.');
+  $form['name']['#description']= t('');
+  $form['pass']['#description']= t('');
 }
 
 /**
