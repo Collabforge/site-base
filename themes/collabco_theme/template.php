@@ -34,7 +34,8 @@ function collabco_theme_field_widget_file_generic_form_alter(&$element, &$form_s
 function collabco_theme_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['submit']['#attributes']['class'][] = 'form-btn-success';
   $form['actions']['delete']['#attributes']['class'][] = 'form-btn-danger';
-  $form['actions']['cancel']['#attributes']['class'][] = 'form-btn-danger';  
+  $form['actions']['cancel']['#attributes']['class'][] = 'form-btn-danger';
+  $form['account']['mail']['#description'] = t('Used to log into the site and receive notifications.');
 }
 
 function collabco_theme_preprocess_flag(&$variables) {
