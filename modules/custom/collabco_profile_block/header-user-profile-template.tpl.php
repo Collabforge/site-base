@@ -28,7 +28,7 @@
   </div>
   <div class="btn-group" id="navigation-profile-details">
     <button class="btn dropdown-toggle" data-toggle="dropdown">
-      <?php $user->realname; 
+      <?php print $user->realname; 
       ?>
     </button>
     <button class="btn dropdown-toggle" data-toggle="dropdown">
