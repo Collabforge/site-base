@@ -1,0 +1,18 @@
+name = Encrypt Submissions
+description = Encrypt form submissions using the jCryption library.
+configure = admin/config/encrypt-submissions
+tags[] = encrypt_submissions
+core = 7.x
+; Information added by drupal.org packaging script on 2011-10-21
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "encrypt_submissions"
+datestamp = "1319198894"
+
+
+; Information added by drupal.org packaging script on 2013-03-25
+version = "7.x-1.3"
+core = "7.x"
+project = "encrypt_submissions"
+datestamp = "1364224512"
+

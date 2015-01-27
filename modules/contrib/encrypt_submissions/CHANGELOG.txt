@@ -1,0 +1,38 @@
+===================
+Changelog for Encrypt Submissions
+For Drupal 7.x
+===================
+
+3-25-2013
+Made small modifications to prevent PHP Notices from showing up
+in some versions of PHP.  Issue: https://drupal.org/node/1906742
+
+Moved URL for the settings page to /admin/config/people/encrypt-submissions,
+so that it will show up correctly on the configuration page.
+
+
+--- Previous releases:
+
+2-26-2012
+Changes were made to prevent Drupal's caching system from caching
+the URL used to acquire keys, as per issue:
+http://drupal.org/node/1457358
+
+10-18-2011
+Cleaned-up module's javascript code
+
+07-01-2011
+ Modified Encrypt Submissions to work with jCryption version 1.2, which
+ does not require the user to alter filenames, unlike previous versions
+ of jCryption.
+
+02-21-2011
+  Fixed a bug to where clean URLs was required.  Also, now supports
+  libraries API.
+
+01-19-2011
+  Found a bug right off the bat.  When you chose to not have an encrypt
+  message, the module broke.
+
+01-19-2011
+  Initial commit to Drupal.org.
