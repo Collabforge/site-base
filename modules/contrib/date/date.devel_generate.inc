@@ -61,11 +61,9 @@ function date_devel_generate($entity, $field, $instance, $bundle) {
     case 'date':
       $format = DATE_FORMAT_ISO;
       break;
-
     case 'datestamp':
       $format = DATE_FORMAT_UNIX;
       break;
-
     case 'datetime':
       $format = DATE_FORMAT_DATETIME;
       break;

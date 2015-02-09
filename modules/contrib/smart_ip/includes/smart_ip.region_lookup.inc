@@ -4661,6 +4661,10 @@ function smart_ip_get_region($country_code, $region_code) {
       '10' => t('Harare'),
     ),
   );
+
+  // Allow other modules to modify country list via hook_smart_ip_region_predefined_list()
+  drupal_alter('smart_ip_region_predefined_list', $region_codes);
+  
   if (!isset($region_codes[$country_code][$region_code]) || empty($country_code) || empty($region_code)) {
     return '';
   }

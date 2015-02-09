@@ -16,11 +16,10 @@ files[] = includes/views/nodequeue_handler_field_links.inc
 files[] = includes/views/nodequeue_handler_field_queue_tab.inc
 files[] = includes/views/nodequeue_handler_filter_in_queue.inc
 files[] = includes/views/nodequeue_handler_relationship_nodequeue.inc
-files[] = includes/views/nodequeue_handler_sort_by_position_and_other.inc
 
-; Information added by drupal.org packaging script on 2013-10-01
-version = "7.x-2.0-beta1+19-dev"
+; Information added by drupal.org packaging script on 2011-09-20
+version = "7.x-2.0-beta1"
 core = "7.x"
 project = "nodequeue"
-datestamp = "1380593539"
+datestamp = "1316558104"
 

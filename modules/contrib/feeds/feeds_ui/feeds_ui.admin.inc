@@ -348,7 +348,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Fetcher.
   $fetcher = $plugins[$config['fetcher']['plugin_key']];
   $actions = array();
-  if ($importer->fetcher->hasConfigForm()) {
+  if (feeds_get_form($importer->fetcher, 'configForm')) {
     $actions = array(l(t('Settings'), $path . '/settings/' . $config['fetcher']['plugin_key']));
   }
   $info['title'] = t('Fetcher');
@@ -365,7 +365,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Parser.
   $parser = $plugins[$config['parser']['plugin_key']];
   $actions = array();
-  if ($importer->parser->hasConfigForm()) {
+  if (feeds_get_form($importer->parser, 'configForm')) {
     $actions = array(l(t('Settings'), $path . '/settings/' . $config['parser']['plugin_key']));
   }
   $info['title'] = t('Parser');
@@ -382,7 +382,7 @@ function feeds_ui_edit_page($importer, $active = 'help', $plugin_key = '') {
   // Processor.
   $processor = $plugins[$config['processor']['plugin_key']];
   $actions = array();
-  if ($importer->processor->hasConfigForm()) {
+  if (feeds_get_form($importer->processor, 'configForm')) {
     $actions[] = l(t('Settings'), $path . '/settings/' . $config['processor']['plugin_key']);
   }
   $actions[] = l(t('Mapping'), $path . '/mapping');
@@ -718,7 +718,7 @@ function feeds_ui_mapping_settings_form_callback($form, $form_state) {
  * Validation handler for feeds_ui_mapping_form().
  */
 function feeds_ui_mapping_form_validate($form, &$form_state) {
-  if (!strlen($form_state['values']['source']) xor !strlen($form_state['values']['target'])) {
+  if (empty($form_state['values']['source']) xor empty($form_state['values']['target'])) {
 
     // Check triggering_element here so we can react differently for ajax
     // submissions.
@@ -726,7 +726,7 @@ function feeds_ui_mapping_form_validate($form, &$form_state) {
 
       // Regular form submission.
       case 'op':
-        if (!strlen($form_state['values']['source'])) {
+        if (empty($form_state['values']['source'])) {
           form_error($form['source'], t('You must select a mapping source.'));
         }
         else {
@@ -790,7 +790,7 @@ function feeds_ui_mapping_form_submit($form, &$form_state) {
 
   $processor->addConfig(array('mappings' => $mappings));
 
-  if (strlen($form_state['values']['source']) && strlen($form_state['values']['target'])) {
+  if (!empty($form_state['values']['source']) && !empty($form_state['values']['target'])) {
     try {
       $mappings = $processor->getMappings();
       $mappings[] = array(
@@ -819,7 +819,7 @@ function _feeds_ui_format_options($options) {
   $result = array();
   foreach ($options as $k => $v) {
     if (is_array($v) && !empty($v['name'])) {
-      $result[$k] = $v['name'] . ' (' . $k . ')';
+      $result[$k] = $v['name'];
     }
     elseif (is_array($v)) {
       $result[$k] = $k;
@@ -1064,7 +1064,7 @@ function theme_feeds_ui_mapping_form($variables) {
   $rows = array();
   foreach (element_children($form['legendset']['legend']['targets']) as $k) {
     $rows[] = array(
-      check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['name']) . ' (' . $k . ')'),
+      check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['name'])),
       check_plain(drupal_render($form['legendset']['legend']['targets'][$k]['description'])),
     );
   }
@@ -1148,17 +1148,9 @@ function feeds_ui_importer_import_validate($form, &$form_state) {
       '%api_version' => feeds_api_version())));
   }
 
-  // Change to user-supplied id.
-  if ($form_state['values']['id']) {
-    $feeds_importer->id = $form_state['values']['id'];
-  }
-
-  $exists = feeds_ui_importer_machine_name_exists($feeds_importer->id);
-
-  if ($exists && !$form_state['values']['id_override']) {
-    if (feeds_importer($feeds_importer->id)->export_type != EXPORT_IN_CODE) {
-      return form_error($form['id'], t('Feeds importer already exists with that id.'));
-    }
+  $existing = feeds_importer($feeds_importer->id);
+  if ($existing && !$form_state['values']['id_override'] && $existing->export_type != EXPORT_IN_CODE) {
+    return form_error($form['id'], t('Feeds importer already exists with that id.'));
   }
 
   if (!$form_state['values']['bypass_validation']) {
@@ -1180,15 +1172,12 @@ function feeds_ui_importer_import_validate($form, &$form_state) {
  */
 function feeds_ui_importer_import_submit($form, &$form_state) {
   $importer = $form_state['importer'];
-
-  // Create a copy of the importer to preserve config.
-  $save = feeds_importer($importer->id);
-  $save->setConfig($importer->config);
+  $importer = feeds_importer($importer->id);
+  $importer->setConfig($importer->config);
   foreach (array('fetcher', 'parser', 'processor') as $type) {
-    $save->setPlugin($importer->config[$type]['plugin_key']);
-    $save->$type->setConfig($importer->config[$type]['config']);
+    $importer->$type->setConfig($importer->config[$type]['config']);
   }
-  $save->save();
+  $importer->save();
 
   drupal_set_message(t('Successfully imported the %id feeds importer.', array('%id' => $importer->id)));
   $form_state['redirect'] = 'admin/structure/feeds';
