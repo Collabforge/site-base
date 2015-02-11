@@ -350,3 +350,10 @@ function collabco_forms_inline_entity_form_entity_form_alter(&$entity_form, &$fo
     $entity_form['actions']['ief_add_cancel']['#attributes']['class'][] = 'form-btn-danger';
   }
 }
+
+/* Performs if email_registration is enabled */
+
+function collabco_forms_email_registration_name($edit, $account) {
+  return $account->mail;
+}
+?>

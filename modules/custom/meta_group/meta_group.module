@@ -468,7 +468,11 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 	foreach ($form['og_user']['roles']['#options'] as $rid => $role_name) {
 		if ($type == 'co-owner' and $role_name == OG_ADMINISTRATOR_ROLE) {
 			$meta_roles[] = $rid;
-			$form['og_user']['#title'] = "Add a co-owner to group";
+			$form['og_user']['#title'] = "Add a co-owner to group";			
+		}
+		/* if email_registration is enabled then email is used as user name - hook implemented in collabco_forms */
+		if (module_exists('email_registration') && module_exists('collabco_forms')) {
+			$form['og_user']['name']['#title'] = "E-mail";
 		}
 	}
 	$form_state['meta_roles'] = $meta_roles;
