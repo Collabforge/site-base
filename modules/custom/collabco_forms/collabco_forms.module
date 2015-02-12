@@ -66,6 +66,28 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
       $comment_settings['#description'] = t('You can disable these notiﬁcations later for individual pieces of content, by visiting the web page for that content.');
     }
   }
+    // code to add links to the modal register and request password forms 
+    switch ($form_id) {      
+        case 'user_register_form':
+          if (arg(0) == 'modal_forms') {
+              $items[] = ctools_modal_text_button(t('Got an account? Log in'), 'modal_forms/nojs/login', t('Got an account? Log in'), 'ctools-modal-modal-popup-small');
+              $items[] = ctools_modal_text_button(t('Request new password'), 'modal_forms/nojs/password', t('Request new password via e-mail.'), 'ctools-modal-modal-popup-small');
+              $form['links'] = array('#weight' => 1000,'#markup' => theme('item_list', array('items' => $items)));
+          }
+          break;
+        case 'user_pass':
+          if (arg(0) == 'modal_forms') {
+            $items[] = ctools_modal_text_button(t('Got an account? Log in'), 'modal_forms/nojs/login', t('Got an account? Log in'), 'ctools-modal-modal-popup-small');
+            if (variable_get('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL)) {
+                   $items[] = ctools_modal_text_button(t('Create new account'), 'modal_forms/nojs/register', t('Create a new user account'), 'ctools-modal-modal-popup-medium');
+             }
+             $form['links'] = array('#weight' => 1000,'#markup' => theme('item_list', array('items' => $items)));
+          }
+          break;
+      }
+
+
+
 }
 
 /**
