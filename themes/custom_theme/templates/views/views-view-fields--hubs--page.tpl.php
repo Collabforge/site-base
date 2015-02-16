@@ -30,7 +30,12 @@
 <?php  $gid = $fields['nid']->raw ?> 
 <div class="index_item row-fluid">
   <div class="span2">
-    <?php echo $fields['field_featured_hub_image']->content; ?>
+    <?php if (meta_og_state_is_open($gid) || og_is_member('node', $gid)) {
+    echo $fields['field_featured_hub_image']->content; 
+    }
+    else { ?>
+      <div class="featured-image no-image"><img src="/profiles/collabco/themes/collabco_theme/images/placeholder_square.jpg"></div>
+    <?php } ?>
   </div>
   <div class="span10 topic_item">
     <div class="hub-header">

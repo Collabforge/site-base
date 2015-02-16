@@ -30,7 +30,13 @@
 <?php  $gid = $fields['nid']->raw ?> 
 <div class="row-fluid">
   <div class="span5 topic_feature_left">
-    <div class="topic_feature_image"><?php echo $fields['field_featured_hub_image']->content; ?></div>
+    <div class="topic_feature_image"><?php if (meta_og_state_is_open($gid) || og_is_member('node', $gid)) {
+    echo $fields['field_featured_hub_image']->content; 
+    }
+    else { ?>
+      <div class="featured-image no-image"><img src="/profiles/collabco/themes/collabco_theme/images/placeholder.jpg"></div>
+    <?php } ?>
+    </div>
     <div class="topic_feature_title">Latest</div>
   </div>
   <div class="span7 topic_feature_right">
