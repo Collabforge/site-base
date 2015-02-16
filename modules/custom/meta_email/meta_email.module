@@ -339,13 +339,18 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
         $mail_module = 'mimemail';
         // function mimemail_mail() requires 'context' array. It may be empty.
         $vars['context'] = array();
-        module_load_include('inc', 'mimemail');      
+        module_load_include('inc', 'mimemail');
+        $from_mimeaddress = mimemail_address(array(
+        'name' => "Test User",
+        'mail' => $from,
+        ));     
       }
       else {
         $mail_module = 'default-system';
       }
      // $result = drupal_mail($mail_module, $key, $to_user->mail, language_default(), $vars, $from);
-      $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, $from);
+      $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, 
+        $from_mimeaddress);
       if ($result['result']) {
         drupal_set_message(t('Your message has been sent.'));
       }
