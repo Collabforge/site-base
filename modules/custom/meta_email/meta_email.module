@@ -339,18 +339,14 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
         $mail_module = 'mimemail';
         // function mimemail_mail() requires 'context' array. It may be empty.
         $vars['context'] = array();
-        module_load_include('inc', 'mimemail');
-        $from_mimeaddress = mimemail_address(array(
-        'name' => "Test User",
-        'mail' => $from,
-        ));     
+        module_load_include('inc', 'mimemail');            
       }
       else {
         $mail_module = 'default-system';
       }
      // $result = drupal_mail($mail_module, $key, $to_user->mail, language_default(), $vars, $from);
       $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, 
-        $from_mimeaddress);
+        $from);
       if ($result['result']) {
         drupal_set_message(t('Your message has been sent.'));
       }
@@ -379,7 +375,9 @@ function meta_email_mail($key, &$message, $params) {
     '!site_url' => url('<front>', array('absolute' => TRUE)),
     '!site_email' => variable_get('site_mail', ''),
   ), $params);
-
+  $message['headers']['MIME-Version'] = '1.0';
+  $message['headers']['Content-Type'] = 'multipart/mixed;';
+  $message['headers']['Content-Type'] = 'text/html;';
   switch ($key) {
     case 'comment_replied__to_topic_followers':
       $message['subject'] = t('!site_name - !commenting_member has replied to a comment', $params, $options);
