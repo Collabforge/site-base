@@ -349,24 +349,31 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
         
             $MimeMailSystem = drupal_mail_system('mimemail','meta_email');
             $message = $MimeMailSystem->format($message);
+            $status = $MimeMailSystem->mail($message);
 
-            if($MimeMailSystem->mail($message)){
-              drupal_set_message('Your message has been sent');  
-            }else{
-              drupal_set_message('There was a problem sending your message and it was not sent.', 'error');  
-            } 
+
+            if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {  
+                if($status){
+                  drupal_set_message('Your message has been sent');  
+                }else{
+                  drupal_set_message('There was a problem sending your message and it was not sent', 'error');  
+                } 
+            }
             
       }
       else {
-              $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, 
+            $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, 
             $from);
-            if ($result['result']) {
-              drupal_set_message(t('Your message has been sent.'));
-            }
-            else {
-              drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
-            }
-      }     
+            if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {  
+                if ($result['result']) {
+                  drupal_set_message(t('Your message has been sent.'));
+                }
+                else {
+                  drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+                }
+           }
+      }
+      
       
     }
     else {
