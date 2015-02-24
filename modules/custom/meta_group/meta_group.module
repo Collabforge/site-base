@@ -216,8 +216,10 @@ function meta_group_send_for_revision_page($node) {
  * Implements hook_node_access()
  */
 function meta_group_node_access($node) {
-	if ($node->type == 'hub') {
-		return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+	if (is_object($node)) {
+		if ($node->type == 'hub') {
+			return !_meta_group_user_access_group($node) ? NODE_ACCESS_DENY : NODE_ACCESS_IGNORE;
+		}
 	}
 	return NODE_ACCESS_IGNORE;
 }
