@@ -122,8 +122,8 @@ function hub_preprocess_page(&$vars) {
        $node = menu_get_object();
        if (!empty($node) && $node->type == 'hub')
        {    
-           drupal_set_title('');
-           unset($vars[tabs]);
+           drupal_set_title('');           
+           unset($vars['tabs']);
        }
 } 
 
