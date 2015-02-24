@@ -79,7 +79,13 @@
  */
 
 ?>
+<?php if (empty($content['og_group_ref'])) { ?>
 <a href="/library">Library</a> > <?php print $title; ?>
+<?php } else  {
+$field = field_get_items('node', $node, 'og_group_ref'); 
+$group  = $field[0]['entity'];
+print( '<a href="/node/'.$field[0]['target_id'].'">'.$group->title . '</a> > <a href="/node/'.$group->nid.'/library"> Library</a> > '. $title);
+ } ?>
 
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
@@ -98,6 +104,7 @@
           // We hide the comments and links now so that we can render them later.
           hide($content['comments']);
           hide($content['links']);
+          hide($content['og_group_ref']);
           print render($content);
         ?>
       </div>
