@@ -88,25 +88,25 @@ function template_preprocess_create_hub_from_topic_template(&$variables){
 
         $links = array(
           'ui-header-menu ui-menu-hub-home' => array(
-              'title' => 'Home'
+              'title' => 'Idea Home'
               , 'href' => sprintf('node/%s', $node->nid)
           )
-          , 'ui-header-menu ui-menu-hub-topics' => array(
-              'title' => t('Discussions')
-              , 'href' => sprintf('node/%s/topics', $node->nid)
-          )
+          // , 'ui-header-menu ui-menu-hub-topics' => array(
+          //     'title' => t('Discussions')
+          //     , 'href' => sprintf('node/%s/topics', $node->nid)
+          // )
           , 'ui-header-menu ui-menu-hub-library' => array(
               'title' => 'Library'
               , 'href' => sprintf('node/%s/library', $node->nid)
           )
           , 'ui-header-menu ui-menu-hub-members' => array(
-              'title' => 'Members'
+              'title' => 'Idea Team'
               , 'href' => sprintf('node/%s/members', $node->nid)
           )
-          , 'ui-header-menu ui-menu-hub-book' => array(
-              'title' => t('WikiBooks')
-              , 'href' => sprintf('node/%s/books', $node->nid)
-          )
+          // , 'ui-header-menu ui-menu-hub-book' => array(
+          //     'title' => t('WikiBooks')
+          //     , 'href' => sprintf('node/%s/books', $node->nid)
+          // )
         );
         $attributes = array('class' => array('nav','nav-tabs'));
         
