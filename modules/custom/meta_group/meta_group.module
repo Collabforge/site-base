@@ -181,7 +181,7 @@ function meta_group_menu() {
 	    'access arguments' => array(1),
 	);
 	$items['node/%node/add/member/co-owner'] = array(
-	    'title' => 'Add a co-owner',
+	    'title' => 'Invite new Team Members',
 	    'description' => '',
 	    'page callback' => 'drupal_get_form',
 	    'page arguments' => array('meta_group_add_user_form', 1, 'co-owner'),
@@ -189,7 +189,7 @@ function meta_group_menu() {
 	    'access arguments' => array(1, 'co-owner'),
 	);
 	$items['node/%node/send-for-revision'] = array(
-	    'title' => 'Send for Revision',
+	    'title' => 'Submit for Review',
 	    'description' => '',
 	    'page callback' => 'meta_group_send_for_revision_page',
 	    'page arguments' => array(1),
