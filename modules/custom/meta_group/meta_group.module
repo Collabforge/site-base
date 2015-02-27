@@ -1,3 +1,4 @@
+
 <?php
 
 function meta_group_node_insert($node) {
@@ -206,7 +207,7 @@ function meta_group_send_for_revision_access($node) {
 
 function meta_group_send_for_revision_page($node) {
 	// @TODO better to show a page and asks for a confirmation.
-	drupal_set_message(t('An email has been sent to the Community Manager. You will be notified as soon as a decision is made on your Hub.'));
+	drupal_set_message(t('An email has been sent to the Community Manager. You will be notified as soon as a decision is made on your Idea.'));
 	global $user;
 	meta_email_send_send_for_revision($node->nid, $user->uid);
 	drupal_goto(sprintf('node/%d', $node->nid));
@@ -359,7 +360,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     if ($is_owner and meta_og_state_is_draft($gid)) {
     	$links[] = array(
     		'href' => sprintf('node/%d/send-for-revision', $gid)
-    		, 'title' => 'Send for revision'
+    		, 'title' => 'Submit for review'
     		, 'icon' => 'upload'
     		, 'classes' => array()
     	);
@@ -385,7 +386,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	if (user_access('administer group') or ($is_owner and meta_og_state_is_draft($gid))) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/co-owner', $gid)
-    		, 'title' => 'Add a co-owner'
+    		, 'title' => 'Invite new Team Members'
     		, 'icon' => 'cog'
     	);
 	}
@@ -407,14 +408,14 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user is not a member
 	//  
-	if (!og_is_member('node', $gid)) {
+	/* if (!og_is_member('node', $gid)) {
     	$links[] = array(
     		'href' => sprintf('group/node/%s/subscribe', $gid)
     		, 'title' => 'Join this hub'
     		, 'icon' => 'plus'
     		, 'classes' => array('btn-success')
     	);
-	}
+	} */
 
 	// ** Leave the group
 	// If:
@@ -470,7 +471,7 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 	foreach ($form['og_user']['roles']['#options'] as $rid => $role_name) {
 		if ($type == 'co-owner' and $role_name == OG_ADMINISTRATOR_ROLE) {
 			$meta_roles[] = $rid;
-			$form['og_user']['#title'] = "Add a co-owner to group";			
+			$form['og_user']['#title'] = "Invite new Team Member";			
 		}
 		/* if email_registration is enabled then email is used as user name - hook implemented in collabco_forms */
 		if (module_exists('email_registration') && module_exists('collabco_forms')) {
