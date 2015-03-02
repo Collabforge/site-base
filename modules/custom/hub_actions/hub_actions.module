@@ -207,11 +207,6 @@ function hub_actions_node_insert($node) {
       }
     }
 
-    if ($node->type == 'hub')
-    {
-       print($node->nid); 
-       die("in node insert");
-    }
 
 }
 
