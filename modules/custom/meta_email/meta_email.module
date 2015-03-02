@@ -138,6 +138,10 @@ function meta_email_send_send_for_revision($gid, $uid) {
   );
   meta_email_send('group_waiting_approval__to_requester', NULL, array($user), $pars);
   meta_email_send('group_waiting_approval__to_admins', NULL, meta_group_get_admins(), $pars);
+  $friendly_faces = meta_group_get_friendly_face($gid);
+  if (!empty($friendly_faces)) {
+      meta_email_send('group_waiting_approval__to_friendlyface', NULL, $friendly_faces, $pars);
+  }
 }
 
 /**
@@ -454,6 +458,10 @@ function meta_email_get_message($key, $params,$message) {
     case 'group_waiting_approval__to_admins':
      $message['subject'] = t('!site_name - "!group_name" is pending approval', $params, $options);
      $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>The draft hub <a href="!group_link">!group_name</a> has been sent for review and is pending your approval.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+    break;
+    case 'group_waiting_approval__to_friendlyface':
+     $message['subject'] = t('!site_name - "!group_name" has been sent for approval', $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>The draft hub <a href="!group_link">!group_name</a> has been sent for review. <br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
     break;
     case 'group_topic_added__to_group_owner':
      $message['subject'] = t('!site_name - "!topic_title" has been added to "!group_name"', $params, $options);

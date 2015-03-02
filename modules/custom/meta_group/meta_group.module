@@ -44,21 +44,21 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
   $og_state = $og_membership->state;
   // $og_state is one of: OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED
 
-  if (function_exists('meta_og_state_is_draft')) {
-    $group = meta_group_get_group($gid);
-    if (meta_og_state_is_draft($gid)) {
-      drupal_set_message(t('%title is now @state and still <em>in draft</em>. You need to press <strong>Submit for revision</strong> to have it published.', array(
-        '%title' => $group->title,
-        '@state' => meta_group_og_state_title($og_state),
-      )));
-    }
-    else {
-      //drupal_set_message(t('%title is published and @state.', array(
-      //  '%title' => $group->title,
-      //  '@state' => meta_group_og_state_title($og_state),
-      //)));
-    }
-  }
+  // if (function_exists('meta_og_state_is_draft')) {
+  //   $group = meta_group_get_group($gid);
+  //   if (meta_og_state_is_draft($gid)) {
+  //     drupal_set_message(t('%title is now @state and still <em>in draft</em>. You need to press <strong>Submit for revision</strong> to have it published.', array(
+  //       '%title' => $group->title,
+  //       '@state' => meta_group_og_state_title($og_state),
+  //     )));
+  //   }
+  //   else {
+  //     //drupal_set_message(t('%title is published and @state.', array(
+  //     //  '%title' => $group->title,
+  //     //  '@state' => meta_group_og_state_title($og_state),
+  //     //)));
+  //   }
+  // }
 	meta_email_callback_user_joined($gid, $uid, $mid, $og_state);
 }
 
@@ -682,7 +682,7 @@ function meta_group_get_group_members($gid) {
  */
 function meta_group_get_admins() {
 	$query = db_select('role_permission', 'rp');
-  $query->join('users_roles', 'ur', 'rp.rid = ur.rid');
+    $query->join('users_roles', 'ur', 'rp.rid = ur.rid');
 	$result = $query
     ->fields('ur', array('uid'))
     ->condition('rp.permission', 'administer group', '=')
@@ -691,6 +691,21 @@ function meta_group_get_admins() {
 	foreach ($result as $record) {
 		$users[$record->uid] = user_load($record->uid);
 	}
+	return $users;
+}
+
+function meta_group_get_friendly_face($gid) {
+	$query = db_select('og_role', 'ogr');
+    $query->join('og_users_roles', 'our', 'ogr.rid = our.rid');
+	$result = $query
+    ->fields('our', array('uid'))
+    ->condition('ogr.name', 'Friendly Face', '=')
+    ->condition('our.gid',$gid)
+    ->execute()->fetchAll();
+	$users = array();
+	foreach ($result as $record) {
+		$users[$record->uid] = user_load($record->uid);
+	}	
 	return $users;
 }
 
