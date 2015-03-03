@@ -532,7 +532,7 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 		}
 		/* if email_registration is enabled then email is used as user name - hook implemented in collabco_forms */
 		if (module_exists('email_registration') && module_exists('collabco_forms')) {
-			$form['og_user']['name']['#title'] = "E-mail";
+			$form['og_user']['name']['#title'] = "Start typing a name or email";
 		}
 
 	}
