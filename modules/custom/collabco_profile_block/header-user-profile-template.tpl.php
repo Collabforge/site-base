@@ -35,11 +35,9 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu user-nav">
-      <li class="first leaf user-nav-activity-feed" ><a href="<?php echo "$base_url/dashboard"; ?>"><i class="icon-rss">&nbsp;</i> <?php echo t('Activity Feed'); ?></a></li>
+      <li class="first leaf user-nav-activity-feed" ><a href="<?php echo "$base_url/dashboard"; ?>"><i class="icon-rss">&nbsp;</i> <?php echo t('Dashboard'); ?></a></li>
       <li class="first leaf user-nav-my-profile" ><a href="<?php echo "$base_url/user"; ?>"><i class="icon-user">&nbsp;</i> <?php echo t('My Profile'); ?></a></li>
-      <li class="first leaf user-nav-my-topics" ><a href="<?php echo "$base_url/your-topics"; ?>"><i class="icon-list">&nbsp;</i> <?php echo t('My Topics'); ?></a></li>
-      <li class="first leaf user-nav-my-hubs" ><a href="<?php echo "$base_url/your-hubs" ; ?>"><i class="icon-globe">&nbsp;</i> <?php echo t('My Hubs'); ?></a></li>
-      <li class="first leaf user-nav-my-library" ><a href="<?php echo "$base_url/my-library"; ?>"><i class="icon-folder-close-alt">&nbsp;</i> <?php echo t('My Library'); ?></a></li>
+      <li class="first leaf user-nav-my-hubs" ><a href="<?php echo "$base_url/idea-collaborations" ; ?>"><i class="icon-globe">&nbsp;</i> <?php echo t('Idea Collaborations'); ?></a></li>
       <li class="first leaf user-nav-account-settings" ><a href="<?php echo "$base_url/user/$user->uid/edit"; ?>" style="color:#666;"><i class="icon-cog">&nbsp;</i> <?php echo t('Account settings'); ?></a></li>
       <li class="last leaf user-nav-logout" ><a href="<?php echo "$base_url/user/logout"; ?>" title="icon-signout" style="color:#666;"><i class="icon-signout">&nbsp;</i> <?php echo t('Log out'); ?></a></li>
     </ul>

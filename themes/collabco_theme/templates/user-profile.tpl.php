@@ -37,15 +37,11 @@
 		</div>
     <br>
 		<div class="profile-page-user-organisation">
-			<?php print render($fields['field_organisation_ref']); ?>
+			<?php print render($fields['field_implementing_area']); ?>
 		</div>
 	</div>
 
 	<div class="span3 last">
-		<div class="profile-page-user-expertise">
-			<?php print render ($fields['field_areas_of_expertise']); ?>
-		</div>
-		<br>
 		<div class="profile-page-user-external">
 			<?php print render ($fields['field_external_link']); if(isset($fields['field_external_link'])) { echo "<br>"; } ?>
         </div>
