@@ -307,7 +307,7 @@ function _meta_group_page_library($node) {
 }
 
 function _meta_group_page_members($node) {
-  return views_embed_view('meta_user_list_by_group', 'members_all', $node->nid);
+  return views_embed_view('meta_user_list_by_group', 'idea_team_members', $node->nid);
 }
 
 function _meta_group_books($node) {
