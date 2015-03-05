@@ -414,7 +414,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	// If:
 	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
 	// 
-	if (og_user_access('node', $gid, 'administer group'))   {
+	if (og_user_access('node', $gid, 'add user'))   {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/ia-member', $gid)
     		, 'title' => 'Invite Implementing Area Member'
@@ -467,7 +467,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	if (!$is_owner and og_is_member('node', $gid)) {   
     	$links[] = array(
     		'href' => sprintf('group/node/%s/unsubscribe', $gid)
-    		, 'title' => 'Unsubscribe from this Idea'
+    		, 'title' => 'Leave from this Idea'
     		, 'icon' => 'remove'
     		, 'classes' => array('btn-danger')
     	);
@@ -481,9 +481,9 @@ function meta_group_preprocess_group_actions_template(&$variables) {
  * @see meta_group_add_user_form()
  */
 function meta_group_add_user_access($node, $type='member') {
-	if (!og_is_group('node', $node)) {
-		return false;
-	}
+	// if (!og_is_group('node', $node)) {
+	// 	return false;
+	// }
 	$gid = $node->nid;
 	global $user;
 	$is_group_admin = og_user_access('node', $gid, 'administer group');
