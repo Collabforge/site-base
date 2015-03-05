@@ -267,6 +267,7 @@ function _meta_group_user_access_group($node, $account=NULL) {
 	if (og_is_member('node', $gid, 'user', $account)) {
 		return TRUE;
 	}
+	echo "No access";
 	return FALSE;
 	header('Location: /user/login');
 }
