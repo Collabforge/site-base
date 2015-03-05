@@ -403,6 +403,11 @@ function meta_email_get_message($key, $params,$message) {
     '!site_email' => variable_get('site_mail', ''),
   ), $params);
   switch ($key) {
+    case 'group_message_to_team':
+      $message['subject'] = t('!site_name -  message is send to "!group_name" idea team  by !from_name', $params, $options);
+      $message['body'] = t('Hi !receiver_name,<br><br> A message was sent by !from_name ( !from_email ) on InnovationXChange to your idea team called !group_name. <br><br>Here is the message: <br><br>!message
+      &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
+    break;
     case 'comment_replied__to_topic_followers':
       $message['subject'] = t('!site_name - !commenting_member has replied to a comment', $params, $options);
       $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br> !commenting_member has replied to a comment in "!topic_title" on !site_name. <br>&nbsp;<br> You can view the reply <a href="!topic_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
