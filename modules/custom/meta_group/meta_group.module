@@ -249,9 +249,13 @@ function _meta_group_user_access_group($node, $account=NULL) {
 		$account = user_load($user->uid);
 	}
 	if (!isset($node->nid)) {
+		echo "no nid";
+		die();
 		return FALSE;
 	}
 	if (!og_is_group('node', $node)) {
+		echo "no group";
+		die();
 		return FALSE;
 	}
 	$gid = $node->nid;
@@ -267,8 +271,9 @@ function _meta_group_user_access_group($node, $account=NULL) {
 	if (og_is_member('node', $gid, 'user', $account)) {
 		return TRUE;
 	}
-	die();
+
 	echo "No access";
+		die();
 	return FALSE;
 	header('Location: /user/login');
 }
