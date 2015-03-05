@@ -34,7 +34,7 @@
     <a class="ui-library-file" href='<?php echo $base_path . "node/$row->nid"; ?>' >
       <div class="row-fluid">
         <div class="span2">
-          <?php echo $fields['field_featured_ko_image'] ->content;?> 
+          <i class="fa fa-4x fa-file-text-o"></i>
         </div>
         <div class="span10">
          <h2><?php echo $row->node_title; ?></h2>
