@@ -404,7 +404,7 @@ function meta_email_get_message($key, $params,$message) {
   ), $params);
   switch ($key) {
     case 'group_message_to_team':
-      $message['subject'] = t('!site_name -  message is send to "!group_name" idea team  by !from_name', $params, $options);
+      $message['subject'] = t('!site_name -  message is sent to "!group_name" idea team  by !from_name', $params, $options);
       $message['body'] = t('Hi !receiver_name,<br><br> A message was sent by !from_name ( !from_email ) on InnovationXChange to your idea team called !group_name. <br><br>Here is the message: <br><br>!message
       &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
     break;
