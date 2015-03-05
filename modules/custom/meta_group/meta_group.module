@@ -130,8 +130,8 @@ function meta_group_menu() {
 	$items = array();
 
 	$items['your-hubs'] = array(
-	    'title' => 'Your Hubs',
-	    'description' => 'Hubs you have hosted or joined',
+	    'title' => 'Your Ideas',
+	    'description' => 'Ideas you have started or joined',
 	    'page callback' => '_meta_group_page_profile_hubs',
 	    'access callback' => 'user_access',
       'access arguments' => array('create conversation content'),
@@ -140,7 +140,7 @@ function meta_group_menu() {
 	// Pages for a Group
 	$items['node/%node/topics'] = array(
 	    'title' => 'Topics',
-	    'description' => 'Topics within this hub',
+	    'description' => 'Topics within this Idea',
 	    'page callback' => '_meta_group_page_topics',
 	    'page arguments' => array(1),
 	    'access callback' => '_meta_group_user_access_group',
@@ -148,7 +148,7 @@ function meta_group_menu() {
 	);
 	$items['node/%node/library'] = array(
 	    'title' => 'Library',
-	    'description' => 'Library of this hub',
+	    'description' => 'Library of this Idea',
 	    'page callback' => '_meta_group_page_library',
 	    'page arguments' => array(1),
 	    'access callback' => '_meta_group_user_access_group',
@@ -156,7 +156,7 @@ function meta_group_menu() {
 	);
 	$items['node/%node/members'] = array(
 	    'title' => 'Members',
-	    'description' => 'This Hub\'s members',
+	    'description' => 'This Idea\'s members',
 	    'page callback' => '_meta_group_page_members',
 	    'page arguments' => array(1),
 	    'access callback' => '_meta_group_user_access_group',
@@ -391,7 +391,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     if (user_access('administer group') or og_user_access('node', $gid, 'administer group') or ($is_owner and meta_og_state_is_draft($gid))) {
     	$links[] = array(
     		'href' => sprintf('node/%d/edit', $gid)
-    		, 'title' => 'Edit the Hub'
+    		, 'title' => 'Edit the Idea'
     		, 'icon' => 'edit'
     		, 'classes' => array()
     	);
