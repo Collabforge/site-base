@@ -61,30 +61,41 @@
 ?>
 
 <div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-  <div class="span4 first comment_profile">
-    <?php print $picture ?>
 
-    <?php if ($new): ?>
-      <span class="new"><?php print $new ?></span>
-    <?php endif; ?>
+    
+<div class="span2 first comment_profile">
+      <?php print $picture ?>
+</div>
 
-    <?php print render($title_prefix); ?>
-    <h3<?php print $title_attributes; ?>><?php print $title ?></h3>
-    <?php print render($title_suffix); ?>
 
-    <div class="submitted">
-      <?php print $permalink; ?>
-      <?php print $submitted; ?>
+  <div class="comment_bubble span10 last">
+
+    <div class="comments-submitted">
+      <div class="name"><?php print $permalink; ?></div>
+      <div class="timestamp"><?php print $submitted; ?></div>
     </div>
-  </div>
 
-  <div class="comment_bubble span8 last">
     <div class="content"<?php print $content_attributes; ?>>
       <?php
         // We hide the comments and links now so that we can render them later.
         hide($content['links']);
         print render($content);
       ?>
+        
+        <div class="not-sure-what-this-is">
+            <?php if ($new): ?>
+      <span class="new"><?php print $new ?></span>
+    <?php endif; ?>
+    <?php print render($title_prefix); ?>
+    <h3<?php print $title_attributes; ?>><?php print $title ?></h3>
+    <?php print render($title_suffix); ?>
+</div>
+      
+      
+
+        
+        
+        
       <?php if ($signature): ?>
       <div class="user-signature clearfix">
         <?php print $signature ?>
