@@ -63,12 +63,12 @@
 <div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
     
-<div class="span2 first comment_profile">
+<div class="span1 first comment_profile">
       <?php print $picture ?>
 </div>
 
 
-  <div class="comment_bubble span10 last">
+  <div class="comment_bubble span11 last">
 
     <div class="comments-submitted">
       <div class="name"><?php print $permalink; ?></div>
