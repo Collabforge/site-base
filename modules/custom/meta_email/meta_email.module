@@ -387,6 +387,61 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
     }
   }
 }
+/**
+ * Sends an e-mail.
+ *
+ * @param string $key
+ *   Mail key
+ * @param integer $from_user
+ * @param string $to_user 
+ *  
+ */
+
+function meta_email_send_to_external($key, $from_user, $to_user_mail, $vars) {
+      $from = null; //let drupal set it by default
+      if (isset($from_user->mail)) {
+        $from = $from_user->mail;
+      } 
+      // If possible avoid the DefaultMailSystem implementation as it takes
+      // hyperlinks out of the message body to put them in the footer. Ugly.
+      if (module_exists('mimemail')) {
+            $contextvars =array();    
+            $vars['context'] = $contextvars;
+            $message = array();
+            $msg = meta_email_get_message($key,$vars,$message);
+            $message['to'] = $to_user_mail;
+            $message['from'] = $from;
+            $message['headers'] = array();
+            $message['subject'] = $msg['subject'];
+            $message['body'] =$msg['body']; 
+        
+            $MimeMailSystem = drupal_mail_system('mimemail','meta_email');
+            $message = $MimeMailSystem->format($message);
+            $status = $MimeMailSystem->mail($message);
+
+
+            if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {  
+                if($status){
+                  drupal_set_message('Your message has been sent');  
+                }else{
+                  drupal_set_message('There was a problem sending your message and it was not sent', 'error');  
+                } 
+            }
+            
+      }
+      else {
+            $result = drupal_mail('meta_email', $key, $to_user->mail, language_default(), $vars, 
+            $from);
+            if (defined('META_EMAIL_DEBUG') and META_EMAIL_DEBUG) {  
+                if ($result['result']) {
+                  drupal_set_message(t('Your message has been sent.'));
+                }
+                else {
+                  drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+                }
+           }
+      }
+}
 
 
 /**
@@ -403,6 +458,11 @@ function meta_email_get_message($key, $params,$message) {
     '!site_email' => variable_get('site_mail', ''),
   ), $params);
   switch ($key) {
+    case 'share_message_to_individual':
+      $message['subject'] = t('!site_name - an idea is shared by !from_name', $params, $options);
+      $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) from InnovationXChange has shared this idea with you.<br><br><a href=!group_link>!group_name</a><br><br>Here is the message they attached: <br><br>!message
+      &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
+      break;
     case 'group_message_to_team':
       $message['subject'] = t('!site_name -  message is sent to "!group_name" idea team  by !from_name', $params, $options);
       $message['body'] = t('Hi !receiver_name,<br><br> A message was sent by !from_name ( !from_email ) on InnovationXChange to your idea team called !group_name. <br><br>Here is the message: <br><br>!message
