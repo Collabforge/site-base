@@ -299,15 +299,24 @@ function _meta_group_page_profile_hubs() {
 }
 
 function _meta_group_page_topics($node) {
-	return views_embed_view('join_the_conversation', 'topics_of_hub', $node->nid);
+	if (user_is_logged_in()) {
+		return views_embed_view('join_the_conversation', 'topics_of_hub', $node->nid);
+	} 
+	return MENU_ACCESS_DENIED;  
 }
 
 function _meta_group_page_library($node) {
-  return views_embed_view('recent_files', 'library_in_hub', $node->nid);
+	if (user_is_logged_in()) {
+  		return views_embed_view('recent_files', 'library_in_hub', $node->nid);
+    } 
+	return MENU_ACCESS_DENIED;  
 }
 
 function _meta_group_page_members($node) {
-  return views_embed_view('meta_user_list_by_group', 'idea_team_members', $node->nid);
+	if (user_is_logged_in()) {
+		return views_embed_view('meta_user_list_by_group', 'idea_team_members', $node->nid);
+	} 
+	return MENU_ACCESS_DENIED;  
 }
 
 function _meta_group_books($node) {
