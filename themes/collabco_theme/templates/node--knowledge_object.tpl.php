@@ -79,12 +79,16 @@
  */
 
 ?>
+
+
+<?php if (empty($content['og_group_ref'])) { ?>
 <a href="/library">Library</a> > <?php print $title; ?>
 <?php } else  {
 $field = field_get_items('node', $node, 'og_group_ref'); 
 $group  = $field[0]['entity'];
-print( '<a href="/node/'.$field[0]['target_id'].'">'.$group->title . '</a> > <a href="/node/'.$group->nid.'/library"> Library</a> > '. $title);
+print( '<div class="breadcrum"><a href="/node/'.$field[0]['target_id'].'">'.$group->title . '</a> > <a href="/node/'.$group->nid.'/library"> Library</a></div> > '. $title); 
  } ?>
+
 
 <?php if (!$is_front): ?>
   <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
