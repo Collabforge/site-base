@@ -79,8 +79,7 @@
  */
 
 ?>
-<?php if (empty($content['og_group_ref'])) { ?>
-<div class="breadcrum"><a href="/library">Library</a> > <?php print $title; ?></div>
+<a href="/library">Library</a> > <?php print $title; ?>
 <?php } else  {
 $field = field_get_items('node', $node, 'og_group_ref'); 
 $group  = $field[0]['entity'];
