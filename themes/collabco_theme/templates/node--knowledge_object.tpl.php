@@ -86,7 +86,7 @@
 <?php } else  {
 $field = field_get_items('node', $node, 'og_group_ref'); 
 $group  = $field[0]['entity'];
-print( '<div class="breadcrum"><a href="/node/'.$field[0]['target_id'].'">'.$group->title . '</a> > <a href="/node/'.$group->nid.'/library"> Library</a></div> > '. $title); 
+print( '<div class="breadcrum"><a href="/node/'.$field[0]['target_id'].'">'.$group->title . '</a> > <a href="/node/'.$group->nid.'/library"> Library</a> > '. $title.'</div>');  
  } ?>
 
 
