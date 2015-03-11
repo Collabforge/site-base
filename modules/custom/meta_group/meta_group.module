@@ -28,6 +28,34 @@ function meta_group_og_membership_update(OgMembership $og_membership) {
 	_meta_group_og_membership_update($gid, $uid);
 }
 
+
+
+/**
+ * Implementation of hook_og_role_grant
+ *
+ * @param $entity_type
+ *   The entity type of the group in which a role has been granted.
+ * @param $gid
+ *   The group id of the group in which a role has been granted.
+ * @param $uid
+ *   The user id of the user to whom a role has been granted.
+ * @param $rid
+ *   The OG role id being granted to the user.
+ */
+function meta_group_og_role_grant($entity_type, $gid, $uid, $rid) {
+
+	if ($rid != 16) // Don't send mail from here for Implementing Area Member. 
+	{
+            $mid = db_select('og_membership','og')
+            ->fields('og',array('id'))
+            ->condition('og.etid',$uid)
+            ->condition('og.gid',$gid)
+             ->condition('og.entity_type','user')
+            ->execute()
+            ->fetchField(); 
+			meta_email_callback_user_joined($gid, $uid, $mid, OG_STATE_ACTIVE);
+	}	
+}
 /**
  * Implementation of hook_og_membership_insert() 
  */
@@ -39,27 +67,7 @@ function meta_group_og_membership_insert(OgMembership $og_membership) {
 	$gid = $og_membership->gid;
 	$uid = $og_membership->etid;
   _meta_group_og_membership_update($gid, $uid);
-
-  $mid = $og_membership->id;
-  $og_state = $og_membership->state;
-  // $og_state is one of: OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED
-
-  // if (function_exists('meta_og_state_is_draft')) {
-  //   $group = meta_group_get_group($gid);
-  //   if (meta_og_state_is_draft($gid)) {
-  //     drupal_set_message(t('%title is now @state and still <em>in draft</em>. You need to press <strong>Submit for revision</strong> to have it published.', array(
-  //       '%title' => $group->title,
-  //       '@state' => meta_group_og_state_title($og_state),
-  //     )));
-  //   }
-  //   else {
-  //     //drupal_set_message(t('%title is published and @state.', array(
-  //     //  '%title' => $group->title,
-  //     //  '@state' => meta_group_og_state_title($og_state),
-  //     //)));
-  //   }
-  // }
-	meta_email_callback_user_joined($gid, $uid, $mid, $og_state);
+	
 }
 
 /**
@@ -537,7 +545,14 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 		}
 		if ($type == 'ia-member' and $role_name == 'Implementing Area Member') {
 			$meta_roles[] = $rid;
-			$form['og_user']['#title'] = "Invite Implementing Area Member";			
+			$form['og_user']['#title'] = "Invite Implementing Area Member";	
+			$form['message'] = array(
+			    '#type' => 'textarea', //you can find a list of available types in the form api
+			    '#title' => 'Your Message',
+			    '#rows' => 5,
+			    '#cols' => 2,
+			    '#weight' => 1,			 
+			  );		
 		}
 		/* if email_registration is enabled then email is used as user name - hook implemented in collabco_forms */
 		if (module_exists('email_registration') && module_exists('collabco_forms')) {
@@ -564,6 +579,20 @@ function meta_group_add_user_form_submit($form, &$form_state) {
 		$form_state['values']['roles'][$role] = $role;
 	}
 	og_ui_add_users_submit($form, $form_state);
+	if ($form_state['values']['roles'][16] !=0) { // For Implementing Area Member send the mail from here. 
+		if (isset($form_state['values']['message']) ) {
+			$message_text = $form_state['values']['message'];	
+		}
+	$group_type = $form_state['values']['group_type'];
+  	$gid = $form_state['values']['gid'];
+  	$state = $form_state['values']['state'];
+  	$og_membership = $form_state['og_membership'];
+  
+    $account = user_load_by_name($form_state['values']['name']);
+    meta_email_callback_user_joined($gid, $account->uid, 0, $state, $message_text);
+		
+	}
+	
 }
 
 /**

@@ -211,7 +211,7 @@ function meta_email_callback_group_content_added($gid, $nid) {
 /**
  * Sends appropriate emails when a user joins a group or requests membership.
  */
-function meta_email_callback_user_joined($gid, $uid, $mid, $og_state) {
+function meta_email_callback_user_joined($gid, $uid, $mid, $og_state, $custom_message = "") {
   if ($og_state != OG_STATE_ACTIVE && $og_state != OG_STATE_PENDING) {
     // @todo
     return FALSE;
@@ -237,10 +237,15 @@ function meta_email_callback_user_joined($gid, $uid, $mid, $og_state) {
     '!group_name' => $group->title,
     '!joining_member' => $user->name,
     '!group_link' => url("node/$gid", array('absolute' => TRUE)),
+    '!custom_message' => $custom_message,
     '!group_membership_edit' => url("group/node/$gid/admin/people/edit-membership/$mid", array('absolute' => TRUE)),
   );
   if ($user->uid != $group->uid) {
-    $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_new_member' : 'member_request__to_new_member';
+    if ($custom_message!=""){
+      $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_new_member_with_msg' : 'member_request__to_new_member';
+    } else {    
+        $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_new_member' : 'member_request__to_new_member';
+    }
     meta_email_send($key, NULL, array($user), $pars);
     $key = ($og_state == OG_STATE_ACTIVE) ? 'member_joined__to_group_owner' : 'member_request__to_group_owner';
     meta_email_send($key, NULL, array($owner), $pars);
@@ -508,6 +513,11 @@ function meta_email_get_message($key, $params,$message) {
      $message['subject'] = t('!site_name - welcome to "!group_name".' , $params, $options);
      $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>You are now a member of <a href="!group_link">!group_name</a>.<br>&nbsp;<br>You can view the group <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
     break;
+    case 'member_joined__to_new_member_with_msg':
+     $message['subject'] = t('!site_name - welcome to "!group_name".' , $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>You are now a member of <a href="!group_link">!group_name</a>. <br><br>Here is the message attached: <br>!custom_message <br>&nbsp;<br>You can view the group <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
+    break;
+    
     case 'member_joined__to_group_owner':   
      $message['subject'] = t('!site_name - !joining_member has joined "!group_name"', $params, $options);
      $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>!joining_member is now a member of <a href="!group_link">!group_name</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params, $options);
