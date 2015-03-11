@@ -484,7 +484,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	if (!$is_owner and og_is_member('node', $gid)) {   
     	$links[] = array(
     		'href' => sprintf('group/node/%s/unsubscribe', $gid)
-    		, 'title' => 'Leave from this Idea'
+    		, 'title' => 'Leave this Idea'
     		, 'icon' => 'remove'
     		, 'classes' => array('btn-danger')
     	);
