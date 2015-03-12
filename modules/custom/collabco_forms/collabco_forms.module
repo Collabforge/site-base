@@ -315,30 +315,30 @@ function collabco_forms_inline_entity_form_settings_alter(&$settings, $field, $i
  * Replaces the autocomplete widget of the Inline Entity Form module by a
  * drop-down select.
  */
-function collabco_forms_field_widget_form_alter(&$element, &$form_state, $context) {
+// function collabco_forms_field_widget_form_alter(&$element, &$form_state, $context) {
   
-  if (is_array($element['#process']) && in_array('file_field_widget_process_multiple', $element['#process'])) {
-    $element['#process'][] = 'collabco_forms_file_field_widget_process_multiple';
-  }
-  if (isset($element['form']['entity_id']['#autocomplete_path'])) {
-    // This is the View display executed by Inline Entity Form to obtain al list
-    // of file references accessible to the current user.
-    $view = views_get_view('user_file_reference_list');
-    $result = $view->execute_display('entityreference_1');
-    $options = array();
-    foreach ($view->result as $node) {
-      $options[$node->nid] = $node->node_title;
-    }
-    $element['form']['entity_id']['#type'] = 'select';
-    $element['form']['entity_id']['#options'] = $options;
-    // Insert a validation function, so we can stuff the right data in the form,
-    // as required by inline_entity_form_reference_form_validate().
-    array_unshift($element['form']['#element_validate'], 'collabco_forms_ief_reference_form_validate');
+//   if (is_array($element['#process']) && in_array('file_field_widget_process_multiple', $element['#process'])) {
+//     $element['#process'][] = 'collabco_forms_file_field_widget_process_multiple';
+//   }
+//   if (isset($element['form']['entity_id']['#autocomplete_path'])) {
+//     // This is the View display executed by Inline Entity Form to obtain al list
+//     // of file references accessible to the current user.
+//     $view = views_get_view('user_file_reference_list');
+//     $result = $view->execute_display('entityreference_1');
+//     $options = array();
+//     foreach ($view->result as $node) {
+//       $options[$node->nid] = $node->node_title;
+//     }
+//     $element['form']['entity_id']['#type'] = 'select';
+//     $element['form']['entity_id']['#options'] = $options;
+//     // Insert a validation function, so we can stuff the right data in the form,
+//     // as required by inline_entity_form_reference_form_validate().
+//     array_unshift($element['form']['#element_validate'], 'collabco_forms_ief_reference_form_validate');
 
-    // Add bootstrap class @todo: move this to template preprocess func.
-    $element['form']['actions']['ief_reference_cancel']['#attributes']['class'][] = 'form-btn-danger';
-  }
-}
+//     // Add bootstrap class @todo: move this to template preprocess func.
+//     $element['form']['actions']['ief_reference_cancel']['#attributes']['class'][] = 'form-btn-danger';
+//   }
+// }
 
 /**
  * Prepares an inline entity file reference form for validation.
@@ -348,11 +348,11 @@ function collabco_forms_field_widget_form_alter(&$element, &$form_state, $contex
  * @param $form_state
  *   The form state of the parent form.
  */
-function collabco_forms_ief_reference_form_validate(&$reference_form, &$form_state) {
-  $p = $reference_form['#parents'];
-  // @todo this is a little hacky and fragile
-  $form_state['values'][$p[0]][$p[1]][$p[2]]['entity_id'] = $reference_form['entity_id']['#value'];
-}
+// function collabco_forms_ief_reference_form_validate(&$reference_form, &$form_state) {
+//   $p = $reference_form['#parents'];
+//   // @todo this is a little hacky and fragile
+//   $form_state['values'][$p[0]][$p[1]][$p[2]]['entity_id'] = $reference_form['entity_id']['#value'];
+// }
 
 /**
  * Perform alterations before an entity form is included in the IEF widget.
