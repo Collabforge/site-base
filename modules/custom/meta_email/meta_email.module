@@ -346,8 +346,8 @@ function meta_email_send($key, $from_user, $to_users, $vars) {
       // If possible avoid the DefaultMailSystem implementation as it takes
       // hyperlinks out of the message body to put them in the footer. Ugly.
       if (module_exists('mimemail')) {
-            $contextvars =array();    
-            $vars['context'] = $contextvars;
+           // $contextvars =array();    
+            $vars['context'] = "";
             $message = array();
             $msg = meta_email_get_message($key,$vars,$message);
             $message['to'] = $to_user->mail;
@@ -409,9 +409,10 @@ function meta_email_send_to_external($key, $from_user, $to_user_mail, $vars) {
       } 
       // If possible avoid the DefaultMailSystem implementation as it takes
       // hyperlinks out of the message body to put them in the footer. Ugly.
+
       if (module_exists('mimemail')) {
-            $contextvars =array();    
-            $vars['context'] = $contextvars;
+            //$contextvars =array();    
+            $vars['context'] = "";
             $message = array();
             $msg = meta_email_get_message($key,$vars,$message);
             $message['to'] = $to_user_mail;
