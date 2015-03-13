@@ -779,11 +779,6 @@ input[type="file"] {
 ---------------------------------------------
  **/
 
-.ui-login-forms .container{
-  max-width: 400px;
-  text-align: center;
-}
-
 .ie6 .ui-login-forms .container{
   width: 400px;
 }
