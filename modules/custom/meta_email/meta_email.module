@@ -74,33 +74,17 @@ function meta_email_form_alter(&$form, &$form_state, $form_id) {
 
 function _meta_email_settings_config() {
   return array(
-    'topic_hostedby' => array(
-      'label' => t('For Topics I host, email me when')
-      , 'keys' => array(
-        'comment_replied__to_topic_owner' => t('Someone replies to my comment')
-        , 'comment_added__to_topic_owner' => t('New comments are added')
-      )
-    )
-    , 'topic_followedby' => array(
-      'label' => t('For Topics I follow, email me when')
-      , 'keys' => array(
-        'comment_replied__to_topic_followers' => t('Someone replies to my comment')
-        , 'comment_added__to_topic_followers' => t('New comments are added')
-      )
-    )
-    , 'group_hostedby' => array(
-      'label' => t('For group I host, email me when')
+     'group_hostedby' => array(
+      'label' => t('For ideas I created, email me when')
       , 'keys' => array(
         'member_joined__to_group_owner' => t('A new member joins')
-        , 'group_topic_added__to_group_owner' => t('A topic is added')
         , 'group_resource_added__to_group_owner' => t('A library file is added')
       )
     )
     , 'group_memberof' => array(
-      'label' => t('For group I belong to, email me when')
+      'label' => t('For ideas I belong to, email me when')
       , 'keys' => array(
         'member_joined__to_group_members' => t('A new member joins')
-        , 'group_topic_added__to_group_members' => t('A topic is added')
         , 'group_resource_added__to_group_members' => t('A library file is added')
       )
     )
