@@ -203,7 +203,7 @@ function hub_actions_node_insert($node) {
         $url = url('node/' . $group_id . '/' . $section);
         $group_link = '<a class=action href=' . $url . '>' . $group_node->title . '</a>';
         drupal_set_message('Go back to Idea '. $group_link);
-        meta_email_callback_group_content_added($group[0]['target_id'], $node->nid);
+        meta_email_callback_group_content_added($group['target_id'], $node->nid);
       }
     }
 
