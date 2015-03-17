@@ -1,4 +1,5 @@
 
+<?php if (!empty($links)) { ?>
 <div class="ui-button-sidenav">
 
   <?php
@@ -17,9 +18,13 @@
 
     </a>
 
-
     <?php
+
   }
   ?>
 
 </div>
+ <?php
+    
+  }
+  ?>
