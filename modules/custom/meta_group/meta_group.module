@@ -427,17 +427,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     	);
 	}
 
-	// ** Add a Implementing Area Member
-	// If:
-	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
-	// 
-	if (og_user_access('node', $gid, 'add user'))   {
-    	$links[] = array(
-    		'href' => sprintf('node/%s/add/member/ia-member', $gid)
-    		, 'title' => 'Invite Implementing Area Member'
-    		, 'icon' => 'cog'
-    	);
-	}
+	
 
 	// ** Add more co-owner
 	// If:
@@ -447,6 +437,18 @@ function meta_group_preprocess_group_actions_template(&$variables) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/co-owner', $gid)
     		, 'title' => 'Invite new Team Members'
+    		, 'icon' => 'cog'
+    	);
+	}
+
+	// ** Add a Implementing Area Member
+	// If:
+	//	- user has 'administer group' permission ('administrator role' of the group or the Content Manager with that permission)
+	// 
+	if (meta_group_is_friendlyface($gid)) {
+    	$links[] = array(
+    		'href' => sprintf('node/%s/add/member/ia-member', $gid)
+    		, 'title' => 'Invite Implementing Area Member'
     		, 'icon' => 'cog'
     	);
 	}
@@ -626,6 +628,22 @@ function meta_group_is_coowner($gid, $uid=NULL) {
 		$account = $user;
 	}
 	return og_user_access('node', $gid, 'administer group', $account);
+}
+
+
+/**
+ * @return TRUE if the user is the friendly face 
+ */
+function meta_group_is_friendlyface($gid, $uid=NULL) {
+	global $user;
+	if (!isset($uid)) {
+		$uid = $user->uid;
+	} 
+	$roles = og_get_user_roles('node', $gid, $uid, FALSE);
+	if (array_key_exists('17', $roles)){
+	 	return true;
+	}
+	return false;
 }
 
 /**
