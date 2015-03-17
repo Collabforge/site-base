@@ -471,18 +471,18 @@ function meta_email_get_message($key, $params,$message) {
   ), $params);
   switch ($key) {
     case 'group_created__to_admins':
-      $message['subject'] = t('!site_name - a new idea is created by !group_owner', $params, $options);
-      $message['body'] = t('Hi !receiver_name,<br><br> A new idea is created by !group_owner <br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a><br>
+      $message['subject'] = t('!site_name - a new idea has been created by !group_owner', $params, $options);
+      $message['body'] = t('Hi !receiver_name,<br><br> A new idea has been created by !group_owner <br><br>You can view the idea by clicking on the link here: <a href=!group_link>!group_name</a>
       <br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'group_created__to_friendlyface':
-      $message['subject'] = t('!site_name - a new idea is created by !group_owner', $params, $options);
-      $message['body'] = t('Hi !receiver_name,<br><br> A new idea is created in your implementing area by !group_owner<br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a><br>
+      $message['subject'] = t('!site_name - a new idea has been created by !group_owner', $params, $options);
+      $message['body'] = t('Hi !receiver_name,<br><br> A new idea has been created in your implementing area by !group_owner<br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a>
       <br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'share_message_to_individual':
-      $message['subject'] = t('!site_name - an idea is shared by !from_name', $params, $options);
-      $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) from !site_name has shared this idea with you.<br><br><a href=!group_link>!group_name</a><br><br>Here is the message they attached: <br><br>!message
+      $message['subject'] = t('!site_name - !from_name would like you to join the Ideas Challenge', $params, $options);
+      $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) from !site_name would like you to participate in the Idea Challenge.<br><br>If you do not have one yet, please create an account by <a href="!site_url/user/register">clicking here</a> and then contacting !from_name to request an invite to the idea called <a href=!group_link>!group_name</a><br><br>Here is the message they have attached: <br><br>!message
       &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'group_message_to_team':
