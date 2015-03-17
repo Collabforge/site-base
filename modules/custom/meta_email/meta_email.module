@@ -122,11 +122,33 @@ function meta_email_send_send_for_revision($gid, $uid) {
   );
   meta_email_send('group_waiting_approval__to_requester', NULL, array($user), $pars);
   meta_email_send('group_waiting_approval__to_admins', NULL, meta_group_get_admins(), $pars);
+}
+
+
+
+/**
+ * Sends an email when a user has created an idea to CM and Friendly face
+ */
+function meta_email_send_idea_created($gid) {
+  if (!$group = meta_group_get_group($gid)) {
+    return FALSE;
+  }
+  $group_owner = user_load($group->uid);
+  
+  $pars = array (
+    '!group_name' => $group->title,
+    '!group_owner' => $group_owner->name,
+    '!group_link' => url('node/'. $group->nid, array('absolute' => TRUE)),
+  );
+  meta_email_send('group_created__to_admins', NULL, meta_group_get_admins(), $pars);
   $friendly_faces = meta_group_get_friendly_face($gid);
   if (!empty($friendly_faces)) {
-      meta_email_send('group_waiting_approval__to_friendlyface', NULL, $friendly_faces, $pars);
+      meta_email_send('group_created__to_friendlyface', NULL, $friendly_faces, $pars);
   }
 }
+
+
+
 
 /**
  * Sends appropriate emails when a Group is published
@@ -448,6 +470,16 @@ function meta_email_get_message($key, $params,$message) {
     '!site_email' => variable_get('site_mail', ''),
   ), $params);
   switch ($key) {
+    case 'group_created__to_admins':
+      $message['subject'] = t('!site_name - a new idea is created by !group_owner', $params, $options);
+      $message['body'] = t('Hi !receiver_name,<br><br> A new idea is created by !group_owner <br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a><br>
+      <br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
+      break;
+    case 'group_created__to_friendlyface':
+      $message['subject'] = t('!site_name - a new idea is created by !group_owner', $params, $options);
+      $message['body'] = t('Hi !receiver_name,<br><br> A new idea is created in your implementing area by !group_owner<br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a><br>
+      <br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
+      break;
     case 'share_message_to_individual':
       $message['subject'] = t('!site_name - an idea is shared by !from_name', $params, $options);
       $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) from !site_name has shared this idea with you.<br><br><a href=!group_link>!group_name</a><br><br>Here is the message they attached: <br><br>!message
