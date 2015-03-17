@@ -127,13 +127,13 @@ function hub_preprocess_page(&$vars) {
        }
 } 
 
+/** excludes the friendly face */
 function hub_get_members_count($gid) {       
-    $result = db_select('og_membership','og')
-      ->fields('og')  
-      ->condition('og.entity_type','user','=')
-      ->condition('og.gid', $gid, '=')
-      ->execute();
-    $num_of_results = $result->rowCount();   
+   $num_of_results = db_query("SELECT COUNT(etid) FROM og_membership , og_users_roles
+                       WHERE og_membership.gid = og_users_roles.gid
+                       AND og_membership.etid = og_users_roles.uid
+                       AND entity_type='user' AND og_users_roles.rid != 17
+                       AND og_membership.gid = :gid" , array(':gid' => $gid))->fetchField();
     return $num_of_results;
 }
 

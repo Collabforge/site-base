@@ -44,7 +44,7 @@ function meta_group_og_membership_update(OgMembership $og_membership) {
  */
 function meta_group_og_role_grant($entity_type, $gid, $uid, $rid) {
 
-	if ($rid != 16) // Don't send mail from here for Implementing Area Member. 
+	if ($rid != 16 && $rid !=17) // Don't send mail from here for Implementing Area Member. 
 	{
             $mid = db_select('og_membership','og')
             ->fields('og',array('id'))
