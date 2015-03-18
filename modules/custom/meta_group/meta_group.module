@@ -422,7 +422,7 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	if (og_user_access('node', $gid, 'administer group')) {
     	$links[] = array(
     		'href' => sprintf('node/%s/add/member/sponser', $gid)
-    		, 'title' => 'Invite Sponser'
+    		, 'title' => 'Invite Sponsor'
     		, 'icon' => 'cog'
     	);
 	}
