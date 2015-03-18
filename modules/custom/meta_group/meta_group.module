@@ -197,7 +197,7 @@ function meta_group_menu() {
 	    'access arguments' => array(1, 'co-owner'),
 	);
 	$items['node/%node/add/member/sponser'] = array(
-	    'title' => 'Invite Sponser',
+	    'title' => 'Invite Sponsor',
 	    'description' => '',
 	    'page callback' => 'drupal_get_form',
 	    'page arguments' => array('meta_group_add_user_form', 1, 'sponser'),
