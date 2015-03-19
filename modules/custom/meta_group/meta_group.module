@@ -390,14 +390,14 @@ function meta_group_preprocess_group_actions_template(&$variables) {
 	$is_owner = meta_group_is_owner($gid);
 
 
-    if ($is_owner and meta_og_state_is_draft($gid)) {
-    	$links[] = array(
-    		'href' => sprintf('node/%d/send-for-revision', $gid)
-    		, 'title' => 'Submit for review'
-    		, 'icon' => 'upload'
-    		, 'classes' => array()
-    	);
-    }
+    // if ($is_owner and meta_og_state_is_draft($gid)) {
+    // 	$links[] = array(
+    // 		'href' => sprintf('node/%d/send-for-revision', $gid)
+    // 		, 'title' => 'Submit for review'
+    // 		, 'icon' => 'upload'
+    // 		, 'classes' => array()
+    // 	);
+    // }
 
 	
 	// ** Edit the group
