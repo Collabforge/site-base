@@ -477,7 +477,7 @@ function meta_email_get_message($key, $params,$message) {
       break;
     case 'group_created__to_friendlyface':
       $message['subject'] = t('!site_name - a new idea has been created by !group_owner', $params, $options);
-      $message['body'] = t('Hi !receiver_name,<br><br> A new idea has been created in your implementing area by !group_owner<br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a>
+      $message['body'] = t('Hi !receiver_name,<br><br>A new idea relevant to your Division has been created in your implementing area by !group_owner<br><br>Please provide your Division’s implementing area comment as soon as practicable. If no comment has been provided within a week, the idea will be published, with the opportunity to comment after publication.<br><br>You can view the idea by clicking on the link <a href=!group_link>!group_name</a>
       <br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'share_message_to_individual':
@@ -512,7 +512,7 @@ function meta_email_get_message($key, $params,$message) {
     break;
     case 'group_published__to_group_owner':
      $message['subject'] = t('!site_name - "!group_name" was published', $params, $options);
-     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br> Your group "!group_name" has been published on !site_name. <br>&nbsp;<br>You can view the idea  <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br> Your idea "!group_name" has been published on !site_name. It is now available for all staff to view.<br>&nbsp;<br>You can view the idea  <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
     break;
     case 'member_request__to_new_member':
      $message['subject'] = t('!site_name - request to join "!group_name".' , $params, $options);
@@ -527,12 +527,12 @@ function meta_email_get_message($key, $params,$message) {
      $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>!joining_member has requested membership of <a href="!group_link">!group_name</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
     break;
     case 'member_joined__to_new_member':
-     $message['subject'] = t('!site_name - welcome to "!group_name".' , $params, $options);
-     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>You’ve been invited and added to the idea called <a href="!group_link">!group_name</a> on the Ideas Challenge member site.<br>&nbsp;<br>You can view the idea <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
+     $message['subject'] = t('!site_name - welcome to the "!group_name" team.' , $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>You’ve been invited and added to the idea called <a href="!group_link">!group_name</a> on the Ideas Challenge site.<br>&nbsp;<br>You can view the idea <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
     break;
     case 'member_joined__to_new_member_with_msg':
-     $message['subject'] = t('!site_name - welcome to "!group_name".' , $params, $options);
-     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>You are now a member of <a href="!group_link">!group_name</a>. <br><br>Here is the message that the person who invited you has attached: <br>!custom_message <br>&nbsp;<br>You can view the group <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
+     $message['subject'] = t('!site_name - invitation to provide comment on "!group_name".' , $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>An idea with relevance to your area has been submitted to the Ideas Challenge. <br><br>Your Division Contact Point recommends that you review <a href="!group_link">!group_name</a> and provide your comments. <br><br>Your Contact Point has added you to the Idea team and provided the following message: <br>!custom_message <br>&nbsp;<br>You can view the idea <a href="!group_link">here</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.', $params, $options);
     break;
     
     case 'member_joined__to_group_owner':   
@@ -544,8 +544,8 @@ function meta_email_get_message($key, $params,$message) {
      $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>!joining_member is now a member of <a href="!group_link">!group_name</a>.<br>&nbsp;<br>Kind Regards,<br> !site_name.<br>&nbsp;<br>You are receiving this email because you have requested an email notification for this type of update. Update your account settings on <a href="!site_url">!site_name</a> to control which emails you receive.', $params);
     break;
     case 'group_waiting_approval__to_requester':
-     $message['subject'] = t('!site_name - "!group_name" has been sent for approval', $params, $options);
-     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>The administrators of !site_name have been notified to review <a href="!group_link">!group_name</a>. It will be reviewed and approved or you will be contacted by email for more information. If you have not been contacted and the idea has not been approved within 4 working days, please contact us.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
+     $message['subject'] = t('!site_name - "!group_name" has been sent to iXc for publication', $params, $options);
+     $message['body'] = t('Hi !receiver_name, <br>&nbsp;<br>The administrators of !site_name have been notified that you are now ready to publish <a href="!group_link">!group_name</a>. It will be reviewed and published or you will be contacted for more information. If you have not been contacted and the idea has not been approved within 2 working days, please contact us.<br>&nbsp;<br>Kind Regards,<br>!site_name.', $params, $options);
     break;
     case 'group_waiting_approval__to_admins':
      $message['subject'] = t('!site_name - "!group_name" is pending approval', $params, $options);
