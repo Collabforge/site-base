@@ -543,7 +543,7 @@ function meta_group_add_user_form($form, &$form_state, $node, $type='') {
 		}
 		if ($type == 'sponser' and $role_name == 'Sponser') {
 			$meta_roles[] = $rid;
-			$form['og_user']['#title'] = "Invite Sponser";			
+			$form['og_user']['#title'] = "Invite Sponsor";
 		}
 		if ($type == 'ia-member' and $role_name == 'Implementing Area Member') {
 			$meta_roles[] = $rid;
