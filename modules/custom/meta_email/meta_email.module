@@ -482,13 +482,12 @@ function meta_email_get_message($key, $params,$message) {
       break;
     case 'share_message_to_individual':
       $message['subject'] = t('!site_name - !from_name would like you to join the Ideas Challenge', $params, $options);
-      $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) would like you to participate in the !site_name Ideas Challenge.<br><br>If you do not have one yet, please register an account by <a href="!site_url/user/register">clicking here</a> and then contacting !from_name to request an invite to the idea called <a href=!group_link>!group_name</a><br><br>Here is the message they have attached: <br><br>!message
+      $message['body'] = t('Hi,<br><br> A member called !from_name ( !from_email ) would like you to participate in the !site_name Ideas Challenge.<br><br>If you do not have one yet, please register an account by <a href="!site_url/user/register">clicking here</a> and then contacting !from_name to request an invite to the idea called <a href=!group_link>!group_name</a><br><br>Here is the message they have attached: <br><br><i>!message</i>
       &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'share_idea_to_individual':
       $message['subject'] = t('!site_name - !from_name would like you to participate in the Ideas Challenge', $params, $options);
-      $message['body'] = t('Hi,<br><br>!from_name ( !from_email ) has invited you to participate in the Ideas Challenge and to view their idea !group_name.<br><br>Here is the message they have attached:<br><br>!message<br><br>If you have not done so already, please register an account by <a href="!site_url/user/register">clicking here</a>. Once you are logged in to the Ideas Challenge, you can view the idea by browsing ideas or via the following link:<br> <a href=!group_link>!group_name</a><br><br>
-      &nbsp;<br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
+      $message['body'] = t('Hi,<br><br>!from_name ( !from_email ) has invited you to participate in the Ideas Challenge and to view their idea !group_name.<br><br>Here is the message they have attached:<br><br><i>!message</i><br><br>If you have not done so already, please register an account by <a href="!site_url/user/register">clicking here</a>. Once you are logged in to the Ideas Challenge, you can view the idea by browsing ideas or via the following link:<br> <a href=!group_link>!group_name</a><br><br>Kind Regards,<br>!site_name.<br>&nbsp;<br>', $params, $options);
       break;
     case 'group_message_to_team':
       $message['subject'] = t('!site_name -  A message has been sent to the "!group_name" idea team  by !from_name', $params, $options);

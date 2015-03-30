@@ -6,8 +6,8 @@
  * Override the default redirect, /user/UID, to go to the front page instead.
  */
 function collabco_forms_user_login(&$form_state, $account) {
-  if ($account->uid != 1) {
-    $form_state['redirect'] = variable_get('site_frontpage', 'node');
+  if (arg(0) == "user" && arg(1) == "login") {
+    $form_state['redirect'] = "dashboard";
   }
 }
 
