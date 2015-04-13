@@ -21,7 +21,7 @@ function collabco_forms_user_login(&$form_state, $account) {
 function collabco_forms_get_comment_uids_for_node($nid) {
   $node = node_load($nid);
   $comment_uids = array();
-  if ($node->comment && $cids = comment_get_thread($node, COMMENT_MODE_FLAT, 1000)) {
+  if ($node->comment && $cids = comment_get_thread($node, 'COMMENT_MODE_FLAT', 1000)) {
     if ($comments = comment_load_multiple($cids)) {
       foreach ($comments as $comment) {
         $comment_uids[$comment->uid] = $comment->uid;
@@ -53,15 +53,15 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
       $comment_settings = &$form['comment_notify_settings']['comment_notify'];
       $comment_settings['#title'] = t('After I comment on a topic');
       $comment_settings['#type'] = 'radios';
-      if (isset($comment_settings['#options'][COMMENT_NOTIFY_NODE])) {
-        $comment_settings['#options'][COMMENT_NOTIFY_NODE] = t('Send emails when new comments are posted');
+      if (isset($comment_settings['#options']['COMMENT_NOTIFY_NODE'])) {
+        $comment_settings['#options']['COMMENT_NOTIFY_NODE'] = t('Send emails when new comments are posted');
       }
-      if (isset($comment_settings['#options'][COMMENT_NOTIFY_COMMENT])) {
-        $comment_settings['#options'][COMMENT_NOTIFY_COMMENT] = t('Send emails when someone replies to my comment');
+      if (isset($comment_settings['#options']['COMMENT_NOTIFY_COMMENT'])) {
+        $comment_settings['#options']['COMMENT_NOTIFY_COMMENT'] = t('Send emails when someone replies to my comment');
       }
       // COMMENT_NOTIFY_DISABLED comes last.
-      unset($comment_settings['#options'][COMMENT_NOTIFY_DISABLED]);
-      $comment_settings['#options'][COMMENT_NOTIFY_DISABLED] = t('Do not send any emails');
+      unset($comment_settings['#options']['COMMENT_NOTIFY_DISABLED']);
+      $comment_settings['#options']['COMMENT_NOTIFY_DISABLED'] = t('Do not send any emails');
       $comment_settings['#default_value'] = reset($form['comment_notify_settings']['comment_notify']['#default_value']);
       $comment_settings['#description'] = t('You can disable these notiﬁcations later for individual pieces of content, by visiting the web page for that content.');
     }
@@ -78,7 +78,7 @@ function collabco_forms_form_alter(&$form, &$form_state, $form_id) {
         case 'user_pass':
           if (arg(0) == 'modal_forms') {
             $items[] = ctools_modal_text_button(t('Got an account? Log in'), 'modal_forms/nojs/login', t('Got an account? Log in'), 'ctools-modal-modal-popup-small');
-            if (variable_get('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL)) {
+            if (variable_get('user_register', 'USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL')) {
                    $items[] = ctools_modal_text_button(t('Create new account'), 'modal_forms/nojs/register', t('Create a new user account'), 'ctools-modal-modal-popup-medium');
              }
              $form['links'] = array('#weight' => 1000,'#markup' => theme('item_list', array('items' => $items)));
