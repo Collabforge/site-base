@@ -1,0 +1,10 @@
+name = Advanced help hint
+description = API module to create a string that hints about available help.
+core = 7.x
+
+; Information added by Drupal.org packaging script on 2015-03-29
+version = "7.x-1.0"
+core = "7.x"
+project = "advanced_help_hint"
+datestamp = "1427650081"
+
