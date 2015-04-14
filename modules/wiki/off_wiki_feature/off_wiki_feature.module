@@ -1,0 +1,168 @@
+<?php
+/**
+ * @file
+ * Code for the Collabco Wiki Feature feature.
+ */
+
+include_once 'off_wiki_feature.features.inc';
+
+/**
+ * Implements hook_node_view().
+ *
+ * Add og_group_ref prepopulate query to 'Add child page' link, so it uses the 
+ * parents group by default.
+ */
+function off_wiki_feature_node_view_alter(&$build) {
+  // If this node is connected to a group.
+  if (!empty($build['#node']->og_group_ref['und'][0]['target_id'])) {
+    // And this is a normal book page.
+    if (!empty($build['#node']->book['bid']) && empty($build['#node']->in_preview)) {
+      // Put the group idea in the url query for entityreference prepopulate.
+      $gid =  $build['#node']->og_group_ref['und'][0]['target_id'];
+      $build['links']['book']['#links']['book_add_child']['query']['og_group_ref'] = $gid;
+    }
+  }
+  // Only show wiki subscription if this is a book parent.
+  if (empty($build['#node']->book) || ($build['#node']->book['bid'] != $build['#node']->nid)) {
+    unset($build['links']['flag']['#links']['flag-follow_wiki']);
+  }
+}
+
+/**
+ * Implements hook_message_subscribe_get_subscribers().
+ * Handles subscriptions to books.
+ *
+ * @param $context
+ *   Array keyed with the entity type and array of entity IDs as the
+ *   value. According to this context this function will retrieve the
+ *   related subscribers.
+ * @param $message
+ *   The message object.
+ *
+ * @return
+ *   Array keyed with the user ID and the value:
+ *   - "flags": Array with the flag names that resulted with including
+ *   the user.
+ *   - "notifiers": Array with the Message notifier name plugins.
+ *
+ * @see flag_get_content_flags()
+ */
+
+function off_wiki_feature_message_subscribe_get_subscribers(Message $message, $subscribe_options = array(), $context = array()) {
+  $uids = array();
+  $subscribe_options += array(
+    'last uid' => 0,
+    'range' => FALSE,
+  );
+
+  // Determine if a range is needed for the query.
+  $range = $subscribe_options['range'];
+
+  // Find the users that subscribed to each context.
+  foreach ($context as $entity_type => $entity_ids) {
+    if (!$entity_ids) {
+      continue;
+    }
+
+    if (!($entity_type == 'node')) {
+      continue;
+    }
+
+    $book_parent_ids = array();
+    $nodes = entity_load('node', $entity_ids);
+    book_node_load($nodes,'book');
+    foreach ($nodes as $node) { 
+      if (empty($node->book)) {
+        continue; 
+      }
+      $book_parent_ids[$node->book['bid']] = $node->book['bid'];
+    }
+        
+    if (empty($book_parent_ids)) {
+      continue;
+    }
+    
+    // Get the idea of the wiki subsribe flag.
+    $flag_name = 'follow_wiki';
+    $flag = flag_load($flag_name);
+    $fid = $flag->fid;
+
+    // Query all the entity IDs inside the given flags. We don't use
+    // flag_get_content_flags() as we want to get all the flaggings of an
+    // entity-type in a single query.
+    if (FLAG_API_VERSION == 2) {
+      $query = db_select('flag_content', 'fc')
+        ->condition('content_type', $entity_type)
+        ->condition('content_id', $book_parent_ids, 'IN');
+    }
+    else {
+      $query = db_select('flagging', 'fc')
+        ->condition('entity_type', $entity_type)
+        ->condition('entity_id', $book_parent_ids, 'IN');
+    }
+
+    $query->fields('fc')
+      ->condition('fid', $fid, '=')
+      ->condition('uid', $subscribe_options['last uid'], '>')
+      ->orderBy('uid', 'ASC');
+
+    if ($range) {
+      $query->range(0, $range);
+    }
+
+    $result = $query->execute();
+
+    foreach ($result as $row) {
+
+      $uids[$row->uid] = !empty($uids[$row->uid]) ? $uids[$row->uid] : array('notifiers' => array());
+      // Register the flag name.
+      $uids[$row->uid]['flags'][] = $flag_name;
+
+      if ($range) {
+        --$range;
+        if ($range == 0) {
+          // We've reach the requested item.
+          return $uids;
+        }
+      }
+    }
+  }
+
+  return $uids;
+}
+
+/**
+ * Implements hook_collabco_integration().
+ */
+function off_wiki_feature_collabco_integration() {
+  // Add links to views if a module wants to do that.
+  return array(
+    'off_wiki_feature' => array(
+      'entity' => array(
+        'node'=> array(
+          'book' => array(
+            'add_content_link' => TRUE,
+            'tab' => array(
+              'Wikis' => array(
+                'subpath' => 'wiki',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'views' => array(
+        'wikis' => array(
+          'group_page' => array(
+            'subscribe_flag' => array(
+              'group_type' => 'node',
+              'entity_type' => 'none',
+            ),
+            'add_content_link' => array(
+              'areas' => array('header'),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}

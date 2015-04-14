@@ -1,0 +1,16 @@
+name = Org Chart
+description = Creates a jOrgChart-library-based visualization of Book module menu tree
+core = 7.x
+package = PCMS - Custom
+
+dependencies[] = menu
+dependencies[] = book
+
+files[] = orgchart.module
+
+; Information added by drupal.org packaging script on 2010-10-05
+version = "7.x-1.0-alpha1"
+core = "7.x"
+project = "orgchart"
+datestamp = "1351012503"
+

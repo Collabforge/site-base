@@ -1,0 +1,81 @@
+<?php
+// $Id: nobookoutline.module,v 1.00 2009/11/06 12:01:54 geshan Exp $
+// @file noboookoutline.module - module to hide book outline in node fromand outline menu link from non book nodes
+// @Author YIPL Dev Team - Geshan Manandhar (http://geshan.blogspot.com)
+// Ported to drupal 7 by PCMS
+
+/**
+ * @todo Add help and other settings like premission later
+ */
+
+/**
+ * Implemenatation of hook_menu
+ * Funciton to define menus of no book outline
+ * @return unknown_type
+ */
+function nobookoutline_menu() {
+  $items['admin/content/nobookoutline'] = array(
+    'title' => 'Book Outline Settings',
+    'description' => 'Select node types to show book outline for',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('nobookoutline_nodetypes_settings_form'),
+    'access arguments' => array('adminster nodes'),
+    'file' => 'nobookoutline.admin.inc',
+    'weight' => 1,
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_form_alter
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ * @return NULL
+ */
+function nobookoutline_form_alter(&$form, $form_state, $form_id) {
+  if (isset($form['#node']) && $form_id == $form['#node']->type . '_node_form') {
+    $node = $form['#node'];
+    $nodetypes = variable_get('form_nobookoutline_nodetypes', array('book'));
+    if (!is_array($nodetypes)) {
+      $nodetypes = array();
+    }
+    $_nodetypes = array_filter($nodetypes);
+    if (!in_array($node->type, $_nodetypes)) {
+      unset($form['book']);
+    }
+  }
+}
+
+
+/**
+ * implementation of hook_menu_alter
+ * @param $callbacks
+ * @return unknown_type
+   
+  if (!in_array($node->type, $nodetypes)) {
+
+    return FALSE;
+  }   
+
+ */
+function nobookoutline_menu_alter(&$callbacks) {
+  // We install our own access callback to check if node is book type
+  $callbacks['node/%node/outline']['access callback'] = '_nobookoutline_restrict_outline_tab';
+}
+
+// Additional access control for the 'Outline' tab: don't show for non 'book' nodes...
+function _nobookoutline_restrict_outline_tab($node) {
+  $nodetypes = variable_get('form_nobookoutline_nodetypes', array('book'));
+  if (!is_array($nodetypes)) {
+    $nodetypes = array();
+  }
+  $_nodetypes = array_filter($nodetypes);
+  if (!in_array($node->type, $_nodetypes)) {
+    return FALSE;
+  }
+  
+  // Delegate to the original access callback:
+  return _book_outline_access($node);
+}
