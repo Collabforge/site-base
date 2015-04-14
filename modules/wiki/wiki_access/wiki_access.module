@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implementation of hook_node_access_records_alter
+ */
+function wiki_access_node_access_records_alter(&$grants, $node) {
+
+  // Checking the node type is wiki and its a newly created one
+  if (($node->type == 'wiki') && !empty($node->is_new) && ($node->is_new == 1)) {
+
+    // Loading the book node
+    $book = node_load($node->book['bid']);
+
+    // Initializing the variables
+    $authenticated_update_access = 0;
+    $settings = array();
+    $book_grants = array();
+
+    // Fetching the content access for the book
+    foreach (_content_access_get_operations() as $op => $label) {
+      $settings[$op] = content_access_per_node_setting($op, $book);
+    }
+
+    // Fetching the node access for the book
+    $result = db_select('node_access', 'na')
+    ->fields('na')
+    ->condition('nid', $book->nid,'=')
+    ->execute();
+
+    while($record = $result->fetchAssoc()) {
+
+      // Checking whether authenticated user update grant is there for the book node
+      if (($record['realm'] == 'content_access_rid') && ($record['gid'] == 2) && ($record['grant_update'] == 1)) {
+        $authenticated_update_access = 1;
+      }
+      unset($record['nid']);
+      $book_grants[] = $record;
+    }
+
+    // Copying the book node access to the wiki node
+    $grants = $book_grants;
+
+    // Checking whether update access is already there for authenticated users in case of wiki node
+    if ($authenticated_update_access && !in_array(2, $settings['update'])) {
+      array_unshift($settings['update'], 2);
+    }
+
+    content_access_save_per_node_settings($node, $settings);
+  }
+}

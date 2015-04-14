@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ * Provides jOrgChart-library-based visualization of Book menu tree.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function orgchart_permission() {
+  return array(
+    'view orgchart' => array(
+      'title' => t('View org charts'),
+    )
+  );
+}
+
+
+function recurse_array($inarray){
+  global $base_url;
+  $list = ''; //empty the var
+  foreach($inarray as $k => $v){
+    //dsm($v); used for testing
+    $list .= '<li><a class="maplink" href="'.$base_url.'/'.$v['link']['link_path'].'">'.$v['link']['link_title'].'</a>';
+    if(is_array($v['below'])){
+      $list .= '<ul>';
+      $list .= recurse_array($v['below']);
+      $list .= '</ul></li>';
+    }
+  }
+  return $list;
+}
+
+function orgchart_menu() {
+  $items['visualmap/%/view'] = array(
+      'title' => 'Map',
+      'page callback' => 'orgchart_render',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+      'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function orgchart_render() {
+  global $base_url, $user;
+  $page = '';
+
+
+  $this_nid = arg(1); //grab nid of current page node
+
+  $get_node = node_load($this_nid); //load node
+
+  if (!node_access('view', $get_node, $user)) {
+    return drupal_access_denied();
+  }
+
+  //drupal_add_js(drupal_get_path('module','orgchart').'/jquery.min.js');
+  //drupal_add_js(drupal_get_path('module','orgchart').'/jquery-ui.min.js'); using Drupal native jquery and jquery.ui
+  drupal_add_js(drupal_get_path('module','orgchart').'/jquery.jOrgChart.js');
+  drupal_add_js(drupal_get_path('module','orgchart').'/prettify.js');
+  drupal_add_js(drupal_get_path('module','orgchart').'/orgchart.js');
+  drupal_add_js(drupal_get_path('module','orgchart').'/chartdraw.js');
+  drupal_add_css(drupal_get_path('module','orgchart').'/jquery.jOrgChart.css');
+  drupal_add_css(drupal_get_path('module','orgchart').'/prettify.css');
+  drupal_add_css(drupal_get_path('module','orgchart').'/custom.css');
+
+
+  if ($get_node->book['bid'] != $get_node->book['nid']) {
+    $node = node_load($get_node->book['bid']);
+    $get_node->title = $node->title;
+  }
+
+  drupal_set_title($get_node->title);
+
+  $book_tree = menu_tree_all_data(book_menu_name($get_node->book['bid']));
+
+  //dsm($book_tree);
+  $page .= '<ul id="org" style="display:none">';
+  foreach($book_tree as $v){
+    if($v['link']){
+      $page .= '<li><a class="maplink" href="'.$base_url.'/'.$v['link']['link_path'].'">'.$v['link']['link_title'].'</a>';
+    }
+    if($v['below'] && count($v['below']) > 0){
+
+      $page .= '<ul>';
+      $page .= recurse_array($v['below']);
+      $page .= '</ul>';
+    }
+  }
+  $page .= '</li>';
+  $page .= '</ul>';
+  $page .= '<div id="chart" class="orgChart"></div>';
+  return $page;
+}
+
+
+

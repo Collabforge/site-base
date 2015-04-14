@@ -1,0 +1,5 @@
+;$Id$
+name = Wiki Access
+description = Module to help set the access for newly created wiki pages.
+core = 7.x
+package = PCMS
