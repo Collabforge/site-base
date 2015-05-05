@@ -4,5 +4,6 @@ core = 7.x
 package = Collabco
 files[] = views/collabco_views_handler_field_user_comments_posted.inc
 files[] = views/collabco_views_handler_field_user_flag_count.inc
+files[] = views/collabco_views_handler_field_user_login_count.inc
 files[] = views/collabco_views_handler_field_user_groups_hosted.inc
 files[] = views/collabco_views_handler_field_user_groups_joined.inc

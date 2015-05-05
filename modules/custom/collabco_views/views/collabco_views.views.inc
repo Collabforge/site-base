@@ -32,6 +32,14 @@ function collabco_views_views_data_alter(&$data) {
       'click sortable' => TRUE,
     ),
   );
+  $data['users']['login_count'] = array(
+    'title' => t('Login count') ,
+    'help' => t('Total number of logins by any given user'),
+    'field' => array(
+      'handler' => 'collabco_views_handler_field_user_login_count',
+      'click sortable' => TRUE,
+    ),
+  );
   $data['users']['flag_count_1'] = array(
     'title' => t('Flag1 count') ,
     'help' => t('Number of items flagged by user via flag 1.'),
