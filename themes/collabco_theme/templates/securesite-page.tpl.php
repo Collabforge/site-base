@@ -23,11 +23,6 @@
 <?php print $content ?>
 <form><div>
 <h1>Create Account</h1>
-<?php
-$old_url = $_SERVER['HTTP_REFERER'];
-if($old_url == "http://innovationnetwork.org.au/user/register"){ 
-	print "<p>Thank you for registering. Your application for an account is currently pending approval. Once it has been approved, you will receive another e-mail containing information about how to log in, set your password, and other details.</p>";
-};?>
 <p>Create an account <a href="<?php print $base_url ?>/user/register">here</a>.</p>
 </div>
 </form>

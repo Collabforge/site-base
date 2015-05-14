@@ -13,7 +13,7 @@
 		</div>
 	</div>
 	<div class="span7">
-		<div class="profile-page-title">    
+		<div class="profile-page-title">
 			<p><?php /* temp removed print($full_name); */ ?></p>
 		</div>
 	</div>
@@ -21,12 +21,12 @@
 		<div class="profile-page-edit">
 			<?php
 			if ($user->uid == $account->uid) { ?>
-			  <a href="<?php echo "$base_url/user/$account->uid/edit/profile"; ?>"><i class="icon-edit"></i> Edit your profile</a>
+			  <a href="<?php echo "$base_url/user/$account->uid/edit/profile"; ?>"><i class="icon-edit"></i> <?php echo t('Edit your profile'); ?></a>
 			<?php } ?>
 		</div>
 	</div>
 	<br>
-	
+
 	<div class="span7 first">
 		<div class="profile-page-user-position">
 			<?php print render($fields['field_business_position']); ?>
@@ -56,7 +56,7 @@
               <b>Send <?php print($full_name); ?> an email</b>
             </div>
             <div class="field-item">
-              <a href="<?php print "$base_url/user/$account->uid/contact"; ?>">Send a message</a>
+              <a href="<?php print "$base_url/user/$account->uid/contact"; ?>"><?php echo t('Send a message'); ?></a>
             </div>
         </div>
         <?php endif; ?>

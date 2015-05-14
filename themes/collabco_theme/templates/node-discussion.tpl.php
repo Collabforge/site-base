@@ -89,7 +89,7 @@
 
     <?php if ($display_submitted): ?>
       <div class="submitted">
-        <h4>A conversation hosted by:</h4>
+        <h4><?php echo t('A conversation hosted by:'); ?></h4>
         <div class="nodewrapper"> <div class="userpicture"> <?php print $user_picture; ?></div>
         <div class="submitted-content-posted">
     <?php print $name; ?>
@@ -109,7 +109,7 @@
 
     <?php print render($content['comments']); ?>
     <br>
-    <a href="<?php print $base_url?>/conversations/">Join the Conversation</a>
+    <a href="<?php print $base_url?>/conversations/"><?php echo t('Join the Conversation'); ?></a>
 
   </article>
 <?php endif; ?>
