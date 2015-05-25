@@ -11,9 +11,9 @@
   <title><?php print $head_title; ?></title>
   <?php print $styles; ?>
   <link href="http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet" type="text/css">
-  <link href="https://cdn.rawgit.com/noelboss/featherlight/1.2.3/release/featherlight.min.css" type="text/css" rel="stylesheet" title="Featherlight Styles" />
-  <script src="https://cdn.rawgit.com/noelboss/featherlight/1.2.3/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="css/featherlight.min.css" />
   <?php print $scripts; ?>
+  <script type="text/javascript" src="js/featherlight.min.js"></script>    
   <!--[if IE 7]>
   <link rel="stylesheet" href="<?php print base_path() . drupal_get_path('theme', 'open_framework') . '/fontawesome/css/font-awesome-ie7.min.css'; ?>">
   <![endif]-->
