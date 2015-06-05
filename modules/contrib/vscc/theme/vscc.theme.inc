@@ -9,7 +9,7 @@ function theme_vscc_control($vars) {
   $id = 'vscc_controls_' . $vars['element'] . '_' . $vars['vss_id'];
   $vars['classes'][] = 'vscc_controls_' . $vars['element'];
   $output = '<span id="' . $id . '" class="' . implode(' ', $vars['classes']) . '">';
-  $output .= '<a href="#">';
+  $output .= '<a href="#!slide">';
   if ($vars['element'] == 'pause') {
     $output .= '<span class="vscc-pause">' . theme('vscc_element_' . $vars['skin'], $vars) . '</span>';
     $vars['element'] = 'resume';
