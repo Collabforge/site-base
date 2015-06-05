@@ -37,6 +37,10 @@ function vscc_theme($existing, $type, $theme, $path) {
   );
 }
 
+/**
+ * @TODO
+ *   Use #attached and render array instead of drupal_add_*.
+ */
 function template_preprocess_vscc_controls(&$vars) {
   $vars['classes_array'][] = 'vscc_controls';
 
