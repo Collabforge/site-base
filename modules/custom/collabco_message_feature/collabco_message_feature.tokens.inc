@@ -68,7 +68,7 @@ function collabco_message_feature_trim_body($entity_type, $entity) {
   }
 
   // Get the safe value.
-  $field_value = $wrapper->{$field_name}->value->value();
+  $field_value = $wrapper->{$field_name}->value;
 
   $options = array(
     'max_length' => 50,
