@@ -19,9 +19,11 @@
   <?php print $scripts; ?>  
     
     <script type="text/javascript" src="/profiles/collabco/themes/collabco_theme/js/featherlight.min.js"></script> 
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script> 
+    
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.js"></script>
     
     
     
