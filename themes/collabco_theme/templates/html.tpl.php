@@ -20,6 +20,11 @@
     
     <script type="text/javascript" src="/profiles/collabco/themes/collabco_theme/js/featherlight.min.js"></script> 
     <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.js"></script>
+    
+    
+    
     
   <!--[if IE 7]>
   <link rel="stylesheet" href="<?php print base_path() . drupal_get_path('theme', 'open_framework') . '/fontawesome/css/font-awesome-ie7.min.css'; ?>">
