@@ -3,7 +3,7 @@
  * @file
  * "Leaflet More Maps" adds more map layers to the Leaflet module.
  *
- * All maps support zoom levels 0..18, except where stated otherwise.
+ * All maps support zoom levels 0..19, except where stated otherwise.
  */
 
 define('LEAFLET_MORE_MAPS_NO_CUSTOM_MAPS', 3);
@@ -16,7 +16,7 @@ function leaflet_more_maps_default_settings() {
     'dragging'           => TRUE,
     'fadeAnimation'      => TRUE,
     'layerControl'       => FALSE,
-    'maxZoom'            => 18,
+    'maxZoom'            => 19,
     'minZoom'            => 0,
     'scrollWheelZoom'    => TRUE,
     'touchZoom'          => TRUE,
@@ -92,9 +92,9 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // is the leaflet.drupal.js default.
   $attr_bing = 'Tiles <a target="attr" href="http://www.bing.com/maps">Bing</a> &copy; Microsoft and suppliers';
   $map_info['bing'] = array(
-    'label' => 'Bing road & satellite & hybrid (zoom 1..18)',
+    'label' => 'Bing road & satellite & hybrid (zoom 1..19)',
     'description' => t('Bing road, satellite and hybrid layers'),
-    'settings' => array('minZoom' => 1, 'layerControl' => TRUE) + $default_settings,
+    'settings' => array('minZoom' => 1, 'maxZoom' => 19, 'layerControl' => TRUE) + $default_settings,
     'layers' => array(
       'road layer' => array(
         'type' => 'quad',
@@ -179,8 +179,8 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
         break;
 
       default:
-        $label = "Esri $esri_name (zoom 0..18)";
-        $settings['maxZoom'] = 18;
+        $label = "Esri $esri_name (zoom 0..19)";
+        $settings['maxZoom'] = 19;
     }
     $map_info['esri-' . drupal_strtolower($code)] = array(
       'label' => $label,
@@ -196,14 +196,15 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   }
 
   $attr_google = 'Map data &copy; <a target="attr" href="http://googlemaps.com">Google</a>';
+  $v = variable_get('google_satellite_version', 178);
   $map_info['google-satellite'] = array(
-    'label' => 'Google satellite (zoom 0..18)',
+    'label' => 'Google satellite (zoom 0..21)',
     'description' => t('Google satellite'),
-    'settings' => array('layerControl' => TRUE) + $default_settings,
+    'settings' => array('layerControl' => TRUE, 'maxZoom' => 21) + $default_settings,
     'layers' => array(
       'satellite' => array(
         'type' => 'google',
-        'urlTemplate' => $prot . 'khm{s}.googleapis.com/kh?v=167&x={x}&y={y}&z={z}',
+        'urlTemplate' => $prot . 'khms{s}.googleapis.com/kh?x={x}&y={y}&z={z}' . (empty($v) ? '' : "&v=$v"),
         'options' => array(
           'attribution' => $attr_google,
           // 'detectRetina' => TRUE, // has bad effect
@@ -224,9 +225,9 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
     ),
   );
   $map_info['google-roadmap'] = array(
-    'label' => 'Google roadmap (zoom 0..18)',
+    'label' => 'Google roadmap (zoom 0..21)',
     'description' => t('Google roadmap'),
-    'settings' => $default_settings,
+    'settings' => array('maxZoom' => 21) + $default_settings,
     'layers' => array(
       'layer' => array(
         'type' => 'google',
@@ -241,9 +242,9 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   );
   // Two non-transparent layers, so entered as base_layers.
   $map_info['google-high-res'] = array(
-    'label' => 'Google high-res road & terrain (zoom 0..18)',
+    'label' => 'Google high-res road & terrain (zoom 0..21)',
     'description' => t('Google road & terrain layers, with high-res (Retina) support'),
-    'settings' => array('layerControl' => TRUE) + $default_settings,
+    'settings' => array('layerControl' => TRUE, 'maxZoom' => 21) + $default_settings,
     'layers' => array(
       'roadmap' => array(
         'type' => 'google',
@@ -285,15 +286,15 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
     // 'Zenburn',
     'Warden',
   );
-  $attr_mapbox = 'Tiles by <a target="attr" href="http://mapbox.com">MapBox</a>. Map data &copy; <a href="http://openstreetap.org">OpenStreetMap</a> and contributors';
+  $attr_mapbox = 'Tiles by <a target="attr" href="http://mapbox.com">MapBox</a>. Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contributors';
   foreach ($mapbox_names as $mapbox_name) {
     $code = drupal_strtolower($mapbox_name);
-    $label = "MapBox $mapbox_name (zoom 0..17)";
+    $label = "MapBox $mapbox_name (zoom 0..19)";
     $url_template = $prot . "{s}.tiles.mapbox.com/v3/mapbox.mapbox-$code/$zxy";
     $map_info["mapbox-$code"] = array(
-      'label' => $code == 'streets' ? t('Mapbox streets, classic (zoom 0..17)') : $label,
+      'label' => $code == 'streets' ? t('Mapbox streets, classic (zoom 0..19)') : $label,
       'description' => $label,
-      'settings' => array('maxZoom' => 17) + $default_settings,
+      'settings' => $default_settings,
       'layers' => array(
         'layer' => array(
           'urlTemplate' => $url_template,
@@ -308,7 +309,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // MapQuest OSM. Two non-transparent layers.
   $attr_mapquest = 'Tiles by <a target="attr" href="http://mapquest.com">MapQuest</a>. ' . $attr_osm;
   $map_info['mapquest'] = array(
-    'label' => 'MapQuest OSM & Aerial (zoom 0..18)',
+    'label' => 'MapQuest OSM & Aerial (zoom 0..19)',
     'description' => t('MapQuest rendering of OpenStreetMap, as well as Aerial layer'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
@@ -333,7 +334,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
 
   $attr_thunderforest = 'Thunderforest <a target="attr" href="http://thunderforest.com">OpenCycleMap</a>. ' . $attr_osm;
   $map_info['osm-cycle'] = array(
-    'label' => 'OSM Thunderforest Cycle (zoom 0..18)',
+    'label' => 'OSM Thunderforest Cycle (zoom 0..19)',
     'description' => t('OpenStreetMap for cyclists'),
     'settings' => $default_settings,
     'layers' => array(
@@ -345,7 +346,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   );
   $map_info['osm-transport'] = array(
     // See http://thunderforest.com.
-    'label' => 'OSM Thunderforest Transport (zoom 0..18)',
+    'label' => 'OSM Thunderforest Transport (zoom 0..19)',
     'description' => t('OpenCycleMap with train & tram lines'),
     'settings' => $default_settings,
     'layers' => array(
@@ -357,7 +358,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   );
   $map_info['osm-landscape'] = array(
     // See http://thunderforest.com.
-    'label' => 'OSM Thunderforest Landscape (zoom 0..18)',
+    'label' => 'OSM Thunderforest Landscape (zoom 0..19)',
     'description' => t('OpenCycleMap with landscape'),
     'settings' => $default_settings,
     'layers' => array(
@@ -369,7 +370,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   );
   $attr_piste = '<a target="attr" href="http://openpistemap.org">OpenPisteMap</a> ' . $attr_osm;
   $map_info['osm-piste'] = array(
-    'label' => 'OSM OpenPisteMap (zoom 0..18)',
+    'label' => 'OSM OpenPisteMap (zoom 0..19)',
     'description' => t('OpenStreetMap for skiers with 3 layers'),
     'settings' =>  array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
@@ -394,7 +395,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // OpenSeeMap http://openseamap.org
   $attr_ocm = 'OpenSeaMap. ' . $attr_osm;
   $map_info['osm-sea'] = array(
-    'label' => 'OSM OpenSeaMap (zoom 0..18)',
+    'label' => 'OSM OpenSeaMap (zoom 0..19)',
     'description' => t('OpenStreetMap with sea marks overlay'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
@@ -414,7 +415,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // OpenWeatherMap http://openweathermap.org
   $attr_owm = 'OpenWeatherMap. ' . $attr_osm;
   $map_info['osm-weather'] = array(
-    'label' => 'OSM OpenWeatherMap (zoom 0..18)',
+    'label' => 'OSM OpenWeatherMap (zoom 0..19)',
     'description' => t('Precipitation with pressure contours'),
     'settings' => array('layerControl' => TRUE) + $default_settings,
     'layers' => array(
@@ -439,7 +440,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   // geocommons http://geocommons.com
   $attr_geocommons = 'Tiles by Geocommons &copy; <a target="attr" href="http://geocommons.com/overlays/acetate">Esri & Stamen</a>. ' . $attr_osm;
   $map_info['geocommons'] = array(
-    'label' => 'Geocommons Acetate (zoom 2..18)',
+    'label' => 'Geocommons Acetate (zoom 2..19)',
     'description' => t('Neutral basemap'),
     'settings' => array('minZoom' => 2) + $default_settings,
     'layers' => array(
@@ -458,7 +459,7 @@ function _leaflet_more_maps_assemble_default_map_info(&$map_info, $default_setti
   $stamen_names = array('Toner', 'Watercolor'/* , 'Terrain'*/);
   foreach ($stamen_names as $stamen_name) {
     $code = drupal_strtolower($stamen_name);
-    $label = "Stamen $stamen_name (zoom 0..18)";
+    $label = "Stamen $stamen_name (zoom 0..19)";
     $t = t('@label , USA only', array('@label' => $label));
     if ($is_https) {
       $url_template = $prot . "stamen-tiles-{s}.a.ssl.fastly.net/$code/$zxy";

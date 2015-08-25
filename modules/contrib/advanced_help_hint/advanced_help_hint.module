@@ -5,19 +5,8 @@
  * TBA
  */
 
-http://diw.ifi.uio.no/gruppe01/admin/advanced_help/notify
-
 /**
- * Implements hook_help().
- */
-function advanced_help_hint_help($path, $arg) {
-  if ($path == 'admin/help#advanced_help_hint') {
-    return '<p>' . t('Creates a hint for insertion into <code>hook_help</code>.') . '</p>' .
-      '<p>' . advanced_help_hint_docs('advanced_help_hint', 'https://www.drupal.org/node/2461745', TRUE) . '</p>';
-  }
-}
-/**
- * Helper function to show hints in hook_help.
+ * Helper function to generete a hint about available help.
  *
  * @param string $project
  *   Name of project.
@@ -48,6 +37,17 @@ function advanced_help_hint_docs($project, $doclink = NULL, $repo = FALSE) {
     if (!empty($output)) {
       $output = $output . ' ';
     }
+    if (!isset($topics[$project])) {
+      $output .=
+        t("Expected to find some help for project &#8220;!project&#8220; in the project's help-directory, but could not locate any.",
+          array(
+            '!project' => $project,
+          )
+        );
+      // Nothing more to do.
+      return $output;
+    }
+
     $file = key($topics[$project]);
     $ext = pathinfo($file, PATHINFO_EXTENSION);
     if (empty($ext))  {
@@ -55,7 +55,7 @@ function advanced_help_hint_docs($project, $doclink = NULL, $repo = FALSE) {
         t("Additional help is available in provided by !help.",
            array(
             '!help' =>  l('advanced help framework',
-              '/admin/advanced_help/' . $project,
+              '/admin/help/ah/' . $project,
               array('attributes' => array('title' => t('Link to advanced help.')))),
          ));
     }
@@ -67,7 +67,7 @@ function advanced_help_hint_docs($project, $doclink = NULL, $repo = FALSE) {
            array('attributes' => array('title' => t('Link to included documentation.')))),
         )
       );
-     }
+    }
 
   } elseif ($repo)  {
     if (!empty($output)) {
@@ -77,8 +77,8 @@ function advanced_help_hint_docs($project, $doclink = NULL, $repo = FALSE) {
     $output .=
       t('If you install the !advhelp module, additional help may be available.',
         array(
-	  '!advhelp' => l(t('Advanced help'), 'https://www.drupal.org/project/advanced_help', array('attributes' => array('title' => t('Link to project.'))))
-	)
+          '!advhelp' => l(t('Advanced help'), 'https://www.drupal.org/project/advanced_help', array('attributes' => array('title' => t('Link to project.'))))
+        )
       );
   }
   return $output;
